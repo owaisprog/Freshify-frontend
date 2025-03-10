@@ -13,9 +13,22 @@ import {
 } from "../../../../services/useApi";
 import TimePicker from "../../../../components/DayTimePicker";
 export default function OrganizationOwnerLocations() {
+  const { id } = JSON.parse(localStorage.getItem("data"));
+
   const [loading, setLoading] = useState(false);
   const [opened, setOpened] = useState(false);
   const [location, setLocations] = useState([]);
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        console.log("link copied");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+      });
+  };
 
   function DelLocation(id) {
     try {
@@ -37,7 +50,7 @@ export default function OrganizationOwnerLocations() {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const response = await apiGet("/api/get-locations"); // Wait for the promise to resolve
+        const response = await apiGet(`/api/get-locations-by-owner/${id}`); // Wait for the promise to resolve
         console.log(response);
         setLocations(response);
       } catch (error) {
@@ -46,7 +59,7 @@ export default function OrganizationOwnerLocations() {
     };
 
     fetchLocations();
-  }, []);
+  }, [id]);
 
   //form logic
   const form = useForm({
@@ -105,7 +118,7 @@ export default function OrganizationOwnerLocations() {
       console.log("Response:", response);
 
       // Fetch latest locations instead of manually updating state
-      const resp = await apiGet("/api/get-locations");
+      const resp = await apiGet(`/api/get-locations-by-owner/${id}`);
       setLocations(resp);
       console.log(resp, "😒😒");
 
@@ -152,9 +165,16 @@ export default function OrganizationOwnerLocations() {
               </div>
             </div>
             <div>
-              <Title order={5}>Google places</Title>
-              <h4 className="underline">Copy Link</h4>
-            </div>{" "}
+              <Title order={5}>Google Places</Title>
+              <h4
+                className="underline cursor-pointer text-blue-600"
+                onClick={() =>
+                  copyToClipboard("https://maps.google.com/your-location-link")
+                }
+              >
+                Copy Link
+              </h4>
+            </div>
             <div>
               <Title order={5}>On-site Payments</Title>
               <h4 className="underline">
