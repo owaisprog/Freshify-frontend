@@ -22,7 +22,7 @@ const TableCom = ({ columns, data }) => {
 
         {/* Table Body */}
         <tbody>
-          {data.length > 0 ? (
+          {data && data.length > 0 ? (
             data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}

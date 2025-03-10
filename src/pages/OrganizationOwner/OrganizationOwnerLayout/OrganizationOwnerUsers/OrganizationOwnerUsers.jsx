@@ -4,12 +4,13 @@ import { FaTools } from "react-icons/fa";
 import { TfiUpload } from "react-icons/tfi";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import OrganizationOwnerUserAdmin from "./Components/OrganizationOwnerUserAdmin";
+import OrganizationOwnerUserProfessional from "./Components/OrganizationOwnerUserProfessional";
 import { apiGet } from "../../../../services/useApi";
-// import OrganizationOwnerUserAdmin from "./Components/OrganizationOwnerUserAdmin";
-// import OrganizationOwnerUserProfessional from "./Components/OrganizationOwnerUserProfessional";
 
 function OrganizationOwnerUsers() {
   const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Get active tab from query params or default to "admin"
@@ -25,16 +26,24 @@ function OrganizationOwnerUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await apiGet("/api/get-users");
-        setUsers(response?.filter((val) => val?.role === activeTab));
+        if (allUsers.length === 0) {
+          const response = await apiGet("/api/get-users");
+          setUsers(response.filter((val) => val.role === activeTab));
+          setAllUsers(response);
+        } else {
+          // If data is already fetched, just filter it
+          setUsers(allUsers.filter((val) => val.role === activeTab));
+        }
       } catch (error) {
         console.error("Error fetching Users:", error);
       }
     };
 
     fetchUsers();
-  }, [activeTab]);
+  }, [activeTab, allUsers]); // Runs only when the tab changes
+
   console.log(users);
+
   return (
     <main>
       <section className="flex gap-4">
@@ -75,11 +84,11 @@ function OrganizationOwnerUsers() {
               Admins
             </Tabs.Tab>
             <Tabs.Tab
-              value="professional"
+              value="barber"
               style={{
-                color: activeTab === "professional" ? "black" : "#718EBF",
+                color: activeTab === "barber" ? "black" : "#718EBF",
                 borderBottom:
-                  activeTab === "professional" ? "2px solid black" : "none",
+                  activeTab === "barber" ? "2px solid black" : "none",
               }}
             >
               Professionals
@@ -88,12 +97,15 @@ function OrganizationOwnerUsers() {
         </Tabs>
       </section>
       <section>
-        {/* {activeTab === "admin" ? (
-          <OrganizationOwnerUserAdmin />
+        {activeTab === "admin" ? (
+          <OrganizationOwnerUserAdmin userdata={users} activeTab={activeTab} />
         ) : (
-          <OrganizationOwnerUserProfessional />
-        )} */}
-        <h1>user current </h1>{" "}
+          <OrganizationOwnerUserProfessional
+            userdata={users}
+            activeTab={activeTab}
+          />
+        )}
+        {/* <h1>user current </h1>{" "} */}
       </section>
     </main>
   );
