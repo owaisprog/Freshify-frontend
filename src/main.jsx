@@ -28,6 +28,8 @@ import OrganizationOwnerVerifyEmail from "./pages/OrganizationOwner/Organization
 import OrganizationOwnerNewPassword from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerNewPassword.jsx";
 import OrganizationOwnerLocations from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerLocation/OrganizationOwnerLocation.jsx";
 import ProtectedRoute from "../src/components/ProtectedRoute.jsx";
+import OrganizationOwnerResendOTP from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationResenOTP.jsx";
+import OrganizationOwnerSentPassword from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerSentPassword.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -54,6 +56,14 @@ const router = createBrowserRouter(
       <Route
         path="OrganizationOwnerNewPassword/:resetToken"
         element={<OrganizationOwnerNewPassword />}
+      />
+      <Route
+        path="OrganizationOwnerResendOTP"
+        element={<OrganizationOwnerResendOTP />}
+      />
+      <Route
+        path="OrganizationOwnerSentPassword/:userKey"
+        element={<OrganizationOwnerSentPassword />}
       />
       <Route
         path="OrganizationOwnerDashboard"

@@ -9,6 +9,7 @@ import {
   FileInput,
   Checkbox,
   MultiSelect,
+  Select,
 } from "@mantine/core";
 import { createContext, useContext } from "react";
 import { FiUpload } from "react-icons/fi";
@@ -16,7 +17,14 @@ import { FiUpload } from "react-icons/fi";
 // Popup Component (Parent Component)
 const PopupContext = createContext();
 
-const Popup = ({ opened, setOpened, handleSubmit, children, form }) => {
+const Popup = ({
+  opened,
+  setOpened,
+  handleSubmit,
+  children,
+  form,
+  title = "Add New Location",
+}) => {
   // Access form from context
 
   return (
@@ -24,7 +32,7 @@ const Popup = ({ opened, setOpened, handleSubmit, children, form }) => {
       <Modal
         opened={opened}
         onClose={() => setOpened(false)}
-        title="Add New Location"
+        title={title}
         centered
         size="xl"
       >
@@ -123,9 +131,23 @@ function FileInputField({ label, placeholder, filetype }) {
 
 function MutltiSelector({ data, label, placeholder, id }) {
   const form = usePopupForm();
+  console.log(data, label, placeholder, id);
   return (
     <MultiSelect
       checkIconPosition="right"
+      data={Array.isArray(data) ? data : []}
+      label={label}
+      placeholder={placeholder}
+      {...form.getInputProps(id)}
+    />
+  );
+}
+
+function SingleSelector({ data, label, placeholder, id }) {
+  const form = usePopupForm();
+
+  return (
+    <Select
       data={Array.isArray(data) ? data : []}
       label={label}
       placeholder={placeholder}
@@ -148,6 +170,7 @@ Popup.TextInputField = TextInputField;
 Popup.FileInputField = FileInputField;
 Popup.TextArea = TextArea;
 Popup.MutltiSelector = MutltiSelector;
+Popup.SingleSelector = SingleSelector;
 Popup.SubmitButton = SubmitButton;
 
 export default Popup;
