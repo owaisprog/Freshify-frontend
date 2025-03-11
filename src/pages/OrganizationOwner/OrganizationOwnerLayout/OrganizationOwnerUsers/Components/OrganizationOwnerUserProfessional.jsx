@@ -11,7 +11,11 @@ import {
 import TableCom from "../../../../../components/Table";
 import Popup from "../../../../../components/PopUp";
 
-function OrganizationOwnerUserProfessional({ userdata, activeTab }) {
+function OrganizationOwnerUserProfessional({
+  userdata,
+  activeTab,
+  setAllUsers,
+}) {
   console.log(userdata);
   // Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -27,10 +31,12 @@ function OrganizationOwnerUserProfessional({ userdata, activeTab }) {
   const columns = ["Name", "Location", "Email", "Role", "Actions"];
 
   // Delete User Function
-  const DelUsers = async (id) => {
+  const DelUsers = async (ids) => {
     try {
-      await apiDelete(`/api/delete-user/${id}`);
-      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
+      await apiDelete(`/api/delete-user/${ids}`);
+      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
+      setAllUsers(resp);
+      setUsers(resp.filter((val) => val.role === activeTab));
     } catch (error) {
       console.error("Error Deleting user:", error);
     }
@@ -99,8 +105,9 @@ function OrganizationOwnerUserProfessional({ userdata, activeTab }) {
       }
       console.log(response);
 
-      const resp = await apiGet("/api/get-users");
+      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
 
+      setAllUsers(resp);
       setUsers(resp.filter((val) => val.role === activeTab));
 
       setOpened(false);
@@ -157,7 +164,7 @@ function OrganizationOwnerUserProfessional({ userdata, activeTab }) {
       <section className="mt-12">
         <div className="flex justify-between">
           <Title size={20} fw={600}>
-            All Admins
+            All Professionals
           </Title>
           <Button
             bg="black"

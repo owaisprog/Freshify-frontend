@@ -11,7 +11,7 @@ import {
 import TableCom from "../../../../../components/Table";
 import Popup from "../../../../../components/PopUp";
 
-function OrganizationOwnerUserAdmin({ userdata, activeTab }) {
+function OrganizationOwnerUserAdmin({ userdata, activeTab, setAllUsers }) {
   // Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
 
@@ -26,10 +26,14 @@ function OrganizationOwnerUserAdmin({ userdata, activeTab }) {
   const columns = ["Name", "Location", "Email", "Role", "Actions"];
 
   // Delete User Function
-  const DelUsers = async (id) => {
+  const DelUsers = async (ids) => {
     try {
-      await apiDelete(`/api/delete-user/${id}`);
-      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
+      await apiDelete(`/api/delete-user/${ids}`);
+
+      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
+
+      setAllUsers(resp);
+      setUsers(resp.filter((val) => val.role === activeTab));
     } catch (error) {
       console.error("Error Deleting user:", error);
     }
@@ -95,11 +99,13 @@ function OrganizationOwnerUserAdmin({ userdata, activeTab }) {
           location: filterIdLocations[0],
         });
       }
+      console.log(response);
       // Fetch latest users instead of manually updating state
       //   const updatedUsers = await apiGet("/api/get-users");
       //   setUsers(updatedUsers);
 
-      const resp = await apiGet("/api/get-users");
+      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
+      setAllUsers(resp);
 
       setUsers(resp.filter((val) => val.role === activeTab));
 

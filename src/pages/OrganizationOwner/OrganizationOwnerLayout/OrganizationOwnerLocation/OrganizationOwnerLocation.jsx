@@ -11,7 +11,6 @@ import {
   apiPost,
   apiUpdate,
 } from "../../../../services/useApi";
-import TimePicker from "../../../../components/DayTimePicker";
 
 export default function OrganizationOwnerLocations() {
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -75,9 +74,7 @@ export default function OrganizationOwnerLocations() {
       address: "",
       googleLink: "",
       enableCashPayments: false,
-      workingHours: {
-        Monday: "4pm-4pm",
-      },
+      workingHours: "",
       description: "",
     },
     validate: {
@@ -87,6 +84,8 @@ export default function OrganizationOwnerLocations() {
         value.length < 1 ? "Google Link is required" : null,
       description: (value) =>
         value.length < 1 ? "Description is required" : null,
+      workingHours: (value) =>
+        value < 1 ? "Working hours must be a valid number" : null,
     },
   });
 
@@ -100,9 +99,7 @@ export default function OrganizationOwnerLocations() {
         address: values.address,
         googleLink: values.googleLink,
         enableCashPayments: values.enableCashPayments,
-        workingHours: {
-          Monday: "9AM - 9PM",
-        },
+        workingHours: values.workingHours,
         description: values.description,
       };
 
@@ -184,9 +181,11 @@ export default function OrganizationOwnerLocations() {
             </div>
             <div>
               <Title order={5}>On-site Payments</Title>
-              <h4 className="underline">
-                {val.enableCashPayments ? "Yes" : "No"}
-              </h4>
+              <h4>{val.enableCashPayments ? "Yes" : "No"}</h4>
+            </div>
+            <div>
+              <Title order={5}>Working Hours</Title>
+              <h4>{val.workingHours} Hours</h4>
             </div>
             <div>
               <Title order={5}>Description</Title>
@@ -212,7 +211,7 @@ export default function OrganizationOwnerLocations() {
                     address: val.address,
                     googleLink: val.googleLink,
                     enableCashPayments: val.enableCashPayments,
-                    workingHours: val.workingHours || { Monday: "9AM - 9PM" },
+                    workingHours: val.workingHours,
                     description: val.description,
                   });
                   setOpened(true); // Open edit popup
@@ -253,6 +252,12 @@ export default function OrganizationOwnerLocations() {
           label="Google Link"
           placeholder="Enter Google Link"
           id="googleLink"
+        />
+        <Popup.Input
+          label="Working Hours"
+          type="number"
+          placeholder="Enter Working Hours"
+          id="workingHours"
         />
         <Popup.TextArea
           label="Description"

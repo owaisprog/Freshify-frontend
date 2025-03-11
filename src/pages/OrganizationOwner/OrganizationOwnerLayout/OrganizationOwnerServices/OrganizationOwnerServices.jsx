@@ -74,6 +74,7 @@ function OrganizationOwnerServices() {
         const locations = await apiGet(`/api/get-locations-by-owner/${id}`);
         setLocations(locations?.map((val) => val?.name)); // Extracting location names
         setOwnerLocations(locations); // Storing full objects
+        console.log("aasda");
       } catch (error) {
         console.error("Error fetching services:", error);
       }

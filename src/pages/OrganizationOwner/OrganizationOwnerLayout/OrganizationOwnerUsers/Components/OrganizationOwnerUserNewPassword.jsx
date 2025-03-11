@@ -9,32 +9,17 @@ import {
   Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import freshifyImage from "../../../../../assets/freshifyImage.png";
 import { useNavigate, useParams } from "react-router-dom";
-import freshifyImage from "../../../assets/freshifyImage.png";
-import { apiPost } from "../../../services/useApi";
+import { apiPost } from "../../../../../services/useApi";
 
-export default function OrganizationOwnerSentPassword() {
+export default function OrganizationOwnerUserNewPassword() {
   const [loading, setLoading] = useState(false);
-  const { userKey } = useParams(); // Get userKey from URL
+  const [message, setMessage] = useState(""); // Success/Error message
+  const { resetToken } = useParams(); // Get resetToken from URL params
   const navigate = useNavigate();
 
-  const handleSubmit = async (values) => {
-    try {
-      setLoading(true);
-      const response = await apiPost("/api/set-password", {
-        token: userKey, // Send the token from URL
-        newPassword: values.newPassword,
-      });
-
-      console.log("Password set successfully:", response);
-      setLoading(false);
-      navigate("/OrganizationOwnerLogin"); // Redirect to login
-    } catch (error) {
-      console.error("Error setting password:", error);
-      setLoading(false);
-    }
-  };
-
+  // Form validation
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { newPassword: "", confirmPassword: "" },
@@ -45,6 +30,41 @@ export default function OrganizationOwnerSentPassword() {
         value === values.newPassword ? null : "Passwords do not match",
     },
   });
+
+  // Handle Reset Password Request
+  const handleSubmit = async (values) => {
+    try {
+      setLoading(true);
+      setMessage(""); // Reset message
+
+      // API call to reset password
+      const resetRequest = await apiPost(
+        `/api/reset-password-user/${resetToken}`,
+        {
+          newPassword: values.newPassword,
+        }
+      );
+
+      console.log("Reset Password Request:", resetRequest);
+
+      // Show success message & redirect to login
+      setMessage("Password reset successful! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/OrganizationOwnerUserLogin");
+      }, 2000);
+    } catch (error) {
+      console.error("Error in reset password request:", error);
+
+      // Handle error cases
+      if (error.response && error.response.status === 400) {
+        setMessage("Invalid or expired reset link.");
+      } else {
+        setMessage("Something went wrong. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="grid h-[100dvh] max-w-[1440px] grid-cols-2 bg-[#F5F7FA] py-1">
@@ -70,10 +90,10 @@ export default function OrganizationOwnerSentPassword() {
             {/* Heading */}
             <Box>
               <Text size="30px" fw={600} c={"black"} ta={"center"}>
-                Set Your Password
+                Reset Password
               </Text>
               <Text c="dimmed" size="sm" ta="center" mt={15}>
-                Enter your new password and confirm it.
+                Enter your new password below.
               </Text>
             </Box>
 
@@ -100,6 +120,16 @@ export default function OrganizationOwnerSentPassword() {
               />
             </Stack>
 
+            {/* Success/Error Message */}
+            {message && (
+              <Text
+                size="sm"
+                c={message.includes("successful") ? "green" : "red"}
+              >
+                {message}
+              </Text>
+            )}
+
             {/* Submit Button */}
             <Box>
               <Button
@@ -110,7 +140,7 @@ export default function OrganizationOwnerSentPassword() {
                 loading={loading}
                 loaderProps={{ type: "dots" }}
               >
-                Set Password
+                Reset Password
               </Button>
             </Box>
           </Paper>

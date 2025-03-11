@@ -29,7 +29,10 @@ import OrganizationOwnerNewPassword from "./pages/OrganizationOwner/Organization
 import OrganizationOwnerLocations from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerLocation/OrganizationOwnerLocation.jsx";
 import ProtectedRoute from "../src/components/ProtectedRoute.jsx";
 import OrganizationOwnerResendOTP from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationResenOTP.jsx";
-import OrganizationOwnerSentPassword from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerSentPassword.jsx";
+import OrganizationOwnerSentPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerSentPassword.jsx";
+import OrganizationOwnerUserResetPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserResetPassword.jsx";
+import OrganizationOwnerUserNewPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserNewPassword.jsx";
+import OrganizationOwnerUserLogin from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserLogin.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -61,9 +64,24 @@ const router = createBrowserRouter(
         path="OrganizationOwnerResendOTP"
         element={<OrganizationOwnerResendOTP />}
       />
+
+      {/* user auth routes routes  */}
       <Route
         path="OrganizationOwnerSentPassword/:userKey"
         element={<OrganizationOwnerSentPassword />}
+      />
+      <Route
+        path="OrganizationOwnerUserResetPassword"
+        element={<OrganizationOwnerUserResetPassword />}
+      />
+      <Route
+        // for user new password set this route in backend
+        path="OrganizationOwnerUserNewPassword/:resetToken"
+        element={<OrganizationOwnerUserNewPassword />}
+      />
+      <Route
+        path="OrganizationOwnerUserLogin"
+        element={<OrganizationOwnerUserLogin />}
       />
       <Route
         path="OrganizationOwnerDashboard"
