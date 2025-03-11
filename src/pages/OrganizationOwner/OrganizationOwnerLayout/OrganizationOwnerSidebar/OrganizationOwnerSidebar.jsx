@@ -1,7 +1,6 @@
 import { useState } from "react";
-
-import { Group, Title } from "@mantine/core";
-import classes from "./NavbarSimple.module.css";
+import freshifyLogo from "../.././../../assets/freshifyLogo.png";
+import { Group, Image } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -58,50 +57,47 @@ const data = [
 export default function OrganizationOwnerSidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
-
-  console.log(currentPath);
-
   const [active, setActive] = useState(currentPath);
+
   const links = data.map((item) => (
     <Link
-      className={classes.link}
-      data-active={item.activePath === active || undefined}
+      className={`flex items-center no-underline text-sm px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white ${
+        item.activePath === active
+          ? "bg-[#f5f7fa] border-l-4 border-black text-black"
+          : ""
+      }`}
       to={item.link}
       key={item.label}
       onClick={() => setActive(item.activePath)}
     >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
+      <item.icon className="text-[#b1b1b1] mr-4 w-[30px] h-[30px]" />
       <span>{item.label}</span>
     </Link>
   ));
 
   return (
-    <nav
-      className={`${classes.navbar}  min-h-screen md:min-h-[600px] lg:min-h-[700px] xl:min-h-[800px] 2xl:min-h-[900px] `}
-    >
-      <div className={classes.navbarMain}>
-        <Group className={classes.header} justify="space-between">
-          <Title
-            className="w-full"
-            ta={"center"}
-            order={1}
-            c={"white"}
-            fw={"normal"}
-          >
-            Freshify
-          </Title>
+    <nav className="  flex flex-col h-screen">
+      <div className="flex-1">
+        <Group
+          className="pb-4 mb-6 border-b border-gray-300 dark:border-gray-700"
+          justify="space-between"
+        >
+          <Image radius="md" src={freshifyLogo} />
         </Group>
         {links}
       </div>
 
-      <div className={classes.footer}>
+      <div className="pt-4 mt-4 border-t border-gray-300 dark:border-gray-700">
         <Link
           to={"#"}
-          data-active={"settings" === active || undefined}
-          className={classes.link}
+          className={`flex items-center no-underline text-sm px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white ${
+            "settings" === active
+              ? "bg-[#f5f7fa] border-l-4 border-black text-black"
+              : ""
+          }`}
           onClick={() => setActive("settings")}
         >
-          <MdOutlineSettings className={classes.linkIcon} stroke={1.5} />
+          <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
           <span>Settings</span>
         </Link>
       </div>

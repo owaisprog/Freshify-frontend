@@ -237,36 +237,47 @@ function OrganizationOwnerServices() {
   });
 
   return (
-    <main>
-      {/* Top Section: Cards */}
-      <section className="flex gap-4">
-        <TabCard>
-          <Group>
-            <TabCard.Profile backGround="bg-pink-100">
-              <FaTools size={40} color="#FF82AC" />
-            </TabCard.Profile>
-            <TabCard.TextContent
-              title="Most Sales Professional"
-              name="Mirza Tayyab Khalid"
-            />
-          </Group>
-          <TabCard.Amount amount="$ 4790" />
-        </TabCard>
-        <TabCard>
-          <Group>
-            <TabCard.Profile backGround="bg-[#E7EDFF]">
-              <TfiUpload size={40} color="#396AFF" />
-            </TabCard.Profile>
-            <TabCard.TextContent title="Most Sales Professional" />
-          </Group>
-          <TabCard.Amount amount="4790" />
-        </TabCard>
-      </section>
+    <main className="flex flex-col bg-[#F5F7FA]  h-screen">
+      <Title
+        fz={"h2"}
+        px={"lg"}
+        py={"sm"}
+        c={"dark"}
+        bg={"#FFFFFF"}
+        fw={"bold"}
+      >
+        Services
+      </Title>
+      <section className=" p-6 flex flex-col h-full  gap-8">
+        {/* Top Section: Cards */}
+        <section className="flex gap-4 ">
+          <TabCard>
+            <Group>
+              <TabCard.Profile backGround="bg-pink-100">
+                <FaTools size={40} color="#FF82AC" />
+              </TabCard.Profile>
+              <TabCard.TextContent
+                title="Most Sales Professional"
+                name="Mirza Tayyab Khalid"
+              />
+            </Group>
+            <TabCard.Amount amount="$ 4790" />
+          </TabCard>
+          <TabCard>
+            <Group>
+              <TabCard.Profile backGround="bg-[#E7EDFF]">
+                <TfiUpload size={40} color="#396AFF" />
+              </TabCard.Profile>
+              <TabCard.TextContent title="Most Sales Professional" />
+            </Group>
+            <TabCard.Amount amount="4790" />
+          </TabCard>
+        </section>
 
-      {/* Services Table */}
-      <section className="mt-12">
-        <div className="flex justify-between">
-          <Title size={20} fw={600}>
+        {/* Services Table */}
+
+        <section className="flex justify-between items-center">
+          <Title fz={"h4"} fw={"bold"}>
             All Services
           </Title>
           <Button
@@ -280,54 +291,53 @@ function OrganizationOwnerServices() {
           >
             Add Services
           </Button>
-        </div>
-        <div className="mt-12">
-          <TableCom data={data} columns={columns} />
-        </div>
-      </section>
+        </section>
 
-      {/* Service Creation Popup */}
-      <Popup
-        form={form}
-        opened={opened}
-        setOpened={setOpened}
-        handleSubmit={handleSubmit}
-      >
-        <Popup.TextInputField
-          label="Service Name"
-          placeholder="Enter Service name"
-          id="name"
-        />
-        <Popup.TextInputField
-          label="Category"
-          placeholder="Enter Category"
-          id="category"
-        />
-        <Popup.Input
-          label="Duration"
-          placeholder="Enter Service Duration in minutes"
-          id="duration"
-          type="number"
-        />
-        <Popup.Input
-          label="Price"
-          placeholder="Enter Service Price in Dollars"
-          id="price"
-          type="number"
-        />
-        <Popup.MutltiSelector
-          data={locations}
-          label="Select the location"
-          placeholder="Select at least one location"
-          id="locations"
-        />
-        <Popup.TextArea
-          label="Description"
-          placeholder="Enter Location Description"
-          id="description"
-        />
-        <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
-      </Popup>
+        <TableCom data={data} columns={columns} />
+
+        {/* Service Creation Popup */}
+        <Popup
+          form={form}
+          opened={opened}
+          setOpened={setOpened}
+          handleSubmit={handleSubmit}
+        >
+          <Popup.TextInputField
+            label="Service Name"
+            placeholder="Enter Service name"
+            id="name"
+          />
+          <Popup.TextInputField
+            label="Category"
+            placeholder="Enter Category"
+            id="category"
+          />
+          <Popup.Input
+            label="Duration"
+            placeholder="Enter Service Duration in minutes"
+            id="duration"
+            type="number"
+          />
+          <Popup.Input
+            label="Price"
+            placeholder="Enter Service Price in Dollars"
+            id="price"
+            type="number"
+          />
+          <Popup.MutltiSelector
+            data={locations}
+            label="Select the location"
+            placeholder="Select at least one location"
+            id="locations"
+          />
+          <Popup.TextArea
+            label="Description"
+            placeholder="Enter Location Description"
+            id="description"
+          />
+          <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
+        </Popup>
+      </section>
     </main>
   );
 }

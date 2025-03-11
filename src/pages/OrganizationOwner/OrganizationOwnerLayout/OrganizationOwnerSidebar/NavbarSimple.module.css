@@ -1,9 +1,6 @@
 .navbar {
-  background-color: #39393a;
-  opacity: 0.85;
+  background-color: red;
   width: 300px;
-  border-radius: 10px;
-  padding: var(--mantine-spacing-md);
   display: flex;
   flex-direction: column;
 }
@@ -31,38 +28,27 @@
   align-items: center;
   text-decoration: none;
   font-size: var(--mantine-font-size-sm);
-  color: white;
+  color: #b1b1b1;
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
-  border-radius: var(--mantine-radius-sm);
   font-weight: 500;
+}
 
-  @mixin hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-6)
-    );
-    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+.link:hover {
+  background-color: light-dark(
+    var(--mantine-color-gray-0),
+    var(--mantine-color-dark-6)
+  );
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
 
-    .linkIcon {
-      color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
-    }
-  }
-
-  &[data-active] {
-    &,
-    &:hover {
-      background-color: white;
-      color: black;
-
-      .linkIcon {
-        color: black;
-      }
-    }
-  }
+.link[data-active] {
+  background-color: #f5f7fa;
+  border-left: 4px solid black;
+  color: black;
 }
 
 .linkIcon {
-  color: white;
+  color: #b1b1b1;
   margin-right: var(--mantine-spacing-sm);
   width: 25px;
   height: 25px;
