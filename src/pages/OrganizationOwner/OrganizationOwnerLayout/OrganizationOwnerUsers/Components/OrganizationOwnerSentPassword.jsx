@@ -4,45 +4,45 @@ import {
   Button,
   Image,
   Paper,
+  PasswordInput,
   Stack,
   Text,
-  PinInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../../../assets/freshifyImage.png";
+import { useNavigate, useParams } from "react-router-dom";
+import freshifyImage from "../../../../../assets/freshifyImage.png";
+import { apiPost } from "../../../../../services/useApi";
 
-import { apiPost } from "../../../services/useApi";
-import { useNavigate, useLocation } from "react-router-dom";
-
-export default function OrganizationOwnerVerifyEmail() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { userEmail } = location.state || {};
+export default function OrganizationOwnerSentPassword() {
   const [loading, setLoading] = useState(false);
-
-  console.log(userEmail);
+  const { userKey } = useParams(); // Get userKey from URL
+  const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      apiPost("/api/verify-otp", {
-        email: userEmail,
-        otp: values.pin,
+      const response = await apiPost("/api/set-password", {
+        token: userKey, // Send the token from URL
+        newPassword: values.newPassword,
       });
-      console.log("Entered PIN:", values.pin);
+
+      console.log("Password set successfully:", response);
       setLoading(false);
-      navigate("/OrganizationOwnerLogin");
+      navigate("/OrganizationOwnerUserLogin"); // Redirect to login
     } catch (error) {
-      console.log("Error Verifying email", error);
+      console.error("Error setting password:", error);
+      setLoading(false);
     }
   };
 
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { pin: "" },
+    initialValues: { newPassword: "", confirmPassword: "" },
     validate: {
-      pin: (value) =>
-        value.length === 4 ? null : "Please enter a 4-digit PIN",
+      newPassword: (value) =>
+        value.length >= 6 ? null : "Password must have at least 6 characters",
+      confirmPassword: (value, values) =>
+        value === values.newPassword ? null : "Passwords do not match",
     },
   });
 
@@ -64,38 +64,43 @@ export default function OrganizationOwnerVerifyEmail() {
           <Paper
             bg={"white"}
             shadow="md"
-            className="h-[350px] !flex flex-col gap-10 p-8 w-[595px]"
+            className="h-[400px] !flex flex-col gap-10 p-8 w-[595px]"
             radius={"md"}
           >
             {/* Heading */}
             <Box>
               <Text size="30px" fw={600} c={"black"} ta={"center"}>
-                Verify Email
+                Set Your Password
               </Text>
               <Text c="dimmed" size="sm" ta="center" mt={15}>
-                Enter the 4-digit OTP sent to your Email Address.
+                Enter your new password and confirm it.
               </Text>
             </Box>
 
-            {/* PIN Input Field */}
+            {/* Password Input Fields */}
             <Stack
               bg="var(--mantine-color-body)"
-              align="center"
+              align="stretch"
               justify="center"
               gap="xs"
-              className="flex items-center justify-center"
             >
-              <PinInput
-                autoFocus
-                size="lg"
-                placeholder="-"
-                type="number"
-                length={4}
-                {...form.getInputProps("pin")}
+              <PasswordInput
+                radius={"md"}
+                label="New Password"
+                placeholder="Enter your new password"
+                key={form.key("newPassword")}
+                {...form.getInputProps("newPassword")}
+              />
+              <PasswordInput
+                radius={"md"}
+                label="Confirm Password"
+                placeholder="Confirm your password"
+                key={form.key("confirmPassword")}
+                {...form.getInputProps("confirmPassword")}
               />
             </Stack>
 
-            {/* Verify OTP Button */}
+            {/* Submit Button */}
             <Box>
               <Button
                 fullWidth
@@ -105,7 +110,7 @@ export default function OrganizationOwnerVerifyEmail() {
                 loading={loading}
                 loaderProps={{ type: "dots" }}
               >
-                Verify OTP
+                Set Password
               </Button>
             </Box>
           </Paper>

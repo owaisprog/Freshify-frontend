@@ -1,32 +1,65 @@
 import { Button, Title } from "@mantine/core";
-
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { FiTrash, FiUpload } from "react-icons/fi";
 import { useForm } from "@mantine/form";
-import { apiDelete, apiPost } from "../../../../services/useApi";
-import TableCom from "../../../../components/Table";
-import Popup from "../../../../components/PopUp";
+import {
+  apiDelete,
+  apiGet,
+  apiPost,
+  apiUpdate,
+} from "../../../../../services/useApi";
+import TableCom from "../../../../../components/Table";
+import Popup from "../../../../../components/PopUp";
 
-function OrganizationOwnerUserProfessional() {
+function OrganizationOwnerUserProfessional({
+  userdata,
+  activeTab,
+  setAllUsers,
+}) {
+  console.log(userdata);
+  // Retrieve Owner ID from localStorage
+  const { id } = JSON.parse(localStorage.getItem("data"));
+
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [locations, setLocations] = useState([]); // Stores location names
+  const [ownerLocations, setOwnerLocations] = useState([]); // Stores full location objects
+  const [selectedUser, setSelectedUser] = useState(null); // Stores user being edited
 
   // Define Table Columns
-  const columns = ["Name", "Location", "Email", "Services", "Actions"];
+  const columns = ["Name", "Location", "Email", "Role", "Actions"];
 
   // Delete User Function
-  const DelUsers = async (id) => {
+  const DelUsers = async (ids) => {
     try {
-      await apiDelete(`/api/delete-user/${id}`);
-      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
+      await apiDelete(`/api/delete-user/${ids}`);
+      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
+      setAllUsers(resp);
+      setUsers(resp.filter((val) => val.role === activeTab));
     } catch (error) {
       console.error("Error Deleting user:", error);
     }
   };
 
   // Fetch Users from API
+  useEffect(() => {
+    setUsers(userdata);
+  }, [userdata]);
+
+  // Fetch the organization owner's locations
+  useEffect(() => {
+    const fetchOwnerLocations = async () => {
+      try {
+        const locations = await apiGet(`/api/get-locations-by-owner/${id}`);
+        setLocations(locations?.map((val) => val?.name)); // Extracting location names
+        setOwnerLocations(locations); // Storing full objects
+      } catch (error) {
+        console.error("Error fetching locations:", error);
+      }
+    };
+    fetchOwnerLocations();
+  }, [id]);
 
   // Form Validation
   const form = useForm({
@@ -35,7 +68,7 @@ function OrganizationOwnerUserProfessional() {
       name: "",
       email: "",
       location: "",
-      services: [],
+      role: "barber",
     },
     validate: {
       name: (value) => (value.trim().length < 1 ? "Name is required" : null),
@@ -43,63 +76,106 @@ function OrganizationOwnerUserProfessional() {
         /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
       location: (value) =>
         value.trim().length < 1 ? "Location is required" : null,
-      services: (value) =>
-        value.length === 0 ? "At least one service is required" : null,
     },
   });
 
-  // Handle Form Submit
+  // Handle Form Submit (Create or Update)
   const handleSubmit = async (values) => {
-    setLoading(true);
+    console.log(values);
     try {
-      const data = await apiPost("/api/create-user", values);
-      setUsers((prevUsers) => [...prevUsers, data]);
+      setLoading(true);
+      const filterIdLocations = ownerLocations
+        ?.filter((val) => values?.location == val?.name)
+        ?.map((val) => val?._id);
+      console.log(values, filterIdLocations[0], ownerLocations);
+
+      let response;
+      if (selectedUser) {
+        // If updating an existing user
+        response = await apiUpdate(`/api/update-user/${selectedUser._id}`, {
+          ...values,
+          location: filterIdLocations[0], // Use first location ID
+        });
+      } else {
+        // If creating a new user
+        response = await apiPost("/api/invite-user", {
+          ...values,
+          location: filterIdLocations[0],
+        });
+      }
+      console.log(response);
+
+      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
+
+      setAllUsers(resp);
+      setUsers(resp.filter((val) => val.role === activeTab));
+
       setOpened(false);
+      setSelectedUser(null);
     } catch (error) {
-      console.error("Error creating user:", error);
+      console.error("Error creating/updating user:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  // Map Users Data for Table (Adjusting for Provided Structure)
-  const data = users?.map((user) => ({
-    Name: user.name,
-    Location: user.location?.name || "N/A",
-    Email: user.email,
-    Services: user.services?.map((service) => service.name).join(", ") || "N/A",
-    Actions: (
-      <div className="flex gap-2.5">
-        {/* Upload Icon */}
-        <div
-          className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
-          onClick={() => console.log("Upload user:", user._id)}
-        >
-          <FiUpload size={18} style={{ color: "#427B42" }} />
-        </div>
+  // Transform Users into Table-compatible Data Format
+  const data = users?.map((val) => {
+    console.log(val.location?.name, "locations");
+    return {
+      Name: val.name,
+      Location: val.location?.name || "N/A",
+      Email: val.email,
+      Role: val.role,
+      Actions: (
+        <div className="flex gap-2.5">
+          {/* Edit User */}
+          <div
+            className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
+            onClick={() => {
+              setSelectedUser(val); // Set selected user for editing
+              form.setValues({
+                name: val.name,
+                email: val.email,
+                location: val.location?.name || "",
+                role: val.role,
+              });
+              setOpened(true); // Open popup
+            }}
+          >
+            <FiUpload size={18} style={{ color: "#427B42" }} />
+          </div>
 
-        {/* Delete Icon */}
-        <div
-          className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
-          onClick={() => DelUsers(user._id)}
-        >
-          <FiTrash size={18} style={{ color: "#622929" }} />
+          {/* Delete User */}
+          <FiTrash
+            size={18}
+            className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
+            style={{ cursor: "pointer", color: "#622929" }}
+            onClick={() => DelUsers(val._id)}
+          />
         </div>
-      </div>
-    ),
-  }));
+      ),
+    };
+  });
 
   return (
     <main>
-      {/* Cards Section */}
-
       {/* Table Section */}
       <section className="mt-12">
         <div className="flex justify-between">
           <Title size={20} fw={600}>
-            All Users
+            All Professionals
           </Title>
-          <Button bg="black" radius="md" onClick={() => setOpened(true)}>
-            Add User
+          <Button
+            bg="black"
+            radius="md"
+            onClick={() => {
+              setSelectedUser(null);
+              form.reset();
+              setOpened(true);
+            }}
+          >
+            Add Professionals
           </Button>
         </div>
         <div className="mt-12">
@@ -107,7 +183,7 @@ function OrganizationOwnerUserProfessional() {
         </div>
       </section>
 
-      {/* Add User Popup */}
+      {/* Add/Edit User Popup */}
       <Popup
         form={form}
         opened={opened}
@@ -124,17 +200,24 @@ function OrganizationOwnerUserProfessional() {
           placeholder="Enter Email"
           id="email"
         />
-        <Popup.TextInputField
-          label="Location"
-          placeholder="Enter Location"
+        <Popup.SingleSelector
+          data={locations}
+          label="Select the location"
+          placeholder="Select at least one location"
           id="location"
         />
-        <Popup.TextArea
-          label="Services"
-          placeholder="Enter Services (comma-separated)"
-          id="services"
-        />
-        <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
+        {/* <Popup.Select
+          data={[
+            { value: "admin", label: "Admin" },
+            { value: "barber", label: "Barber" },
+          ]}
+          label="Role"
+          placeholder="Select Role"
+          id="role"
+        /> */}
+        <Popup.SubmitButton loading={loading}>
+          {selectedUser ? "Update User" : "Add User"}
+        </Popup.SubmitButton>
       </Popup>
     </main>
   );
