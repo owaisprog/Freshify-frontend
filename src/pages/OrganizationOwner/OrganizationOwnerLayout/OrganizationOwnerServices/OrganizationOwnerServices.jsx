@@ -126,16 +126,12 @@ function OrganizationOwnerServices() {
         ?.filter((val) => values?.locations?.includes(val?.name))
         ?.map((val) => val?._id);
 
-      let response;
       if (selectedService) {
         // Update existing service (PUT request)
-        response = await apiUpdate(
-          `/api/update-service/${selectedService._id}`,
-          {
-            ...values,
-            locations: filterIdLocations,
-          }
-        );
+        await apiUpdate(`/api/update-service/${selectedService._id}`, {
+          ...values,
+          locations: filterIdLocations,
+        });
         const resp = await fetchServices();
         setServices(resp);
         //       setServices((service) => [
