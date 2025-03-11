@@ -5,7 +5,7 @@ import { Box, Text } from "@mantine/core";
 // **Parent Component**
 export default function TabCard({ children }) {
   return (
-    <Box className="flex justify-between items-center bg-white shadow-md p-4 rounded-xl w-full">
+    <Box className="flex justify-between items-center  shadow-md p-4 rounded-xl w-full">
       {children}
     </Box>
   );
@@ -15,7 +15,7 @@ export default function TabCard({ children }) {
 TabCard.Profile = function Profile({ children, backGround }) {
   return (
     <div
-      className={`${backGround} flex justify-center items-center rounded-[45%] w-16 h-16`}
+      className={`${backGround} flex justify-center  items-center rounded-2xl w-16 h-16`}
     >
       {children}
     </div>
@@ -25,11 +25,11 @@ TabCard.Profile = function Profile({ children, backGround }) {
 // **Text Content Component (Title & Name)**
 TabCard.TextContent = function TextContent({ title, name }) {
   return (
-    <Box className="ml-3">
-      <Text size="md" c="dark">
+    <Box className="">
+      <Text fz={"md"} c="dark">
         {title}
       </Text>
-      <Text size="xs" c="#333B69">
+      <Text fz="xs" c="#333B69">
         {name}
       </Text>
     </Box>
@@ -39,6 +39,6 @@ TabCard.TextContent = function TextContent({ title, name }) {
 // **Amount Display Component**
 TabCard.Amount = function Amount({ amount }) {
   return (
-    <Text fw={700} size="lg" c="dark">{`${amount.toLocaleString()}`}</Text>
+    <Text fw={"bold"} fz={"h2"} c="dark">{`${amount.toLocaleString()}`}</Text>
   );
 };
