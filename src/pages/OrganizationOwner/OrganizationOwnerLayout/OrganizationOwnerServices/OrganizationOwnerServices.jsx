@@ -129,12 +129,10 @@ function OrganizationOwnerServices() {
 
       if (selectedService) {
         // Update existing service (PUT request)
-        console.log(values, "😊😊");
         await apiUpdate(`/api/update-service/${selectedService._id}`, {
           ...values,
           locations: filterIdLocations,
         });
-
         const resp = await fetchServices();
         setServices(resp);
         //       setServices((service) => [
