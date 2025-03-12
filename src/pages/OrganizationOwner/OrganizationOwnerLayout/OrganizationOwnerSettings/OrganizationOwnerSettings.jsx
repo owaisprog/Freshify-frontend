@@ -1,5 +1,5 @@
 import { Paper, Tabs, Title } from "@mantine/core";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Tab from "../../../../components/Tab";
 
 export default function OrganizationOwnerSettings() {
