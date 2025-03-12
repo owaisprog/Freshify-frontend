@@ -10,8 +10,10 @@ import {
   Checkbox,
   MultiSelect,
   Select,
+  Loader,
 } from "@mantine/core";
-import { createContext, useContext } from "react";
+import axios from "axios";
+import { createContext, useContext, useState } from "react";
 import { FiUpload } from "react-icons/fi";
 
 // Popup Component (Parent Component)
@@ -112,20 +114,46 @@ function SubmitButton({ loading, children }) {
   );
 }
 
-function FileInputField({ label, placeholder, filetype }) {
-  const icon = <FiUpload size={18} />;
+function FileInputField({ label, placeholder, filetype, id }) {
+  const [loading, setLoading] = useState(false);
+  const form = usePopupForm(); // ✅ Get form context
+
+  const handleUploadToCloudinary = async (file) => {
+    if (!file) return;
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+    ); // ✅ Cloudinary Upload Preset
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        formData
+      );
+
+      const uploadedUrl = response.data.secure_url;
+      form.setFieldValue(id, uploadedUrl); // ✅ Update form field with image URL
+    } catch (error) {
+      console.error("Error uploading file to Cloudinary:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <>
-      <FileInput
-        rightSection={icon}
-        label={label}
-        placeholder={placeholder}
-        rightSectionPointerEvents="none"
-        mt="md"
-        accept={filetype}
-      />
-    </>
+    <FileInput
+      rightSection={loading ? <Loader size="sm" /> : <FiUpload size={18} />}
+      label={label}
+      placeholder={placeholder}
+      rightSectionPointerEvents="none"
+      mt="md"
+      accept={filetype}
+      onChange={(file) => handleUploadToCloudinary(file)}
+    />
   );
 }
 

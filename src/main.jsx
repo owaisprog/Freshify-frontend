@@ -33,6 +33,11 @@ import OrganizationOwnerSentPassword from "./pages/OrganizationOwner/Organizatio
 import OrganizationOwnerUserResetPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserResetPassword.jsx";
 import OrganizationOwnerUserNewPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserNewPassword.jsx";
 import OrganizationOwnerUserLogin from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserLogin.jsx";
+import OrganizationOwnerSettings from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/OrganizationOwnerSettings.jsx";
+import OrganizationsSettings from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationsSettings.jsx";
+import OrganizationNotification from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationNotification.jsx";
+import OrganizationProfile from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationProfile.jsx";
+import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationDelete.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -95,6 +100,12 @@ const router = createBrowserRouter(
         <Route path="Services" element={<OrganizationOwnerServices />} />
         <Route path="Users" element={<OrganizationOwnerUsers />} />
         <Route path="locations" element={<OrganizationOwnerLocations />} />
+        <Route path="settings" element={<OrganizationOwnerSettings />}>
+          <Route index element={<OrganizationsSettings />} />
+          <Route path="email" element={<OrganizationNotification />} />
+          <Route path="personal" element={<OrganizationProfile />} />
+          <Route path="delete" element={<OrganizationDelete />} />
+        </Route>
       </Route>
     </Route>
   )

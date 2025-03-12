@@ -70,7 +70,7 @@ export default function OrganizationOwnerLocations() {
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      image: "https://cloudinary.com/sampleimage.jpg",
+      image: "",
       address: "",
       googleLink: "",
       enableCashPayments: false,
@@ -90,12 +90,13 @@ export default function OrganizationOwnerLocations() {
   });
 
   const handleSubmit = async (values) => {
+    console.log(values.image, "🤣🤣😂");
     try {
       setLoading(true);
 
       const payload = {
         name: values.name,
-        image: "https://cloudinary.com/sampleimage.jpg",
+        image: values.image,
         address: values.address,
         googleLink: values.googleLink,
         enableCashPayments: values.enableCashPayments,
@@ -259,6 +260,13 @@ export default function OrganizationOwnerLocations() {
           placeholder="Enter Working Hours"
           id="workingHours"
         />
+        <Popup.FileInputField
+          label="Upload Image"
+          placeholder="Select an image"
+          filetype="image/*"
+          id="image" // ✅ Ensure this matches the form field
+        />
+
         <Popup.TextArea
           label="Description"
           placeholder="Enter Location Description"
