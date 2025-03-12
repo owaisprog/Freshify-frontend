@@ -12,6 +12,9 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+// react tostify imports
+import { ToastContainer } from "react-toastify";
+
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
@@ -102,6 +105,7 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
   <MantineProvider theme={{ fontFamily: ["Poppins", "serif"] }}>
+    <ToastContainer />
     <RouterProvider router={router} />
   </MantineProvider>
 );

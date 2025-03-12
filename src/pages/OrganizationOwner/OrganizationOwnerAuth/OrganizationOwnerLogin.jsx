@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { loginUser } from "./services/AuthServices";
+import { toast } from "react-toastify";
 
 export default function OrganizationOwnerLogin() {
   const navigate = useNavigate();
@@ -20,15 +21,19 @@ export default function OrganizationOwnerLogin() {
 
   const handleSubmit = async (values) => {
     try {
+      setLoading(true);
       const userData = await loginUser(
         values.email,
         values.password,
         "organization_owner"
       );
       console.log(userData, values);
+      toast(userData.message, { position: "top-right" });
       navigate("/OrganizationOwnerDashboard");
     } catch (error) {
-      console.log("Error login", error);
+      setLoading(false);
+      console.log("ORGANIZATION LOGIN ERROR", error);
+      toast.error(error, { position: "top-right" });
     }
   };
 

@@ -70,7 +70,9 @@ export default function OrganizationOwnerSidebar() {
       key={item.label}
       onClick={() => setActive(item.activePath)}
     >
-      <item.icon className="text-[#b1b1b1] mr-4 w-[30px] h-[30px]" />
+      <item.icon
+        className={`${item.activePath === active ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
+      />
       <span>{item.label}</span>
     </Link>
   ));

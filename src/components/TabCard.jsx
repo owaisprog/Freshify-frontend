@@ -5,7 +5,10 @@ import { Box, Text } from "@mantine/core";
 // **Parent Component**
 export default function TabCard({ children }) {
   return (
-    <Box className="flex justify-between items-center  shadow-md p-4 rounded-xl w-full">
+    <Box
+      bg={"#FFFFFF"}
+      className="flex justify-between items-center  shadow-md p-4 rounded-xl w-full"
+    >
       {children}
     </Box>
   );

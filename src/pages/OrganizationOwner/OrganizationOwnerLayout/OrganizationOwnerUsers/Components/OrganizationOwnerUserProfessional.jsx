@@ -161,9 +161,9 @@ function OrganizationOwnerUserProfessional({
   return (
     <main>
       {/* Table Section */}
-      <section className="mt-12">
-        <div className="flex justify-between">
-          <Title size={20} fw={600}>
+      <section className="">
+        <div className="flex justify-between items-end">
+          <Title fz={"h4"} fw={"bold"}>
             All Professionals
           </Title>
           <Button
@@ -178,7 +178,7 @@ function OrganizationOwnerUserProfessional({
             Add Professionals
           </Button>
         </div>
-        <div className="mt-12">
+        <div className="mt-3">
           <TableCom data={data} columns={columns} />
         </div>
       </section>
