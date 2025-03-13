@@ -12,7 +12,7 @@ export default function OrganizationOwnerLayout() {
       </aside>
 
       {/* Main Content (Right side) */}
-      <main className="w-full flex-1 overflow-hidden">
+      <main className="w-full flex-1 overflow-">
         {" "}
         {/* Added flex-1 and overflow-hidden */}
         <Outlet />

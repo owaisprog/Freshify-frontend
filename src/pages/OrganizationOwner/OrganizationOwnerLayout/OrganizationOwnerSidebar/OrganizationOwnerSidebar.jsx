@@ -91,7 +91,7 @@ export default function OrganizationOwnerSidebar() {
 
       <div className="pt-4 mt-4 border-t border-gray-300 dark:border-gray-700">
         <Link
-          to={"#"}
+          to={"settings"}
           className={`flex items-center no-underline text-sm px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white ${
             "settings" === active
               ? "bg-[#f5f7fa] border-l-4 border-black text-black"

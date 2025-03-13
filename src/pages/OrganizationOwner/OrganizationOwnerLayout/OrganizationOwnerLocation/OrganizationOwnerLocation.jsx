@@ -304,6 +304,12 @@ export default function OrganizationOwnerLocations() {
             placeholder="Enter Working Hours"
             id="workingHours"
           />
+          <Popup.FileInputField
+            label="Upload Image"
+            placeholder="Select an image"
+            filetype="image/*"
+            id="image" // ✅ Ensure this matches the form field
+          />
           <Popup.TextArea
             label="Description"
             placeholder="Enter Location Description"
