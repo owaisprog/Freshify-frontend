@@ -224,6 +224,7 @@ function ButtonBox({ text, linkText, link, loading, hideText, onClick }) {
         type="submit"
         bg={"black"}
         c={"white"}
+        radius={"md"}
         loading={loading}
         loaderProps={{ type: "dots" }}
         onClick={onClick} // ✅ Now supports onClick
