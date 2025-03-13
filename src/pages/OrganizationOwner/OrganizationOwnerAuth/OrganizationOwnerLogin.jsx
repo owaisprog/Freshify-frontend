@@ -31,9 +31,10 @@ export default function OrganizationOwnerLogin() {
       toast(userData.message, { position: "top-right" });
       navigate("/OrganizationOwnerDashboard");
     } catch (error) {
+      toast(error, { position: "top-right" });
       setLoading(false);
+
       console.log("ORGANIZATION LOGIN ERROR", error);
-      toast.error(error, { position: "top-right" });
     }
   };
 

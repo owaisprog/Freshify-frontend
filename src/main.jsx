@@ -120,6 +120,7 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
+    <ToastContainer />
     <MantineProvider theme={{ fontFamily: ["Poppins", "serif"] }}>
       <RouterProvider router={router} />
     </MantineProvider>
