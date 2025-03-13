@@ -14,6 +14,7 @@ import {
 
 // react tostify imports
 import { ToastContainer } from "react-toastify";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -41,6 +42,7 @@ import OrganizationsSettings from "./pages/OrganizationOwner/OrganizationOwnerLa
 import OrganizationNotification from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationNotification.jsx";
 import OrganizationProfile from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationProfile.jsx";
 import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationDelete.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -114,9 +116,13 @@ const router = createBrowserRouter(
   )
 );
 
+const queryClient = new QueryClient();
+
 createRoot(document.getElementById("root")).render(
-  <MantineProvider theme={{ fontFamily: ["Poppins", "serif"] }}>
-    <ToastContainer />
-    <RouterProvider router={router} />
-  </MantineProvider>
+  <QueryClientProvider client={queryClient}>
+    <MantineProvider theme={{ fontFamily: ["Poppins", "serif"] }}>
+      <RouterProvider router={router} />
+    </MantineProvider>
+    <ReactQueryDevtools initialIsOpen={false} />
+  </QueryClientProvider>
 );

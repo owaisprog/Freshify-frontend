@@ -2,15 +2,13 @@ import { Group, Tabs, Title } from "@mantine/core";
 import TabCard from "../../../../components/TabCard";
 import { FaTools } from "react-icons/fa";
 import { TfiUpload } from "react-icons/tfi";
-import { useEffect, useMemo, useState } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import OrganizationOwnerUserAdmin from "./Components/OrganizationOwnerUserAdmin";
 import OrganizationOwnerUserProfessional from "./Components/OrganizationOwnerUserProfessional";
-import { apiGet } from "../../../../services/useApi";
+import { useQueryHook } from "../../../../services/reactQuery";
 
 function OrganizationOwnerUsers() {
-  const [users, setUsers] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const { id } = JSON.parse(localStorage.getItem("data"));
 
@@ -18,54 +16,27 @@ function OrganizationOwnerUsers() {
   const currentTab = searchParams.get("tab") || "admin";
   const [activeTab, setActiveTab] = useState(currentTab);
 
-  // Update query params when the tab changes
+  // ✅ Fetch all users with React Query
+  const {
+    data: allUsers = [],
+    isLoading,
+    error,
+  } = useQueryHook({
+    queryKey: ["users", id], // ✅ Cache users by owner ID
+    endpoint: `/api/get-users-by-owner/${id}`,
+    staleTime: 15 * 60 * 1000, // Cache for 15 minutes
+  });
+
+  // ✅ Filter users based on active tab
+  const filteredUsers = useMemo(() => {
+    return allUsers?.filter((val) => val.role === activeTab);
+  }, [allUsers, activeTab]);
+
+  // ✅ Handle tab change & update URL params
   const handleTabChange = (tab) => {
     setActiveTab(tab);
     setSearchParams({ tab }); // Update URL
   };
-
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       if (allUsers.length === 0) {
-  //         const response = await apiGet("/api/get-users");
-  //         setUsers(response.filter((val) => val.role === activeTab));
-  //         setAllUsers(response);
-  //       } else {
-  //         // If data is already fetched, just filter it
-  //         setUsers(allUsers.filter((val) => val.role === activeTab));
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching Users:", error);
-  //     }
-  //   };
-
-  //   fetchUsers();
-  // }, [activeTab, allUsers]); // Runs only when the tab changes
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (allUsers.length === 0) {
-        try {
-          const response = await apiGet(`/api/get-users-by-owner/${id}`);
-          console.log(response, "👌👌");
-          setAllUsers(response);
-        } catch (error) {
-          console.error("Error fetching Users:", error);
-        }
-      }
-    };
-
-    fetchUsers();
-  }, [allUsers.length, id]); // Fetch only when no data is available
-
-  const filteredUsers = useMemo(() => {
-    return allUsers.filter((val) => val.role === activeTab);
-  }, [allUsers, activeTab]);
-
-  useEffect(() => {
-    setUsers(filteredUsers);
-  }, [filteredUsers]);
 
   return (
     <main className="flex flex-col bg-[#F5F7FA]  min-h-screen">
@@ -130,21 +101,22 @@ function OrganizationOwnerUsers() {
             </Tabs.List>
           </Tabs>
         </section>
+
         <section>
+          {/* ✅ Show loading state */}
           {activeTab === "admin" ? (
             <OrganizationOwnerUserAdmin
-              userdata={users}
-              setAllUsers={setAllUsers}
-              activeTab={activeTab}
+              userdata={filteredUsers}
+              isLoading={isLoading}
+              error={error}
             />
           ) : (
             <OrganizationOwnerUserProfessional
-              userdata={users}
-              activeTab={activeTab}
-              setAllUsers={setAllUsers}
+              userdata={filteredUsers}
+              isLoading={isLoading}
+              error={error}
             />
           )}
-          {/* <h1>user current </h1>{" "} */}
         </section>
       </section>
     </main>

@@ -2,32 +2,59 @@ import { Button, Group, Select, Title } from "@mantine/core";
 import TabCard from "../../../../components/TabCard";
 import { FaChevronDown, FaTools } from "react-icons/fa";
 import { TfiUpload } from "react-icons/tfi";
-import { useEffect, useState } from "react";
-import {
-  apiDelete,
-  apiGet,
-  apiPost,
-  apiUpdate,
-} from "../../../../services/useApi";
-import TableCom from "../../../../components/Table";
 import { FiTrash, FiUpload } from "react-icons/fi";
+import { useState } from "react";
+import TableCom from "../../../../components/Table";
 import { useForm } from "@mantine/form";
 import Popup from "../../../../components/PopUp";
-import { fetchServices } from "./useServices";
+import {
+  useDeleteMutation,
+  usePostMutation,
+  useQueryHook,
+  useUpdateMutation,
+} from "../../../../services/reactQuery";
+import { useQueryClient } from "@tanstack/react-query";
 
 function OrganizationOwnerServices() {
-  // Retrieve Owner ID from localStorage
+  // ✅ Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
 
-  // State Management
+  // ✅ Fetch services using React Query
+  const {
+    data: services = [],
+    isLoading: isServicesLoading,
+    error: servicesError,
+  } = useQueryHook({
+    queryKey: "services",
+    endpoint: "/api/get-services-by-owner",
+    staleTime: 15 * 60 * 1000, // 15 minutes cache
+  });
+
+  // ✅ Fetch owner locations using React Query
+  const {
+    data: ownerLocations = [],
+    // isLoading: isLocationsLoading,
+    error: locationsError,
+  } = useQueryHook({
+    queryKey: ["locations", id],
+    endpoint: `/api/get-locations-by-owner/${id}`,
+    staleTime: 15 * 60 * 1000, // 15 minutes cache
+  });
+
+  // ✅ Extract location names
+  const locationNames = ownerLocations.map((val) => val?.name) || [];
+
+  // ✅ Initialize Mutations for CRUD Operations
+  const { mutate: createService } = usePostMutation("services");
+  const { mutate: updateService } = useUpdateMutation("services");
+  const { mutate: deleteService } = useDeleteMutation("services");
+
+  // ✅ State Management
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [services, setServices] = useState([]); // Stores services
-  const [locations, setLocations] = useState([]); // Stores location names
-  const [ownerLocations, setOwnerLocations] = useState([]); // Stores full location objects
   const [selectedService, setSelectedService] = useState(null); // Holds the service being edited
 
-  // Table column headers
+  // ✅ Table Headers
   const columns = [
     "Services",
     "Location",
@@ -37,52 +64,34 @@ function OrganizationOwnerServices() {
     "Actions",
   ];
 
-  // Function to delete a service
-  function Delservices(id) {
-    try {
-      apiDelete(`/api/delete-service/${id}`)
-        .then(() => {
-          setServices((prevServices) =>
-            prevServices.filter((service) => service._id !== id)
+  // ✅ Delete Service
+  const queryClient = useQueryClient();
+  const handleDeleteService = (id) => {
+    deleteService(
+      { endpoint: `/api/delete-service/${id}` },
+      {
+        onSuccess: () => {
+          // ✅ Get current list of services
+          const previousServices = queryClient.getQueryData(["services"]) || [];
+
+          // ✅ Filter out the deleted service
+          const updatedServices = previousServices.filter(
+            (service) => service._id !== id
           );
-        })
-        .catch((error) => console.error("Error Deleting services:", error));
-    } catch (error) {
-      console.error("Error Deleting services:", error);
-    }
-  }
 
-  // Fetch services on component mount
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const response = await apiGet("/api/get-services-by-owner");
-        console.log(response);
-        setServices(response);
-        console.log(response);
-      } catch (error) {
-        console.error("Error fetching services:", error);
+          // ✅ Set the new list in cache
+          queryClient.setQueryData(["services"], updatedServices);
+
+          console.log("Service deleted successfully!");
+        },
+        onError: (error) => {
+          console.error("Error deleting service:", error);
+        },
       }
-    };
-    fetchServices();
-  }, []);
+    );
+  };
 
-  // Fetch owner locations on component mount
-  useEffect(() => {
-    const fetchOwnerLocations = async () => {
-      try {
-        const locations = await apiGet(`/api/get-locations-by-owner/${id}`);
-        setLocations(locations?.map((val) => val?.name)); // Extracting location names
-        setOwnerLocations(locations); // Storing full objects
-        console.log("aasda");
-      } catch (error) {
-        console.error("Error fetching services:", error);
-      }
-    };
-    fetchOwnerLocations();
-  }, [id]);
-
-  // Form validation and handling using Mantine
+  // ✅ Form Validation & Handling using Mantine
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -117,165 +126,137 @@ function OrganizationOwnerServices() {
     },
   });
 
-  // Handle form submission
-  const handleSubmit = async (values) => {
+  // ✅ Handle Form Submission (Create/Update Service)
+  const handleSubmit = (values) => {
+    setLoading(true);
+
+    // ✅ Convert Location Names to IDs
+    const filterIdLocations = ownerLocations
+      ?.filter((val) => values?.locations?.includes(val?.name))
+      ?.map((val) => val?._id);
+
     try {
-      setLoading(true);
-
-      // Find the correct location IDs from names
-      const filterIdLocations = ownerLocations
-        ?.filter((val) => values?.locations?.includes(val?.name))
-        ?.map((val) => val?._id);
-
       if (selectedService) {
-        // Update existing service (PUT request)
-        await apiUpdate(`/api/update-service/${selectedService._id}`, {
-          ...values,
-          locations: filterIdLocations,
+        // ✅ Update existing service
+        updateService({
+          endpoint: `/api/update-service/${selectedService._id}`,
+          payload: { ...values, locations: filterIdLocations },
         });
-        const resp = await fetchServices();
-        setServices(resp);
-        //       setServices((service) => [
-        //         ...service,
-        //         { ...data.newService, locations: idTodata },
-        //       ]);
-
-        // Update the service in state
-        // setServices((prevServices) =>
-        //   prevServices.map((service) =>
-        //     service._id === selectedService._id
-        //       ? response.updatedService
-        //       : service
-        //   )
-        // );
       } else {
-        // Create new service (POST request)
-        await apiPost("/api/create-service", {
-          ...values,
-          locations: filterIdLocations,
+        // ✅ Create new service
+        createService({
+          endpoint: "/api/create-service",
+          payload: { ...values, locations: filterIdLocations },
         });
-
-        // Add the new service to the state
-        const resp = await fetchServices();
-        console.log(resp);
-        setServices(resp);
       }
 
+      // ✅ Close Modal & Stop Loading
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
-      }, 1000);
+      }, 2000);
     } catch (error) {
-      console.log("Error Creating/Updating service", error);
+      console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
   };
 
-  // Transform services into table-compatible data format
-  const data = services?.map((val) => {
-    const locationsName = val?.locations?.map((val) => val.name) || [];
-
-    // Extract location names
-
-    return {
-      Services: val.name,
-      Duration: val.duration,
-      Description: val.description,
-      Location: (
-        <div>
-          {/* Dropdown displaying locations without selection */}
-          <Select
-            placeholder="Available on locations"
-            data={locationsName}
-            rightSection={
-              <FaChevronDown size={11} style={{ color: "#B0B0B0" }} />
-            }
-            variant="unstyled"
-            clearable={false}
-            value={null} // Prevents selection
-            onChange={() => null} // Stops selection
-            styles={{
-              input: { fontSize: "13.7px", color: "black" }, // Ensures black text
-              rightSection: { marginRight: "4px" }, // Adjust icon spacing
-            }}
-          />
+  // ✅ Transform services into table-compatible format
+  const data = services?.map((val) => ({
+    Services: val.name,
+    Duration: val.duration,
+    Description: val.description,
+    Location: (
+      <Select
+        placeholder="Available on locations"
+        data={val?.locations?.map((loc) => loc.name) || []}
+        rightSection={<FaChevronDown size={11} style={{ color: "#B0B0B0" }} />}
+        variant="unstyled"
+        clearable={false}
+        value={null} // Prevents selection
+        onChange={() => null} // Stops selection
+        styles={{
+          input: { fontSize: "13.7px", color: "black" }, // Ensures black text
+          rightSection: { marginRight: "4px" }, // Adjust icon spacing
+        }}
+      />
+    ),
+    Price: val.price,
+    Actions: (
+      <div className="flex gap-2.5">
+        {/* ✅ Edit Service Button */}
+        <div
+          className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
+          onClick={() => {
+            setSelectedService(val); // Set selected service for editing
+            form.setValues({
+              name: val.name,
+              category: val.category,
+              duration: val.duration,
+              price: val.price,
+              locations: val.locations.map((loc) => loc.name), // Extract location names
+              description: val.description,
+            });
+            setOpened(true); // Open the popup
+          }}
+        >
+          <FiUpload size={18} style={{ color: "#427B42" }} />
         </div>
-      ),
-      Price: val.price,
-      Actions: (
-        <div className="flex gap-2.5">
-          <div
-            className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
-            onClick={() => {
-              setSelectedService(val); // Set selected service for editing
-              form.setValues({
-                // Prefill form with existing values
-                name: val.name,
-                category: val.category,
-                duration: val.duration,
-                price: val.price,
-                locations: val.locations.map((loc) => loc.name), // Extract location names
-                description: val.description,
-              });
-              setOpened(true); // Open the popup
-            }}
-          >
-            <FiUpload size={18} style={{ color: "#427B42" }} />
-          </div>
 
-          <FiTrash
-            size={18}
-            className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
-            style={{ cursor: "pointer", color: "#622929" }}
-            onClick={() => Delservices(val._id)}
-          />
-        </div>
-      ),
-    };
-  });
-
+        {/* ✅ Delete Service Button */}
+        <FiTrash
+          size={18}
+          className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
+          style={{ cursor: "pointer", color: "#622929" }}
+          onClick={() => handleDeleteService(val._id)}
+        />
+      </div>
+    ),
+  }));
   return (
     <main className="flex flex-col bg-[#F5F7FA]  h-screen">
       <Title
+        fz={"h2"}
         px={"lg"}
         py={"sm"}
         c={"dark"}
         bg={"#FFFFFF"}
         fw={"bold"}
-        className="!text-xl font-semibold md:!text-2xl lg:!text-3xl"
       >
         Services
       </Title>
-      <section className=" p-2 md:p-6   flex flex-col h-full  gap-8">
+      <section className=" p-6 flex flex-col h-full  gap-8">
         {/* Top Section: Cards */}
-        <section className="flex flex-col lg:flex-row gap-4 ">
+        <section className="flex gap-4 ">
           <TabCard>
             <Group>
               <TabCard.Profile backGround="bg-pink-100">
-                <FaTools className="text-4xl" color="#FF82AC" />
+                <FaTools size={40} color="#FF82AC" />
               </TabCard.Profile>
               <TabCard.TextContent
-                title="Most Sold Service"
+                title="Most Sales Professional"
                 name="Mirza Tayyab Khalid"
               />
             </Group>
-            <TabCard.Amount amount="$4,790" />
+            <TabCard.Amount amount="$ 4790" />
           </TabCard>
           <TabCard>
             <Group>
               <TabCard.Profile backGround="bg-[#E7EDFF]">
-                <TfiUpload className="text-4xl" color="#396AFF" />
+                <TfiUpload size={40} color="#396AFF" />
               </TabCard.Profile>
-              <TabCard.TextContent title="Haircut Total Orders" />
+              <TabCard.TextContent title="Most Sales Professional" />
             </Group>
-            <TabCard.Amount amount="1,360" />
+            <TabCard.Amount amount="4790" />
           </TabCard>
         </section>
 
         {/* Services Table */}
 
         <section className="flex justify-between items-center">
-          <Title className="!roboto !text-lg !font-bold  ">All Services</Title>
+          <Title fz={"h4"} fw={"bold"}>
+            All Services
+          </Title>
           <Button
             bg="black"
             radius="md"
@@ -289,7 +270,12 @@ function OrganizationOwnerServices() {
           </Button>
         </section>
 
-        <TableCom data={data} columns={columns} />
+        <TableCom
+          data={data}
+          error={servicesError}
+          columns={columns}
+          isLoading={isServicesLoading}
+        />
 
         {/* Service Creation Popup */}
         <Popup
@@ -297,7 +283,6 @@ function OrganizationOwnerServices() {
           opened={opened}
           setOpened={setOpened}
           handleSubmit={handleSubmit}
-          title="Add New Location"
         >
           <Popup.TextInputField
             label="Service Name"
@@ -322,10 +307,11 @@ function OrganizationOwnerServices() {
             type="number"
           />
           <Popup.MutltiSelector
-            data={locations}
+            data={locationNames}
             label="Select the location"
             placeholder="Select at least one location"
             id="locations"
+            error={locationsError}
           />
           <Popup.TextArea
             label="Description"

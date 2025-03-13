@@ -171,16 +171,19 @@ function MutltiSelector({ data, label, placeholder, id }) {
   );
 }
 
-function SingleSelector({ data, label, placeholder, id }) {
+function SingleSelector({ data, label, placeholder, id, error }) {
   const form = usePopupForm();
 
   return (
-    <Select
-      data={Array.isArray(data) ? data : []}
-      label={label}
-      placeholder={placeholder}
-      {...form.getInputProps(id)}
-    />
+    <>
+      <Select
+        data={Array.isArray(data) ? data : []}
+        label={label}
+        placeholder={error ? error : placeholder}
+        {...form.getInputProps(id)}
+      />
+      <span className="text-red-800">{error}</span>
+    </>
   );
 }
 

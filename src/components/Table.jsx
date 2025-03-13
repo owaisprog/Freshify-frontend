@@ -1,6 +1,6 @@
 import { Loader, ScrollArea, Table } from "@mantine/core";
 
-const TableCom = ({ columns, data }) => {
+const TableCom = ({ columns, data, isLoading, error }) => {
   return (
     <div className="shadow-lg rounded-xl overflow-hidden">
       {" "}
@@ -29,7 +29,7 @@ const TableCom = ({ columns, data }) => {
 
             {/* Table Body */}
             <tbody>
-              {data.length > 0 ? (
+              {data && data?.length > 0 ? (
                 data.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
@@ -44,8 +44,17 @@ const TableCom = ({ columns, data }) => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={columns.length} className="  py-4 text-gray-500">
-                    <Loader className="mx-auto" color="blue" type="bars" />
+                  <td
+                    colSpan={columns.length}
+                    className="text-center  py-4 text-gray-500"
+                  >
+                    {isLoading ? (
+                      <Loader className="mx-auto" color="blue" type="bars" />
+                    ) : error ? (
+                      error
+                    ) : (
+                      "No Data Available"
+                    )}
                   </td>
                 </tr>
               )}

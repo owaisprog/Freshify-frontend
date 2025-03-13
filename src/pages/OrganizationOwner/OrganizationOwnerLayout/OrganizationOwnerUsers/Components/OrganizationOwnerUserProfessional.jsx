@@ -1,67 +1,52 @@
 import { Button, Title } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FiTrash, FiUpload } from "react-icons/fi";
 import { useForm } from "@mantine/form";
-import {
-  apiDelete,
-  apiGet,
-  apiPost,
-  apiUpdate,
-} from "../../../../../services/useApi";
 import TableCom from "../../../../../components/Table";
 import Popup from "../../../../../components/PopUp";
+import {
+  useDeleteMutation,
+  usePostMutation,
+  useQueryHook,
+  useUpdateMutation,
+} from "../../../../../services/reactQuery";
 
-function OrganizationOwnerUserProfessional({
-  userdata,
-  activeTab,
-  setAllUsers,
-}) {
-  console.log(userdata);
+function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
 
+  // ✅ Fetch locations
+  const { data: ownerLocations = [], error: locationError } = useQueryHook({
+    queryKey: ["locations", id],
+    endpoint: `/api/get-locations-by-owner/${id}`,
+    staleTime: 15 * 60 * 1000,
+  });
+
+  // ✅ Mutations for CRUD operations
+  const { mutate: createUser } = usePostMutation(["users", id]);
+  const { mutate: updateUser } = useUpdateMutation(["users", id]);
+  const { mutate: deleteUser } = useDeleteMutation(["users", id]);
+
+  // ✅ State for popup/modal
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [locations, setLocations] = useState([]); // Stores location names
-  const [ownerLocations, setOwnerLocations] = useState([]); // Stores full location objects
-  const [selectedUser, setSelectedUser] = useState(null); // Stores user being edited
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  // Define Table Columns
+  // ✅ Table Columns
   const columns = ["Name", "Location", "Email", "Role", "Actions"];
 
-  // Delete User Function
-  const DelUsers = async (ids) => {
-    try {
-      await apiDelete(`/api/delete-user/${ids}`);
-      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
-      setAllUsers(resp);
-      setUsers(resp.filter((val) => val.role === activeTab));
-    } catch (error) {
-      console.error("Error Deleting user:", error);
-    }
+  // ✅ Delete User
+  const handleDeleteUser = (userId) => {
+    deleteUser(
+      { endpoint: `/api/delete-user/${userId}` },
+      {
+        onSuccess: () => console.log("User deleted successfully!"),
+        onError: (error) => console.error("Error deleting user:", error),
+      }
+    );
   };
 
-  // Fetch Users from API
-  useEffect(() => {
-    setUsers(userdata);
-  }, [userdata]);
-
-  // Fetch the organization owner's locations
-  useEffect(() => {
-    const fetchOwnerLocations = async () => {
-      try {
-        const locations = await apiGet(`/api/get-locations-by-owner/${id}`);
-        setLocations(locations?.map((val) => val?.name)); // Extracting location names
-        setOwnerLocations(locations); // Storing full objects
-      } catch (error) {
-        console.error("Error fetching locations:", error);
-      }
-    };
-    fetchOwnerLocations();
-  }, [id]);
-
-  // Form Validation
+  // ✅ Form Handling using Mantine
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -79,39 +64,34 @@ function OrganizationOwnerUserProfessional({
     },
   });
 
-  // Handle Form Submit (Create or Update)
+  // ✅ Handle Form Submission (Create/Update)
   const handleSubmit = async (values) => {
-    console.log(values);
-    try {
-      setLoading(true);
-      const filterIdLocations = ownerLocations
-        ?.filter((val) => values?.location == val?.name)
-        ?.map((val) => val?._id);
-      console.log(values, filterIdLocations[0], ownerLocations);
+    setLoading(true);
 
-      let response;
+    // ✅ Find location ID based on selected location name
+    const locationId = ownerLocations.find(
+      (loc) => loc.name === values.location
+    )?._id;
+
+    try {
       if (selectedUser) {
-        // If updating an existing user
-        response = await apiUpdate(`/api/update-user/${selectedUser._id}`, {
-          ...values,
-          location: filterIdLocations[0], // Use first location ID
+        // ✅ Update user
+        updateUser({
+          endpoint: `/api/update-user/${selectedUser._id}`,
+          payload: { ...values, location: locationId },
         });
       } else {
-        // If creating a new user
-        response = await apiPost("/api/invite-user", {
-          ...values,
-          location: filterIdLocations[0],
+        // ✅ Create new user
+        createUser({
+          endpoint: "/api/invite-user",
+          payload: { ...values, location: locationId },
         });
       }
-      console.log(response);
 
-      const resp = await apiGet(`/api/get-users-by-owner/${id}`);
-
-      setAllUsers(resp);
-      setUsers(resp.filter((val) => val.role === activeTab));
-
-      setOpened(false);
-      setSelectedUser(null);
+      setTimeout(() => {
+        setOpened(false);
+        setSelectedUser(null);
+      }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
     } finally {
@@ -119,49 +99,46 @@ function OrganizationOwnerUserProfessional({
     }
   };
 
-  // Transform Users into Table-compatible Data Format
-  const data = users?.map((val) => {
-    console.log(val.location?.name, "locations");
-    return {
-      Name: val.name,
-      Location: val.location?.name || "N/A",
-      Email: val.email,
-      Role: val.role,
-      Actions: (
-        <div className="flex gap-2.5">
-          {/* Edit User */}
-          <div
-            className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
-            onClick={() => {
-              setSelectedUser(val); // Set selected user for editing
-              form.setValues({
-                name: val.name,
-                email: val.email,
-                location: val.location?.name || "",
-                role: val.role,
-              });
-              setOpened(true); // Open popup
-            }}
-          >
-            <FiUpload size={18} style={{ color: "#427B42" }} />
-          </div>
-
-          {/* Delete User */}
-          <FiTrash
-            size={18}
-            className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
-            style={{ cursor: "pointer", color: "#622929" }}
-            onClick={() => DelUsers(val._id)}
-          />
+  // ✅ Transform Users into Table Format
+  const data = userdata?.map((val) => ({
+    Name: val.name,
+    Location: val.location?.name || "N/A",
+    Email: val.email,
+    Role: val.role,
+    Actions: (
+      <div className="flex gap-2.5">
+        {/* ✅ Edit User */}
+        <div
+          className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
+          onClick={() => {
+            setSelectedUser(val);
+            form.setValues({
+              name: val.name,
+              email: val.email,
+              location: val.location?.name || "",
+              role: val.role,
+            });
+            setOpened(true);
+          }}
+        >
+          <FiUpload size={18} style={{ color: "#427B42" }} />
         </div>
-      ),
-    };
-  });
+
+        {/* ✅ Delete User */}
+        <FiTrash
+          size={18}
+          className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
+          style={{ cursor: "pointer", color: "#622929" }}
+          onClick={() => handleDeleteUser(val._id)}
+        />
+      </div>
+    ),
+  }));
 
   return (
     <main>
       {/* Table Section */}
-      <section className="">
+      <section>
         <div className="flex justify-between items-end">
           <Title fz={"h4"} fw={"bold"}>
             All Professionals
@@ -179,7 +156,12 @@ function OrganizationOwnerUserProfessional({
           </Button>
         </div>
         <div className="mt-3">
-          <TableCom data={data} columns={columns} />
+          <TableCom
+            data={data}
+            isLoading={isLoading}
+            error={error}
+            columns={columns}
+          />
         </div>
       </section>
 
@@ -201,10 +183,11 @@ function OrganizationOwnerUserProfessional({
           id="email"
         />
         <Popup.SingleSelector
-          data={locations}
+          data={ownerLocations.map((loc) => loc.name)}
           label="Select the location"
           placeholder="Select at least one location"
           id="location"
+          error={locationError}
         />
         {/* <Popup.Select
           data={[
