@@ -105,6 +105,7 @@ function SubmitButton({ loading, children }) {
         type="submit"
         bg={"black"}
         c={"white"}
+        radius={"md"}
         loading={loading}
         loaderProps={{ type: "dots" }}
       >
