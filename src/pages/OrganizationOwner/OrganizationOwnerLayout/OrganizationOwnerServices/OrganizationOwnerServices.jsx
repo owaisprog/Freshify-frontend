@@ -237,47 +237,45 @@ function OrganizationOwnerServices() {
   return (
     <main className="flex flex-col bg-[#F5F7FA]  h-screen">
       <Title
-        fz={"h2"}
         px={"lg"}
         py={"sm"}
         c={"dark"}
         bg={"#FFFFFF"}
         fw={"bold"}
+        className="!text-xl font-semibold md:!text-2xl lg:!text-3xl"
       >
         Services
       </Title>
-      <section className=" p-6 flex flex-col h-full  gap-8">
+      <section className=" p-2 md:p-6   flex flex-col h-full  gap-8">
         {/* Top Section: Cards */}
-        <section className="flex gap-4 ">
+        <section className="flex flex-col lg:flex-row gap-4 ">
           <TabCard>
             <Group>
               <TabCard.Profile backGround="bg-pink-100">
-                <FaTools size={40} color="#FF82AC" />
+                <FaTools className="text-4xl" color="#FF82AC" />
               </TabCard.Profile>
               <TabCard.TextContent
-                title="Most Sales Professional"
+                title="Most Sold Service"
                 name="Mirza Tayyab Khalid"
               />
             </Group>
-            <TabCard.Amount amount="$ 4790" />
+            <TabCard.Amount amount="$4,790" />
           </TabCard>
           <TabCard>
             <Group>
               <TabCard.Profile backGround="bg-[#E7EDFF]">
-                <TfiUpload size={40} color="#396AFF" />
+                <TfiUpload className="text-4xl" color="#396AFF" />
               </TabCard.Profile>
-              <TabCard.TextContent title="Most Sales Professional" />
+              <TabCard.TextContent title="Haircut Total Orders" />
             </Group>
-            <TabCard.Amount amount="4790" />
+            <TabCard.Amount amount="1,360" />
           </TabCard>
         </section>
 
         {/* Services Table */}
 
         <section className="flex justify-between items-center">
-          <Title fz={"h4"} fw={"bold"}>
-            All Services
-          </Title>
+          <Title className="!roboto !text-lg !font-bold  ">All Services</Title>
           <Button
             bg="black"
             radius="md"
@@ -299,6 +297,7 @@ function OrganizationOwnerServices() {
           opened={opened}
           setOpened={setOpened}
           handleSubmit={handleSubmit}
+          title="Add New Location"
         >
           <Popup.TextInputField
             label="Service Name"

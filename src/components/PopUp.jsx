@@ -25,7 +25,7 @@ const Popup = ({
   handleSubmit,
   children,
   form,
-  title = "Add New Location",
+  title = "Add Your Title",
 }) => {
   // Access form from context
 
