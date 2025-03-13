@@ -4,6 +4,7 @@ import {
   Button,
   Modal,
   ScrollArea,
+  Table,
   Text,
   Title,
 } from "@mantine/core";
@@ -147,7 +148,7 @@ export default function OrganizationOwnerLocations() {
         bg={"#FFFFFF"}
         fw={"bold"}
       >
-        Services
+        Locations
       </Title>
       <section className="p-6 flex flex-col h-full  gap-10">
         <section className="flex justify-between items-center">
@@ -171,19 +172,67 @@ export default function OrganizationOwnerLocations() {
           offsetScrollbars
           className="h-[400px] rounded-lg p-2 shadow-sm"
         >
-          <Box className="flex flex-col gap-4  justify-center items-center">
-            {locations?.map((val) => (
-              <Box
-                key={val._id}
-                className="grid grid-cols-6 gap-x-2  items-center w-full p-2 rounded-xl border border-gray-200 bg-[#FFFFFF] "
-              >
-                <div className="flex items-center gap-3 ">
-                  <Avatar size={"lg"} color="blue" radius="lg">
-                    <IoLocationSharp size={20} />
-                  </Avatar>
+          <Table.ScrollContainer minWidth={1000}>
+            <Box className="flex flex-col gap-4  justify-center items-center">
+              {locations?.map((val) => (
+                <Box
+                  key={val._id}
+                  className="grid grid-cols-6 gap-x-2  items-center w-full p-2 rounded-xl border border-gray-200 bg-[#FFFFFF] "
+                >
+                  <div className="flex items-center gap-3 ">
+                    <Avatar size={"lg"} color="blue" radius="lg">
+                      <IoLocationSharp size={20} />
+                    </Avatar>
+                    <div>
+                      <Text fz={"sm"} fw={"bold"}>
+                        {val.name}
+                      </Text>
+                      <Text
+                        fz={"xs"}
+                        td={"underline"}
+                        c={"blue"}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setModalTitle("Address");
+                          setModalContent(val.address);
+                          setModalOpen(true); // Open view modal
+                        }}
+                      >
+                        View Address
+                      </Text>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <Text fz={"sm"} fw={"bold"}>
+                      Google Places
+                    </Text>
+                    <Text
+                      fz={"xs"}
+                      td={"underline"}
+                      c={"blue"}
+                      className="cursor-pointer"
+                      onClick={() => copyToClipboard(val.googleLink)}
+                    >
+                      Copy Link
+                    </Text>
+                  </div>
                   <div>
                     <Text fz={"sm"} fw={"bold"}>
-                      {val.name}
+                      On-site Payments
+                    </Text>
+                    <Text fz={"xs"}>
+                      {val.enableCashPayments ? "Yes" : "No"}
+                    </Text>
+                  </div>
+                  <div>
+                    <Text fz={"sm"} fw={"bold"}>
+                      Working Hours
+                    </Text>
+                    <Text fz={"xs"}>{val.workingHours} Hours</Text>
+                  </div>
+                  <div>
+                    <Text fz={"sm"} fw={"bold"}>
+                      Description
                     </Text>
                     <Text
                       fz={"xs"}
@@ -191,89 +240,45 @@ export default function OrganizationOwnerLocations() {
                       c={"blue"}
                       className="cursor-pointer"
                       onClick={() => {
-                        setModalTitle("Address");
-                        setModalContent(val.address);
+                        setModalTitle("Description");
+                        setModalContent(val.description);
                         setModalOpen(true); // Open view modal
                       }}
                     >
-                      View Address
+                      View Description
                     </Text>
                   </div>
-                </div>
-                <div className="text-center">
-                  <Text fz={"sm"} fw={"bold"}>
-                    Google Places
-                  </Text>
-                  <Text
-                    fz={"xs"}
-                    td={"underline"}
-                    c={"blue"}
-                    className="cursor-pointer"
-                    onClick={() => copyToClipboard(val.googleLink)}
-                  >
-                    Copy Link
-                  </Text>
-                </div>
-                <div>
-                  <Text fz={"sm"} fw={"bold"}>
-                    On-site Payments
-                  </Text>
-                  <Text fz={"xs"}>{val.enableCashPayments ? "Yes" : "No"}</Text>
-                </div>
-                <div>
-                  <Text fz={"sm"} fw={"bold"}>
-                    Working Hours
-                  </Text>
-                  <Text fz={"xs"}>{val.workingHours} Hours</Text>
-                </div>
-                <div>
-                  <Text fz={"sm"} fw={"bold"}>
-                    Description
-                  </Text>
-                  <Text
-                    fz={"xs"}
-                    td={"underline"}
-                    c={"blue"}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setModalTitle("Description");
-                      setModalContent(val.description);
-                      setModalOpen(true); // Open view modal
-                    }}
-                  >
-                    View Description
-                  </Text>
-                </div>
-                <div className="flex h-fit justify-end gap-2 rounded-xl">
-                  <button
-                    className="bg-[#E7FFEB] rounded p-2 cursor-pointer"
-                    onClick={() => {
-                      setSelectedLocation(val);
-                      form.setValues({
-                        name: val.name,
-                        image: val.image,
-                        address: val.address,
-                        googleLink: val.googleLink,
-                        enableCashPayments: val.enableCashPayments,
-                        workingHours: val.workingHours,
-                        description: val.description,
-                      });
-                      setOpened(true); // Open edit popup
-                    }}
-                  >
-                    <FiUpload size={18} style={{ color: "#427B42" }} />
-                  </button>
+                  <div className="flex h-fit justify-end gap-2 rounded-xl">
+                    <button
+                      className="bg-[#E7FFEB] rounded p-2 cursor-pointer"
+                      onClick={() => {
+                        setSelectedLocation(val);
+                        form.setValues({
+                          name: val.name,
+                          image: val.image,
+                          address: val.address,
+                          googleLink: val.googleLink,
+                          enableCashPayments: val.enableCashPayments,
+                          workingHours: val.workingHours,
+                          description: val.description,
+                        });
+                        setOpened(true); // Open edit popup
+                      }}
+                    >
+                      <FiUpload size={18} style={{ color: "#427B42" }} />
+                    </button>
 
-                  <button
-                    className="bg-[#FFE0EB] rounded p-2 cursor-pointer"
-                    onClick={() => DelLocation(val._id)}
-                  >
-                    <FiTrash size={18} style={{ color: "#622929" }} />
-                  </button>
-                </div>
-              </Box>
-            ))}
-          </Box>
+                    <button
+                      className="bg-[#FFE0EB] rounded p-2 cursor-pointer"
+                      onClick={() => DelLocation(val._id)}
+                    >
+                      <FiTrash size={18} style={{ color: "#622929" }} />
+                    </button>
+                  </div>
+                </Box>
+              ))}
+            </Box>
+          </Table.ScrollContainer>
         </ScrollArea>
 
         {/* Popup for Adding/Editing Locations */}

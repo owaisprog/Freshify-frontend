@@ -47,7 +47,7 @@ export default function OrganizationOwnerVerifyEmail() {
   });
 
   return (
-    <main className="grid h-[100dvh] max-w-[1440px] grid-cols-2 bg-[#F5F7FA] py-1">
+    <main className="grid h-[100dvh] mx-auto max-w-[1440px] grid-cols-2 bg-[#F5F7FA] py-1">
       {/* Left Side - Image */}
       <section className="rounded-tr-xl rounded-br-xl bg-black flex items-center justify-center">
         <Image

@@ -28,11 +28,11 @@ TabCard.Profile = function Profile({ children, backGround }) {
 // **Text Content Component (Title & Name)**
 TabCard.TextContent = function TextContent({ title, name }) {
   return (
-    <Box className="">
-      <Text fz={"md"} c="dark">
+    <Box className=" ">
+      <Text className="!roboto !text-lg  " c="dark">
         {title}
       </Text>
-      <Text fz="xs" c="#333B69">
+      <Text className="!roboto  !text-sm " c="#333B69">
         {name}
       </Text>
     </Box>
@@ -42,6 +42,9 @@ TabCard.TextContent = function TextContent({ title, name }) {
 // **Amount Display Component**
 TabCard.Amount = function Amount({ amount }) {
   return (
-    <Text fw={"bold"} fz={"h2"} c="dark">{`${amount.toLocaleString()}`}</Text>
+    <Text
+      className="!roboto !text-xl !font-bold md:!text-2xl lg:!text-3xl"
+      c="dark"
+    >{`${amount.toLocaleString()}`}</Text>
   );
 };

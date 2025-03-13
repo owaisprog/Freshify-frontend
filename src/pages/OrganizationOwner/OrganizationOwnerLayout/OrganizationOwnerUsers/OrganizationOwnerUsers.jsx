@@ -80,7 +80,7 @@ function OrganizationOwnerUsers() {
         Users
       </Title>
       <section className=" p-6 flex flex-col h-full  gap-8">
-        <section className="flex gap-4">
+        <section className="flex flex-col lg:flex-row gap-4 ">
           <TabCard>
             <Group>
               <TabCard.Profile backGround="bg-pink-100">
