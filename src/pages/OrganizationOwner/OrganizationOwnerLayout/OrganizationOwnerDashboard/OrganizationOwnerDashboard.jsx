@@ -10,6 +10,7 @@ export default function OrganizationOwnerDashboard() {
         c={"black"}
         bg={"#FFFFFF"}
         fw={"bold"}
+        className="!roboto "
       >
         Dashboard
       </Title>
