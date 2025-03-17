@@ -1,7 +1,4 @@
-import { Group, Tabs, Title } from "@mantine/core";
-import TabCard from "../../../../components/TabCard";
-import { FaTools } from "react-icons/fa";
-import { TfiUpload } from "react-icons/tfi";
+import { Tabs, Text, Title } from "@mantine/core";
 import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import OrganizationOwnerUserAdmin from "./Components/OrganizationOwnerUserAdmin";
@@ -39,42 +36,53 @@ function OrganizationOwnerUsers() {
   };
 
   return (
-    <main className="flex flex-col bg-[#F5F7FA]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
       <Title
-        fz={"h2"}
         px={"lg"}
         py={"sm"}
-        c={"dark"}
-        bg={"#FFFFFF"}
-        fw={"bold"}
+        c={"black"}
+        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
       >
         Users
       </Title>
       <section className=" p-6 flex flex-col h-full  gap-8">
-        <section className="flex flex-col lg:flex-row gap-4 ">
-          <TabCard>
-            <Group>
-              <TabCard.Profile backGround="bg-pink-100">
-                <FaTools size={40} color="#FF82AC" />
-              </TabCard.Profile>
-              <TabCard.TextContent
-                title="Most Sales Professional"
-                name="Mirza Tayyab Khalid"
-              />
-            </Group>
-            <TabCard.Amount amount="$ 4790" />
-          </TabCard>
-          <TabCard>
-            <Group>
-              <TabCard.Profile backGround="bg-[#E7EDFF]">
-                <TfiUpload size={40} color="#396AFF" />
-              </TabCard.Profile>
-              <TabCard.TextContent title="Most Sales Professional" />
-            </Group>
-            <TabCard.Amount amount="4790" />
-          </TabCard>
-        </section>
+        {/* First Section  */}
+        <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
+          {/*Most Sales Professional Section */}
+          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
+            <div className="flex items-center gap-2">
+              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#DCFAF8] rounded-3xl">
+                {" "}
+                <img src="/mostSalesProfessionalIcon.png" alt="" />
+              </div>
+              <div>
+                <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                  Most Sales Professional
+                </Text>
 
+                <Text className="!text-[14px] !font-[400]">
+                  Mirza Tayyab Khalid
+                </Text>
+              </div>
+            </div>
+            <Text className="!text-[30px] !font-[600]">$4,790</Text>
+          </div>
+
+          {/* Haircut Total Orders Section  */}
+          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
+            <div className="flex items-center gap-2">
+              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFF5D9] rounded-3xl">
+                {" "}
+                <img src="/yelloArrowIcon.png" alt="" />
+              </div>
+
+              <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                Orders By Mirza
+              </Text>
+            </div>
+            <Text className="!text-[30px] !font-[600]">1,360</Text>
+          </div>
+        </section>
         <section className="max-w-fit">
           <Tabs value={activeTab} onChange={handleTabChange}>
             <Tabs.List>

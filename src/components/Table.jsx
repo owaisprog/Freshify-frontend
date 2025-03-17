@@ -2,7 +2,7 @@ import { Loader, ScrollArea, Table } from "@mantine/core";
 
 const TableCom = ({ columns, data, isLoading, error }) => {
   return (
-    <div className="shadow-lg rounded-xl overflow-hidden">
+    <div className="shadow-lg rounded-[25px] overflow-hidden">
       {" "}
       {/* Shadow & border-radius */}
       <ScrollArea

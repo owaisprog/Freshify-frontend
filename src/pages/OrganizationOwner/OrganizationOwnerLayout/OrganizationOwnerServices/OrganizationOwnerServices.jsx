@@ -1,7 +1,5 @@
-import { Button, Group, Select, Title } from "@mantine/core";
-import TabCard from "../../../../components/TabCard";
-import { FaChevronDown, FaTools } from "react-icons/fa";
-import { TfiUpload } from "react-icons/tfi";
+import { Button, Select, Text, Title } from "@mantine/core";
+import { FaChevronDown } from "react-icons/fa";
 import { FiTrash, FiUpload } from "react-icons/fi";
 import { useState } from "react";
 import TableCom from "../../../../components/Table";
@@ -214,50 +212,57 @@ function OrganizationOwnerServices() {
     ),
   }));
   return (
-    <main className="flex flex-col bg-[#F5F7FA]  h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
       <Title
-        fz={"h2"}
         px={"lg"}
         py={"sm"}
-        c={"dark"}
-        bg={"#FFFFFF"}
-        fw={"bold"}
+        c={"black"}
+        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
       >
         Services
       </Title>
 
       <section className=" p-6 flex flex-col h-full  gap-8">
-        {/* Top Section: Cards */}
-        <section className="flex flex-col lg:flex-row gap-4">
-          <TabCard>
-            <Group>
-              <TabCard.Profile backGround="bg-pink-100">
-                <FaTools size={40} color="#FF82AC" />
-              </TabCard.Profile>
-              <TabCard.TextContent
-                title="Most Sales Professional"
-                name="Mirza Tayyab Khalid"
-              />
-            </Group>
-            <TabCard.Amount amount="$ 4790" />
-          </TabCard>
-          <TabCard>
-            <Group>
-              <TabCard.Profile backGround="bg-[#E7EDFF]">
-                <TfiUpload size={40} color="#396AFF" />
-              </TabCard.Profile>
-              <TabCard.TextContent title="Most Sales Professional" />
-            </Group>
-            <TabCard.Amount amount="4790" />
-          </TabCard>
+        {/* First Section  */}
+        <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
+          {/* Most Sold Service Section */}
+          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
+            <div className="flex items-center gap-2">
+              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
+                {" "}
+                <img src="/mostSoldServiceIcons.png" alt="" />
+              </div>
+              <div>
+                <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                  Most Sold Service
+                </Text>
+
+                <Text className="!text-[14px] !font-[400]">Haircut</Text>
+              </div>
+            </div>
+            <Text className="!text-[30px] !font-[600]">$4,790</Text>
+          </div>
+
+          {/* Haircut Total Orders Section  */}
+          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
+            <div className="flex items-center gap-2">
+              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#E7EDFF] rounded-3xl">
+                {" "}
+                <img src="/haircutTotalOrdersIcon.png" alt="" />
+              </div>
+
+              <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                Haircut Total Orders
+              </Text>
+            </div>
+            <Text className="!text-[30px] !font-[600]">1,360</Text>
+          </div>
         </section>
 
         {/* Services Table */}
 
         <section className="flex justify-between items-center">
-          <Title fz={"h4"} fw={"bold"}>
-            All Services
-          </Title>
+          <Text className="!text-[22px] !font-[700]">All Services</Text>
           <Button
             bg="black"
             radius="md"

@@ -150,22 +150,18 @@ export default function OrganizationOwnerLocations() {
   //   );
   console.log(error);
   return (
-    <main className="flex flex-col gap-4 bg-[#F5F7FA]  h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
       <Title
-        fz={"h2"}
         px={"lg"}
         py={"sm"}
-        c={"dark"}
-        bg={"#FFFFFF"}
-        fw={"bold"}
+        c={"black"}
+        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
       >
         Locations
       </Title>
       <section className="p-6 flex flex-col h-full  gap-10">
         <section className="flex justify-between items-center">
-          <Title fz={"h4"} fw={"bold"}>
-            All Locations
-          </Title>
+          <Text className="!text-[22px] !font-[700]">All Services</Text>
           <Button
             onClick={() => {
               setSelectedLocation(null);
