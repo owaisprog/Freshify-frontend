@@ -16,7 +16,7 @@ function ProgressBar() {
         <div key={val}>
           <Grid align="center" p={3} gutter={2}>
             {/* Icon Column */}
-            <Grid.Col span={{ base: 3, xs: 2, sm: 1.2, lg: 2.3 }}>
+            <Grid.Col span={{ base: 2.8, xs: 2, sm: 1.2, lg: 2.3 }}>
               <TabCard.Profile backGround="bg-pink-100">
                 <FaTools size={40} color="#FF82AC" />
               </TabCard.Profile>

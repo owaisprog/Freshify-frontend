@@ -51,23 +51,46 @@ export default function OrganizationOwnerDashboard() {
       <section className="h-full flex w-[90%] mx-auto  max-w-[1723px] justify-center">
         <Grid gutter="xl" align="center">
           <Grid.Col span={{ base: 12, lg: 5 }}>
+            <h1 className="font-roboto font-bold text-[22px]  leading-[100%] pb-4">
+              Sales
+            </h1>
             <DashboardCard stats={salesData} />
           </Grid.Col>
           <Grid.Col span={{ base: 12, lg: 7 }}>
+            <h1 className="font-roboto font-bold text-[22px] leading-[100%] pb-4">
+              Top Performer
+            </h1>
+
             <DashboardCard stats={performerData} />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, lg: 6 }}>
+            <h1 className="font-roboto font-bold text-[22px] leading-[100%] pb-4">
+              Weekly Sales{" "}
+            </h1>
+
             <SalesChart />
           </Grid.Col>
           <Grid.Col span={{ base: 12, lg: 6 }}>
+            <h1 className="font-roboto font-bold text-[22px] leading-[100%] pb-4">
+              Popular Service{" "}
+            </h1>
+
             <ProgressBar />
           </Grid.Col>
 
           <Grid.Col span={{ base: 12, lg: 4 }}>
+            <h1 className="font-roboto font-bold text-[22px] leading-[100%] pb-4">
+              Orders{" "}
+            </h1>
+
             <DashboardCard stats={performerData} />
           </Grid.Col>
           <Grid.Col span={{ base: 12, lg: 8 }}>
+            <h1 className="font-roboto font-bold text-[22px] leading-[100%] pb-4">
+              All Locations By Users{" "}
+            </h1>
+
             <DashboardCard stats={performerData} />
           </Grid.Col>
         </Grid>
