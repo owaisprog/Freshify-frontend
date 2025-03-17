@@ -121,7 +121,11 @@ const queryClient = new QueryClient();
 createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={queryClient}>
     <ToastContainer />
-    <MantineProvider theme={{ fontFamily: "Roboto, sans-serif" }}>
+    <MantineProvider
+      theme={{ fontFamily: "Roboto, sans-serif" }}
+      withGlobalStyles
+      withNormalizeCSS
+    >
       <RouterProvider router={router} />
     </MantineProvider>
     <ReactQueryDevtools initialIsOpen={false} />
