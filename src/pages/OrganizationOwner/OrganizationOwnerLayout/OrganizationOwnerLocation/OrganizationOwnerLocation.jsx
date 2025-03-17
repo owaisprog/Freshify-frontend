@@ -142,12 +142,12 @@ export default function OrganizationOwnerLocations() {
       setLoading(false);
     }
   };
-  if (isLoading)
-    return (
-      <div className="h-screen grid place-content-center">
-        <Loader className="mx-auto" color="blue" type="bars" />
-      </div>
-    );
+  // if (isLoading)
+  //   return (
+  //     <div className="h-screen grid place-content-center">
+
+  //     </div>
+  //   );
   console.log(error);
   return (
     <main className="flex flex-col gap-4 bg-[#F5F7FA]  h-screen">
@@ -185,7 +185,9 @@ export default function OrganizationOwnerLocations() {
         >
           <Table.ScrollContainer minWidth={1000}>
             <Box className="flex flex-col gap-4  justify-center items-center">
-              {error ? (
+              {isLoading ? (
+                <Loader className="mx-auto" color="blue" type="bars" />
+              ) : error ? (
                 <Paper mt={30} className="!bg-[#F5F7FA] font-[1.2rem]  ">
                   {" "}
                   {error}

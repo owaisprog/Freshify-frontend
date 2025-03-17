@@ -225,6 +225,7 @@ function OrganizationOwnerServices() {
       >
         Services
       </Title>
+
       <section className=" p-6 flex flex-col h-full  gap-8">
         {/* Top Section: Cards */}
         <section className="flex flex-col lg:flex-row gap-4">
