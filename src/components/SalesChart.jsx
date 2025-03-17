@@ -37,7 +37,7 @@ export default function SalesChart() {
       {/* .. */}
       <BarChart
         data={data}
-        h={300}
+        h={200}
         barProps={{ radius: 30 }}
         dataKey="day"
         strokeDasharray="0 0"

@@ -35,20 +35,18 @@ export default function OrganizationOwnerDashboard() {
   ];
 
   return (
-    <main className="flex flex-col bg-[#F5F7FA]  h-screen  ">
+    <main className="flex flex-col bg-[#F5F7FA] max-w-[1720px]  h-screen  ">
       <Title
-        fz={"h2"}
         px={"lg"}
         py={"sm"}
         c={"black"}
         bg={"#FFFFFF"}
-        fw={"bold"}
-        className="!roboto "
+        className="!roboto lg:!text-[32px] !text-[24px] !font-[500]  "
       >
         Dashboard
       </Title>
 
-      <section className="h-full flex w-[90%] mx-auto  max-w-[1723px] justify-center">
+      <section className="h-full flex  mx-auto   justify-center p-6">
         <Grid gutter="xl" align="center">
           <Grid.Col span={{ base: 12, lg: 5 }}>
             <h1 className="font-roboto font-bold text-[22px]  leading-[100%] pb-4">
