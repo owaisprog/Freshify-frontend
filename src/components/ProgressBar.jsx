@@ -10,7 +10,7 @@ function ProgressBar() {
       shadow="sm"
       p="lg"
       radius="25px"
-      className="flex flex-col gap-[10px] p-[10px] rounded-[25px] border-[#718EBF] border-[0.3px]"
+      className="flex flex-col gap-[10px]  p-[10px] rounded-[25px] border-[#718EBF] border-[0.3px]"
     >
       {stats.map((val, index) => (
         <div key={val}>
@@ -24,7 +24,7 @@ function ProgressBar() {
 
             {/* Progress Bar Column */}
             <Grid.Col span={{ base: 8 }}>
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col font-normal text-[14px] gap-1.5">
                 <h1>Service No {val}</h1>
                 <Progress value={20} size="lg" radius="xl" />
               </div>
@@ -33,7 +33,7 @@ function ProgressBar() {
             {/* Number Column */}
             <Grid.Col
               span={{ base: 12, xs: 1 }}
-              className="text-right font-semibold"
+              className="text-right text-[22px] font-bold"
             >
               1,360
             </Grid.Col>
