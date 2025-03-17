@@ -12,14 +12,18 @@ const TableCom = ({ columns, data, isLoading, error }) => {
         overscrollBehavior="contain"
       >
         <Table.ScrollContainer minWidth={1000}>
-          <Table highlightOnHover striped className="w-full ">
+          <Table
+            highlightOnHover
+            striped
+            className="w-full font-normal text-[18px]"
+          >
             {/* Table Head */}
             <thead>
               <tr>
                 {columns.map((col, index) => (
                   <th
                     key={index}
-                    className="text-left text-[#718EBF] p-4 font-medium border-b border-gray-300 pb-3 px-4"
+                    className="text-left  text-[#718EBF] p-4  border-b border-gray-300 pb-3 px-4"
                   >
                     {col}
                   </th>
