@@ -3,7 +3,7 @@ import TabCard from "./TabCard";
 import { FaTools } from "react-icons/fa";
 
 function ProgressBar() {
-  const stats = [1, 2, 3, 4];
+  const stats = [1, 2, 3];
 
   return (
     <Card
