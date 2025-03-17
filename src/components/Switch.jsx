@@ -6,7 +6,7 @@ export function SwitchCom() {
       defaultChecked
       color="#34C759"
       label="Email Notification Preference"
-      size="md"
+      size="lg"
     />
   );
 }

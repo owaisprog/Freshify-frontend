@@ -93,7 +93,7 @@ export default function OrganizationOwnerSettings() {
           </section>
 
           {/* Render the active tab component */}
-          <div className="mt-6 lg:mt-0 ">
+          <div className="mt-6 lg:mt-0 !text-[18px] !font-normal ">
             <Outlet />
           </div>
         </Paper>
