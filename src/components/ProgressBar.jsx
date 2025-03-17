@@ -14,16 +14,16 @@ function ProgressBar() {
     >
       {stats.map((val, index) => (
         <div key={val}>
-          <Grid align="center" p={3}>
+          <Grid align="center" p={3} gutter={2}>
             {/* Icon Column */}
-            <Grid.Col span={{ base: 2 }}>
+            <Grid.Col span={{ base: 3, xs: 2, sm: 1.2, lg: 2.3 }}>
               <TabCard.Profile backGround="bg-pink-100">
                 <FaTools size={40} color="#FF82AC" />
               </TabCard.Profile>
             </Grid.Col>
 
             {/* Progress Bar Column */}
-            <Grid.Col span={{ base: 8.5 }}>
+            <Grid.Col span={{ base: 8 }}>
               <div className="flex flex-col gap-1.5">
                 <h1>Service No {val}</h1>
                 <Progress value={20} size="lg" radius="xl" />
@@ -31,7 +31,10 @@ function ProgressBar() {
             </Grid.Col>
 
             {/* Number Column */}
-            <Grid.Col span={{ base: 1.5 }} className="text-right font-semibold">
+            <Grid.Col
+              span={{ base: 12, xs: 1 }}
+              className="text-right font-semibold"
+            >
               1,360
             </Grid.Col>
           </Grid>
