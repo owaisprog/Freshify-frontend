@@ -1,4 +1,4 @@
-import { Button, Title } from "@mantine/core";
+import { Button, Title, Modal, Text } from "@mantine/core";
 import { useState } from "react";
 import { FiTrash, FiUpload } from "react-icons/fi";
 import { useForm } from "@mantine/form";
@@ -15,8 +15,6 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
 
-  // ✅ Fetch users (no need for state)
-
   // ✅ Fetch locations
   const { data: ownerLocations = [], error: locationError } = useQueryHook({
     queryKey: ["locations", id],
@@ -24,16 +22,13 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     staleTime: 0 * 60 * 1000,
   });
 
-  //fetech services
-  const {
-    data: services = [],
-    isLoading: isServicesLoading,
-    error: servicesError,
-  } = useQueryHook({
+  // ✅ Fetch services
+  const { data: services = [] } = useQueryHook({
     queryKey: "services",
     endpoint: "/api/get-services-by-owner",
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
+
   // ✅ Mutations for CRUD operations
   const { mutate: createUser, isPending: isLoadingCreate } = usePostMutation([
     "users",
@@ -50,8 +45,12 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
+  // ✅ State for services modal
+  const [servicesModalOpen, setServicesModalOpen] = useState(false);
+  const [servicesModalContent, setServicesModalContent] = useState([]);
+
   // ✅ Table Columns
-  const columns = ["Name", "Location", "Email", "Role", "Actions"];
+  const columns = ["Name", "Location", "Email", "View Services", "Actions"];
 
   // ✅ Delete User
   const handleDeleteUser = (userId) => {
@@ -118,14 +117,26 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
       setLoading(false);
     }
   };
-  console.log(isLoading, "iiiisLoading");
 
   // ✅ Transform Users into Table Format
   const data = userdata?.map((val) => ({
     Name: val.name,
     Location: val.location?.name || "N/A",
     Email: val.email,
-    Role: val.role,
+    "View Services": (
+      <Text
+        fz={"lg"}
+        td={"underline"}
+        c={"black"} // Set color to black
+        className="cursor-pointer"
+        onClick={() => {
+          setServicesModalContent(val.services); // Set services for the modal
+          setServicesModalOpen(true); // Open the modal
+        }}
+      >
+        View Services
+      </Text>
+    ),
     Actions: (
       <div className="flex gap-2.5">
         {/* ✅ Edit User */}
@@ -216,7 +227,6 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
           label="Select the Services"
           placeholder="Select at least one Service"
           id="services"
-          // error={}
         />
 
         <Popup.SubmitButton
@@ -225,6 +235,22 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
           {selectedUser ? "Update User" : "Add User"}
         </Popup.SubmitButton>
       </Popup>
+
+      {/* Services Modal */}
+      <Modal
+        opened={servicesModalOpen}
+        onClose={() => setServicesModalOpen(false)}
+        title="Services"
+        centered
+      >
+        <div>
+          {servicesModalContent.map((service, index) => (
+            <div key={index} className="mb-2">
+              <Text>{service.name}</Text>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </main>
   );
 }
