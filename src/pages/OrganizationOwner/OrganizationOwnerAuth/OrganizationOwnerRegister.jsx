@@ -104,24 +104,36 @@ export default function OrganizationOwnerRegister() {
             label="Email Address"
             placeholder="Enter your email"
             {...form.getInputProps("email")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
           <TextInput
             radius={"md"}
             label="Full Name"
             placeholder="Enter your full name"
             {...form.getInputProps("name")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
           <TextInput
             radius={"md"}
             label="Phone Number"
             placeholder="Enter your phone number"
             {...form.getInputProps("phone")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
           <PasswordInput
             radius={"md"}
             label="Password"
             placeholder="Enter your password"
             {...form.getInputProps("password")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
 
           {/* Signup Button */}

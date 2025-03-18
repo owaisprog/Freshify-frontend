@@ -82,10 +82,13 @@ export default function OrganizationOwnerLogin() {
 
           <TextInput
             radius={"md"}
-            label="Email"
+            label="Email Address"
             placeholder="Enter your email"
             key={form.key("email")}
             {...form.getInputProps("email")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
           <PasswordInput
             radius={"md"}
@@ -93,6 +96,9 @@ export default function OrganizationOwnerLogin() {
             placeholder="Enter you password"
             key={form.key("password")}
             {...form.getInputProps("password")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
 
           <Button

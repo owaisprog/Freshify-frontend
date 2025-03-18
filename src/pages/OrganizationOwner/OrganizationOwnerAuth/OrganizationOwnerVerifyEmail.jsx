@@ -74,8 +74,8 @@ export default function OrganizationOwnerVerifyEmail() {
           >
             Verify Email
           </Text>
-          <Text c="dimmed" size="sm" ta="center">
-            Enter the 4-digit OTP sent to your Email Address.
+          <Text c="dark" size="sm" ta="center">
+            Enter 4 digit OTP sent to your email address
           </Text>
 
           {/* PIN Input Field */}

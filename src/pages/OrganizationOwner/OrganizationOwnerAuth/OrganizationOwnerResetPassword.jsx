@@ -58,15 +58,18 @@ export default function OrganizationOwnerResetPassword() {
             Reset Password
           </Text>
           <Text c="dimmed" size="sm" ta="center">
-            Enter your email address to reset your password.
+            Reset Password Link will be sent to your email address
           </Text>
 
           <TextInput
             radius={"md"}
-            label="Email"
+            label="Email Address"
             placeholder="Enter your email"
             key={form.key("email")}
             {...form.getInputProps("email")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
 
           <Button
