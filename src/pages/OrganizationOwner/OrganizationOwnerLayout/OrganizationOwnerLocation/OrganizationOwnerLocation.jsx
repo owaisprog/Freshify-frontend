@@ -55,7 +55,7 @@ export default function OrganizationOwnerLocations() {
       });
   };
 
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const DelLocation = (delId) => {
     deleteLocation(
       { endpoint: `/api/delete-location/${delId}` },

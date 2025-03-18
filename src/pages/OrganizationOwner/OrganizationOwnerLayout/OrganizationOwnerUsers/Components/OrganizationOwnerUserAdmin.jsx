@@ -24,6 +24,16 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     staleTime: 0 * 60 * 1000,
   });
 
+  //fetech services
+  const {
+    data: services = [],
+    isLoading: isServicesLoading,
+    error: servicesError,
+  } = useQueryHook({
+    queryKey: "services",
+    endpoint: "/api/get-services-by-owner",
+    staleTime: 0 * 60 * 1000, // 15 minutes cache
+  });
   // ✅ Mutations for CRUD operations
   const { mutate: createUser, isPending: isLoadingCreate } = usePostMutation([
     "users",
@@ -62,6 +72,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
       email: "",
       location: "",
       role: "admin",
+      services: [],
     },
     validate: {
       name: (value) => (value.trim().length < 1 ? "Name is required" : null),
@@ -80,19 +91,21 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     const locationId = ownerLocations.find(
       (loc) => loc.name === values.location
     )?._id;
-
+    const servicesId = services
+      ?.filter((val) => values?.services?.includes(val?.name))
+      ?.map((val) => val?._id);
     try {
       if (selectedUser) {
         // ✅ Update user
         updateUser({
           endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, location: locationId },
+          payload: { ...values, location: locationId, services: servicesId },
         });
       } else {
         // ✅ Create new user
         createUser({
           endpoint: "/api/invite-user",
-          payload: { ...values, location: locationId },
+          payload: { ...values, location: locationId, services: servicesId },
         });
       }
       setTimeout(() => {
@@ -198,15 +211,14 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
           id="location"
           error={locationError}
         />
-        {/* <Popup.Select
-          data={[
-            { value: "admin", label: "Admin" },
-            { value: "barber", label: "Barber" },
-          ]}
-          label="Role"
-          placeholder="Select Role"
-          id="role"
-        /> */}
+        <Popup.MutltiSelector
+          data={services.map((serve) => serve.name)}
+          label="Select the Services"
+          placeholder="Select at least one Service"
+          id="services"
+          // error={}
+        />
+
         <Popup.SubmitButton
           loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
         >
