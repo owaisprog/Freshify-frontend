@@ -28,7 +28,7 @@ export default function SalesChart() {
 
         {/* New York Legend */}
         <div className="flex items-center space-x-2">
-          <span className="w-3 h-3 bg-[#718EBF] rounded-full"></span>
+          <span className="w-3 h-3 bg-[#000000] rounded-full"></span>
           <span className="text-gray-600 font-medium">New York</span>
         </div>
       </div>

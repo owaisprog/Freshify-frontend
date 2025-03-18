@@ -149,7 +149,7 @@ export default function OrganizationOwnerLocations() {
       </Title>
       <section className="p-6 flex flex-col h-full  gap-10">
         <section className="flex justify-between items-center">
-          <Text className="!text-[22px] !font-[700]">All Services</Text>
+          <Text className="!text-[22px] !font-[700]">All Locations</Text>
           <Button
             onClick={() => {
               setSelectedLocation(null);
@@ -165,35 +165,47 @@ export default function OrganizationOwnerLocations() {
 
         <ScrollArea
           offsetScrollbars
-          className="h-[400px] rounded-lg p-2 shadow-sm"
+          className="h-[400px] w-full rounded-lg p2-2 "
         >
-          <Table.ScrollContainer minWidth={1000}>
-            <Box className="flex flex-col gap-4  justify-center items-center">
+          <Table.ScrollContainer className="min-w-[1348px]">
+            <Box className="flex flex-col gap-4 p-2  justify-center items-center">
               {isLoading ? (
                 <Loader className="mx-auto" color="blue" type="bars" />
               ) : error ? (
-                <Paper mt={30} className="!bg-[#F5F7FA] font-[1.2rem]  ">
+                <Paper
+                  p={"md"}
+                  mt={30}
+                  className="!bg-[#F5F7FA]  font-[1.2rem]  "
+                >
                   {" "}
                   {error}
                 </Paper>
               ) : (
                 locations?.map((val) => (
-                  <Box
+                  <section
                     key={val._id}
-                    className="grid grid-cols-6 gap-x-2  items-center w-full p-2 rounded-xl border border-gray-200 bg-[#FFFFFF] "
+                    className=" min-w-[1348px] flex justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
                   >
-                    <div className="flex items-center gap-3 ">
-                      <Avatar size={"lg"} color="blue" radius="lg">
-                        <IoLocationSharp size={20} />
-                      </Avatar>
+                    <div className="col-span-2 flex items-center gap-3  ">
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
+                        {" "}
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/usaLocationIcon.png"
+                          alt=""
+                        />
+                      </div>
                       <div>
-                        <Text fz={"sm"} fw={"bold"}>
+                        <Text
+                          tt={"capitalize"}
+                          className="!text-[22px] !font-[700]"
+                        >
                           {val.name}
                         </Text>
                         <Text
                           fz={"xs"}
                           td={"underline"}
-                          c={"blue"}
+                          c={"#718EBF"}
                           className="cursor-pointer"
                           onClick={() => {
                             setModalTitle("Address");
@@ -205,14 +217,17 @@ export default function OrganizationOwnerLocations() {
                         </Text>
                       </div>
                     </div>
-                    <div className="text-center">
-                      <Text fz={"sm"} fw={"bold"}>
+                    <div className="">
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
                         Google Places
                       </Text>
                       <Text
                         fz={"xs"}
                         td={"underline"}
-                        c={"blue"}
+                        c={"#718EBF"}
                         className="cursor-pointer"
                         onClick={() => copyToClipboard(val.googleLink)}
                       >
@@ -220,27 +235,38 @@ export default function OrganizationOwnerLocations() {
                       </Text>
                     </div>
                     <div>
-                      <Text fz={"sm"} fw={"bold"}>
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
                         On-site Payments
                       </Text>
-                      <Text fz={"xs"}>
+                      <Text c={"#718EBF"} fz={"xs"}>
                         {val.enableCashPayments ? "Yes" : "No"}
                       </Text>
                     </div>
                     <div>
-                      <Text fz={"sm"} fw={"bold"}>
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
                         Working Hours
                       </Text>
-                      <Text fz={"xs"}>{val.workingHours} Hours</Text>
+                      <Text c={"#718EBF"} fz={"xs"}>
+                        {val.workingHours} Hours
+                      </Text>
                     </div>
                     <div>
-                      <Text fz={"sm"} fw={"bold"}>
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
                         Description
                       </Text>
                       <Text
                         fz={"xs"}
                         td={"underline"}
-                        c={"blue"}
+                        c={"#718EBF"}
                         className="cursor-pointer"
                         onClick={() => {
                           setModalTitle("Description");
@@ -253,7 +279,7 @@ export default function OrganizationOwnerLocations() {
                     </div>
                     <div className="flex h-fit justify-end gap-2 rounded-xl">
                       <button
-                        className="bg-[#E7FFEB] rounded p-2 cursor-pointer"
+                        className="bg-[#427B42] rounded p-2 cursor-pointer"
                         onClick={() => {
                           setSelectedLocation(val);
                           form.setValues({
@@ -268,17 +294,17 @@ export default function OrganizationOwnerLocations() {
                           setOpened(true); // Open edit popup
                         }}
                       >
-                        <FiUpload size={18} style={{ color: "#427B42" }} />
+                        <FiUpload size={18} style={{ color: "white" }} />
                       </button>
 
                       <button
-                        className="bg-[#FFE0EB] rounded p-2 cursor-pointer"
+                        className="bg-[#622929] rounded p-2 cursor-pointer"
                         onClick={() => DelLocation(val._id)}
                       >
-                        <FiTrash size={18} style={{ color: "#622929" }} />
+                        <FiTrash size={18} style={{ color: "white" }} />
                       </button>
                     </div>
-                  </Box>
+                  </section>
                 ))
               )}
             </Box>

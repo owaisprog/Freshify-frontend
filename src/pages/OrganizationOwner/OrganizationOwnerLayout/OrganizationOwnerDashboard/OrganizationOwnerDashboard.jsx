@@ -233,7 +233,11 @@ export default function OrganizationOwnerDashboard() {
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
                     {" "}
-                    <img src="/usaLocationIcon.png" alt="" />
+                    <img
+                      className="h-[25px] w-[17.5px]"
+                      src="/usaLocationIcon.png"
+                      alt=""
+                    />
                   </div>
                   <Text className="!text-[18px] !font-[400]">
                     United States of America
@@ -247,7 +251,11 @@ export default function OrganizationOwnerDashboard() {
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFE7E7] rounded-full">
                     {" "}
-                    <img src="/canadaLocationIcon.png" alt="" />
+                    <img
+                      className="h-[25px] w-[17.5px]"
+                      src="/canadaLocationIcon.png"
+                      alt=""
+                    />
                   </div>
                   <Text className="!text-[18px] !font-[400]">Canada</Text>
                 </div>
@@ -259,7 +267,11 @@ export default function OrganizationOwnerDashboard() {
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7FFEB] rounded-full">
                     {" "}
-                    <img src="/australiaLocationIcon.png" alt="" />
+                    <img
+                      className="h-[25px] w-[17.5px]"
+                      src="/australiaLocationIcon.png"
+                      alt=""
+                    />
                   </div>
                   <Text className="!text-[18px] !font-[400]">Australia</Text>
                 </div>
