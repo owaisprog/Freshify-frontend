@@ -1,6 +1,7 @@
 import { Button, Select, Text, Title } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
-import { FiTrash, FiUpload } from "react-icons/fi";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 import { useState } from "react";
 import TableCom from "../../../../components/Table";
 import { useForm } from "@mantine/form";
@@ -204,7 +205,7 @@ function OrganizationOwnerServices() {
         </div>
 
         {/* ✅ Delete Service Button */}
-        <FiTrash
+        <BsTrash
           size={18}
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
           style={{ cursor: "pointer", color: "#622929" }}
@@ -271,7 +272,7 @@ function OrganizationOwnerServices() {
             bg="black"
             radius="md"
             fw={"normal"}
-            className="!text-[18px] "
+            className="!text-[18px] !px-[40px] !py-[10px]"
             onClick={() => {
               setSelectedService(null); // Reset selectedService (means we are creating a new service)
               form.reset(); // Clear form fields

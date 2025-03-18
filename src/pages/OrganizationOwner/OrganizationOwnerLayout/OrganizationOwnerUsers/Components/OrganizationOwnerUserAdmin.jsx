@@ -1,6 +1,7 @@
 import { Button, Title } from "@mantine/core";
 import { useState } from "react";
-import { FiTrash, FiUpload } from "react-icons/fi";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 import { useForm } from "@mantine/form";
 import TableCom from "../../../../../components/Table";
 import Popup from "../../../../../components/PopUp";
@@ -39,6 +40,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [toggleTitle, setToggleTitle] = useState("Add Admin");
 
   // ✅ Table Columns
   const columns = ["Name", "Location", "Email", "Role", "Actions"];
@@ -119,6 +121,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         <div
           className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
           onClick={() => {
+            setToggleTitle("Update Admin");
             setSelectedUser(val);
             form.setValues({
               name: val.name,
@@ -133,7 +136,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         </div>
 
         {/* ✅ Delete User */}
-        <FiTrash
+        <BsTrash
           size={18}
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
           style={{ cursor: "pointer", color: "#622929" }}
@@ -153,11 +156,12 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
             bg="black"
             radius="md"
             fw={"normal"}
-            className="!text-[18px] "
+            className="!text-[18px] !px-[40px] !py-[10px]"
             onClick={() => {
               setSelectedUser(null);
               form.reset();
               setOpened(true);
+              setToggleTitle("Add Admin");
             }}
           >
             Add Admin
@@ -179,7 +183,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         opened={opened}
         setOpened={setOpened}
         handleSubmit={handleSubmit}
-        title="Add Admin"
+        title={toggleTitle}
       >
         <Popup.TextInputField
           label="User Name"
