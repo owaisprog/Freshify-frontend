@@ -21,9 +21,9 @@ export default function OrganizationOwnerDashboard() {
           {/* Sales Section  */}
           <section className=" ">
             <Text className="!text-[22px] !font-[700]">Sales</Text>
-            <div className="bg-[#FFFFFF]  px-2 rounded-[25px] border border-[#718EBF] ">
+            <div className="bg-[#FFFFFF]  px-2 rounded-[25px] specialBorder ">
               {/* Total Sales Section 12,996 */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#718EBF] rounded-full">
                     {" "}
@@ -57,9 +57,9 @@ export default function OrganizationOwnerDashboard() {
           {/* Sales Section  */}
           <section className="  ">
             <Text className="!text-[22px] !font-[700]">Top Performers</Text>
-            <div className="bg-[#FFFFFF] px-2 rounded-[25px] border border-[#718EBF] ">
+            <div className="bg-[#FFFFFF] px-2 rounded-[25px] specialBorder ">
               {/* Total Sales Section 12,996 */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#B1B1B1] rounded-full">
                     {" "}
@@ -106,9 +106,9 @@ export default function OrganizationOwnerDashboard() {
         <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[589px]">
           <section className=" ">
             <Text className="!text-[22px] !font-[700]">Popular Services</Text>
-            <div className="bg-[#FFFFFF] px-2 rounded-[25px] border border-[#718EBF] ">
+            <div className="bg-[#FFFFFF] p-[20px] h-[322px] flex flex-col justify-between rounded-[25px] specialBorder ">
               {/* Servicce 1 Section  */}
-              <div className="h-[99px] flex px-[13px] gap-4   items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2  w-full">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#DCFAF8] rounded-full">
                     {" "}
@@ -123,7 +123,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Servicce 2 Section  */}
-              <div className="h-[99px] flex px-[13px] gap-4   items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2  w-full">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#DCFAF8] rounded-full">
                     {" "}
@@ -138,7 +138,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Servicce 3 Section  */}
-              <div className="h-[99px] flex px-[13px] gap-4   items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2  w-full">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFE0EB] rounded-full">
                     {" "}
@@ -153,7 +153,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Servicce 4 Section  */}
-              <div className="h-[99px] flex px-[13px] gap-4   items-center  justify-between  ">
+              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  ">
                 <div className="flex items-center gap-2  w-full">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFE0EB] rounded-full">
                     {" "}
@@ -178,9 +178,9 @@ export default function OrganizationOwnerDashboard() {
           {/* Sales Section  */}
           <section className=" ">
             <Text className="!text-[22px] !font-[700]">Orders</Text>
-            <div className="bg-[#FFFFFF] px-2 rounded-[25px] border border-[#718EBF] ">
+            <div className="bg-[#FFFFFF] px-2 rounded-[25px] specialBorder ">
               {/* Total Orders Section */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFF5D9] rounded-full">
                     {" "}
@@ -192,7 +192,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Order This Week */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between border-b-[0.3px] border-b-[#718EBF] ">
+              <div className="h-[99px] flex px-[13px]  items-center  justify-between specialBorderBottom ">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
                     {" "}
@@ -227,9 +227,9 @@ export default function OrganizationOwnerDashboard() {
             <Text className="!text-[22px] !font-[700]">
               All Locations By Users
             </Text>
-            <div className="bg-[#FFFFFF] px-2 rounded-[25px] border border-[#718EBF] ">
+            <div className="bg-[#FFFFFF] px-2 rounded-[25px] specialBorder ">
               {/* United State America Section  */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
                     {" "}
@@ -243,7 +243,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Canada Section  */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  border-b-[0.3px] border-b-[#718EBF]">
+              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFE7E7] rounded-full">
                     {" "}

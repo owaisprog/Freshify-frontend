@@ -35,6 +35,12 @@ const data = [
     icon: MdMyLocation,
   },
   {
+    link: "Users",
+    label: "Users",
+    activePath: "/OrganizationOwnerDashboard/Users",
+    icon: ImUsers,
+  },
+  {
     link: "",
     label: "Calendar",
     activePath: "/OrganizationOwnerDashboard/Calendar",
@@ -45,12 +51,6 @@ const data = [
     label: "Payout",
     activePath: "/OrganizationOwnerDashboard/Payout",
     icon: MdOutlinePayment,
-  },
-  {
-    link: "Users",
-    label: "Users",
-    activePath: "/OrganizationOwnerDashboard/Users",
-    icon: ImUsers,
   },
 ];
 
@@ -84,9 +84,9 @@ export default function OrganizationOwnerMobileNav() {
   ));
 
   return (
-    <div className="lg:hidden fixed top-0 w-full z-50">
+    <div className="lg:hidden bg-[#FFFFFF] fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
-      <nav className=" z-20 bg-white  px-4 py-3 flex justify-between items-center">
+      <nav className=" z-20 px-4 py-3 flex justify-between items-center">
         <Image radius="md" src={freshifyLogo} w={250} />
 
         <Burger
@@ -110,28 +110,27 @@ export default function OrganizationOwnerMobileNav() {
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
-        <div className="flex flex-col h-full  ">
+        <div className="flex flex-col h-full    ">
           <div className="flex-1 overflow-y-auto">
             <div className="mt-2">{links}</div>
-          </div>
-
-          {/* Settings Link */}
-          <div className="pt-4 ">
-            <Link
-              to="#"
-              className={`flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 ${
-                "settings" === active
-                  ? "bg-[#f5f7fa] border-l-4 border-black text-black"
-                  : ""
-              }`}
-              onClick={() => {
-                setActive("settings");
-                setIsMenuOpen(false);
-              }}
-            >
-              <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
-              <span>Settings</span>
-            </Link>
+            {/* Settings Link */}
+            <div className="pt-4  ">
+              <Link
+                to="#"
+                className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
+                  "settings" === active
+                    ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
+                    : ""
+                }`}
+                onClick={() => {
+                  setActive("settings");
+                  setIsMenuOpen(false);
+                }}
+              >
+                <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
+                <span>Settings</span>
+              </Link>
+            </div>
           </div>
         </div>
       </Drawer>

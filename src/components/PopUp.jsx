@@ -38,9 +38,9 @@ const Popup = ({
         centered
         size="xl"
       >
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Paper bg={"white"} shadow="md" className="p-8" radius={"md"}>
-            <Stack spacing="md">{children}</Stack>
+        <form className="" onSubmit={form.onSubmit(handleSubmit)}>
+          <Paper bg={"white"} shadow="md" className="p-8 " radius={"md"}>
+            <Stack>{children}</Stack>
           </Paper>
         </form>
       </Modal>
@@ -71,6 +71,8 @@ function Input({ label, placeholder, id, type = "text" }) {
       label={label}
       placeholder={placeholder}
       {...form.getInputProps(id)}
+      labelProps={{ className: "font-semibold text-gray-700" }}
+      radius={"md"}
     />
   );
 }
@@ -82,6 +84,8 @@ function TextInputField({ label, placeholder, id }) {
       label={label}
       placeholder={placeholder}
       {...form.getInputProps(id)}
+      labelProps={{ className: "font-semibold text-gray-700" }}
+      radius={"md"}
     />
   );
 }

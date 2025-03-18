@@ -233,11 +233,13 @@ function OrganizationOwnerServices() {
                 <img src="/mostSoldServiceIcons.png" alt="" />
               </div>
               <div>
-                <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                <Text className="!text-[#000000] !text-[14px] !font-[400]">
                   Most Sold Service
                 </Text>
 
-                <Text className="!text-[14px] !font-[400]">Haircut</Text>
+                <Text className="!text-[14px] !text-[#333B69] !font-[400]">
+                  Haircut
+                </Text>
               </div>
             </div>
             <Text className="!text-[30px] !font-[600]">$4,790</Text>
@@ -251,7 +253,7 @@ function OrganizationOwnerServices() {
                 <img src="/haircutTotalOrdersIcon.png" alt="" />
               </div>
 
-              <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+              <Text className="!text-[#000000] !text-[14px] !font-[400]">
                 Haircut Total Orders
               </Text>
             </div>
@@ -266,13 +268,15 @@ function OrganizationOwnerServices() {
           <Button
             bg="black"
             radius="md"
+            fw={"normal"}
+            className="!text-[18px] "
             onClick={() => {
               setSelectedService(null); // Reset selectedService (means we are creating a new service)
               form.reset(); // Clear form fields
               setOpened(true); // Open the popup
             }}
           >
-            Add Services
+            Add Service
           </Button>
         </section>
 

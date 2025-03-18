@@ -140,19 +140,19 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
       {/* Table Section */}
       <section>
         <div className="flex justify-between items-end">
-          <Title fz={"h4"} fw={"bold"}>
-            All Professionals
-          </Title>
+          <Title className="!text-[22px] !font-[700]">Professionals</Title>
           <Button
             bg="black"
             radius="md"
+            fw={"normal"}
+            className="!text-[18px] "
             onClick={() => {
               setSelectedUser(null);
               form.reset();
               setOpened(true);
             }}
           >
-            Add Professionals
+            Add Professional
           </Button>
         </div>
         <div className="mt-3">

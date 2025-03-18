@@ -56,11 +56,11 @@ function OrganizationOwnerUsers() {
                 <img src="/mostSalesProfessionalIcon.png" alt="" />
               </div>
               <div>
-                <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                <Text className="!text-[#000000] !text-[14px] !font-[400]">
                   Most Sales Professional
                 </Text>
 
-                <Text className="!text-[14px] !font-[400]">
+                <Text className="!text-[14px] !text-[#333B69] !font-[400]">
                   Mirza Tayyab Khalid
                 </Text>
               </div>
@@ -76,9 +76,7 @@ function OrganizationOwnerUsers() {
                 <img src="/yelloArrowIcon.png" alt="" />
               </div>
 
-              <Text className="!text-[#333B69] !text-[14px] !font-[400]">
-                Orders By Mirza
-              </Text>
+              <Text className=" !text-[14px] !font-[400]">Orders By Mirza</Text>
             </div>
             <Text className="!text-[30px] !font-[600]">1,360</Text>
           </div>
