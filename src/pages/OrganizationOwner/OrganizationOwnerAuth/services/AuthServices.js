@@ -30,7 +30,6 @@ export const registerUser = async (userData) => {
     //   );
     // }
     // ✅ Store the token after login
-    console.log(data.newUser);
     localStorage.setItem("token", JSON.stringify(data.newUser.token));
     localStorage.setItem("data", JSON.stringify(data.newUser));
     return data;
@@ -56,7 +55,19 @@ export const logoutUser = async () => {
 
 // utils/handleSessionExpiry.js
 export const handleSessionExpiry = () => {
-  console.warn("Session expired. Logging out...");
-  localStorage.removeItem("token"); // Remove expired token
-  window.location.href = "/"; // Redirect to login page
+  const data = JSON.parse(localStorage.getItem("data"));
+
+  if (data?.role === "organization_owner") {
+    window.location.href = "/OrganizationOwnerLogin"; // Redirect to login page
+  } else if (data?.role === "superadmin") {
+    window.location.href = "/SuperAdminLogin"; // Redirect to login page
+  } else if (data?.role === "customer") {
+    window.location.href = "/customerLogin"; // Redirect to login page
+  } else {
+    window.location.href = "/"; // Redirect to home or default page
+  }
+
+  // Remove both token and session data on session expiry
+  localStorage.removeItem("token");
+  localStorage.removeItem("data"); // Optionally clear session data if needed
 };
