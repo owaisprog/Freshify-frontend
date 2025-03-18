@@ -29,7 +29,6 @@ import OrganizationOwnerLogin from "./pages/OrganizationOwner/OrganizationOwnerA
 import OrganizationOwnerRegister from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerRegister.jsx";
 import OrganizationOwnerResetPassword from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerResetPassword.jsx";
 import OrganizationOwnerVerifyEmail from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerVerifyEmail.jsx";
-import OrganizationOwnerNewPassword from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerNewPassword.jsx";
 import OrganizationOwnerLocations from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerLocation/OrganizationOwnerLocation.jsx";
 import ProtectedRoute from "../src/components/ProtectedRoute.jsx";
 import OrganizationOwnerResendOTP from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationResenOTP.jsx";
@@ -43,11 +42,31 @@ import OrganizationNotification from "./pages/OrganizationOwner/OrganizationOwne
 import OrganizationProfile from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationProfile.jsx";
 import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationDelete.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SuperAdminLogin from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminLogin.jsx";
+import SuperAdminRegister from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminRegister.jsx";
+import SuperAdminVerifyEmail from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminVerifyEmail.jsx";
+import SuperAdminResetPassword from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminResetPassword.jsx";
+import SuperAdminResendOTP from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminResendOTP.jsx";
+import SuperAdminDashboard from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminDashboard/SuperAdminDashboard.jsx";
+import SuperAdminLayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLayout.jsx";
+import CustomerLogin from "./pages/Customer/CustomerAuth/CustomerLogin.jsx";
+import CustomerRegister from "./pages/Customer/CustomerAuth/CustomerRegister.jsx";
+import CustomerVerifyEmail from "./pages/Customer/CustomerAuth/CustomerVerifyEmail.jsx";
+import CustomerResetPassword from "./pages/Customer/CustomerAuth/CustomerPassword.jsx";
+import CustomerResendOTP from "./pages/Customer/CustomerAuth/CustomerResendOTP.jsx";
+import CustomerLayout from "./pages/Customer/CustomerLayout/CustomerLayout.jsx";
+import CustomerDashboard from "./pages/Customer/CustomerLayout/CustomerDashboard/CustomerDashboard.jsx";
+import NewPassword from "./components/NewPassword.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route
+        path="OrganizationOwnerNewPassword/:resetToken"
+        element={<NewPassword />}
+      />
+      {/* organization owner */}
       <Route
         path="OrganizationOwnerLogin"
         element={<OrganizationOwnerLogin />}
@@ -66,10 +85,7 @@ const router = createBrowserRouter(
         path="OrganizationOwnerResetPassword"
         element={<OrganizationOwnerResetPassword />}
       />
-      <Route
-        path="OrganizationOwnerNewPassword/:resetToken"
-        element={<OrganizationOwnerNewPassword />}
-      />
+
       <Route
         path="OrganizationOwnerResendOTP"
         element={<OrganizationOwnerResendOTP />}
@@ -93,10 +109,14 @@ const router = createBrowserRouter(
         path="OrganizationOwnerUserLogin"
         element={<OrganizationOwnerUserLogin />}
       />
+
       <Route
         path="OrganizationOwnerDashboard"
         element={
-          <ProtectedRoute requiredRole="organization_owner">
+          <ProtectedRoute
+            path="/OrganizationOwnerLogin"
+            requiredRole="organization_owner"
+          >
             <OrganizationOwnerLayout />
           </ProtectedRoute>
         }
@@ -111,6 +131,53 @@ const router = createBrowserRouter(
           <Route path="personal" element={<OrganizationProfile />} />
           <Route path="delete" element={<OrganizationDelete />} />
         </Route>
+      </Route>
+
+      {/* super admin auth */}
+
+      <Route path="SuperAdminLogin" element={<SuperAdminLogin />} />
+      <Route path="SuperAdminRegister" element={<SuperAdminRegister />} />
+
+      <Route path="SuperAdminVerifyEmail" element={<SuperAdminVerifyEmail />} />
+
+      <Route
+        path="SuperAdminResetPassword"
+        element={<SuperAdminResetPassword />}
+      />
+
+      <Route path="SuperAdminResendOTP" element={<SuperAdminResendOTP />} />
+
+      <Route
+        path="SuperAdminDashboard"
+        element={
+          <ProtectedRoute path="/SuperAdminLogin" requiredRole="superadmin">
+            <SuperAdminLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<SuperAdminDashboard />} />
+      </Route>
+
+      {/* Customer auth */}
+
+      <Route path="CustomerLogin" element={<CustomerLogin />} />
+      <Route path="CustomerRegister" element={<CustomerRegister />} />
+
+      <Route path="CustomerVerifyEmail" element={<CustomerVerifyEmail />} />
+
+      <Route path="CustomerResetPassword" element={<CustomerResetPassword />} />
+
+      <Route path="CustomerResendOTP" element={<CustomerResendOTP />} />
+
+      <Route
+        path="CustomerDashboard"
+        element={
+          <ProtectedRoute path="/customerLogin" requiredRole="customer">
+            <CustomerLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<CustomerDashboard />} />
       </Route>
     </Route>
   )

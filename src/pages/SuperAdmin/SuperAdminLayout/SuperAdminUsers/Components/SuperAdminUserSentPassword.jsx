@@ -1,29 +1,32 @@
 import { useState } from "react";
 import { Button, Image, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../../../assets/freshifyImage.png";
-import { apiPost } from "../../../services/useApi";
 import { useNavigate, useParams } from "react-router-dom";
+import freshifyImage from "../../../../../assets/freshifyImage.png";
+import { apiPost } from "../../../../../services/useApi";
 
-export default function OrganizationOwnerNewPassword({ path }) {
+export default function SuperAdminSentPassword() {
   const [loading, setLoading] = useState(false);
-  const { resetToken } = useParams();
+  const { userKey } = useParams(); // Get userKey from URL
   const navigate = useNavigate();
-  console.log(resetToken);
 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const resetRequest = await apiPost(`/api/reset-password/${resetToken}`, {
+      const response = await apiPost("/api/set-password", {
+        token: userKey, // Send the token from URL
         newPassword: values.newPassword,
       });
-      console.log(values.newPassword, values, resetRequest);
+
+      console.log("Password set successfully:", response);
       setLoading(false);
-      navigate(path);
+      navigate("/SuperAdminUserLogin"); // Redirect to login
     } catch (error) {
-      console.log(`message:${error.message}`);
+      console.error("Error setting password:", error);
+      setLoading(false);
     }
   };
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { newPassword: "", confirmPassword: "" },
@@ -37,6 +40,7 @@ export default function OrganizationOwnerNewPassword({ path }) {
 
   return (
     <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0  lg:py-1 px-2 lg:px-0">
+      {/* Left Side - Image */}
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -69,7 +73,7 @@ export default function OrganizationOwnerNewPassword({ path }) {
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            Set New Password
+            Set Your Password
           </Text>
           <Text c="dimmed" size="sm" ta="center">
             Enter your new password and confirm it.
@@ -92,12 +96,14 @@ export default function OrganizationOwnerNewPassword({ path }) {
             {...form.getInputProps("confirmPassword")}
           />
 
+          {/* Submit Button */}
+
           <Button
-            radius={"md"}
             fullWidth
             type="submit"
             bg={"black"}
             c={"white"}
+            radius={"md"}
             loading={loading}
             loaderProps={{ type: "dots" }}
           >

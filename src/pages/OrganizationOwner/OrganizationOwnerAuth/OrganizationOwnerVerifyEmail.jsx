@@ -6,7 +6,7 @@ import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function OrganizationOwnerVerifyEmail() {
+export default function CustomerVerifyEmail() {
   const navigate = useNavigate();
   const location = useLocation();
   const { userEmail } = location.state || {};
@@ -17,13 +17,16 @@ export default function OrganizationOwnerVerifyEmail() {
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      apiPost("/api/verify-otp", {
+      const data = await apiPost("/api/verify-otp", {
         email: userEmail,
         otp: values.pin,
       });
+
+      localStorage.setItem("token", data.token);
+
       console.log("Entered PIN:", values.pin);
       setLoading(false);
-      navigate("/OrganizationOwnerLogin");
+      navigate("/OrganizationOwnerDashboard");
     } catch (error) {
       console.log("Error Verifying email", error);
     }

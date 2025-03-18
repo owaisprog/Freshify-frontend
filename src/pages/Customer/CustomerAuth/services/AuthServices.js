@@ -58,5 +58,5 @@ export const logoutUser = async () => {
 export const handleSessionExpiry = () => {
   console.warn("Session expired. Logging out...");
   localStorage.removeItem("token"); // Remove expired token
-  window.location.href = "/"; // Redirect to login page
+  window.location.href = "/CustomerLogin"; // Redirect to login page
 };

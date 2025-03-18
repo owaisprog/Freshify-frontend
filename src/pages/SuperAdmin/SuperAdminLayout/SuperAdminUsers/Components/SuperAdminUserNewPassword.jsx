@@ -1,29 +1,17 @@
 import { useState } from "react";
 import { Button, Image, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../../../assets/freshifyImage.png";
-import { apiPost } from "../../../services/useApi";
+import freshifyImage from "../../../../../assets/freshifyImage.png";
 import { useNavigate, useParams } from "react-router-dom";
+import { apiPost } from "../../../../../services/useApi";
 
-export default function OrganizationOwnerNewPassword({ path }) {
+export default function SuperAdminUserNewPassword() {
   const [loading, setLoading] = useState(false);
-  const { resetToken } = useParams();
+  const [message, setMessage] = useState(""); // Success/Error message
+  const { resetToken } = useParams(); // Get resetToken from URL params
   const navigate = useNavigate();
-  console.log(resetToken);
 
-  const handleSubmit = async (values) => {
-    try {
-      setLoading(true);
-      const resetRequest = await apiPost(`/api/reset-password/${resetToken}`, {
-        newPassword: values.newPassword,
-      });
-      console.log(values.newPassword, values, resetRequest);
-      setLoading(false);
-      navigate(path);
-    } catch (error) {
-      console.log(`message:${error.message}`);
-    }
-  };
+  // Form validation
   const form = useForm({
     mode: "uncontrolled",
     initialValues: { newPassword: "", confirmPassword: "" },
@@ -34,6 +22,41 @@ export default function OrganizationOwnerNewPassword({ path }) {
         value === values.newPassword ? null : "Passwords do not match",
     },
   });
+
+  // Handle Reset Password Request
+  const handleSubmit = async (values) => {
+    try {
+      setLoading(true);
+      setMessage(""); // Reset message
+
+      // API call to reset password
+      const resetRequest = await apiPost(
+        `/api/reset-password-user/${resetToken}`,
+        {
+          newPassword: values.newPassword,
+        }
+      );
+
+      console.log("Reset Password Request:", resetRequest);
+
+      // Show success message & redirect to login
+      setMessage("Password reset successful! Redirecting to login...");
+      setTimeout(() => {
+        navigate("/SuperAdminUserLogin");
+      }, 2000);
+    } catch (error) {
+      console.error("Error in reset password request:", error);
+
+      // Handle error cases
+      if (error.response && error.response.status === 400) {
+        setMessage("Invalid or expired reset link.");
+      } else {
+        setMessage("Something went wrong. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0  lg:py-1 px-2 lg:px-0">
@@ -56,7 +79,6 @@ export default function OrganizationOwnerNewPassword({ path }) {
           fallbackSrc="https://placehold.co/600x400?text=Placeholder"
         />
       </section>
-
       {/* Right Side - Form */}
       <section className="flex items-center justify-center">
         <form
@@ -69,10 +91,10 @@ export default function OrganizationOwnerNewPassword({ path }) {
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            Set New Password
+            Reset Password
           </Text>
           <Text c="dimmed" size="sm" ta="center">
-            Enter your new password and confirm it.
+            Enter your new password below.
           </Text>
 
           {/* Password Input Fields */}
@@ -92,16 +114,28 @@ export default function OrganizationOwnerNewPassword({ path }) {
             {...form.getInputProps("confirmPassword")}
           />
 
+          {/* Success/Error Message */}
+          {message && (
+            <Text
+              size="sm"
+              c={message.includes("successful") ? "green" : "red"}
+            >
+              {message}
+            </Text>
+          )}
+
+          {/* Submit Button */}
+
           <Button
-            radius={"md"}
             fullWidth
             type="submit"
             bg={"black"}
             c={"white"}
+            radius={"md"}
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
-            Set Password
+            Reset Password
           </Button>
         </form>
       </section>

@@ -5,7 +5,7 @@ import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function OrganizationOwnerNewPassword({ path }) {
+export default function SuperAdminNewPassword() {
   const [loading, setLoading] = useState(false);
   const { resetToken } = useParams();
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function OrganizationOwnerNewPassword({ path }) {
       });
       console.log(values.newPassword, values, resetRequest);
       setLoading(false);
-      navigate(path);
+      navigate("/SuperAdminLogin");
     } catch (error) {
       console.log(`message:${error.message}`);
     }
