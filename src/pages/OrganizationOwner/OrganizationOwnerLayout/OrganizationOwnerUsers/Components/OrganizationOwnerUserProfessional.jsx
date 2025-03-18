@@ -1,4 +1,4 @@
-import { Button, Title } from "@mantine/core";
+import { Button, Title, Modal, Text } from "@mantine/core";
 import { useState } from "react";
 import { FiTrash, FiUpload } from "react-icons/fi";
 import { useForm } from "@mantine/form";
@@ -22,6 +22,13 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
     staleTime: 15 * 60 * 1000,
   });
 
+  // ✅ Fetch services
+  const { data: services = [] } = useQueryHook({
+    queryKey: "services",
+    endpoint: "/api/get-services-by-owner",
+    staleTime: 15 * 60 * 1000, // 15 minutes cache
+  });
+
   // ✅ Mutations for CRUD operations
   const { mutate: createUser, isPending: isLoadingCreate } = usePostMutation([
     "users",
@@ -39,8 +46,12 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   const [selectedUser, setSelectedUser] = useState(null);
   const [toggleTitle, setToggleTitle] = useState("");
 
+  // ✅ State for services modal
+  const [servicesModalOpen, setServicesModalOpen] = useState(false);
+  const [servicesModalContent, setServicesModalContent] = useState([]);
+
   // ✅ Table Columns
-  const columns = ["Name", "Location", "Email", "Role", "Actions"];
+  const columns = ["Name", "Location", "Email", "View Services", "Actions"];
 
   // ✅ Delete User
   const handleDeleteUser = (userId) => {
@@ -61,6 +72,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
       email: "",
       location: "",
       role: "barber",
+      services: [],
     },
     validate: {
       name: (value) => (value.trim().length < 1 ? "Name is required" : null),
@@ -80,18 +92,23 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
       (loc) => loc.name === values.location
     )?._id;
 
+    // ✅ Find service IDs based on selected service names
+    const servicesId = services
+      ?.filter((val) => values?.services?.includes(val?.name))
+      ?.map((val) => val?._id);
+
     try {
       if (selectedUser) {
         // ✅ Update user
         updateUser({
           endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, location: locationId },
+          payload: { ...values, location: locationId, services: servicesId },
         });
       } else {
         // ✅ Create new user
         createUser({
           endpoint: "/api/invite-user",
-          payload: { ...values, location: locationId },
+          payload: { ...values, location: locationId, services: servicesId },
         });
       }
 
@@ -111,7 +128,20 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
     Name: val.name,
     Location: val.location?.name || "N/A",
     Email: val.email,
-    Role: val.role,
+    "View Services": (
+      <Text
+        fz={"lg"}
+        td={"underline"}
+        c={"black"} // Set color to black
+        className="cursor-pointer"
+        onClick={() => {
+          setServicesModalContent(val.services); // Set services for the modal
+          setServicesModalOpen(true); // Open the modal
+        }}
+      >
+        View Services
+      </Text>
+    ),
     Actions: (
       <div className="flex gap-2.5">
         {/* ✅ Edit User */}
@@ -125,6 +155,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
               email: val.email,
               location: val.location?.name || "",
               role: val.role,
+              services: val.services?.map((service) => service.name) || [], // Set selected services
             });
             setOpened(true);
           }}
@@ -199,21 +230,34 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
           id="location"
           error={locationError}
         />
-        {/* <Popup.Select
-          data={[
-            { value: "admin", label: "Admin" },
-            { value: "barber", label: "Barber" },
-          ]}
-          label="Role"
-          placeholder="Select Role"
-          id="role"
-        /> */}
+        <Popup.MutltiSelector
+          data={services.map((serve) => serve.name)}
+          label="Select the Services"
+          placeholder="Select at least one Service"
+          id="services"
+        />
         <Popup.SubmitButton
           loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
         >
           {selectedUser ? "Update User" : "Add User"}
         </Popup.SubmitButton>
       </Popup>
+
+      {/* Services Modal */}
+      <Modal
+        opened={servicesModalOpen}
+        onClose={() => setServicesModalOpen(false)}
+        title="Services"
+        centered
+      >
+        <div>
+          {servicesModalContent.map((service, index) => (
+            <div key={index} className="mb-2">
+              <Text>{service.name}</Text>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </main>
   );
 }

@@ -1,4 +1,4 @@
-import { Button, Select, Text, Title } from "@mantine/core";
+import { Button, Select, Text, Title, Modal } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
@@ -15,10 +15,8 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 
 function OrganizationOwnerServices() {
-  // ✅ Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
 
-  // ✅ Fetch services using React Query
   const {
     data: services = [],
     isLoading: isServicesLoading,
@@ -29,20 +27,13 @@ function OrganizationOwnerServices() {
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
-  // ✅ Fetch owner locations using React Query
-  const {
-    data: ownerLocations = [],
-    // isLoading: isLocationsLoading,
-    error: locationsError,
-  } = useQueryHook({
+  const { data: ownerLocations = [], error: locationsError } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
-  // ✅ Extract location names
   const locationNames = ownerLocations.map((val) => val?.name) || [];
-  // ✅ Initialize Mutations for CRUD Operations
   const { mutate: createService, isPending: isLoadCreate } =
     usePostMutation("services");
   const { mutate: updateService, isPending: isLoadUpdate } =
@@ -50,12 +41,12 @@ function OrganizationOwnerServices() {
   const { mutate: deleteService, isPending: isLoadDelete } =
     useDeleteMutation("services");
 
-  // ✅ State Management
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [selectedService, setSelectedService] = useState(null); // Holds the service being edited
+  const [selectedService, setSelectedService] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
-  // ✅ Table Headers
   const columns = [
     "Services",
     "Location",
@@ -65,24 +56,17 @@ function OrganizationOwnerServices() {
     "Actions",
   ];
 
-  // ✅ Delete Service
   const queryClient = useQueryClient();
   const handleDeleteService = (id) => {
     deleteService(
       { endpoint: `/api/delete-service/${id}` },
       {
         onSuccess: () => {
-          // ✅ Get current list of services
           const previousServices = queryClient.getQueryData(["services"]) || [];
-
-          // ✅ Filter out the deleted service
           const updatedServices = previousServices.filter(
             (service) => service._id !== id
           );
-
-          // ✅ Set the new list in cache
           queryClient.setQueryData(["services"], updatedServices);
-
           console.log("Service deleted successfully!");
         },
         onError: (error) => {
@@ -92,12 +76,11 @@ function OrganizationOwnerServices() {
     );
   };
 
-  // ✅ Form Validation & Handling using Mantine
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      locations: [], // Array of location IDs
+      locations: [],
       description: "",
       category: "",
       duration: "",
@@ -127,31 +110,25 @@ function OrganizationOwnerServices() {
     },
   });
 
-  // ✅ Handle Form Submission (Create/Update Service)
   const handleSubmit = (values) => {
     setLoading(true);
-
-    // ✅ Convert Location Names to IDs
     const filterIdLocations = ownerLocations
       ?.filter((val) => values?.locations?.includes(val?.name))
       ?.map((val) => val?._id);
 
     try {
       if (selectedService) {
-        // ✅ Update existing service
         updateService({
           endpoint: `/api/update-service/${selectedService._id}`,
           payload: { ...values, locations: filterIdLocations },
         });
       } else {
-        // ✅ Create new service
         createService({
           endpoint: "/api/create-service",
           payload: { ...values, locations: filterIdLocations },
         });
       }
 
-      // ✅ Close Modal & Stop Loading
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
@@ -162,11 +139,23 @@ function OrganizationOwnerServices() {
     }
   };
 
-  // ✅ Transform services into table-compatible format
   const data = services?.map((val) => ({
     Services: val.name,
     Duration: val.duration,
-    Description: val.description,
+    Description: (
+      <Text
+        fz={"lg"}
+        td={"underline"}
+        c={"black"} // Set color to black
+        className="cursor-pointer"
+        onClick={() => {
+          setModalContent(val.description);
+          setModalOpen(true);
+        }}
+      >
+        View Description
+      </Text>
+    ),
     Location: (
       <Select
         placeholder="Available on locations"
@@ -174,31 +163,30 @@ function OrganizationOwnerServices() {
         rightSection={<FaChevronDown size={11} style={{ color: "#B0B0B0" }} />}
         variant="unstyled"
         clearable={false}
-        value={null} // Prevents selection
-        onChange={() => null} // Stops selection
+        value={null}
+        onChange={() => null}
         styles={{
-          input: { fontSize: "13.7px", color: "black" }, // Ensures black text
-          rightSection: { marginRight: "4px" }, // Adjust icon spacing
+          input: { fontSize: "13.7px", color: "black" },
+          rightSection: { marginRight: "4px" },
         }}
       />
     ),
     Price: val.price,
     Actions: (
       <div className="flex gap-2.5">
-        {/* ✅ Edit Service Button */}
         <div
           className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
           onClick={() => {
-            setSelectedService(val); // Set selected service for editing
+            setSelectedService(val);
             form.setValues({
               name: val.name,
               category: val.category,
               duration: val.duration,
               price: val.price,
-              locations: val.locations.map((loc) => loc.name), // Extract location names
+              locations: val.locations.map((loc) => loc.name),
               description: val.description,
             });
-            setOpened(true); // Open the popup
+            setOpened(true);
           }}
         >
           <FiUpload size={18} style={{ color: "#427B42" }} />
@@ -214,6 +202,7 @@ function OrganizationOwnerServices() {
       </div>
     ),
   }));
+
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
       <Title
@@ -226,9 +215,7 @@ function OrganizationOwnerServices() {
       </Title>
 
       <section className=" p-6 flex flex-col h-full  gap-8">
-        {/* First Section  */}
         <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
-          {/* Most Sold Service Section */}
           <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
             <div className="flex items-center gap-2">
               <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
@@ -239,7 +226,6 @@ function OrganizationOwnerServices() {
                 <Text className="!text-[#000000] !text-[14px] !font-[400]">
                   Most Sold Service
                 </Text>
-
                 <Text className="!text-[14px] !text-[#333B69] !font-[400]">
                   Haircut
                 </Text>
@@ -248,14 +234,12 @@ function OrganizationOwnerServices() {
             <Text className="!text-[30px] !font-[600]">$4,790</Text>
           </div>
 
-          {/* Haircut Total Orders Section  */}
           <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
             <div className="flex items-center gap-2">
               <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#E7EDFF] rounded-3xl">
                 {" "}
                 <img src="/haircutTotalOrdersIcon.png" alt="" />
               </div>
-
               <Text className="!text-[#000000] !text-[14px] !font-[400]">
                 Haircut Total Orders
               </Text>
@@ -263,8 +247,6 @@ function OrganizationOwnerServices() {
             <Text className="!text-[30px] !font-[600]">1,360</Text>
           </div>
         </section>
-
-        {/* Services Table */}
 
         <section className="flex justify-between items-center">
           <Text className="!text-[22px] !font-[700]">All Services</Text>
@@ -274,9 +256,9 @@ function OrganizationOwnerServices() {
             fw={"normal"}
             className="!text-[18px] !px-[40px] !py-[10px]"
             onClick={() => {
-              setSelectedService(null); // Reset selectedService (means we are creating a new service)
-              form.reset(); // Clear form fields
-              setOpened(true); // Open the popup
+              setSelectedService(null);
+              form.reset();
+              setOpened(true);
             }}
           >
             Add Service
@@ -292,7 +274,6 @@ function OrganizationOwnerServices() {
           }
         />
 
-        {/* Service Creation Popup */}
         <Popup
           form={form}
           opened={opened}
@@ -335,6 +316,15 @@ function OrganizationOwnerServices() {
           />
           <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
         </Popup>
+
+        <Modal
+          opened={modalOpen}
+          onClose={() => setModalOpen(false)}
+          title="Description"
+          centered
+        >
+          <p>{modalContent}</p>
+        </Modal>
       </section>
     </main>
   );
