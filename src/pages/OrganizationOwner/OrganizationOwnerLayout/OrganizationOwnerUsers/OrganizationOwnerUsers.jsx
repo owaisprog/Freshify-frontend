@@ -61,7 +61,7 @@ function OrganizationOwnerUsers() {
                   Most Sales Professional
                 </Text>
 
-                <Text className="!text-[14px] !text-[#333B69] !font-[400]">
+                <Text className="!text-[14px] !font-[400]">
                   Mirza Tayyab Khalid
                 </Text>
               </div>

@@ -47,9 +47,9 @@ const data = [
     icon: MdCalendarMonth,
   },
   {
-    link: "",
+    link: "#",
     label: "Payout",
-    activePath: "/OrganizationOwnerDashboard/Payout",
+    activePath: "Payout",
     icon: MdOutlinePayment,
   },
 ];

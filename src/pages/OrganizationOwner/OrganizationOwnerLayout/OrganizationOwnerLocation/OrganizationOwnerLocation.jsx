@@ -22,6 +22,7 @@ import {
   useQueryHook,
   useUpdateMutation,
 } from "../../../../services/reactQuery";
+import { toast } from "react-toastify";
 
 export default function OrganizationOwnerLocations() {
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -60,10 +61,11 @@ export default function OrganizationOwnerLocations() {
       { endpoint: `/api/delete-location/${delId}` },
       {
         onSuccess: () => {
-          console.log("Location deleted successfully!");
+          toast("Success", { position: "top-right" });
         },
         onError: (error) => {
           console.error("Error deleting location:", error);
+          toast("Error deleting location", { position: "top-right" });
         },
       }
     );
@@ -119,13 +121,14 @@ export default function OrganizationOwnerLocations() {
           payload: values,
         });
       }
-
+      toast("Success", { position: "top-right" });
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
       }, 1000);
     } catch (error) {
       console.error("Error Creating/Updating location", error);
+      toast("Something went wrong try again", { position: "top-right" });
       setLoading(false);
     }
   };
@@ -166,9 +169,9 @@ export default function OrganizationOwnerLocations() {
 
         <ScrollArea
           offsetScrollbars
-          className="h-[400px] w-full rounded-lg p2-2 "
+          className="h-[500px] min-w-full  rounded-lg p2-2 "
         >
-          <Table.ScrollContainer className="min-w-[1348px]">
+          <Table.ScrollContainer className=" w-full ">
             <Box className="flex flex-col gap-4 p-2  justify-center items-center">
               {isLoading ? (
                 <Loader className="mx-auto" color="blue" type="bars" />
@@ -185,7 +188,7 @@ export default function OrganizationOwnerLocations() {
                 locations?.map((val) => (
                   <section
                     key={val._id}
-                    className=" min-w-[1348px] flex justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
+                    className=" min-w-[1650px] flex justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
                   >
                     <div className="col-span-2 flex items-center gap-3  ">
                       <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">

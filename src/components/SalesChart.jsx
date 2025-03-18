@@ -38,7 +38,7 @@ export default function SalesChart() {
         data={data}
         barProps={{ radius: 30 }}
         dataKey="day"
-        className="h-[235px] specialBorder"
+        className="h-[235px] "
         strokeDasharray="0 0"
         barChartProps={{ barCategoryGap: "10%" }}
         maxBarWidth={20}

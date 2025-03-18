@@ -16,7 +16,7 @@ body {
 }
 
 .specialBorderBottom {
-  box-shadow: 0 0.3px  0 #718EBF;/* Horizontal offset, Vertical offset, Blur radius, and color */
+  border-bottom: 0.3px solid  #718EBF !important;/* Horizontal offset, Vertical offset, Blur radius, and color */
 }
 
 

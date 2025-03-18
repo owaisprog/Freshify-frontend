@@ -13,6 +13,7 @@ import {
   useUpdateMutation,
 } from "../../../../services/reactQuery";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 function OrganizationOwnerServices() {
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -47,6 +48,8 @@ function OrganizationOwnerServices() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
 
+  const [toggleTitle, setToggleTitle] = useState("Add Service");
+
   const columns = [
     "Services",
     "Location",
@@ -67,10 +70,12 @@ function OrganizationOwnerServices() {
             (service) => service._id !== id
           );
           queryClient.setQueryData(["services"], updatedServices);
-          console.log("Service deleted successfully!");
+          // console.log("Service deleted successfully!");
+          toast("Success", { position: "top-right" });
         },
         onError: (error) => {
           console.error("Error deleting service:", error);
+          toast("Error deleting service", { position: "top-right" });
         },
       }
     );
@@ -104,8 +109,8 @@ function OrganizationOwnerServices() {
           ? "Duration must be a positive whole number"
           : null,
       price: (value) =>
-        value === "" || isNaN(value) || value <= 0
-          ? "Price must be a positive number"
+        !/^\$[0-9]+(\.[0-9]{1,2})?$/.test(value) // Regex: Starts with $ and allows two decimal places
+          ? "Price must start with a $ sign and be a valid number"
           : null,
     },
   });
@@ -128,12 +133,13 @@ function OrganizationOwnerServices() {
           payload: { ...values, locations: filterIdLocations },
         });
       }
-
+      toast("Success", { position: "top-right" });
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
       }, 2000);
     } catch (error) {
+      toast("Error Creating/Updating service", { position: "top-right" });
       console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
@@ -177,6 +183,7 @@ function OrganizationOwnerServices() {
         <div
           className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
           onClick={() => {
+            setToggleTitle("Update Service");
             setSelectedService(val);
             form.setValues({
               name: val.name,
@@ -256,6 +263,7 @@ function OrganizationOwnerServices() {
             fw={"normal"}
             className="!text-[18px] !px-[40px] !py-[10px]"
             onClick={() => {
+              setToggleTitle("Add Service");
               setSelectedService(null);
               form.reset();
               setOpened(true);
@@ -279,6 +287,7 @@ function OrganizationOwnerServices() {
           opened={opened}
           setOpened={setOpened}
           handleSubmit={handleSubmit}
+          title={toggleTitle}
         >
           <Popup.TextInputField
             label="Service Name"
@@ -300,7 +309,6 @@ function OrganizationOwnerServices() {
             label="Price"
             placeholder="Enter Service Price in Dollars"
             id="price"
-            type="number"
           />
           <Popup.MutltiSelector
             data={locationNames}
@@ -311,7 +319,7 @@ function OrganizationOwnerServices() {
           />
           <Popup.TextArea
             label="Description"
-            placeholder="Enter Location Description"
+            placeholder="Enter  Description"
             id="description"
           />
           <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>

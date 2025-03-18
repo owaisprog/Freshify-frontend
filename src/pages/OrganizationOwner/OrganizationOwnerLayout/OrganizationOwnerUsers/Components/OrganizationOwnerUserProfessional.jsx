@@ -10,6 +10,7 @@ import {
   useQueryHook,
   useUpdateMutation,
 } from "../../../../../services/reactQuery";
+import { toast } from "react-toastify";
 
 function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
@@ -51,15 +52,16 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   const [servicesModalContent, setServicesModalContent] = useState([]);
 
   // ✅ Table Columns
-  const columns = ["Name", "Location", "Email", "View Services", "Actions"];
+  const columns = ["Name", "Location", "Email", "Services", "Actions"];
 
   // ✅ Delete User
   const handleDeleteUser = (userId) => {
     deleteUser(
       { endpoint: `/api/delete-user/${userId}` },
       {
-        onSuccess: () => console.log("User deleted successfully!"),
-        onError: (error) => console.error("Error deleting user:", error),
+        onSuccess: () => toast("Success", { position: "top-right" }),
+        onError: () =>
+          toast("Deletion Failed Try Again", { position: "top-right" }),
       }
     );
   };
@@ -111,13 +113,14 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
           payload: { ...values, location: locationId, services: servicesId },
         });
       }
-
+      toast("Success", { position: "top-right" });
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);
       }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
+      toast("Someting went wrong try again ", { position: "top-right" });
     } finally {
       setLoading(false);
     }
@@ -128,7 +131,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
     Name: val.name,
     Location: val.location?.name || "N/A",
     Email: val.email,
-    "View Services": (
+    Services: (
       <Text
         fz={"lg"}
         td={"underline"}

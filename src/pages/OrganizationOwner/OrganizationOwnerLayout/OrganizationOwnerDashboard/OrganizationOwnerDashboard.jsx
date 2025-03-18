@@ -108,8 +108,8 @@ export default function OrganizationOwnerDashboard() {
             <Text className="!text-[22px] !font-[700]">Popular Services</Text>
             <div className="bg-[#FFFFFF] p-[20px] h-[322px] flex flex-col justify-between rounded-[25px] specialBorder ">
               {/* Servicce 1 Section  */}
-              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  specialBorderBottom">
-                <div className="flex items-center gap-2  w-full">
+              <div className="h-[60px]   px-[13px] gap-4   grid grid-cols-4  specialBorderBottom">
+                <div className="col-span-3 flex items-center gap-2  w-full ">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#DCFAF8] rounded-full">
                     {" "}
                     <img src="/serviceIconBlue.png" alt="" />
@@ -119,12 +119,14 @@ export default function OrganizationOwnerDashboard() {
                     <Progress color="#718EBF" size="lg" value={95} />
                   </div>
                 </div>
-                <Text className="!text-[30px] !font-[600]">1,360</Text>
+                <Text ta={"end"} className="!text-[30px] !font-[600]">
+                  1,360
+                </Text>
               </div>
 
               {/* Servicce 2 Section  */}
-              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  specialBorderBottom">
-                <div className="flex items-center gap-2  w-full">
+              <div className="h-[60px]  px-[13px] gap-4   grid grid-cols-4  specialBorderBottom">
+                <div className="col-span-3 flex items-center gap-2  w-full ">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#DCFAF8] rounded-full">
                     {" "}
                     <img src="/serviceIconBlue.png" alt="" />
@@ -134,12 +136,14 @@ export default function OrganizationOwnerDashboard() {
                     <Progress color="#718EBF" size="lg" value={75} />
                   </div>
                 </div>
-                <Text className="!text-[30px] !font-[600]">1,160</Text>
+                <Text ta={"end"} className="!text-[30px] !font-[600]">
+                  1,160
+                </Text>
               </div>
 
               {/* Servicce 3 Section  */}
-              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  specialBorderBottom">
-                <div className="flex items-center gap-2  w-full">
+              <div className="h-[60px]  px-[13px] gap-4   grid grid-cols-4  specialBorderBottom">
+                <div className="col-span-3 flex items-center gap-2  w-full ">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFE0EB] rounded-full">
                     {" "}
                     <img src="/serviceIconPink.png" alt="" />
@@ -149,12 +153,14 @@ export default function OrganizationOwnerDashboard() {
                     <Progress color="#718EBF" size="lg" value={60} />
                   </div>
                 </div>
-                <Text className="!text-[30px] !font-[600]">960</Text>
+                <Text ta={"end"} className="!text-[30px] !font-[600]">
+                  960
+                </Text>
               </div>
 
               {/* Servicce 4 Section  */}
-              <div className="h-[60px] flex px-[13px] gap-4   items-center  justify-between  ">
-                <div className="flex items-center gap-2  w-full">
+              <div className="h-[60px]   px-[13px] gap-4   grid grid-cols-4  specialBorderBottom">
+                <div className="col-span-3 flex items-center gap-2  w-full ">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFE0EB] rounded-full">
                     {" "}
                     <img src="/serviceIconPink.png" alt="" />
@@ -164,7 +170,9 @@ export default function OrganizationOwnerDashboard() {
                     <Progress color="#718EBF" size="lg" value={45} />
                   </div>
                 </div>
-                <Text className="!text-[30px] !font-[600]">530</Text>
+                <Text ta={"end"} className="!text-[30px] !font-[600]">
+                  530
+                </Text>
               </div>
             </div>
           </section>
@@ -178,9 +186,9 @@ export default function OrganizationOwnerDashboard() {
           {/* Sales Section  */}
           <section className=" ">
             <Text className="!text-[22px] !font-[700]">Orders</Text>
-            <div className="bg-[#FFFFFF] px-2 rounded-[25px] specialBorder ">
+            <div className="bg-[#FFFFFF] p-2 rounded-[25px] specialBorder ">
               {/* Total Orders Section */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
+              <div className="h-[65px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFF5D9] rounded-full">
                     {" "}
@@ -192,7 +200,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Order This Week */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between specialBorderBottom ">
+              <div className="h-[65px] mt-2 flex px-[13px]  items-center  justify-between specialBorderBottom ">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
                     {" "}
@@ -206,7 +214,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Order Today */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between ">
+              <div className="h-[65px] mt-2 flex px-[13px]  items-center  justify-between ">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#DCFAF8] rounded-full">
                     {" "}
@@ -227,9 +235,9 @@ export default function OrganizationOwnerDashboard() {
             <Text className="!text-[22px] !font-[700]">
               All Locations By Users
             </Text>
-            <div className="bg-[#FFFFFF] px-2 rounded-[25px] specialBorder ">
+            <div className="bg-[#FFFFFF] p-2 rounded-[25px] specialBorder ">
               {/* United State America Section  */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
+              <div className="h-[65px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
                     {" "}
@@ -247,7 +255,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Canada Section  */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
+              <div className="h-[65px] mt-2 flex px-[13px]  items-center  justify-between  specialBorderBottom">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFE7E7] rounded-full">
                     {" "}
@@ -263,7 +271,7 @@ export default function OrganizationOwnerDashboard() {
               </div>
 
               {/* Australia Location Icon */}
-              <div className="h-[99px] flex px-[13px]  items-center  justify-between ">
+              <div className="h-[65px] mt-2 flex px-[13px]  items-center  justify-between ">
                 <div className="flex items-center gap-2">
                   <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7FFEB] rounded-full">
                     {" "}

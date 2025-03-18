@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function OrganizationOwnerNewPassword({ path }) {
   const [loading, setLoading] = useState(false);
@@ -19,9 +20,11 @@ export default function OrganizationOwnerNewPassword({ path }) {
       });
       console.log(values.newPassword, values, resetRequest);
       setLoading(false);
+      toast("Success", { position: "top-right" });
       navigate(path);
     } catch (error) {
       console.log(`message:${error.message}`);
+      toast(error.message, { position: "top-right" });
     }
   };
   const form = useForm({
