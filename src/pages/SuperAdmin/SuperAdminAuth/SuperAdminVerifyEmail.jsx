@@ -23,6 +23,7 @@ export default function CustomerVerifyEmail() {
       });
 
       localStorage.setItem("token", data.token);
+      localStorage.setItem("data", JSON.stringify(data.user));
 
       console.log("Entered PIN:", values.pin);
       setLoading(false);

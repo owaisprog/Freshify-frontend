@@ -21,8 +21,10 @@ export default function CustomerVerifyEmail() {
         email: userEmail,
         otp: values.pin,
       });
-
+      console.log(data);
+      console.log(data);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("data", JSON.stringify(data.user));
 
       console.log("Entered PIN:", values.pin);
       setLoading(false);
