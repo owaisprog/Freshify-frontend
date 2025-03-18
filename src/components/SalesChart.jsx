@@ -16,9 +16,8 @@ export default function SalesChart() {
   return (
     <Card
       shadow="sm"
-      p="lg"
       radius={"25px"}
-      className="flex gap-[10px] p-[10px]  rounded-[25px] border-[#718EBF] border-[0.3px]"
+      className="flex  rounded-[25px] border-[#718EBF] border-[0.3px]"
     >
       <div className="flex w-full justify-end p-4 space-x-6">
         {/* Texas Legend */}
@@ -37,9 +36,9 @@ export default function SalesChart() {
       {/* .. */}
       <BarChart
         data={data}
-        h={200}
         barProps={{ radius: 30 }}
         dataKey="day"
+        className="h-[310px]"
         strokeDasharray="0 0"
         barChartProps={{ barCategoryGap: "10%" }}
         maxBarWidth={20}

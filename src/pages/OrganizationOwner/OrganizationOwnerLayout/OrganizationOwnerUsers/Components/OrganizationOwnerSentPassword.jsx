@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  Image,
-  Paper,
-  PasswordInput,
-  Stack,
-  Text,
-} from "@mantine/core";
+import { Button, Image, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useNavigate, useParams } from "react-router-dom";
 import freshifyImage from "../../../../../assets/freshifyImage.png";
@@ -47,9 +39,10 @@ export default function OrganizationOwnerSentPassword() {
   });
 
   return (
-    <main className="grid h-[100dvh] max-w-[1720px] grid-cols-2 bg-[#F5F7FA] py-1">
+    <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0  lg:py-1 px-2 lg:px-0">
       {/* Left Side - Image */}
-      <section className="rounded-tr-xl rounded-br-xl bg-black flex items-center justify-center">
+      {/* This image will be visible on large devices  */}
+      <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
           radius="md"
           height={"full"}
@@ -58,62 +51,64 @@ export default function OrganizationOwnerSentPassword() {
         />
       </section>
 
+      {/* This image will be visible on Mobile devices  */}
+      <section className=" lg:hidden h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
+        <Image
+          radius="md"
+          className="object-contain  w-full lg:w-[60%]  "
+          src={freshifyImage}
+          fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+        />
+      </section>
+
       {/* Right Side - Form */}
       <section className="flex items-center justify-center">
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Paper
-            bg={"white"}
-            shadow="md"
-            className="h-[400px] !flex flex-col gap-10 p-8 w-[595px]"
-            radius={"md"}
+        <form
+          className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
+          onSubmit={form.onSubmit(handleSubmit)}
+        >
+          {/* Heading */}
+
+          <Text
+            ta={"center"}
+            className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            {/* Heading */}
-            <Box>
-              <Text size="30px" fw={600} c={"black"} ta={"center"}>
-                Set Your Password
-              </Text>
-              <Text c="dimmed" size="sm" ta="center" mt={15}>
-                Enter your new password and confirm it.
-              </Text>
-            </Box>
+            Set Your Password
+          </Text>
+          <Text c="dimmed" size="sm" ta="center">
+            Enter your new password and confirm it.
+          </Text>
 
-            {/* Password Input Fields */}
-            <Stack
-              bg="var(--mantine-color-body)"
-              align="stretch"
-              justify="center"
-              gap="xs"
-            >
-              <PasswordInput
-                radius={"md"}
-                label="New Password"
-                placeholder="Enter your new password"
-                key={form.key("newPassword")}
-                {...form.getInputProps("newPassword")}
-              />
-              <PasswordInput
-                radius={"md"}
-                label="Confirm Password"
-                placeholder="Confirm your password"
-                key={form.key("confirmPassword")}
-                {...form.getInputProps("confirmPassword")}
-              />
-            </Stack>
+          {/* Password Input Fields */}
 
-            {/* Submit Button */}
-            <Box>
-              <Button
-                fullWidth
-                type="submit"
-                bg={"black"}
-                c={"white"}
-                loading={loading}
-                loaderProps={{ type: "dots" }}
-              >
-                Set Password
-              </Button>
-            </Box>
-          </Paper>
+          <PasswordInput
+            radius={"md"}
+            label="New Password"
+            placeholder="Enter your new password"
+            key={form.key("newPassword")}
+            {...form.getInputProps("newPassword")}
+          />
+          <PasswordInput
+            radius={"md"}
+            label="Confirm Password"
+            placeholder="Confirm your password"
+            key={form.key("confirmPassword")}
+            {...form.getInputProps("confirmPassword")}
+          />
+
+          {/* Submit Button */}
+
+          <Button
+            fullWidth
+            type="submit"
+            bg={"black"}
+            c={"white"}
+            radius={"md"}
+            loading={loading}
+            loaderProps={{ type: "dots" }}
+          >
+            Set Password
+          </Button>
         </form>
       </section>
     </main>

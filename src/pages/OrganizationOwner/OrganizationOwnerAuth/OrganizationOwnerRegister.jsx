@@ -1,12 +1,4 @@
-import {
-  Button,
-  Image,
-  Paper,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import freshifyImage from "../../../assets/freshifyImage.png";
@@ -33,7 +25,7 @@ export default function OrganizationOwnerRegister() {
           ? null
           : "Full Name must be at least 3 characters",
       phone: (value) =>
-        /^\d{10,15}$/.test(value) ? null : "Invalid phone number",
+        /^\+?\d{10,15}$/.test(value) ? null : "Invalid phone number",
       password: (value) =>
         value.length >= 6 ? null : "Password must have at least 6 characters",
     },
@@ -61,7 +53,7 @@ export default function OrganizationOwnerRegister() {
   };
 
   return (
-    <main className="grid h-[100dvh] max-w-[1720px] mx-auto grid-cols-1 lg:grid-cols-2 bg-[#F5F7FA] lg:py-1 px-2 lg:px-0">
+    <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0  lg:py-1 px-2 lg:px-0">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -73,7 +65,7 @@ export default function OrganizationOwnerRegister() {
       </section>
 
       {/* This image will be visible on Mobile devices  */}
-      <section className=" lg:hidden h-[80px] md:py-2 md:h-[100px] overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
+      <section className=" lg:hidden h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
         <Image
           radius="md"
           className="object-contain  w-full lg:w-[60%]  "
@@ -85,72 +77,78 @@ export default function OrganizationOwnerRegister() {
       {/* Right Section - Form */}
       <section className="flex items-center justify-center">
         <form
-          className="w-full max-w-[595px]"
+          className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
-          <Paper
-            bg={"white"}
-            shadow="md"
-            className="!flex flex-col gap-10 p-4 "
-            radius={"md"}
+          {/* Title & Login Link */}
+
+          <Text
+            ta={"center"}
+            className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            {/* Title & Login Link */}
-            <Stack align="stretch" justify="center" gap="xs">
-              <Text size="30px" fw={600} c={"black"} ta={"center"}>
-                Signup
-              </Text>
-              <Text c="dimmed" size="sm" ta="center">
-                Already have an account?{" "}
-                <Link
-                  to={"/OrganizationOwnerLogin"}
-                  className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
-                >
-                  Login
-                </Link>
-              </Text>
-            </Stack>
-
-            {/* Input Fields */}
-            <Stack align="stretch" justify="center" gap="xs" mb="lg">
-              <TextInput
-                radius={"md"}
-                label="Email Address"
-                placeholder="Enter your email"
-                {...form.getInputProps("email")}
-              />
-              <TextInput
-                radius={"md"}
-                label="Full Name"
-                placeholder="Enter your full name"
-                {...form.getInputProps("name")}
-              />
-              <TextInput
-                radius={"md"}
-                label="Phone Number"
-                placeholder="Enter your phone number"
-                {...form.getInputProps("phone")}
-              />
-              <PasswordInput
-                radius={"md"}
-                label="Password"
-                placeholder="Enter your password"
-                {...form.getInputProps("password")}
-              />
-            </Stack>
-
-            {/* Signup Button */}
-            <Button
-              type="submit"
-              fullWidth
-              bg={"black"}
-              c={"white"}
-              radius={"md"}
-              loading={loading}
-              loaderProps={{ type: "dots" }}
+            Signup
+          </Text>
+          <Text c="dimmed" size="sm" ta="center">
+            Already have an account?{" "}
+            <Link
+              to={"/OrganizationOwnerLogin"}
+              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
-              Signup
-            </Button>
-          </Paper>
+              Login
+            </Link>
+          </Text>
+
+          {/* Input Fields */}
+
+          <TextInput
+            radius={"md"}
+            label="Email Address"
+            placeholder="Enter your email"
+            {...form.getInputProps("email")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
+          />
+          <TextInput
+            radius={"md"}
+            label="Full Name"
+            placeholder="Enter your full name"
+            {...form.getInputProps("name")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
+          />
+          <TextInput
+            radius={"md"}
+            label="Phone Number"
+            placeholder="Enter your phone number"
+            {...form.getInputProps("phone")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
+          />
+          <PasswordInput
+            radius={"md"}
+            label="Password"
+            placeholder="Enter your password"
+            {...form.getInputProps("password")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
+          />
+
+          {/* Signup Button */}
+          <Button
+            type="submit"
+            fullWidth
+            bg={"black"}
+            c={"white"}
+            radius={"md"}
+            loading={loading}
+            loaderProps={{ type: "dots" }}
+          >
+            Signup
+          </Button>
         </form>
       </section>
     </main>

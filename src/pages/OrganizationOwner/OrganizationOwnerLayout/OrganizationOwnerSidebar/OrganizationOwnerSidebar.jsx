@@ -1,6 +1,6 @@
 import { useState } from "react";
 import freshifyLogo from "../.././../../assets/freshifyLogo.png";
-import { Group, Image } from "@mantine/core";
+import { Image } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
@@ -61,7 +61,7 @@ export default function OrganizationOwnerSidebar() {
 
   const links = data.map((item) => (
     <Link
-      className={`flex items-center no-underline text-sm px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white ${
+      className={`flex items-center no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
         item.activePath === active
           ? "bg-[#f5f7fa] border-l-4 border-black text-black"
           : ""
@@ -78,28 +78,24 @@ export default function OrganizationOwnerSidebar() {
   ));
 
   return (
-    <nav className="  flex flex-col h-screen">
+    <nav className="  flex flex-col  h-screen bg-[#FFFFFF]">
       <div className="flex-1">
-        <Group
-          className="pb-4 mb-6 border-b border-gray-300 dark:border-gray-700"
-          justify="space-between"
-        >
-          <Image radius="md" src={freshifyLogo} />
-        </Group>
+        <Image mb={"lg"} className="w-full " radius="md" src={freshifyLogo} />
+
         {links}
       </div>
 
-      <div className="pt-4 mt-4 border-t border-gray-300 dark:border-gray-700">
+      <div className="pb-1  ">
         <Link
           to={"settings"}
-          className={`flex items-center no-underline text-sm px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white ${
-            "settings" === active
-              ? "bg-[#f5f7fa] border-l-4 border-black text-black"
-              : ""
+          className={`flex items-center no-underline text-[18px] px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black${
+            "settings" === active ? " border-l-4 border-black text-black" : ""
           }`}
           onClick={() => setActive("settings")}
         >
-          <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
+          <MdOutlineSettings
+            className={`${active === "settings" ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
+          />
           <span>Settings</span>
         </Link>
       </div>

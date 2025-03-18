@@ -116,7 +116,7 @@ export default function OrganizationOwnerMobileNav() {
           </div>
 
           {/* Settings Link */}
-          <div className="pt-4 border-t border-gray-300">
+          <div className="pt-4 ">
             <Link
               to="#"
               className={`flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 ${

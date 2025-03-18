@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  Image,
-  Paper,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import freshifyImage from "../../../../../assets/freshifyImage.png";
 import { useNavigate } from "react-router-dom";
@@ -68,7 +59,7 @@ export default function OrganizationOwnerUserLogin() {
   };
 
   return (
-    <main className="grid h-[100dvh] max-w-[1720px] mx-auto grid-cols-1 lg:grid-cols-2 bg-[#F5F7FA] lg:py-1 px-2 lg:px-0">
+    <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0  lg:py-1 px-2 lg:px-0">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -80,7 +71,7 @@ export default function OrganizationOwnerUserLogin() {
       </section>
 
       {/* This image will be visible on Mobile devices  */}
-      <section className=" lg:hidden h-[80px] md:py-2 md:h-[100px] overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
+      <section className=" lg:hidden h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
         <Image
           radius="md"
           className="object-contain  w-full lg:w-[60%]  "
@@ -92,83 +83,70 @@ export default function OrganizationOwnerUserLogin() {
       {/* Right Side - Form */}
       <section className="flex items-center justify-center">
         <form
-          className="w-full max-w-[595px]"
+          className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
-          <Paper
-            bg={"white"}
-            shadow="md"
-            className="h-[420px] !flex flex-col gap-10 p-4 md:p-8 "
-            radius={"md"}
+          {/* Heading */}
+
+          <Text
+            ta={"center"}
+            className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            {/* Heading */}
-            <Box>
-              <Text size="30px" fw={600} c={"black"} ta={"center"}>
-                Login
-              </Text>
-              <Text c="dimmed" size="sm" ta="center" mt={15}>
-                Enter your credentials to access your account.
-              </Text>
-            </Box>
+            Login
+          </Text>
+          <Text c="dimmed" size="sm" ta="center" mt={15}>
+            Enter your credentials to access your account.
+          </Text>
 
-            {/* Input Fields */}
-            <Stack
-              bg="var(--mantine-color-body)"
-              align="stretch"
-              justify="center"
-              gap="xs"
+          {/* Input Fields */}
+
+          <TextInput
+            radius={"md"}
+            label="Email"
+            placeholder="Enter your email"
+            key={form.key("email")}
+            {...form.getInputProps("email")}
+          />
+          <PasswordInput
+            radius={"md"}
+            label="Password"
+            placeholder="Enter your password"
+            key={form.key("password")}
+            {...form.getInputProps("password")}
+          />
+
+          {/* Success/Error Message */}
+          {message && (
+            <Text
+              size="sm"
+              c={message.includes("successful") ? "green" : "red"}
             >
-              <TextInput
-                radius={"md"}
-                label="Email"
-                placeholder="Enter your email"
-                key={form.key("email")}
-                {...form.getInputProps("email")}
-              />
-              <PasswordInput
-                radius={"md"}
-                label="Password"
-                placeholder="Enter your password"
-                key={form.key("password")}
-                {...form.getInputProps("password")}
-              />
-            </Stack>
-
-            {/* Success/Error Message */}
-            {message && (
-              <Text
-                size="sm"
-                c={message.includes("successful") ? "green" : "red"}
-              >
-                {message}
-              </Text>
-            )}
-
-            {/* Submit Button */}
-            <Box>
-              <Button
-                fullWidth
-                type="submit"
-                bg={"black"}
-                c={"white"}
-                radius={"md"}
-                loading={loading}
-                loaderProps={{ type: "dots" }}
-              >
-                Login
-              </Button>
-            </Box>
-
-            {/* Forgot Password */}
-            <Text c="dimmed" size="xs" ta="right">
-              <div
-                onClick={() => navigate("/OrganizationOwnerUserResetPassword")}
-                className="text-black underline cursor-pointer underline-offset-4 hover:text-blue-500 transition-all duration-300"
-              >
-                Forgot Password?
-              </div>
+              {message}
             </Text>
-          </Paper>
+          )}
+
+          {/* Submit Button */}
+          <Button
+            fullWidth
+            type="submit"
+            bg={"black"}
+            c={"white"}
+            radius={"md"}
+            loading={loading}
+            loaderProps={{ type: "dots" }}
+          >
+            Login
+          </Button>
+
+          {/* Forgot Password */}
+          <Text c="dimmed" size="xs" ta="right">
+            <div
+              onClick={() => navigate("/OrganizationOwnerUserResetPassword")}
+              className="text-black underline cursor-pointer underline-offset-4 hover:text-blue-500 transition-all duration-300"
+            >
+              Forgot Password?
+            </div>
+          </Text>
         </form>
       </section>
     </main>
