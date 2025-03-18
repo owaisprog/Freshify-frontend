@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   Loader,
@@ -11,7 +10,6 @@ import {
   Title,
 } from "@mantine/core";
 import { FiTrash, FiUpload } from "react-icons/fi";
-import { IoLocationSharp } from "react-icons/io5";
 // import { RiDeleteBin6Line } from "react-icons/ri";
 import Popup from "../../../../components/PopUp";
 import { useForm } from "@mantine/form";
@@ -23,7 +21,6 @@ import {
   useQueryHook,
   useUpdateMutation,
 } from "../../../../services/reactQuery";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function OrganizationOwnerLocations() {
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -55,7 +52,6 @@ export default function OrganizationOwnerLocations() {
       });
   };
 
-  const queryClient = useQueryClient();
   const DelLocation = (delId) => {
     deleteLocation(
       { endpoint: `/api/delete-location/${delId}` },
