@@ -21,7 +21,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
   const { data: ownerLocations = [], error: locationError } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 15 * 60 * 1000,
+    staleTime: 0 * 60 * 1000,
   });
 
   // ✅ Mutations for CRUD operations

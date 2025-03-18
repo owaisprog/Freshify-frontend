@@ -23,8 +23,14 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   });
 
   // ✅ Mutations for CRUD operations
-  const { mutate: createUser } = usePostMutation(["users", id]);
-  const { mutate: updateUser } = useUpdateMutation(["users", id]);
+  const { mutate: createUser, isPending: isLoadingCreate } = usePostMutation([
+    "users",
+    id,
+  ]);
+  const { mutate: updateUser, isPending: isLoadingUpdate } = useUpdateMutation([
+    "users",
+    id,
+  ]);
   const { mutate: deleteUser } = useDeleteMutation(["users", id]);
 
   // ✅ State for popup/modal
@@ -198,7 +204,9 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
           placeholder="Select Role"
           id="role"
         /> */}
-        <Popup.SubmitButton loading={loading}>
+        <Popup.SubmitButton
+          loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
+        >
           {selectedUser ? "Update User" : "Add User"}
         </Popup.SubmitButton>
       </Popup>

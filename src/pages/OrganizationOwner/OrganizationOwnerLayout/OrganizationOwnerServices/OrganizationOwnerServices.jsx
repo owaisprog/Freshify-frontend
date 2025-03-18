@@ -27,7 +27,7 @@ function OrganizationOwnerServices() {
   } = useQueryHook({
     queryKey: "services",
     endpoint: "/api/get-services-by-owner",
-    staleTime: 15 * 60 * 1000, // 15 minutes cache
+    staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
   // ✅ Fetch owner locations using React Query
@@ -38,16 +38,18 @@ function OrganizationOwnerServices() {
   } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 15 * 60 * 1000, // 15 minutes cache
+    staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
   // ✅ Extract location names
   const locationNames = ownerLocations.map((val) => val?.name) || [];
-
   // ✅ Initialize Mutations for CRUD Operations
-  const { mutate: createService } = usePostMutation("services");
-  const { mutate: updateService } = useUpdateMutation("services");
-  const { mutate: deleteService } = useDeleteMutation("services");
+  const { mutate: createService, isPending: isLoadCreate } =
+    usePostMutation("services");
+  const { mutate: updateService, isPending: isLoadUpdate } =
+    useUpdateMutation("services");
+  const { mutate: deleteService, isPending: isLoadDelete } =
+    useDeleteMutation("services");
 
   // ✅ State Management
   const [opened, setOpened] = useState(false);
@@ -275,7 +277,9 @@ function OrganizationOwnerServices() {
           data={data}
           error={servicesError}
           columns={columns}
-          isLoading={isServicesLoading}
+          isLoading={
+            isServicesLoading || isLoadCreate || isLoadUpdate || isLoadDelete
+          }
         />
 
         {/* Service Creation Popup */}

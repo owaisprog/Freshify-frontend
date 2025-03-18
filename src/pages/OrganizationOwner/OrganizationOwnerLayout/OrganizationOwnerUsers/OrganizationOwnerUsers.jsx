@@ -24,7 +24,7 @@ function OrganizationOwnerUsers() {
   } = useQueryHook({
     queryKey: ["users", id], // ✅ Cache users by owner ID
     endpoint: `/api/get-users-by-owner/${id}`,
-    staleTime: 15 * 60 * 1000, // Cache for 15 minutes
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
   // ✅ Filter users based on active tab
