@@ -29,6 +29,12 @@ const data = [
     icon: HiWrenchScrewdriver,
   },
   {
+    link: "Users",
+    label: "Users",
+    activePath: "/OrganizationOwnerDashboard/Users",
+    icon: ImUsers,
+  },
+  {
     link: "locations",
     label: "Locations",
     activePath: "/OrganizationOwnerDashboard/Locations",
@@ -45,12 +51,6 @@ const data = [
     label: "Payout",
     activePath: "/OrganizationOwnerDashboard/Payout",
     icon: MdOutlinePayment,
-  },
-  {
-    link: "Users",
-    label: "Users",
-    activePath: "/OrganizationOwnerDashboard/Users",
-    icon: ImUsers,
   },
 ];
 
@@ -89,7 +89,9 @@ export default function OrganizationOwnerSidebar() {
         <Link
           to={"settings"}
           className={`flex items-center no-underline text-[18px] px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black${
-            "settings" === active ? " border-l-4 border-black text-black" : ""
+            "settings" === active
+              ? " border-l-4 border-black text-black bg-[#f5f7fa]"
+              : ""
           }`}
           onClick={() => setActive("settings")}
         >

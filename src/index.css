@@ -11,3 +11,14 @@ body {
   
 }
 
+.specialBorder {
+  box-shadow: 0 0 0 0.3px #718EBF;
+}
+
+.specialBorderBottom {
+  box-shadow: 0 0.3px  0 #718EBF;/* Horizontal offset, Vertical offset, Blur radius, and color */
+}
+
+
+
+

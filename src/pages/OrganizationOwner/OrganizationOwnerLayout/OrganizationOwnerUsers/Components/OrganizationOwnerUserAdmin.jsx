@@ -148,12 +148,12 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
       {/* Table Section */}
       <section>
         <div className="flex justify-between items-end">
-          <Title fz={"h4"} fw={"bold"}>
-            All Admins
-          </Title>
+          <Title className="!text-[22px] !font-[700]">Admins</Title>
           <Button
             bg="black"
             radius="md"
+            fw={"normal"}
+            className="!text-[18px] "
             onClick={() => {
               setSelectedUser(null);
               form.reset();
@@ -179,6 +179,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         opened={opened}
         setOpened={setOpened}
         handleSubmit={handleSubmit}
+        title="Add Admin"
       >
         <Popup.TextInputField
           label="User Name"

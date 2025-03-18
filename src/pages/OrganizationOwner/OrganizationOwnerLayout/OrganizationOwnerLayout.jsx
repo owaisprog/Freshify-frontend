@@ -4,9 +4,9 @@ import OrganizationOwnerMobileNav from "./OrganizationOwnerSidebar/OrganizationO
 
 export default function OrganizationOwnerLayout() {
   return (
-    <section className="flex max-w-[1720px] mx-auto min-h-screen">
+    <section className="flex mx-auto min-h-screen">
       {/* Sidebar (Left side) */}
-      <aside className="hidden lg:block sticky top-0 left-0  w-1/4 h-screen self-start">
+      <aside className="hidden lg:block sticky top-0 left-0  w-[300px] h-screen self-start">
         {" "}
         {/* Added h-screen and self-start */}
         <OrganizationOwnerSidebar />
@@ -17,7 +17,7 @@ export default function OrganizationOwnerLayout() {
       </nav>
 
       {/* Main Content (Right side) */}
-      <main className="w-full flex-1 overflow-y-auto">
+      <main className="w-full flex-1 overflow-y-auto max-w-[1720px] ">
         {" "}
         {/* Added flex-1 and overflow-hidden */}
         <Outlet />
