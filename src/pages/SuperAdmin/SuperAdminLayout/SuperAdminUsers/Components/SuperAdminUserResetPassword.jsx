@@ -1,39 +1,48 @@
 import { useState } from "react";
-import { Button, Image, PasswordInput, Text } from "@mantine/core";
+import { Button, Image, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../../../assets/freshifyImage.png";
-import { apiPost } from "../../../services/useApi";
-import { useNavigate, useParams } from "react-router-dom";
+import freshifyImage from "../../../../../assets/freshifyImage.png";
+import { apiPost } from "../../../../../services/useApi";
 
-export default function OrganizationOwnerNewPassword({ path }) {
+export default function SuperAdminUserResetPassword() {
   const [loading, setLoading] = useState(false);
-  const { resetToken } = useParams();
-  const navigate = useNavigate();
-  console.log(resetToken);
+  const [message, setMessage] = useState(""); // Store success/error message
 
+  // Form validation
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: { email: "" },
+    validate: {
+      email: (value) =>
+        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
+    },
+  });
+
+  // Handle Forgot Password Request
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const resetRequest = await apiPost(`/api/reset-password/${resetToken}`, {
-        newPassword: values.newPassword,
-      });
-      console.log(values.newPassword, values, resetRequest);
-      setLoading(false);
-      navigate(path);
+      setMessage(""); // Reset message
+
+      // API call to request password reset
+      const resetRequest = await apiPost("/api/forgot-password-user", values);
+      console.log("Reset Request Sent:", resetRequest);
+
+      // Show success message
+      setMessage("Password reset link sent! Check your email.");
     } catch (error) {
-      console.log(`message:${error.message}`);
+      console.error("Error in forgot password request:", error);
+
+      // Handle error cases
+      if (error.response && error.response.status === 404) {
+        setMessage("User not found. Please enter a valid email.");
+      } else {
+        setMessage("Something went wrong. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
-  const form = useForm({
-    mode: "uncontrolled",
-    initialValues: { newPassword: "", confirmPassword: "" },
-    validate: {
-      newPassword: (value) =>
-        value.length >= 6 ? null : "Password must have at least 6 characters",
-      confirmPassword: (value, values) =>
-        value === values.newPassword ? null : "Passwords do not match",
-    },
-  });
 
   return (
     <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0  lg:py-1 px-2 lg:px-0">
@@ -69,39 +78,41 @@ export default function OrganizationOwnerNewPassword({ path }) {
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            Set New Password
+            Forgot Password
           </Text>
-          <Text c="dimmed" size="sm" ta="center">
-            Enter your new password and confirm it.
+          <Text c="dimmed" size="sm" ta="center" mt={15}>
+            Enter your email address to receive a password reset link.
           </Text>
 
-          {/* Password Input Fields */}
+          {/* Email Input Field */}
 
-          <PasswordInput
+          <TextInput
             radius={"md"}
-            label="New Password"
-            placeholder="Enter your new password"
-            key={form.key("newPassword")}
-            {...form.getInputProps("newPassword")}
+            label="Email"
+            placeholder="Enter your email"
+            key={form.key("email")}
+            {...form.getInputProps("email")}
           />
-          <PasswordInput
-            radius={"md"}
-            label="Confirm Password"
-            placeholder="Confirm your password"
-            key={form.key("confirmPassword")}
-            {...form.getInputProps("confirmPassword")}
-          />
+
+          {/* Success/Error Message */}
+          {message && (
+            <Text size="sm" c={message.includes("sent") ? "green" : "red"}>
+              {message}
+            </Text>
+          )}
+
+          {/* Submit Button */}
 
           <Button
-            radius={"md"}
             fullWidth
             type="submit"
             bg={"black"}
             c={"white"}
+            radius={"md"}
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
-            Set Password
+            Send Reset Link
           </Button>
         </form>
       </section>

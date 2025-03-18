@@ -1,37 +1,26 @@
 import { useState } from "react";
-import { Button, Image, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { Button, Image, Text, TextInput } from "@mantine/core";
+import { Link } from "react-router-dom";
+// import freshifyImage from "../../../assets/freshifyImage.png";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
-import { useNavigate, useParams } from "react-router-dom";
 
-export default function OrganizationOwnerNewPassword({ path }) {
+export default function SuperAdminResetPassword() {
   const [loading, setLoading] = useState(false);
-  const { resetToken } = useParams();
-  const navigate = useNavigate();
-  console.log(resetToken);
 
   const handleSubmit = async (values) => {
-    try {
-      setLoading(true);
-      const resetRequest = await apiPost(`/api/reset-password/${resetToken}`, {
-        newPassword: values.newPassword,
-      });
-      console.log(values.newPassword, values, resetRequest);
-      setLoading(false);
-      navigate(path);
-    } catch (error) {
-      console.log(`message:${error.message}`);
-    }
+    setLoading(true);
+    const resetRequest = await apiPost("/api/forgot-password", values);
+    console.log(values, resetRequest);
+    setLoading(false);
   };
+
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { newPassword: "", confirmPassword: "" },
+    initialValues: { email: "" },
     validate: {
-      newPassword: (value) =>
-        value.length >= 6 ? null : "Password must have at least 6 characters",
-      confirmPassword: (value, values) =>
-        value === values.newPassword ? null : "Passwords do not match",
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
 
@@ -57,52 +46,52 @@ export default function OrganizationOwnerNewPassword({ path }) {
         />
       </section>
 
-      {/* Right Side - Form */}
-      <section className="flex items-center justify-center">
+      {/* Right Section - Form */}
+      <section className=" flex items-center justify-center">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
-          {/* Heading */}
-
           <Text
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            Set New Password
+            Reset Password
           </Text>
           <Text c="dimmed" size="sm" ta="center">
-            Enter your new password and confirm it.
+            Reset Password Link will be sent to your email address
           </Text>
 
-          {/* Password Input Fields */}
-
-          <PasswordInput
+          <TextInput
             radius={"md"}
-            label="New Password"
-            placeholder="Enter your new password"
-            key={form.key("newPassword")}
-            {...form.getInputProps("newPassword")}
-          />
-          <PasswordInput
-            radius={"md"}
-            label="Confirm Password"
-            placeholder="Confirm your password"
-            key={form.key("confirmPassword")}
-            {...form.getInputProps("confirmPassword")}
+            label="Email Address"
+            placeholder="Enter your email"
+            key={form.key("email")}
+            {...form.getInputProps("email")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
           />
 
           <Button
-            radius={"md"}
             fullWidth
             type="submit"
             bg={"black"}
             c={"white"}
+            radius={"md"}
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
-            Set Password
+            Reset Password
           </Button>
+          <Text c="dimmed" size="xs" ta="right">
+            <Link
+              to={"/SuperAdminLogin"}
+              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
+            >
+              Back to Login
+            </Link>
+          </Text>
         </form>
       </section>
     </main>

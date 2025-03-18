@@ -1,37 +1,43 @@
 import { useState } from "react";
-import { Button, Image, PasswordInput, Text } from "@mantine/core";
+import { Button, Image, Text, PinInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import freshifyImage from "../../../assets/freshifyImage.png";
-import { apiPost } from "../../../services/useApi";
-import { useNavigate, useParams } from "react-router-dom";
 
-export default function OrganizationOwnerNewPassword({ path }) {
-  const [loading, setLoading] = useState(false);
-  const { resetToken } = useParams();
+import { apiPost } from "../../../services/useApi";
+import { useNavigate, useLocation } from "react-router-dom";
+
+export default function CustomerVerifyEmail() {
   const navigate = useNavigate();
-  console.log(resetToken);
+  const location = useLocation();
+  const { userEmail } = location.state || {};
+  const [loading, setLoading] = useState(false);
+
+  console.log(location.state);
 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const resetRequest = await apiPost(`/api/reset-password/${resetToken}`, {
-        newPassword: values.newPassword,
+      const data = await apiPost("/api/verify-otp", {
+        email: userEmail,
+        otp: values.pin,
       });
-      console.log(values.newPassword, values, resetRequest);
+
+      localStorage.setItem("token", data.token);
+
+      console.log("Entered PIN:", values.pin);
       setLoading(false);
-      navigate(path);
+      navigate("/CustomerDashboard");
     } catch (error) {
-      console.log(`message:${error.message}`);
+      console.log("Error Verifying email", error);
     }
   };
+
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { newPassword: "", confirmPassword: "" },
+    initialValues: { pin: "" },
     validate: {
-      newPassword: (value) =>
-        value.length >= 6 ? null : "Password must have at least 6 characters",
-      confirmPassword: (value, values) =>
-        value === values.newPassword ? null : "Passwords do not match",
+      pin: (value) =>
+        value.length === 4 ? null : "Please enter a 4-digit PIN",
     },
   });
 
@@ -60,7 +66,7 @@ export default function OrganizationOwnerNewPassword({ path }) {
       {/* Right Side - Form */}
       <section className="flex items-center justify-center">
         <form
-          className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
+          className="w-full flex items-center flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
           {/* Heading */}
@@ -69,39 +75,35 @@ export default function OrganizationOwnerNewPassword({ path }) {
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            Set New Password
+            Verify Email
           </Text>
-          <Text c="dimmed" size="sm" ta="center">
-            Enter your new password and confirm it.
+          <Text c="dark" size="sm" ta="center">
+            Enter 4 digit OTP sent to your email address
           </Text>
 
-          {/* Password Input Fields */}
+          {/* PIN Input Field */}
 
-          <PasswordInput
-            radius={"md"}
-            label="New Password"
-            placeholder="Enter your new password"
-            key={form.key("newPassword")}
-            {...form.getInputProps("newPassword")}
+          <PinInput
+            autoFocus
+            size="lg"
+            placeholder="-"
+            type="number"
+            length={4}
+            {...form.getInputProps("pin")}
           />
-          <PasswordInput
-            radius={"md"}
-            label="Confirm Password"
-            placeholder="Confirm your password"
-            key={form.key("confirmPassword")}
-            {...form.getInputProps("confirmPassword")}
-          />
+
+          {/* Verify OTP Button */}
 
           <Button
-            radius={"md"}
             fullWidth
             type="submit"
             bg={"black"}
             c={"white"}
+            radius={"md"}
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
-            Set Password
+            Verify OTP
           </Button>
         </form>
       </section>

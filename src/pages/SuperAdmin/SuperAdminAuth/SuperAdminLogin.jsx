@@ -1,43 +1,43 @@
-import { useState } from "react";
+import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Button, Image, Text, TextInput } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import freshifyImage from "../../../assets/freshifyImage.png";
-import { apiPost } from "../../../services/useApi";
+import { loginUser } from "./services/AuthServices";
+import { toast } from "react-toastify";
 
-export default function OrganizationOwnerResendOTP() {
+export default function SuperAdminLogin() {
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(""); // Store success/error message
 
   const handleSubmit = async (values) => {
-    setLoading(true);
-    setMessage(""); // Clear previous messages
-
     try {
-      const response = await apiPost("/api/resend-otp", values);
-      console.log(values, response);
-      setMessage("A new OTP has been sent to your email."); // Success message
-      navigate("/OrganizationOwnerVerifyEmail", {
-        state: { userEmail: values.email },
-      });
+      setLoading(true);
+      const userData = await loginUser(
+        values.email,
+        values.password,
+        "superadmin"
+      );
+      console.log(userData, values);
+      toast(userData.message, { position: "top-right" });
+      navigate("/SuperAdminDashboard");
     } catch (error) {
-      console.error("Error resending OTP:", error);
-      setMessage("Failed to resend OTP. Please try again."); // Error message
-    } finally {
+      toast(error, { position: "top-right" });
       setLoading(false);
+
+      console.log("ORGANIZATION LOGIN ERROR", error);
     }
   };
 
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { email: "" },
+    initialValues: { email: "", password: "" },
+
+    // functions will be used to validate values at corresponding key
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
-
   return (
     <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0  lg:py-1 px-2 lg:px-0 ">
       {/* This image will be visible on large devices  */}
@@ -59,23 +59,30 @@ export default function OrganizationOwnerResendOTP() {
           fallbackSrc="https://placehold.co/600x400?text=Placeholder"
         />
       </section>
-
-      {/* Right Side - Resend OTP Form */}
-      <section className="flex items-center justify-center">
+      <section className="flex items-center  justify-center  ">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
-          <Text size="30px" fw={600} c={"black"} ta={"center"}>
-            Resend OTP
+          <Text
+            ta={"center"}
+            className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
+          >
+            Login
           </Text>
-          <Text c="dimmed" size="sm" ta="center" mt={15}>
-            Enter your email address to receive a new OTP.
+          <Text c="dimmed" size="sm" ta="center">
+            Do not have an account yet?{" "}
+            <Link
+              to={"/SuperAdminRegister"}
+              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
+            >
+              Register
+            </Link>
           </Text>
 
           <TextInput
             radius={"md"}
-            label="Email ADDRESS"
+            label="Email Address"
             placeholder="Enter your email"
             key={form.key("email")}
             {...form.getInputProps("email")}
@@ -83,16 +90,16 @@ export default function OrganizationOwnerResendOTP() {
               className: "!font-[400] !text-[18px] !text-[#000000]",
             }}
           />
-
-          {message && (
-            <Text
-              size="sm"
-              c={message.includes("failed") ? "red" : "green"}
-              ta="center"
-            >
-              {message}
-            </Text>
-          )}
+          <PasswordInput
+            radius={"md"}
+            label="Password"
+            placeholder="Enter you password"
+            key={form.key("password")}
+            {...form.getInputProps("password")}
+            labelProps={{
+              className: "!font-[400] !text-[18px] !text-[#000000]",
+            }}
+          />
 
           <Button
             fullWidth
@@ -103,15 +110,15 @@ export default function OrganizationOwnerResendOTP() {
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
-            Resend OTP
+            Login
           </Button>
 
           <Text c="dimmed" size="xs" ta="right">
             <Link
-              to={"/OrganizationOwnerLogin"}
+              to={"/SuperAdminResetPassword"}
               className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
-              Back to Login
+              Forgot Password
             </Link>
           </Text>
         </form>

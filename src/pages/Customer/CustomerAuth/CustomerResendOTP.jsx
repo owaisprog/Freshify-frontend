@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
 
-export default function OrganizationOwnerResendOTP() {
+export default function CustomerResendOTP() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export default function OrganizationOwnerResendOTP() {
       const response = await apiPost("/api/resend-otp", values);
       console.log(values, response);
       setMessage("A new OTP has been sent to your email."); // Success message
-      navigate("/OrganizationOwnerVerifyEmail", {
+      navigate("/CustomerVerifyEmail", {
         state: { userEmail: values.email },
       });
     } catch (error) {
@@ -108,7 +108,7 @@ export default function OrganizationOwnerResendOTP() {
 
           <Text c="dimmed" size="xs" ta="right">
             <Link
-              to={"/OrganizationOwnerLogin"}
+              to={"/CustomerLogin"}
               className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
               Back to Login
