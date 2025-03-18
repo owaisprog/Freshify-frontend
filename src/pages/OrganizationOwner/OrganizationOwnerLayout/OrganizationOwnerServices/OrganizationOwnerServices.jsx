@@ -1,6 +1,7 @@
 import { Button, Select, Text, Title, Modal } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
-import { FiTrash, FiUpload } from "react-icons/fi";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 import { useState } from "react";
 import TableCom from "../../../../components/Table";
 import { useForm } from "@mantine/form";
@@ -190,7 +191,9 @@ function OrganizationOwnerServices() {
         >
           <FiUpload size={18} style={{ color: "#427B42" }} />
         </div>
-        <FiTrash
+
+        {/* ✅ Delete Service Button */}
+        <BsTrash
           size={18}
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
           style={{ cursor: "pointer", color: "#622929" }}
@@ -251,7 +254,7 @@ function OrganizationOwnerServices() {
             bg="black"
             radius="md"
             fw={"normal"}
-            className="!text-[18px] "
+            className="!text-[18px] !px-[40px] !py-[10px]"
             onClick={() => {
               setSelectedService(null);
               form.reset();

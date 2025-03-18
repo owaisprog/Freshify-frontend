@@ -44,6 +44,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [toggleTitle, setToggleTitle] = useState("");
 
   // ✅ State for services modal
   const [servicesModalOpen, setServicesModalOpen] = useState(false);
@@ -147,6 +148,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
         <div
           className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
           onClick={() => {
+            setToggleTitle("Update Professional");
             setSelectedUser(val);
             form.setValues({
               name: val.name,
@@ -182,8 +184,9 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
             bg="black"
             radius="md"
             fw={"normal"}
-            className="!text-[18px] "
+            className="!text-[18px] !px-[40px] !py-[10px]"
             onClick={() => {
+              setToggleTitle("Add Professional");
               setSelectedUser(null);
               form.reset();
               setOpened(true);
@@ -208,6 +211,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
         opened={opened}
         setOpened={setOpened}
         handleSubmit={handleSubmit}
+        title={toggleTitle}
       >
         <Popup.TextInputField
           label="User Name"

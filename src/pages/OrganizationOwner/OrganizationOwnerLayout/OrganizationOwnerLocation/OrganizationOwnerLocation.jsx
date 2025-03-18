@@ -9,7 +9,8 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { FiTrash, FiUpload } from "react-icons/fi";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 // import { RiDeleteBin6Line } from "react-icons/ri";
 import Popup from "../../../../components/PopUp";
 import { useForm } from "@mantine/form";
@@ -32,6 +33,8 @@ export default function OrganizationOwnerLocations() {
   //mutate
   const { mutate: createLocation } = usePostMutation(["locations", id]);
   const { mutate: updateLocation } = useUpdateMutation(["locations", id]);
+
+  const [toggleTitle, setToggleTitle] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [opened, setOpened] = useState(false); // Controls the popup modal
@@ -148,12 +151,14 @@ export default function OrganizationOwnerLocations() {
           <Text className="!text-[22px] !font-[700]">All Locations</Text>
           <Button
             onClick={() => {
+              setToggleTitle("Add Location");
               setSelectedLocation(null);
               form.reset();
               setOpened(true); // Open the add location popup
             }}
             bg="black"
             radius="md"
+            className="!text-[18px] !px-[40px] !py-[10px]"
           >
             Add Location
           </Button>
@@ -199,10 +204,8 @@ export default function OrganizationOwnerLocations() {
                           {val.name}
                         </Text>
                         <Text
-                          fz={"xs"}
-                          td={"underline"}
                           c={"#718EBF"}
-                          className="cursor-pointer"
+                          className="cursor-pointer !text-[18px] !font-[400] "
                           onClick={() => {
                             setModalTitle("Address");
                             setModalContent(val.address);
@@ -221,10 +224,9 @@ export default function OrganizationOwnerLocations() {
                         Google Places
                       </Text>
                       <Text
-                        fz={"xs"}
-                        td={"underline"}
                         c={"#718EBF"}
-                        className="cursor-pointer"
+                        className="cursor-pointer !text-[18px] !font-[400] "
+                        td={"underline"}
                         onClick={() => copyToClipboard(val.googleLink)}
                       >
                         Copy Link
@@ -237,7 +239,10 @@ export default function OrganizationOwnerLocations() {
                       >
                         On-site Payments
                       </Text>
-                      <Text c={"#718EBF"} fz={"xs"}>
+                      <Text
+                        c={"#718EBF"}
+                        className=" !text-[18px] !font-[400] "
+                      >
                         {val.enableCashPayments ? "Yes" : "No"}
                       </Text>
                     </div>
@@ -248,7 +253,10 @@ export default function OrganizationOwnerLocations() {
                       >
                         Working Hours
                       </Text>
-                      <Text c={"#718EBF"} fz={"xs"}>
+                      <Text
+                        c={"#718EBF"}
+                        className="cursor-pointer !text-[18px] !font-[400] "
+                      >
                         {val.workingHours} Hours
                       </Text>
                     </div>
@@ -260,10 +268,9 @@ export default function OrganizationOwnerLocations() {
                         Description
                       </Text>
                       <Text
-                        fz={"xs"}
                         td={"underline"}
                         c={"#718EBF"}
-                        className="cursor-pointer"
+                        className="cursor-pointer !text-[18px] !font-[400] "
                         onClick={() => {
                           setModalTitle("Description");
                           setModalContent(val.description);
@@ -277,6 +284,7 @@ export default function OrganizationOwnerLocations() {
                       <button
                         className="bg-[#427B42] rounded p-2 cursor-pointer"
                         onClick={() => {
+                          setToggleTitle("Update Location");
                           setSelectedLocation(val);
                           form.setValues({
                             name: val.name,
@@ -297,7 +305,7 @@ export default function OrganizationOwnerLocations() {
                         className="bg-[#622929] rounded p-2 cursor-pointer"
                         onClick={() => DelLocation(val._id)}
                       >
-                        <FiTrash size={18} style={{ color: "white" }} />
+                        <BsTrash size={18} style={{ color: "white" }} />
                       </button>
                     </div>
                   </section>
@@ -313,6 +321,7 @@ export default function OrganizationOwnerLocations() {
           opened={opened}
           setOpened={setOpened}
           handleSubmit={handleSubmit}
+          title={toggleTitle}
         >
           <Popup.TextInputField
             label="Location Name"
