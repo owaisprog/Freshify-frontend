@@ -48,6 +48,7 @@ export const useUpdateMutation = (queryKey) => {
   });
   return { mutate, error, isPending, isSuccess };
 };
+
 export const useDeleteMutation = (queryKey) => {
   const queryClient = useQueryClient();
 

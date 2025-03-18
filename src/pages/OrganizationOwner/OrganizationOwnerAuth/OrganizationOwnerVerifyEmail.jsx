@@ -12,7 +12,7 @@ export default function OrganizationOwnerVerifyEmail() {
   const { userEmail } = location.state || {};
   const [loading, setLoading] = useState(false);
 
-  console.log(userEmail);
+  console.log(location.state);
 
   const handleSubmit = async (values) => {
     try {

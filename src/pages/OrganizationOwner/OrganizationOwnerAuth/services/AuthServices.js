@@ -30,8 +30,9 @@ export const registerUser = async (userData) => {
     //   );
     // }
     // ✅ Store the token after login
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("data", JSON.stringify(data.user));
+    console.log(data.newUser);
+    localStorage.setItem("token", JSON.stringify(data.newUser.token));
+    localStorage.setItem("data", JSON.stringify(data.newUser));
     return data;
   } catch (error) {
     console.error("Signup error:", error);

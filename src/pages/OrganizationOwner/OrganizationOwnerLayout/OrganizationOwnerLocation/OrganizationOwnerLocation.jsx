@@ -30,11 +30,11 @@ export default function OrganizationOwnerLocations() {
 
   //query logic
   //delete
-  const { mutate: deleteLocation } = useDeleteMutation("locations");
+  const { mutate: deleteLocation } = useDeleteMutation(["locations", id]);
 
   //mutate
-  const { mutate: createLocation } = usePostMutation("locations");
-  const { mutate: updateLocation } = useUpdateMutation("locations");
+  const { mutate: createLocation } = usePostMutation(["locations", id]);
+  const { mutate: updateLocation } = useUpdateMutation(["locations", id]);
 
   const [loading, setLoading] = useState(false);
   const [opened, setOpened] = useState(false); // Controls the popup modal
@@ -56,23 +56,11 @@ export default function OrganizationOwnerLocations() {
   };
 
   const queryClient = useQueryClient();
-  const DelLocation = (id) => {
+  const DelLocation = (delId) => {
     deleteLocation(
-      { endpoint: `/api/delete-location/${id}` },
+      { endpoint: `/api/delete-location/${delId}` },
       {
         onSuccess: () => {
-          // ✅ Get current list of locations from cache
-          const previousLocations =
-            queryClient.getQueryData(["locations"]) || [];
-
-          // ✅ Filter out the deleted location
-          const updatedLocations = previousLocations.filter(
-            (location) => location._id !== id
-          );
-
-          // ✅ Set the new list in cache
-          queryClient.setQueryData(["locations"], updatedLocations);
-
           console.log("Location deleted successfully!");
         },
         onError: (error) => {
@@ -90,7 +78,7 @@ export default function OrganizationOwnerLocations() {
   } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 15 * 60 * 1000, // Cache for 15 minutes
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
   // Form logic
