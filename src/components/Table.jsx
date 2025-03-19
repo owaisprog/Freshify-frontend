@@ -1,15 +1,8 @@
-import { Loader, ScrollArea, Table } from "@mantine/core";
+import { Loader, Table } from "@mantine/core";
 
 const TableCom = ({ columns, data, isLoading, error }) => {
   return (
-    <ScrollArea
-      mih={300}
-      mah={600}
-      type="always"
-      className="bg-[#FFFFFF] rounded-[25px]"
-      offsetScrollbars
-      overscrollBehavior="contain"
-    >
+    <>
       <Table.ScrollContainer minWidth={1000}>
         <Table
           highlightOnHover
@@ -67,7 +60,7 @@ const TableCom = ({ columns, data, isLoading, error }) => {
           </tbody>
         </Table>
       </Table.ScrollContainer>
-    </ScrollArea>
+    </>
   );
 };
 

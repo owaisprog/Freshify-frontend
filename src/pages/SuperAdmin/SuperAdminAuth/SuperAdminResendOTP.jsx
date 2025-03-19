@@ -4,6 +4,7 @@ import { Button, Image, Text, TextInput } from "@mantine/core";
 import { Link, useNavigate } from "react-router-dom";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
+import { toast } from "react-toastify";
 
 export default function SuperAdminResendOTP() {
   const navigate = useNavigate();
@@ -18,13 +19,14 @@ export default function SuperAdminResendOTP() {
     try {
       const response = await apiPost("/api/resend-otp", values);
       console.log(values, response);
-      setMessage("A new OTP has been sent to your email."); // Success message
+      toast(response.message, { position: "top-center" });
       navigate("/SuperAdminVerifyEmail", {
         state: { userEmail: values.email },
       });
     } catch (error) {
       console.error("Error resending OTP:", error);
-      setMessage("Failed to resend OTP. Please try again."); // Error message
+      toast(error, { position: "top-center" });
+      // Error message
     } finally {
       setLoading(false);
     }
@@ -39,7 +41,7 @@ export default function SuperAdminResendOTP() {
   });
 
   return (
-    <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0    px-2 lg:px-0 ">
+    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0  ">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -61,7 +63,7 @@ export default function SuperAdminResendOTP() {
       </section>
 
       {/* Right Side - Resend OTP Form */}
-      <section className="flex items-center justify-center">
+      <section className="h-full flex items-center justify-center">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
@@ -100,6 +102,7 @@ export default function SuperAdminResendOTP() {
             bg={"black"}
             c={"white"}
             radius={"md"}
+            className="!text-[18px] !font-[400]"
             loading={loading}
             loaderProps={{ type: "dots" }}
           >

@@ -301,6 +301,7 @@ function OrganizationOwnerServices() {
           />
           <Popup.Input
             label="Duration"
+            description={"Duration will be in minutes"}
             placeholder="Enter Service Duration in minutes"
             id="duration"
             type="number"

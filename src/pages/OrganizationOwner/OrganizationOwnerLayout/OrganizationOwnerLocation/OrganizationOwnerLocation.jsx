@@ -4,7 +4,6 @@ import {
   Loader,
   Modal,
   Paper,
-  ScrollArea,
   Table,
   Text,
   Title,
@@ -161,25 +160,22 @@ export default function OrganizationOwnerLocations() {
           </Button>
         </section>
 
-        <ScrollArea
-          offsetScrollbars
-          className="h-[500px] min-w-full rounded-lg p2-2"
-        >
-          <Table.ScrollContainer className="w-full">
-            <Box className="flex flex-col gap-4 p-2 justify-center items-center">
-              {isLoading ? (
-                <Loader className="mx-auto" color="blue" type="bars" />
-              ) : error ? (
-                <Paper p={"md"} mt={30} className="!bg-[#F5F7FA] font-[1.2rem]">
-                  {error}
-                </Paper>
-              ) : (
-                locations?.map((val) => (
-                  <section
-                    key={val._id}
-                    className=" min-w-[1650px] overflow-auto flex justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
-                  >
-                    <div className="col-span-2 flex items-center gap-3">
+        <Table.ScrollContainer className="w-full">
+          <Box className="flex flex-col gap-4 p-2 justify-center items-center">
+            {isLoading ? (
+              <Loader className="mx-auto" color="blue" type="bars" />
+            ) : error ? (
+              <Paper p={"md"} mt={30} className="!bg-[#F5F7FA] font-[1.2rem]">
+                {error}
+              </Paper>
+            ) : (
+              locations?.map((val, index) => (
+                <section
+                  key={val._id}
+                  className="min-w-[1400px] lg:w-full overflow-auto grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
+                >
+                  <div className=" col-span-2   flex items-center gap-3">
+                    {index % 3 === 0 ? (
                       <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
                         <img
                           className="w-[40.83px] h-[58.33px]"
@@ -187,122 +183,140 @@ export default function OrganizationOwnerLocations() {
                           alt=""
                         />
                       </div>
-                      <div>
-                        <Text
-                          tt={"capitalize"}
-                          className="!text-[22px] !font-[700]"
-                        >
-                          {val.name}
-                        </Text>
-                        <Text
-                          c={"#718EBF"}
-                          className="cursor-pointer !text-[18px] !font-[400]"
-                          onClick={() => {
-                            setModalTitle("Address");
-                            setModalContent(val.address);
-                            setModalOpen(true);
-                          }}
-                        >
-                          View Address
-                        </Text>
+                    ) : index % 3 === 1 ? (
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#FFE7E7] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/canadaLocationIcon.png"
+                          alt=""
+                        />
                       </div>
-                    </div>
+                    ) : (
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7FFEB] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/australiaLocationIcon.png"
+                          alt=""
+                        />
+                      </div>
+                    )}
                     <div>
                       <Text
                         tt={"capitalize"}
                         className="!text-[22px] !font-[700]"
                       >
-                        Google Places
+                        {val.name}
                       </Text>
                       <Text
-                        c={"#718EBF"}
-                        className="cursor-pointer !text-[18px] !font-[400]"
-                        td={"underline"}
-                        onClick={() => copyToClipboard(val.googleLink)}
-                      >
-                        Copy Link
-                      </Text>
-                    </div>
-                    <div>
-                      <Text
-                        tt={"capitalize"}
-                        className="!text-[22px] !font-[700]"
-                      >
-                        On-site Payments
-                      </Text>
-                      <Text c={"#718EBF"} className="!text-[18px] !font-[400]">
-                        {val.enableCashPayments ? "Yes" : "No"}
-                      </Text>
-                    </div>
-                    <div>
-                      <Text
-                        tt={"capitalize"}
-                        className="!text-[22px] !font-[700]"
-                      >
-                        Working Hours
-                      </Text>
-                      <Text
-                        c={"#718EBF"}
-                        className="cursor-pointer !text-[18px] !font-[400]"
-                      >
-                        {val.workingHours} Hours
-                      </Text>
-                    </div>
-                    <div>
-                      <Text
-                        tt={"capitalize"}
-                        className="!text-[22px] !font-[700]"
-                      >
-                        Description
-                      </Text>
-                      <Text
-                        td={"underline"}
                         c={"#718EBF"}
                         className="cursor-pointer !text-[18px] !font-[400]"
                         onClick={() => {
-                          setModalTitle("Description");
-                          setModalContent(val.description);
+                          setModalTitle("Address");
+                          setModalContent(val.address);
                           setModalOpen(true);
                         }}
                       >
-                        View Description
+                        View Address
                       </Text>
                     </div>
-                    <div className="flex h-fit justify-end gap-2 rounded-xl">
-                      <button
-                        className="bg-[#427B42] rounded p-2 cursor-pointer"
-                        onClick={() => {
-                          setToggleTitle("Update Location");
-                          setSelectedLocation(val);
-                          form.setValues({
-                            name: val.name,
-                            image: val.image,
-                            address: val.address,
-                            googleLink: val.googleLink,
-                            enableCashPayments:
-                              val.enableCashPayments.toString(), // Convert boolean to string
-                            workingHours: val.workingHours,
-                            description: val.description,
-                          });
-                          setOpened(true);
-                        }}
-                      >
-                        <FiUpload size={18} style={{ color: "white" }} />
-                      </button>
+                  </div>
+                  {/* google places  */}
+                  <div className=" col-span-1">
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      Google Places
+                    </Text>
+                    <Text
+                      c={"#718EBF"}
+                      className="cursor-pointer !text-[18px] !font-[400]"
+                      td={"underline"}
+                      onClick={() => copyToClipboard(val.googleLink)}
+                    >
+                      Copy Link
+                    </Text>
+                  </div>
 
-                      <button
-                        className="bg-[#622929] rounded p-2 cursor-pointer"
-                        onClick={() => DelLocation(val._id)}
-                      >
-                        <BsTrash size={18} style={{ color: "white" }} />
-                      </button>
-                    </div>
-                  </section>
-                ))
-              )}
-            </Box>
-          </Table.ScrollContainer>
-        </ScrollArea>
+                  {/* Onsite Payment  */}
+                  <div className=" col-span-1">
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      On-site Payments
+                    </Text>
+                    <Text c={"#718EBF"} className="!text-[18px] !font-[400]">
+                      {val.enableCashPayments ? "Yes" : "No"}
+                    </Text>
+                  </div>
+                  <div>
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      Working Hours
+                    </Text>
+                    <Text
+                      c={"#718EBF"}
+                      className="cursor-pointer !text-[18px] !font-[400]"
+                    >
+                      {val.workingHours} Hours
+                    </Text>
+                  </div>
+                  <div>
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      Description
+                    </Text>
+                    <Text
+                      td={"underline"}
+                      c={"#718EBF"}
+                      className="cursor-pointer !text-[18px] !font-[400]"
+                      onClick={() => {
+                        setModalTitle("Description");
+                        setModalContent(val.description);
+                        setModalOpen(true);
+                      }}
+                    >
+                      View Description
+                    </Text>
+                  </div>
+                  <div className="flex h-fit justify-end gap-2 rounded-xl">
+                    <button
+                      className="bg-[#427B42] rounded p-2 cursor-pointer"
+                      onClick={() => {
+                        setToggleTitle("Update Location");
+                        setSelectedLocation(val);
+                        form.setValues({
+                          name: val.name,
+                          image: val.image,
+                          address: val.address,
+                          googleLink: val.googleLink,
+                          enableCashPayments: val.enableCashPayments.toString(), // Convert boolean to string
+                          workingHours: val.workingHours,
+                          description: val.description,
+                        });
+                        setOpened(true);
+                      }}
+                    >
+                      <FiUpload size={18} style={{ color: "white" }} />
+                    </button>
+
+                    <button
+                      className="bg-[#622929] rounded p-2 cursor-pointer"
+                      onClick={() => DelLocation(val._id)}
+                    >
+                      <BsTrash size={18} style={{ color: "white" }} />
+                    </button>
+                  </div>
+                </section>
+              ))
+            )}
+          </Box>
+        </Table.ScrollContainer>
 
         {/* Popup for Adding/Editing Locations */}
         <Popup

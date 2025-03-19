@@ -19,7 +19,7 @@ export default function OrganizationOwnerSettings() {
       </Title>
       <section className="lg:p-6 flex   flex-col h-full gap-8">
         <Paper
-          p="xl"
+          p="md"
           radius="25px"
           // bg={"#F5F7FA"}
           className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white "
@@ -49,7 +49,7 @@ export default function OrganizationOwnerSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center gap-8 bg-white shadow-sm rounded-[10px] py-4 px-4 justify-between lg:hidden ">
+          <section className="flex items-center gap-8  shadow-sm rounded-[10px] py-4 px-2 justify-between lg:hidden ">
             <Title fz={"h2"} c={"#333B69"}>
               Settings
             </Title>
@@ -80,11 +80,12 @@ export default function OrganizationOwnerSettings() {
               styles={{
                 input: {
                   border: "none",
-                  borderBottom: "2px solid #333B69",
+                  borderBottom: "1px solid #000000",
                   borderRadius: 0,
                   paddingRight: "2rem",
                   color: "#333B69",
-                  fontSize: "1.2rem",
+                  fontSize: "18px",
+                  backgroundColor: "transparent",
                 },
               }}
             />
