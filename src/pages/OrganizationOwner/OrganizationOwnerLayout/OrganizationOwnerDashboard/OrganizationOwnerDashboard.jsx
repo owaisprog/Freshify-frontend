@@ -4,7 +4,7 @@ import SalesChart from "../../../../components/SalesChart";
 
 export default function OrganizationOwnerDashboard() {
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen  ">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
       <Title
         px={"lg"}
         py={"sm"}
@@ -15,7 +15,7 @@ export default function OrganizationOwnerDashboard() {
       </Title>
 
       {/* First Section  */}
-      <section className=" w-full  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
+      <section className=" max-w-[1720px]  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
         {/* Sales and Top performer section  */}
         <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
           {/* Sales Section  */}
