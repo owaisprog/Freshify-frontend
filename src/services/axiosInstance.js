@@ -33,9 +33,9 @@ axiosInstance.interceptors.response.use(
     const token = localStorage.getItem("token");
 
     // Only call handleSessionExpiry if token exists (meaning user was logged in)
-    if (error.response?.status === 401 && token) {
-      handleSessionExpiry(); // Log out user if session expires
-    }
+    // if (error.response?.status === 401 && token) {
+    //   handleSessionExpiry(); // Log out user if session expires
+    // }
 
     return Promise.reject(error);
   }
