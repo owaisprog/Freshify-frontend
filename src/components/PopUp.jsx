@@ -38,7 +38,7 @@ const Popup = ({
         size="xl"
       >
         <form className="" onSubmit={form.onSubmit(handleSubmit)}>
-          <Paper bg={"white"} shadow="md" className="p-8 " radius={"md"}>
+          <Paper bg={"white"} className="px-8 " radius={"md"}>
             <Stack>{children}</Stack>
           </Paper>
         </form>
@@ -102,7 +102,7 @@ function TextArea({ label, placeholder, id }) {
 
 function SubmitButton({ loading, children }) {
   return (
-    <Group position="right" mt="xl">
+    <Group position="right">
       <Button
         fullWidth
         type="submit"
@@ -154,7 +154,6 @@ function FileInputField({ label, placeholder, filetype, id }) {
       label={label}
       placeholder={placeholder}
       rightSectionPointerEvents="none"
-      mt="md"
       accept={filetype}
       onChange={(file) => handleUploadToCloudinary(file)}
     />

@@ -1,6 +1,7 @@
 import { Button, Title, Modal, Text } from "@mantine/core";
 import { useState } from "react";
-import { FiTrash, FiUpload } from "react-icons/fi";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 import { useForm } from "@mantine/form";
 import TableCom from "../../../../../components/Table";
 import Popup from "../../../../../components/PopUp";
@@ -10,6 +11,7 @@ import {
   useQueryHook,
   useUpdateMutation,
 } from "../../../../../services/reactQuery";
+import { toast } from "react-toastify";
 
 function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
@@ -51,15 +53,16 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   const [servicesModalContent, setServicesModalContent] = useState([]);
 
   // ✅ Table Columns
-  const columns = ["Name", "Location", "Email", "View Services", "Actions"];
+  const columns = ["Name", "Location", "Email", "Services", "Actions"];
 
   // ✅ Delete User
   const handleDeleteUser = (userId) => {
     deleteUser(
       { endpoint: `/api/delete-user/${userId}` },
       {
-        onSuccess: () => console.log("User deleted successfully!"),
-        onError: (error) => console.error("Error deleting user:", error),
+        onSuccess: () => toast("Success", { position: "top-right" }),
+        onError: () =>
+          toast("Deletion Failed Try Again", { position: "top-right" }),
       }
     );
   };
@@ -111,13 +114,14 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
           payload: { ...values, location: locationId, services: servicesId },
         });
       }
-
+      toast("Success", { position: "top-right" });
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);
       }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
+      toast("Someting went wrong try again ", { position: "top-right" });
     } finally {
       setLoading(false);
     }
@@ -128,7 +132,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
     Name: val.name,
     Location: val.location?.name || "N/A",
     Email: val.email,
-    "View Services": (
+    Services: (
       <Text
         fz={"lg"}
         td={"underline"}
@@ -164,7 +168,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
         </div>
 
         {/* ✅ Delete User */}
-        <FiTrash
+        <BsTrash
           size={18}
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
           style={{ cursor: "pointer", color: "#622929" }}

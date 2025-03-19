@@ -4,6 +4,7 @@ import { useState } from "react";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { useForm } from "@mantine/form";
 import { registerUser } from "./services/AuthServices";
+import { toast } from "react-toastify";
 
 export default function OrganizationOwnerRegister() {
   const navigate = useNavigate();
@@ -46,8 +47,10 @@ export default function OrganizationOwnerRegister() {
           state: { userEmail: values.email },
         });
       }, 1500);
+      toast("Success", { position: "top-right" });
     } catch (error) {
       console.log("Signup Error", error);
+      toast(error.message, { position: "top-right" });
       setLoading(false);
     }
   };

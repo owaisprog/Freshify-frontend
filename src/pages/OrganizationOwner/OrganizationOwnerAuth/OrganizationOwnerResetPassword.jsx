@@ -4,15 +4,22 @@ import { Button, Image, Text, TextInput } from "@mantine/core";
 import { Link } from "react-router-dom";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
+import { toast } from "react-toastify";
 
 export default function OrganizationOwnerResetPassword() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
-    setLoading(true);
-    const resetRequest = await apiPost("/api/forgot-password", values);
-    console.log(values, resetRequest);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const resetRequest = await apiPost("/api/forgot-password", values);
+      console.log(values, resetRequest);
+      toast("Success", { position: "top-right" });
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast(error.message, { position: "top-right" });
+    }
   };
 
   const form = useForm({
