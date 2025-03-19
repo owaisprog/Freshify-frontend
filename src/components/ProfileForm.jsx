@@ -9,7 +9,7 @@ import axios from "axios";
 export default function ProfileForm() {
   // Get user data from localStorage
   const data = JSON.parse(localStorage.getItem("data")) || {};
-  const { name, email, phone, image, id } = data;
+  const { name, email, phone, image } = data;
 
   // Initialize form with user data
   const form = useForm({
@@ -80,7 +80,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <div className="text-white p-6 flex flex-col lg:flex-row items-start justify-center gap-8 w-full">
+    <div className="text-white lg:p-6 flex flex-col lg:flex-row items-start justify-center  lg:gap-8 w-full">
       {/* Profile Picture */}
       <div className="relative w-32 h-32">
         <Avatar
@@ -160,8 +160,14 @@ export default function ProfileForm() {
 
         {/* Save Button */}
         <div className="text-right">
-          <Button type="submit" color="dark" radius="md" loading={isPending}>
-            Save Changes
+          <Button
+            className="!w-[119px]"
+            type="submit"
+            color="black"
+            radius="md"
+            loading={isPending}
+          >
+            Save
           </Button>
         </div>
       </form>

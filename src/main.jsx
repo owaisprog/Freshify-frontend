@@ -43,7 +43,7 @@ import OrganizationProfile from "./pages/OrganizationOwner/OrganizationOwnerLayo
 import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationDelete.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SuperAdminLogin from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminLogin.jsx";
-import SuperAdminRegister from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminRegister.jsx";
+
 import SuperAdminVerifyEmail from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminVerifyEmail.jsx";
 import SuperAdminResetPassword from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminResetPassword.jsx";
 import SuperAdminResendOTP from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminResendOTP.jsx";
@@ -147,7 +147,6 @@ const router = createBrowserRouter(
       {/* super admin auth */}
 
       <Route path="SuperAdminLogin" element={<SuperAdminLogin />} />
-      <Route path="SuperAdminRegister" element={<SuperAdminRegister />} />
 
       <Route path="SuperAdminVerifyEmail" element={<SuperAdminVerifyEmail />} />
 

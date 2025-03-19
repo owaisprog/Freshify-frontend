@@ -47,7 +47,7 @@ const Popup = ({
   );
 };
 
-function Input({ label, placeholder, id, type = "text" }) {
+function Input({ label, description, placeholder, id, type = "text" }) {
   const form = usePopupForm();
   console.log(form.values);
 
@@ -68,6 +68,7 @@ function Input({ label, placeholder, id, type = "text" }) {
     <TextInput
       type={type}
       label={label}
+      description={description}
       placeholder={placeholder}
       {...form.getInputProps(id)}
       labelProps={{ className: "font-semibold text-gray-700" }}

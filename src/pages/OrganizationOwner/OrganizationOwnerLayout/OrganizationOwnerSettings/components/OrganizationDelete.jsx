@@ -4,7 +4,7 @@ function OrganizationDelete() {
   return (
     <div className="flex justify-between ">
       <span>Delete Account</span>
-      <Button color="dark" radius="md">
+      <Button className="lg:!w-[131px]" color="black" radius="md">
         Delete
       </Button>
     </div>

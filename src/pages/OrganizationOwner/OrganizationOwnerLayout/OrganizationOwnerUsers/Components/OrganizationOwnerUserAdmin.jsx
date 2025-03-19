@@ -215,7 +215,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         title={toggleTitle}
       >
         <Popup.TextInputField
-          label="User Name"
+          label="Full Name"
           placeholder="Enter User Name"
           id="name"
         />
