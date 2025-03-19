@@ -188,7 +188,7 @@ export default function OrganizationOwnerLocations() {
                 locations?.map((val) => (
                   <section
                     key={val._id}
-                    className=" min-w-[1650px] flex justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
+                    className=" min-w-[1650px] overflow-auto flex justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
                   >
                     <div className="col-span-2 flex items-center gap-3  ">
                       <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
