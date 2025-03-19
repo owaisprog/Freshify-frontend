@@ -161,10 +161,10 @@ export default function ProfileForm() {
         {/* Save Button */}
         <div className="text-right">
           <Button
-            className="!w-[119px]"
             type="submit"
-            color="black"
-            radius="md"
+            color="dark"
+            radius="lg"
+            loaderProps={{ type: "dots" }}
             loading={isPending}
           >
             Save
