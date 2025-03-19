@@ -101,7 +101,7 @@ export default function OrganizationOwnerMobileNav() {
         opened={isMenuOpen}
         onClose={toggleMenu}
         position="left"
-        size="80%"
+        size="100%"
         zIndex={40}
         withCloseButton={false}
         classNames={{
