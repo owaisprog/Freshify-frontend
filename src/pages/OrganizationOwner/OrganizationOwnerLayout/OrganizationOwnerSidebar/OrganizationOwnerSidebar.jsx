@@ -41,15 +41,15 @@ const data = [
     icon: MdMyLocation,
   },
   {
-    link: "",
+    link: "Calendar",
     label: "Calendar",
     activePath: "/OrganizationOwnerDashboard/Calendar",
     icon: MdCalendarMonth,
   },
   {
-    link: "#",
+    link: "Payout",
     label: "Payout",
-    activePath: "Payout",
+    activePath: "/OrganizationOwnerDashboard/Payout",
     icon: MdOutlinePayment,
   },
 ];

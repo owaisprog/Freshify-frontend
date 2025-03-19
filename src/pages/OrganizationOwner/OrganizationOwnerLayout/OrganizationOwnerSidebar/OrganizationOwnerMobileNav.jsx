@@ -41,13 +41,13 @@ const data = [
     icon: ImUsers,
   },
   {
-    link: "",
+    link: "Calendar",
     label: "Calendar",
     activePath: "/OrganizationOwnerDashboard/Calendar",
     icon: MdCalendarMonth,
   },
   {
-    link: "",
+    link: "Payout",
     label: "Payout",
     activePath: "/OrganizationOwnerDashboard/Payout",
     icon: MdOutlinePayment,
