@@ -13,6 +13,15 @@ export default function OrganizationsSettings() {
           <CustomSelect
             data={["1 Month", "2 Months", "3 Monts"]}
             defaultValue="1 Month"
+            styles={{
+              input: {
+                border: "none",
+                borderBottom: "1px solid black",
+                borderRadius: 0,
+                fontSize: "14px",
+                backgroundColor: "transparent",
+              },
+            }}
           />
         </div>
       </div>
@@ -56,6 +65,15 @@ export default function OrganizationsSettings() {
           <CustomSelect
             data={["2 Hours", "6 Hours", "12 Hours"]}
             defaultValue="2 Hours"
+            styles={{
+              input: {
+                border: "none",
+                borderBottom: "1px solid black",
+                borderRadius: 0,
+                fontSize: "14px",
+                backgroundColor: "transparent",
+              },
+            }}
           />
         </div>
       </div>

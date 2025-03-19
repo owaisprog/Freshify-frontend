@@ -47,7 +47,7 @@ function OrganizationDelete() {
       <Button
         color="black"
         loaderProps={{ type: "dots" }}
-        className="lg:!w-[131px]"
+        className="!w-[131px] !text-[18px] !font-[400]"
         radius="md"
         onClick={handleDelete}
         loading={isPending}

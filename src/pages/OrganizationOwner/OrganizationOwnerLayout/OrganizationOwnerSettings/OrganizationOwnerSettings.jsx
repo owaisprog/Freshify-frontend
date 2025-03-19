@@ -80,11 +80,12 @@ export default function OrganizationOwnerSettings() {
               styles={{
                 input: {
                   border: "none",
-                  borderBottom: "2px solid #333B69",
+                  borderBottom: "1px solid #000000",
                   borderRadius: 0,
                   paddingRight: "2rem",
                   color: "#333B69",
-                  fontSize: "1.2rem",
+                  fontSize: "18px",
+                  backgroundColor: "transparent",
                 },
               }}
             />

@@ -169,19 +169,37 @@ export default function OrganizationOwnerLocations() {
                 {error}
               </Paper>
             ) : (
-              locations?.map((val) => (
+              locations?.map((val, index) => (
                 <section
                   key={val._id}
                   className="min-w-[1400px] lg:w-full overflow-auto grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
                 >
                   <div className=" col-span-2   flex items-center gap-3">
-                    <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
-                      <img
-                        className="w-[40.83px] h-[58.33px]"
-                        src="/usaLocationIcon.png"
-                        alt=""
-                      />
-                    </div>
+                    {index % 3 === 0 ? (
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/usaLocationIcon.png"
+                          alt=""
+                        />
+                      </div>
+                    ) : index % 3 === 1 ? (
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#FFE7E7] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/canadaLocationIcon.png"
+                          alt=""
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7FFEB] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/australiaLocationIcon.png"
+                          alt=""
+                        />
+                      </div>
+                    )}
                     <div>
                       <Text
                         tt={"capitalize"}

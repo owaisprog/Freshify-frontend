@@ -164,7 +164,7 @@ export default function ProfileForm() {
             type="submit"
             color="black"
             radius="md"
-            className="lg:!w-[119px]"
+            className="!w-[119px] !text-[18px] !font-[400]"
             loaderProps={{ type: "dots" }}
             loading={isPending}
           >
