@@ -17,7 +17,7 @@ export default function OrganizationOwnerLayout() {
       </nav>
 
       {/* Main Content (Right side) */}
-      <main className="w-full flex-1 overflow-y-auto max-w-[1720px] ">
+      <main className="w-full flex-1 overflow-y-auto  ">
         {" "}
         {/* Added flex-1 and overflow-hidden */}
         <Outlet />

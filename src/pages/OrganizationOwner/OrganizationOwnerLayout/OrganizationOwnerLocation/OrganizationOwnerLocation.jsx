@@ -134,7 +134,7 @@ export default function OrganizationOwnerLocations() {
   };
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px] min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
         px={"lg"}
         py={"sm"}
@@ -143,7 +143,7 @@ export default function OrganizationOwnerLocations() {
       >
         Locations
       </Title>
-      <section className="p-6 flex flex-col h-full gap-10">
+      <section className="p-6 max-w-[1720px] flex flex-col h-full gap-10">
         <section className="flex justify-between items-center">
           <Text className="!text-[22px] !font-[700]">All Locations</Text>
           <Button
