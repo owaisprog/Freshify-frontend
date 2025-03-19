@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { apiPost } from "../../../../../services/useApi";
 import { toast } from "react-toastify";
 
-export default function OrganizationOwnerUserLogin() {
+export default function AdminsUserLogin() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(""); // Success/Error message
   const navigate = useNavigate();
@@ -34,13 +34,6 @@ export default function OrganizationOwnerUserLogin() {
 
       console.log("Login Response:", response);
 
-      console.log(
-        response,
-        response.user.role,
-        response.user,
-        response.token,
-        "this is the end how u breath and count"
-      );
       // Store token & user details in localStorage
       localStorage.setItem("token", response.token);
       localStorage.setItem("data", JSON.stringify(response.user));
@@ -48,11 +41,7 @@ export default function OrganizationOwnerUserLogin() {
       // Redirect to dashboard/home page
       toast(response.message, { position: "top-center" });
       setTimeout(() => {
-        if (response.user.role === "admin") {
-          navigate("/AdminsDashboard");
-        } else if (response.user.role === "barber") {
-          navigate("/ProfessionalDashboard");
-        }
+        navigate("/AdminsDashboard"); // Adjust this route as needed
       }, 2000);
     } catch (error) {
       console.error("Error in login request:", error);
@@ -146,7 +135,7 @@ export default function OrganizationOwnerUserLogin() {
           {/* Forgot Password */}
           <Text c="dimmed" size="xs" ta="right">
             <div
-              onClick={() => navigate("/OrganizationOwnerUserResetPassword")}
+              onClick={() => navigate("/AdminsUserResetPassword")}
               className="text-black underline cursor-pointer underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
               Forgot Password?

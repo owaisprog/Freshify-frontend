@@ -68,6 +68,22 @@ import SuperAdminNotification from "./pages/SuperAdmin/SuperAdminLayout/SuperAdm
 import SuperAdminProfile from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminProfile.jsx";
 import SuperAdminDelete from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminDelete.jsx";
 import SuperAdminSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/SuperAdminSettings.jsx";
+import AdminsLayout from "./pages/Admins/AdminsLayout/AdminsLayout.jsx";
+import AdminsDashboard from "./pages/Admins/AdminsLayout/AdminsDashboard/AdminsDashboard.jsx";
+import AdminsServices from "./pages/Admins/AdminsLayout/AdminsServices/AdminsServices.jsx";
+import AdminsLocations from "./pages/Admins/AdminsLayout/AdminsLocation/AdminsLocation.jsx";
+import AdminSettings from "./pages/Admins/AdminsLayout/AdminsSettings/AdminSettings.jsx";
+import AdminsSettings from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsSettings.jsx";
+import AdminNotification from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsNotification.jsx";
+import AdminProfile from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsProfile.jsx";
+import AdminDelete from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsDelete.jsx";
+import ProfessionalLayout from "./pages/Professionals/ProfessionalLayout/ProfessionalLayout.jsx";
+import ProfessionalDashboard from "./pages/Professionals/ProfessionalLayout/ProfessionalDashboard/ProfessionalDashboard.jsx";
+import ProfessionalSettings from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/ProfessionalSettings.jsx";
+import ProfessionalsSettings from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalsSettings.jsx";
+import ProfessionalNotification from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalNotification.jsx";
+import ProfessionalProfile from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalProfile.jsx";
+import ProfessionalDelete from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalDelete.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -199,6 +215,52 @@ const router = createBrowserRouter(
           <Route path="email" element={<CustomerNotification />} />
           <Route path="personal" element={<CustomerProfile />} />
           <Route path="delete" element={<CustomerDelete />} />
+        </Route>
+      </Route>
+
+      {/* Admins  */}
+      <Route
+        path="AdminsDashboard"
+        element={
+          <ProtectedRoute
+            path="/OrganizationOwnerUserLogin"
+            requiredRole="admin"
+          >
+            <AdminsLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<AdminsDashboard />} />
+        {/* <Route path="Services" element={<AdminsServices />} /> */}
+        {/* <Route path="Users" element={<AdminsUsers />} /> */}
+        {/* <Route path="locations" element={<AdminsLocations />} /> */}
+        <Route path="settings" element={<AdminSettings />}>
+          <Route index element={<AdminsSettings />} />
+          <Route path="email" element={<AdminNotification />} />
+          <Route path="personal" element={<AdminProfile />} />
+          <Route path="delete" element={<AdminDelete />} />
+        </Route>
+      </Route>
+
+      {/*Professionals  */}
+      <Route
+        path="ProfessionalDashboard"
+        element={
+          <ProtectedRoute
+            path="/OrganizationOwnerUserLogin"
+            requiredRole="barber"
+          >
+            <ProfessionalLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<ProfessionalDashboard />} />
+
+        <Route path="settings" element={<ProfessionalSettings />}>
+          <Route index element={<ProfessionalsSettings />} />
+          <Route path="email" element={<ProfessionalNotification />} />
+          <Route path="personal" element={<ProfessionalProfile />} />
+          <Route path="delete" element={<ProfessionalDelete />} />
         </Route>
       </Route>
     </Route>

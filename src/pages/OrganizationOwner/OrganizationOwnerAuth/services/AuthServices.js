@@ -67,6 +67,10 @@ export const handleSessionExpiry = () => {
     window.location.href = "/SuperAdminLogin"; // Redirect to login page
   } else if (data?.role === "customer") {
     window.location.href = "/customerLogin"; // Redirect to login page
+  } else if (data?.role === "admin") {
+    window.location.href = "/OrganizationOwnerUserLogin"; // Redirect to login page
+  } else if (data?.role === "barber") {
+    window.location.href = "/OrganizationOwnerUserLogin"; // Redirect to login page
   } else {
     window.location.href = "/"; // Redirect to home or default page
   }

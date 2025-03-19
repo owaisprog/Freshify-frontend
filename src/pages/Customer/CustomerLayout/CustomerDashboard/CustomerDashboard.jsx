@@ -1,8 +1,10 @@
 import { Title } from "@mantine/core";
 
 export default function CustomerDashboard() {
+  const data = JSON.parse(localStorage.getItem("data")) || {};
+
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen  ">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
       <Title
         px={"lg"}
         py={"sm"}
@@ -12,15 +14,15 @@ export default function CustomerDashboard() {
         Dashboard
       </Title>
 
+      {/* First Section  */}
       <Title
         px={"xl"}
         py={"sm"}
-        className="!grid !min-h-[80vh] items-center place-self-center"
         c={"black"}
+        className="!grid !min-h-[80vh] items-center place-self-center"
       >
-        Welcom Customer
+        Welcome {data.name}
       </Title>
-      {/* First Section  */}
     </main>
   );
 }
