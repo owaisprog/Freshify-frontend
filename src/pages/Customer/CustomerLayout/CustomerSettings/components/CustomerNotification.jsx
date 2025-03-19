@@ -1,5 +1,5 @@
 import { SwitchCom } from "../../../../../components/Switch";
 
-export default function SuperAdminNotification() {
+export default function CustomerNotification() {
   return <SwitchCom />;
 }

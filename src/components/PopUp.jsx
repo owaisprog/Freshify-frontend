@@ -28,7 +28,6 @@ const Popup = ({
   title = "Add Your Title",
 }) => {
   // Access form from context
-
   return (
     <PopupContext.Provider value={form}>
       <Modal
@@ -50,6 +49,7 @@ const Popup = ({
 
 function Input({ label, placeholder, id, type = "text" }) {
   const form = usePopupForm();
+  console.log(form.values);
 
   // Handle checkbox separately
   if (type === "checkbox") {
@@ -57,9 +57,8 @@ function Input({ label, placeholder, id, type = "text" }) {
       <Checkbox
         color="black"
         label={label}
-        onChange={(event) =>
-          form.setFieldValue(id, event.currentTarget.checked)
-        }
+        checked={form.values[id]}
+        {...form.getInputProps(id)}
       />
     );
   }

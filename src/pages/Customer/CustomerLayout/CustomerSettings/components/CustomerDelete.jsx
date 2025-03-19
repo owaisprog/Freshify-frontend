@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 
-function SuperAdminDelete() {
+function CustomerDelete() {
   return (
     <div className="flex justify-between ">
       <span>Delete Account</span>
@@ -11,4 +11,4 @@ function SuperAdminDelete() {
   );
 }
 
-export default SuperAdminDelete;
+export default CustomerDelete;

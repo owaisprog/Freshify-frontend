@@ -2,7 +2,7 @@ import { Button } from "@mantine/core";
 
 import CustomSelect from "../../../../../components/CustomSelector";
 
-export default function SuperAdminsSettings() {
+export default function CustomersSettings() {
   return (
     <section className="flex flex-col gap-2">
       <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF]">

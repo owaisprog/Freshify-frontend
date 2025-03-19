@@ -68,7 +68,7 @@ export default function OrganizationOwnerLocations() {
       }
     );
   };
-  console.log(selectedLocation);
+
   // Fetch locations
   const {
     data: locations = [],
@@ -107,6 +107,7 @@ export default function OrganizationOwnerLocations() {
   const handleSubmit = (values) => {
     setLoading(true);
 
+    console.log(values);
     try {
       if (selectedLocation) {
         updateLocation({
@@ -135,7 +136,7 @@ export default function OrganizationOwnerLocations() {
 
   //     </div>
   //   );
-  console.log(error);
+
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
       <Title
@@ -154,6 +155,7 @@ export default function OrganizationOwnerLocations() {
               setToggleTitle("Add Location");
               setSelectedLocation(null);
               form.reset();
+
               setOpened(true); // Open the add location popup
             }}
             bg="black"
@@ -349,6 +351,15 @@ export default function OrganizationOwnerLocations() {
             placeholder="Select an image"
             filetype="image/*"
             id="image" // ✅ Ensure this matches the form field
+          />
+          <Popup.SingleSelector
+            id="enableCashPayments"
+            label="Enable Cash Payment"
+            placeholder="Select an option"
+            data={[
+              { value: "true", label: "Yes" }, // "Yes" maps to `true`
+              { value: "false", label: "No" }, // "No" maps to `false`
+            ]}
           />
           <Popup.TextArea
             label="Description"
