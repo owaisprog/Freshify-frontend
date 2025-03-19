@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { apiGet, apiPost } from "../../../../services/useApi";
 
 export const loginUser = async (email, password, role) => {
@@ -5,6 +6,9 @@ export const loginUser = async (email, password, role) => {
     const data = await apiPost("/api/login", { email, password });
     console.log(data.user.role);
     if (data && data.user.role !== role) {
+      toast("Unauthorized: You do not have permission to access this page.", {
+        position: "top-right",
+      });
       throw new Error(
         "Unauthorized: You do not have permission to access this page."
       );
