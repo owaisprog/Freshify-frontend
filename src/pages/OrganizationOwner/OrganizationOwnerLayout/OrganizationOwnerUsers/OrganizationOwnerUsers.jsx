@@ -24,7 +24,6 @@ function OrganizationOwnerUsers() {
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
-  console.log(allUsers, "allUsers✔");
   // ✅ Filter users based on active tab
   const filteredUsers = useMemo(() => {
     return allUsers?.filter((val) => val.role === activeTab);

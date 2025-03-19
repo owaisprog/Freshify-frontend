@@ -1,6 +1,4 @@
-import { Progress, Text, Title } from "@mantine/core";
-
-import SalesChart from "../../../../components/SalesChart";
+import { Title } from "@mantine/core";
 
 export default function SuperAdminDashboard() {
   return (
