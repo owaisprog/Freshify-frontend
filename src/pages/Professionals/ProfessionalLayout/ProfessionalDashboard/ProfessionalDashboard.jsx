@@ -1,5 +1,4 @@
-import { , Title } from "@mantine/core";
-
+import { Title } from "@mantine/core";
 
 export default function ProfessionalDashboard() {
   const data = JSON.parse(localStorage.getItem("data")) || {};
