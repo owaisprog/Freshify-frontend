@@ -1,7 +1,7 @@
 import ProfileForm from "../../../../../components/ProfileForm";
 
-function SuperAdminProfile() {
+function CustomerProfile() {
   return <ProfileForm />;
 }
 
-export default SuperAdminProfile;
+export default CustomerProfile;

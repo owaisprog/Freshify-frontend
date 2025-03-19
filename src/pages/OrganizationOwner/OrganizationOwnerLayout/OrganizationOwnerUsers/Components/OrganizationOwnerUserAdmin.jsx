@@ -123,6 +123,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     }
   };
 
+  console.log(services.map((serve) => serve.name));
   // ✅ Transform Users into Table Format
   const data = userdata?.map((val) => ({
     Name: val.name,
@@ -155,6 +156,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
               email: val.email,
               location: val.location?.name || "",
               role: val.role,
+              services: val.services.map((service) => service.name),
             });
             setOpened(true);
           }}

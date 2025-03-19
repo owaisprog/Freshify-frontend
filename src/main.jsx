@@ -57,6 +57,16 @@ import CustomerResendOTP from "./pages/Customer/CustomerAuth/CustomerResendOTP.j
 import CustomerLayout from "./pages/Customer/CustomerLayout/CustomerLayout.jsx";
 import CustomerDashboard from "./pages/Customer/CustomerLayout/CustomerDashboard/CustomerDashboard.jsx";
 import NewPassword from "./components/NewPassword.jsx";
+import CustomerSettings from "./pages/Customer/CustomerLayout/CustomerSettings/CustomersSettings.jsx";
+import CustomersSettings from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerSettings.jsx";
+import CustomerNotification from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerNotification.jsx";
+import CustomerProfile from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerProfile.jsx";
+import CustomerDelete from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerDelete.jsx";
+import SuperAdminsSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminSettings.jsx";
+import SuperAdminNotification from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminNotification.jsx";
+import SuperAdminProfile from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminProfile.jsx";
+import SuperAdminDelete from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminDelete.jsx";
+import SuperAdminSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/SuperAdminSettings.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -156,6 +166,12 @@ const router = createBrowserRouter(
         }
       >
         <Route index element={<SuperAdminDashboard />} />
+        <Route path="settings" element={<SuperAdminSettings />}>
+          <Route index element={<SuperAdminsSettings />} />
+          <Route path="email" element={<SuperAdminNotification />} />
+          <Route path="personal" element={<SuperAdminProfile />} />
+          <Route path="delete" element={<SuperAdminDelete />} />
+        </Route>
       </Route>
 
       {/* Customer auth */}
@@ -178,6 +194,12 @@ const router = createBrowserRouter(
         }
       >
         <Route index element={<CustomerDashboard />} />
+        <Route path="settings" element={<CustomerSettings />}>
+          <Route index element={<CustomersSettings />} />
+          <Route path="email" element={<CustomerNotification />} />
+          <Route path="personal" element={<CustomerProfile />} />
+          <Route path="delete" element={<CustomerDelete />} />
+        </Route>
       </Route>
     </Route>
   )

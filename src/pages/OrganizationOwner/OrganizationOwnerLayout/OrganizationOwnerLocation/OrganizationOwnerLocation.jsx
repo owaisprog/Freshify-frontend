@@ -11,11 +11,9 @@ import {
 } from "@mantine/core";
 import { FiUpload } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
-// import { RiDeleteBin6Line } from "react-icons/ri";
 import Popup from "../../../../components/PopUp";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
-
 import {
   useDeleteMutation,
   usePostMutation,
@@ -27,23 +25,18 @@ import { toast } from "react-toastify";
 export default function OrganizationOwnerLocations() {
   const { id } = JSON.parse(localStorage.getItem("data"));
 
-  //query logic
-  //delete
+  // Query logic
   const { mutate: deleteLocation } = useDeleteMutation(["locations", id]);
-
-  //mutate
   const { mutate: createLocation } = usePostMutation(["locations", id]);
   const { mutate: updateLocation } = useUpdateMutation(["locations", id]);
 
   const [toggleTitle, setToggleTitle] = useState("");
-
   const [loading, setLoading] = useState(false);
-  const [opened, setOpened] = useState(false); // Controls the popup modal
-  const [modalOpen, setModalOpen] = useState(false); // Controls the view modal
-  const [modalContent, setModalContent] = useState(""); // Stores address/description
-  const [modalTitle, setModalTitle] = useState(""); // Title for the modal
-  // const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null); // Track selected location
+  const [opened, setOpened] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   const copyToClipboard = (text) => {
     navigator.clipboard
@@ -70,7 +63,7 @@ export default function OrganizationOwnerLocations() {
       }
     );
   };
-  console.log(selectedLocation);
+
   // Fetch locations
   const {
     data: locations = [],
@@ -90,7 +83,7 @@ export default function OrganizationOwnerLocations() {
       image: "",
       address: "",
       googleLink: "",
-      enableCashPayments: false,
+      enableCashPayments: "false", // Default to string "false"
       workingHours: "",
       description: "",
     },
@@ -109,16 +102,23 @@ export default function OrganizationOwnerLocations() {
   const handleSubmit = (values) => {
     setLoading(true);
 
+    // Convert "enableCashPayments" from string to boolean
+    const payload = {
+      ...values,
+      enableCashPayments: values.enableCashPayments === "true", // Convert to boolean
+    };
+
+    console.log(payload);
     try {
       if (selectedLocation) {
         updateLocation({
           endpoint: `/api/update-location/${selectedLocation._id}`,
-          payload: values,
+          payload: payload,
         });
       } else {
         createLocation({
           endpoint: "/api/create-location",
-          payload: values,
+          payload: payload,
         });
       }
       toast("Success", { position: "top-right" });
@@ -132,24 +132,18 @@ export default function OrganizationOwnerLocations() {
       setLoading(false);
     }
   };
-  // if (isLoading)
-  //   return (
-  //     <div className="h-screen grid place-content-center">
 
-  //     </div>
-  //   );
-  console.log(error);
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px] min-h-screen">
       <Title
         px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="!roboto lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500]"
       >
         Locations
       </Title>
-      <section className="p-6 flex flex-col h-full  gap-10">
+      <section className="p-6 flex flex-col h-full gap-10">
         <section className="flex justify-between items-center">
           <Text className="!text-[22px] !font-[700]">All Locations</Text>
           <Button
@@ -157,7 +151,7 @@ export default function OrganizationOwnerLocations() {
               setToggleTitle("Add Location");
               setSelectedLocation(null);
               form.reset();
-              setOpened(true); // Open the add location popup
+              setOpened(true);
             }}
             bg="black"
             radius="md"
@@ -169,19 +163,14 @@ export default function OrganizationOwnerLocations() {
 
         <ScrollArea
           offsetScrollbars
-          className="h-[500px] min-w-full  rounded-lg p2-2 "
+          className="h-[500px] min-w-full rounded-lg p2-2"
         >
-          <Table.ScrollContainer className=" w-full ">
-            <Box className="flex flex-col gap-4 p-2  justify-center items-center">
+          <Table.ScrollContainer className="w-full">
+            <Box className="flex flex-col gap-4 p-2 justify-center items-center">
               {isLoading ? (
                 <Loader className="mx-auto" color="blue" type="bars" />
               ) : error ? (
-                <Paper
-                  p={"md"}
-                  mt={30}
-                  className="!bg-[#F5F7FA]  font-[1.2rem]  "
-                >
-                  {" "}
+                <Paper p={"md"} mt={30} className="!bg-[#F5F7FA] font-[1.2rem]">
                   {error}
                 </Paper>
               ) : (
@@ -190,9 +179,8 @@ export default function OrganizationOwnerLocations() {
                     key={val._id}
                     className=" min-w-[1650px] overflow-auto flex justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
                   >
-                    <div className="col-span-2 flex items-center gap-3  ">
+                    <div className="col-span-2 flex items-center gap-3">
                       <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
-                        {" "}
                         <img
                           className="w-[40.83px] h-[58.33px]"
                           src="/usaLocationIcon.png"
@@ -208,18 +196,18 @@ export default function OrganizationOwnerLocations() {
                         </Text>
                         <Text
                           c={"#718EBF"}
-                          className="cursor-pointer !text-[18px] !font-[400] "
+                          className="cursor-pointer !text-[18px] !font-[400]"
                           onClick={() => {
                             setModalTitle("Address");
                             setModalContent(val.address);
-                            setModalOpen(true); // Open view modal
+                            setModalOpen(true);
                           }}
                         >
                           View Address
                         </Text>
                       </div>
                     </div>
-                    <div className="">
+                    <div>
                       <Text
                         tt={"capitalize"}
                         className="!text-[22px] !font-[700]"
@@ -228,7 +216,7 @@ export default function OrganizationOwnerLocations() {
                       </Text>
                       <Text
                         c={"#718EBF"}
-                        className="cursor-pointer !text-[18px] !font-[400] "
+                        className="cursor-pointer !text-[18px] !font-[400]"
                         td={"underline"}
                         onClick={() => copyToClipboard(val.googleLink)}
                       >
@@ -242,10 +230,7 @@ export default function OrganizationOwnerLocations() {
                       >
                         On-site Payments
                       </Text>
-                      <Text
-                        c={"#718EBF"}
-                        className=" !text-[18px] !font-[400] "
-                      >
+                      <Text c={"#718EBF"} className="!text-[18px] !font-[400]">
                         {val.enableCashPayments ? "Yes" : "No"}
                       </Text>
                     </div>
@@ -258,7 +243,7 @@ export default function OrganizationOwnerLocations() {
                       </Text>
                       <Text
                         c={"#718EBF"}
-                        className="cursor-pointer !text-[18px] !font-[400] "
+                        className="cursor-pointer !text-[18px] !font-[400]"
                       >
                         {val.workingHours} Hours
                       </Text>
@@ -273,11 +258,11 @@ export default function OrganizationOwnerLocations() {
                       <Text
                         td={"underline"}
                         c={"#718EBF"}
-                        className="cursor-pointer !text-[18px] !font-[400] "
+                        className="cursor-pointer !text-[18px] !font-[400]"
                         onClick={() => {
                           setModalTitle("Description");
                           setModalContent(val.description);
-                          setModalOpen(true); // Open view modal
+                          setModalOpen(true);
                         }}
                       >
                         View Description
@@ -294,11 +279,12 @@ export default function OrganizationOwnerLocations() {
                             image: val.image,
                             address: val.address,
                             googleLink: val.googleLink,
-                            enableCashPayments: val.enableCashPayments,
+                            enableCashPayments:
+                              val.enableCashPayments.toString(), // Convert boolean to string
                             workingHours: val.workingHours,
                             description: val.description,
                           });
-                          setOpened(true); // Open edit popup
+                          setOpened(true);
                         }}
                       >
                         <FiUpload size={18} style={{ color: "white" }} />
@@ -351,7 +337,16 @@ export default function OrganizationOwnerLocations() {
             label="Upload Image"
             placeholder="Select an image"
             filetype="image/*"
-            id="image" // ✅ Ensure this matches the form field
+            id="image"
+          />
+          <Popup.SingleSelector
+            id="enableCashPayments"
+            label="Enable Cash Payment"
+            placeholder="Select an option"
+            data={[
+              { value: "true", label: "Yes" }, // Use string "true"
+              { value: "false", label: "No" }, // Use string "false"
+            ]}
           />
           <Popup.TextArea
             label="Description"
