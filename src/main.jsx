@@ -54,6 +54,7 @@ import CustomerRegister from "./pages/Customer/CustomerAuth/CustomerRegister.jsx
 import CustomerVerifyEmail from "./pages/Customer/CustomerAuth/CustomerVerifyEmail.jsx";
 import CustomerResetPassword from "./pages/Customer/CustomerAuth/CustomerPassword.jsx";
 import CustomerResendOTP from "./pages/Customer/CustomerAuth/CustomerResendOTP.jsx";
+
 import CustomerLayout from "./pages/Customer/CustomerLayout/CustomerLayout.jsx";
 import CustomerDashboard from "./pages/Customer/CustomerLayout/CustomerDashboard/CustomerDashboard.jsx";
 import NewPassword from "./components/NewPassword.jsx";

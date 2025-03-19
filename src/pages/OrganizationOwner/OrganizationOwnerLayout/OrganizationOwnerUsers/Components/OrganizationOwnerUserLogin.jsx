@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form";
 import freshifyImage from "../../../../../assets/freshifyImage.png";
 import { useNavigate } from "react-router-dom";
 import { apiPost } from "../../../../../services/useApi";
+import { toast } from "react-toastify";
 
 export default function OrganizationOwnerUserLogin() {
   const [loading, setLoading] = useState(false);
@@ -38,28 +39,20 @@ export default function OrganizationOwnerUserLogin() {
       localStorage.setItem("data", JSON.stringify(response.user));
 
       // Redirect to dashboard/home page
-      setMessage("Login successful! Redirecting...");
+      toast(response.message, { position: "top-center" });
       setTimeout(() => {
         navigate("/OrganizationOwnerDashboard"); // Adjust this route as needed
       }, 2000);
     } catch (error) {
       console.error("Error in login request:", error);
-
-      // Handle error cases
-      if (error.response && error.response.status === 400) {
-        setMessage("Invalid email or password.");
-      } else if (error.response && error.response.status === 404) {
-        setMessage("User not found.");
-      } else {
-        setMessage("Something went wrong. Please try again later.");
-      }
+      toast(error, { position: "top-center" });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0    px-2 lg:px-0">
+    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -81,7 +74,7 @@ export default function OrganizationOwnerUserLogin() {
       </section>
 
       {/* Right Side - Form */}
-      <section className="flex items-center justify-center">
+      <section className=" h-full  flex items-center  justify-center">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
@@ -132,6 +125,7 @@ export default function OrganizationOwnerUserLogin() {
             bg={"black"}
             c={"white"}
             radius={"md"}
+            className="!text-[18px] !font-[400]"
             loading={loading}
             loaderProps={{ type: "dots" }}
           >

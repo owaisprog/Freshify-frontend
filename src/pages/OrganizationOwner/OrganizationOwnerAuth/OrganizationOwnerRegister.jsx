@@ -41,22 +41,21 @@ export default function OrganizationOwnerRegister() {
       // console.log(userData);
       // console.log(userData.newUser);
       // Simulate API call
+      toast(userData.message, { position: "top-center" });
       setTimeout(() => {
         setLoading(false);
         navigate("/OrganizationOwnerVerifyEmail", {
           state: { userEmail: values.email },
         });
       }, 1500);
-      toast("Success", { position: "top-right" });
     } catch (error) {
-      console.log("Signup Error", error);
-      toast(error.message, { position: "top-right" });
+      toast(error, { position: "top-center" });
       setLoading(false);
     }
   };
 
   return (
-    <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0    px-2 lg:px-0">
+    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -78,7 +77,7 @@ export default function OrganizationOwnerRegister() {
       </section>
 
       {/* Right Section - Form */}
-      <section className="flex items-center justify-center">
+      <section className="h-full  flex items-center  justify-center">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
@@ -147,6 +146,7 @@ export default function OrganizationOwnerRegister() {
             bg={"black"}
             c={"white"}
             radius={"md"}
+            className="!text-[18px] !font-[400]"
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
