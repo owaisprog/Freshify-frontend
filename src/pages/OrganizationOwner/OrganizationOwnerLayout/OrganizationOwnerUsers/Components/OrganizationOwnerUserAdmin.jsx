@@ -180,12 +180,13 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
       {/* Table Section */}
       <section>
         <div className="flex justify-between items-end">
-          <Title className="!text-[22px] !font-[700]">Admins</Title>
+          <Title className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+            Admins
+          </Title>
           <Button
             bg="black"
             radius="md"
-            fw={"normal"}
-            className="!text-[18px] !px-[40px] !py-[10px]"
+            className="!text-[18px] !font-[400] !px-[40px] !py-[10px]"
             onClick={() => {
               setSelectedUser(null);
               form.reset();

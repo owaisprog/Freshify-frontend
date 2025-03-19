@@ -77,16 +77,18 @@ export default function OrganizationOwnerResendOTP() {
             Enter your email address to receive a new OTP.
           </Text>
 
-          <TextInput
-            radius={"md"}
-            label="Email Address"
-            placeholder="Enter your email"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Email Address
+            </span>
+
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your email"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+            />
+          </div>
 
           {message && (
             <Text

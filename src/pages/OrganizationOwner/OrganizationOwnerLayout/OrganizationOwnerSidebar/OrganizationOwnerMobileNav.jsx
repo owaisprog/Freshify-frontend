@@ -1,5 +1,5 @@
 import { useState } from "react";
-import freshifyLogo from "../.././../../assets/freshifyLogo.png";
+import freshifyLogoMobile from "../.././../../assets/freshifyLogoMobile.png";
 import { Image, Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
 
@@ -86,9 +86,10 @@ export default function OrganizationOwnerMobileNav() {
   return (
     <div className="lg:hidden bg-[#FFFFFF] fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
-      <nav className=" z-20 px-4 py-3 flex justify-between items-center">
-        <Image radius="md" src={freshifyLogo} w={250} />
-
+      <nav className=" z-20  pr-4 flex justify-between items-center ">
+        <div className=" h-[80px]  w-[85%]">
+          <Image className="h-full" radius="md" src={freshifyLogoMobile} />
+        </div>
         <Burger
           opened={isMenuOpen}
           onClick={toggleMenu}

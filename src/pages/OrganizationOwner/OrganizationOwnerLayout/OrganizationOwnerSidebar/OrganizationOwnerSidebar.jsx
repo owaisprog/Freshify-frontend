@@ -61,7 +61,7 @@ export default function OrganizationOwnerSidebar() {
 
   const links = data.map((item) => (
     <Link
-      className={`flex items-center no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
+      className={`flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
         item.activePath === active
           ? "bg-[#f5f7fa] border-l-4 border-black text-black"
           : ""
@@ -80,7 +80,7 @@ export default function OrganizationOwnerSidebar() {
   return (
     <nav className="  flex flex-col  h-screen bg-[#FFFFFF]">
       <div className="flex-1">
-        <Image mb={"lg"} className="w-full " radius="md" src={freshifyLogo} />
+        <Image className="w-full h-[78px] " radius="md" src={freshifyLogo} />
 
         {links}
       </div>

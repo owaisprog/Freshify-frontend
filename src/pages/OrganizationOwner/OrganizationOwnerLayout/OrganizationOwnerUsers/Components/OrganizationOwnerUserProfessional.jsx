@@ -183,12 +183,13 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
       {/* Table Section */}
       <section>
         <div className="flex justify-between items-end">
-          <Title className="!text-[22px] !font-[700]">Professionals</Title>
+          <Title className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+            Professionals
+          </Title>
           <Button
             bg="black"
             radius="md"
-            fw={"normal"}
-            className="!text-[18px] !px-[40px] !py-[10px]"
+            className="!text-[18px]  !font-[400] lg:!px-[40px] lg:!py-[10px]"
             onClick={() => {
               setToggleTitle("Add Professional");
               setSelectedUser(null);

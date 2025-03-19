@@ -135,16 +135,17 @@ export default function OrganizationOwnerLocations() {
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
-        px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500]"
+        className="lg:px-6 px-2 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] !py-[18px] "
       >
         Locations
       </Title>
       <section className="p-6 max-w-[1720px] flex flex-col h-full gap-10">
         <section className="flex justify-between items-center">
-          <Text className="!text-[22px] !font-[700]">All Locations</Text>
+          <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+            All Locations
+          </Text>
           <Button
             onClick={() => {
               setToggleTitle("Add Location");
@@ -154,14 +155,17 @@ export default function OrganizationOwnerLocations() {
             }}
             bg="black"
             radius="md"
-            className="!text-[18px] !px-[40px] !py-[10px]"
+            className="!text-[18px] !px-[40px] !font-[400]  !py-[10px]"
           >
             Add Location
           </Button>
         </section>
 
-        <Table.ScrollContainer className="w-full">
-          <Box className="flex flex-col gap-4 p-2 justify-center items-center">
+        <Table.ScrollContainer minWidth={900}>
+          <Box
+            className="flex flex-col border-r-green-500
+           gap-4 p-2 justify-center items-center"
+          >
             {isLoading ? (
               <Loader className="mx-auto" color="blue" type="bars" />
             ) : error ? (
@@ -172,7 +176,7 @@ export default function OrganizationOwnerLocations() {
               locations?.map((val, index) => (
                 <section
                   key={val._id}
-                  className="min-w-[1400px] lg:w-full overflow-auto grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
+                  className="min-w-full grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
                 >
                   <div className=" col-span-2   flex items-center gap-3">
                     {index % 3 === 0 ? (
@@ -184,7 +188,7 @@ export default function OrganizationOwnerLocations() {
                         />
                       </div>
                     ) : index % 3 === 1 ? (
-                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#FFE7E7] rounded-[20px]">
+                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#FFE7E7] rounded-[20px]">
                         <img
                           className="w-[40.83px] h-[58.33px]"
                           src="/canadaLocationIcon.png"
