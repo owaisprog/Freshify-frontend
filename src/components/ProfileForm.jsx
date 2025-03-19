@@ -9,7 +9,7 @@ import axios from "axios";
 export default function ProfileForm() {
   // Get user data from localStorage
   const data = JSON.parse(localStorage.getItem("data")) || {};
-  const { name, email, phone, image, id } = data;
+  const { name, email, phone, image } = data;
 
   // Initialize form with user data
   const form = useForm({
@@ -160,8 +160,14 @@ export default function ProfileForm() {
 
         {/* Save Button */}
         <div className="text-right">
-          <Button type="submit" color="dark" radius="md" loading={isPending}>
-            Save Changes
+          <Button
+            type="submit"
+            color="dark"
+            radius="lg"
+            loaderProps={{ type: "dots" }}
+            loading={isPending}
+          >
+            Save
           </Button>
         </div>
       </form>
