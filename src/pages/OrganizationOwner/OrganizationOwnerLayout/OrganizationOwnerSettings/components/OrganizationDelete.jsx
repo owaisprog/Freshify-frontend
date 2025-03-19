@@ -45,8 +45,9 @@ function OrganizationDelete() {
     <div className="flex justify-between">
       <span>Delete Account</span>
       <Button
-        color="dark"
+        color="black"
         loaderProps={{ type: "dots" }}
+        className="lg:!w-[131px]"
         radius="md"
         onClick={handleDelete}
         loading={isPending}

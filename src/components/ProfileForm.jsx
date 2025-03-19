@@ -162,8 +162,9 @@ export default function ProfileForm() {
         <div className="text-right">
           <Button
             type="submit"
-            color="dark"
-            radius="lg"
+            color="black"
+            radius="md"
+            className="lg:!w-[119px]"
             loaderProps={{ type: "dots" }}
             loading={isPending}
           >
