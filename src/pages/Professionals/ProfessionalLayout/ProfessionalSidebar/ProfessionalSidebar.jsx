@@ -5,56 +5,18 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 // react icons import
-import {
-  MdDashboard,
-  // MdMyLocation,
-  MdCalendarMonth,
-  MdOutlinePayment,
-  MdOutlineSettings,
-} from "react-icons/md";
-import { HiWrenchScrewdriver } from "react-icons/hi2";
-import { ImUsers } from "react-icons/im";
+import { MdCalendarMonth, MdOutlineSettings } from "react-icons/md";
 
 const data = [
   {
     link: "",
-    label: "Dashboard",
-    activePath: "/AdminsDashboard",
-    icon: MdDashboard,
-  },
-  {
-    link: "Services",
-    label: "Services",
-    activePath: "/AdminsDashboard/Services",
-    icon: HiWrenchScrewdriver,
-  },
-  {
-    link: "Users",
-    label: "Users",
-    activePath: "/AdminsDashboard/Users",
-    icon: ImUsers,
-  },
-  // {
-  //   link: "locations",
-  //   label: "Locations",
-  //   activePath: "/AdminsDashboard/Locations",
-  //   icon: MdMyLocation,
-  // },
-  {
-    link: "",
     label: "Calendar",
-    activePath: "/AdminsDashboard/Calendar",
+    activePath: "/ProfessionalDashboard",
     icon: MdCalendarMonth,
-  },
-  {
-    link: "#",
-    label: "Payout",
-    activePath: "Payout",
-    icon: MdOutlinePayment,
   },
 ];
 
-export default function AdminsSidebar() {
+export default function ProfessionalSidebar() {
   const location = useLocation();
   const currentPath = location.pathname;
   const [active, setActive] = useState(currentPath);
@@ -71,7 +33,9 @@ export default function AdminsSidebar() {
       onClick={() => setActive(item.activePath)}
     >
       <item.icon
-        className={`${item.activePath === active ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
+        className={`${
+          item.activePath === active ? "text-black" : "text-[#b1b1b1]"
+        } mr-4 w-[30px] h-[30px]`}
       />
       <span>{item.label}</span>
     </Link>
@@ -96,7 +60,9 @@ export default function AdminsSidebar() {
           onClick={() => setActive("settings")}
         >
           <MdOutlineSettings
-            className={`${active === "settings" ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
+            className={`${
+              active === "settings" ? "text-black" : "text-[#b1b1b1]"
+            } mr-4 w-[30px] h-[30px]`}
           />
           <span>Settings</span>
         </Link>

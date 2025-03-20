@@ -74,7 +74,6 @@ import SuperAdminSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSe
 import AdminsLayout from "./pages/Admins/AdminsLayout/AdminsLayout.jsx";
 import AdminsDashboard from "./pages/Admins/AdminsLayout/AdminsDashboard/AdminsDashboard.jsx";
 import AdminsServices from "./pages/Admins/AdminsLayout/AdminsServices/AdminsServices.jsx";
-import AdminsLocations from "./pages/Admins/AdminsLayout/AdminsLocation/AdminsLocation.jsx";
 import AdminSettings from "./pages/Admins/AdminsLayout/AdminsSettings/AdminSettings.jsx";
 import AdminsSettings from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsSettings.jsx";
 import AdminNotification from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsNotification.jsx";
@@ -83,11 +82,12 @@ import AdminDelete from "./pages/Admins/AdminsLayout/AdminsSettings/components/A
 import ProfessionalLayout from "./pages/Professionals/ProfessionalLayout/ProfessionalLayout.jsx";
 import ProfessionalDashboard from "./pages/Professionals/ProfessionalLayout/ProfessionalDashboard/ProfessionalDashboard.jsx";
 import ProfessionalSettings from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/ProfessionalSettings.jsx";
-import ProfessionalsSettings from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalsSettings.jsx";
 import ProfessionalNotification from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalNotification.jsx";
 import ProfessionalProfile from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalProfile.jsx";
 import ProfessionalDelete from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalDelete.jsx";
+import AdminsUsers from "./pages/Admins/AdminsLayout/AdminsUsers/OrganizationOwnerUsers.jsx";
 import OrganizationOwnerPayout from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerPayout/OrganizationOwnerPayout.jsx";
+import ProfessionalUpdatePassword from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalUpdatePassword.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -237,9 +237,9 @@ const router = createBrowserRouter(
         }
       >
         <Route index element={<AdminsDashboard />} />
-        {/* <Route path="Services" element={<AdminsServices />} /> */}
-        {/* <Route path="Users" element={<AdminsUsers />} /> */}
-        {/* <Route path="locations" element={<AdminsLocations />} /> */}
+        <Route path="Services" element={<AdminsServices />} />
+        <Route path="Users" element={<AdminsUsers />} />
+        {/* <Route path="locations" element={<AdminsLocations />} />  */}
         <Route path="settings" element={<AdminSettings />}>
           <Route index element={<AdminsSettings />} />
           <Route path="email" element={<AdminNotification />} />
@@ -263,9 +263,10 @@ const router = createBrowserRouter(
         <Route index element={<ProfessionalDashboard />} />
 
         <Route path="settings" element={<ProfessionalSettings />}>
-          <Route index element={<ProfessionalsSettings />} />
+          {/* <Route index element={<ProfessionalsSettings />} /> */}
+          <Route index element={<ProfessionalProfile />} />
+          <Route path="password" element={<ProfessionalUpdatePassword />} />
           <Route path="email" element={<ProfessionalNotification />} />
-          <Route path="personal" element={<ProfessionalProfile />} />
           <Route path="delete" element={<ProfessionalDelete />} />
         </Route>
       </Route>

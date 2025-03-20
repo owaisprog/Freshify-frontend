@@ -13,13 +13,13 @@ export default function ProfessionalSettings() {
         px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="!hidden lg:!block lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
       >
         Settings
       </Title>
       <section className="lg:p-6 flex   flex-col h-full gap-8">
         <Paper
-          p="xl"
+          p={"xs"}
           radius="25px"
           // bg={"#F5F7FA"}
           className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white "
@@ -30,15 +30,15 @@ export default function ProfessionalSettings() {
               <Tabs.List>
                 <Tab
                   path="/ProfessionalDashboard/settings"
-                  text="Professionals Settings"
+                  text="Personal Info"
+                />
+                <Tab
+                  path="/ProfessionalDashboard/settings/password"
+                  text="Update Password"
                 />
                 <Tab
                   path="/ProfessionalDashboard/settings/email"
                   text="Email Notifications"
-                />
-                <Tab
-                  path="/ProfessionalDashboard/settings/personal"
-                  text="Personal Info"
                 />
                 <Tab
                   path="/ProfessionalDashboard/settings/delete"
@@ -49,23 +49,23 @@ export default function ProfessionalSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center gap-8 bg-white shadow-sm rounded-[10px] py-4 px-4 justify-between lg:hidden ">
-            <Title fz={"h2"} c={"#333B69"}>
+          <section className="flex items-center  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
+            <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>
             <Select
               data={[
                 {
-                  label: "Professionals Settings",
+                  label: "Personal Info",
                   value: "/ProfessionalDashboard/settings",
+                },
+                {
+                  label: "Update Password",
+                  value: "/ProfessionalDashboard/settings/password",
                 },
                 {
                   label: "Email Notifications",
                   value: "/ProfessionalDashboard/settings/email",
-                },
-                {
-                  label: "Personal Info",
-                  value: "/ProfessionalDashboard/settings/personal",
                 },
                 {
                   label: "Delete Account",
@@ -79,19 +79,20 @@ export default function ProfessionalSettings() {
               clearable={false} // ✅ Prevent unchecking selected value
               styles={{
                 input: {
+                  width: "232px",
                   border: "none",
-                  borderBottom: "2px solid #333B69",
+                  borderBottom: "1px solid #000000",
                   borderRadius: 0,
-                  paddingRight: "2rem",
                   color: "#333B69",
-                  fontSize: "1.2rem",
+                  fontSize: "18px",
+                  backgroundColor: "transparent",
                 },
               }}
             />
           </section>
 
           {/* Render the active tab component */}
-          <div className="mt-6 lg:mt-0 !text-[18px] !font-normal ">
+          <div className="mt-6  lg:mt-0 !text-[18px] !font-normal ">
             <Outlet />
           </div>
         </Paper>

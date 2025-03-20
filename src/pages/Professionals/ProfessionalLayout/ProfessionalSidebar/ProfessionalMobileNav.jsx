@@ -1,60 +1,22 @@
 import { useState } from "react";
+import freshifyLogoMobile from "../.././../../assets/freshifyLogoMobile.png";
 import { Image, Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
-import freshifyLogoMobile from "../.././../../assets/freshifyLogoMobile.png";
 
 // Reuse your existing icons and data
-import {
-  MdDashboard,
-  // MdMyLocation,
-  MdCalendarMonth,
-  MdOutlinePayment,
-  MdOutlineSettings,
-} from "react-icons/md";
-import { HiWrenchScrewdriver } from "react-icons/hi2";
-import { ImUsers } from "react-icons/im";
+import { MdCalendarMonth, MdOutlineSettings } from "react-icons/md";
 
 // Reuse your existing data array
 const data = [
   {
     link: "",
-    label: "Dashboard",
-    activePath: "/AdminsDashboard",
-    icon: MdDashboard,
-  },
-  {
-    link: "Services",
-    label: "Services",
-    activePath: "/AdminsDashboard/Services",
-    icon: HiWrenchScrewdriver,
-  },
-  // {
-  //   link: "locations",
-  //   label: "Locations",
-  //   activePath: "/AdminsDashboard/Locations",
-  //   icon: MdMyLocation,
-  // },
-  {
-    link: "Users",
-    label: "Users",
-    activePath: "/AdminsDashboard/Users",
-    icon: ImUsers,
-  },
-  {
-    link: "",
     label: "Calendar",
-    activePath: "/AdminsDashboard/Calendar",
+    activePath: "/ProfessionalDashboard",
     icon: MdCalendarMonth,
-  },
-  {
-    link: "",
-    label: "Payout",
-    activePath: "/AdminsDashboard/Payout",
-    icon: MdOutlinePayment,
   },
 ];
 
-export default function AdminsMobileNav() {
+export default function ProfessionalMobileNav() {
   const location = useLocation();
   const currentPath = location.pathname;
   const [active, setActive] = useState(currentPath);
@@ -77,7 +39,9 @@ export default function AdminsMobileNav() {
       }}
     >
       <item.icon
-        className={`${item.activePath === active ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
+        className={`${
+          item.activePath === active ? "text-black" : "text-[#b1b1b1]"
+        } mr-4 w-[30px] h-[30px]`}
       />
       <span>{item.label}</span>
     </Link>

@@ -16,7 +16,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 function AdminsServices() {
-  const { id } = JSON.parse(localStorage.getItem("data"));
+  const { location, email, id, createdBy } = JSON.parse(
+    localStorage.getItem("data")
+  );
+
+  console.log(location, email, id);
 
   const {
     data: services = [],
@@ -24,17 +28,10 @@ function AdminsServices() {
     error: servicesError,
   } = useQueryHook({
     queryKey: "services",
-    endpoint: "/api/get-services-by-owner",
+    endpoint: `/api/get-service/${location._id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
-  const { data: ownerLocations = [], error: locationsError } = useQueryHook({
-    queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 0 * 60 * 1000, // 15 minutes cache
-  });
-
-  const locationNames = ownerLocations.map((val) => val?.name) || [];
   const { mutate: createService, isPending: isLoadCreate } =
     usePostMutation("services");
   const { mutate: updateService, isPending: isLoadUpdate } =
@@ -85,7 +82,7 @@ function AdminsServices() {
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      locations: [],
+      locations: [location._id],
       description: "",
       category: "",
       duration: "",
@@ -93,8 +90,8 @@ function AdminsServices() {
     },
     validate: {
       name: (value) => (value.trim().length < 1 ? "Name is required" : null),
-      locations: (value) =>
-        value.length === 0 ? "At least one location is required" : null,
+      // locations: (value) =>
+      //   value.length === 0 ? "At least one location is required" : null,
       description: (value) =>
         value.trim().length < 10
           ? "Description must be at least 10 characters long"
@@ -108,32 +105,49 @@ function AdminsServices() {
         !Number.isInteger(Number(value))
           ? "Duration must be a positive whole number"
           : null,
-      price: (value) =>
-        !/^\$[0-9]+(\.[0-9]{1,2})?$/.test(value) // Regex: Starts with $ and allows two decimal places
-          ? "Price must start with a $ sign and be a valid number"
-          : null,
+      price: (value) => (value <= 0 ? "Must be a positive number" : null),
     },
   });
 
   const handleSubmit = (values) => {
     setLoading(true);
-    const filterIdLocations = ownerLocations
-      ?.filter((val) => values?.locations?.includes(val?.name))
-      ?.map((val) => val?._id);
-
+    console.log(values);
     try {
       if (selectedService) {
-        updateService({
-          endpoint: `/api/update-service/${selectedService._id}`,
-          payload: { ...values, locations: filterIdLocations },
-        });
+        updateService(
+          {
+            endpoint: `/api/update-service/${selectedService._id}`,
+            payload: { ...values, createdBy },
+          },
+          {
+            onSuccess: () => {
+              toast("Success", { position: "top-right" });
+            },
+            onError: (error) => {
+              toast(error, {
+                position: "top-right",
+              });
+            },
+          }
+        );
       } else {
-        createService({
-          endpoint: "/api/create-service",
-          payload: { ...values, locations: filterIdLocations },
-        });
+        createService(
+          {
+            endpoint: "/api/create-service",
+            payload: { ...values, createdBy },
+          },
+          {
+            onSuccess: () => {
+              toast("Success", { position: "top-right" });
+            },
+            onError: () => {
+              toast("Error Creating/Updating service", {
+                position: "top-right",
+              });
+            },
+          }
+        );
       }
-      toast("Success", { position: "top-right" });
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
@@ -144,6 +158,7 @@ function AdminsServices() {
       setLoading(false);
     }
   };
+  console.log(services);
 
   const data = services?.map((val) => ({
     Services: val.name,
@@ -177,7 +192,7 @@ function AdminsServices() {
         }}
       />
     ),
-    Price: val.price,
+    Price: <div>${val.price}</div>,
     Actions: (
       <div className="flex gap-2.5">
         <div
@@ -190,7 +205,7 @@ function AdminsServices() {
               category: val.category,
               duration: val.duration,
               price: val.price,
-              locations: val.locations.map((loc) => loc.name),
+              locations: val.locations.map((loc) => loc._id),
               description: val.description,
             });
             setOpened(true);
@@ -309,14 +324,9 @@ function AdminsServices() {
             label="Price"
             placeholder="Enter Service Price in Dollars"
             id="price"
+            type="number"
           />
-          <Popup.MutltiSelector
-            data={locationNames}
-            label="Select the location"
-            placeholder="Select at least one location"
-            id="locations"
-            error={locationsError}
-          />
+
           <Popup.TextArea
             label="Description"
             placeholder="Enter  Description"

@@ -16,10 +16,7 @@ export default function OrganizationOwnerUserLogin() {
     mode: "uncontrolled",
     initialValues: { email: "", password: "" },
     validate: {
-      email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
-      password: (value) =>
-        value.length >= 6 ? null : "Password must have at least 6 characters",
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
 
@@ -63,9 +60,9 @@ export default function OrganizationOwnerUserLogin() {
   };
 
   return (
-    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0">
-      {/* This image will be visible on large devices  */}
-      <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
+    <main className="flex flex-col lg:grid h-screen mx-auto lg:grid-cols-2 lg:gap-x-4 lg:gap-y-0 px-3 lg:px-0">
+      {/* This image will be visible on large devices */}
+      <section className="hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
           radius="md"
           height={"full"}
@@ -74,50 +71,57 @@ export default function OrganizationOwnerUserLogin() {
         />
       </section>
 
-      {/* This image will be visible on Mobile devices  */}
-      <section className=" lg:hidden h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
+      {/* This image will be visible on Mobile devices */}
+      <section className="lg:hidden h-[85px] md:h-[100px] md:py-2 overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
         <Image
           radius="md"
-          className="object-contain  w-full lg:w-[60%]  "
+          className="object-contain w-full lg:w-[60%]"
           src={freshifyImage}
           fallbackSrc="https://placehold.co/600x400?text=Placeholder"
         />
       </section>
 
       {/* Right Side - Form */}
-      <section className=" h-full  flex items-center  justify-center">
+      <section className="h-full flex items-center justify-center">
         <form
-          className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
+          className="w-full flex flex-col max-w-[547px] bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
           {/* Heading */}
-
           <Text
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
             Login
           </Text>
-          <Text c="dimmed" size="sm" ta="center" mt={15}>
+          <Text c="dimmed" size="sm" ta="center">
             Enter your credentials to access your account.
           </Text>
 
           {/* Input Fields */}
+          <div className="flex flex-col gap-[10px]">
+            <span className="!font-[400] !text-[18px] !text-[#000000]">
+              Email Address
+            </span>
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your email"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+            />
+          </div>
 
-          <TextInput
-            radius={"md"}
-            label="Email"
-            placeholder="Enter your email"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
-          />
-          <PasswordInput
-            radius={"md"}
-            label="Password"
-            placeholder="Enter your password"
-            key={form.key("password")}
-            {...form.getInputProps("password")}
-          />
+          <div className="flex flex-col gap-[10px]">
+            <span className="!font-[400] !text-[18px] !text-[#000000]">
+              Password
+            </span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Enter your password"
+              key={form.key("password")}
+              {...form.getInputProps("password")}
+            />
+          </div>
 
           {/* Success/Error Message */}
           {message && (

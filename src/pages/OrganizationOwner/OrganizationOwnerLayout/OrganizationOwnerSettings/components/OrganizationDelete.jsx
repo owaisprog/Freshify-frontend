@@ -1,12 +1,10 @@
 import { Button } from "@mantine/core";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDeleteMutation } from "../../../../../services/reactQuery";
 
 function OrganizationDelete() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   // Use the delete mutation from react-query
   const { mutate: deleteOrganization, isPending } =
@@ -22,9 +20,6 @@ function OrganizationDelete() {
             // Clear localStorage
             localStorage.removeItem("token");
             localStorage.removeItem("data");
-
-            // Invalidate any related queries (optional)
-            queryClient.invalidateQueries(["organization"]);
 
             // Show success message
             toast.success("Organization deleted successfully!");

@@ -8,21 +8,20 @@ export default function AdminSettings() {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px] min-h-screen">
       <Title
         px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="!hidden lg:!block lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
       >
         Settings
       </Title>
-      <section className="lg:p-6 flex   flex-col h-full gap-8">
+      <section className="lg:p-6 flex flex-col h-full gap-8">
         <Paper
           p="xl"
           radius="25px"
-          // bg={"#F5F7FA"}
-          className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white "
+          className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white"
         >
           {/* Desktop Tabs */}
           <section className="max-w-fit mt-3 mb-8 hidden lg:flex">
@@ -46,8 +45,8 @@ export default function AdminSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center gap-8 bg-white shadow-sm rounded-[10px] py-4 px-4 justify-between lg:hidden ">
-            <Title fz={"h2"} c={"#333B69"}>
+          <section className="flex items-center shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden">
+            <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>
             <Select
@@ -71,24 +70,25 @@ export default function AdminSettings() {
               ]}
               value={location.pathname} // ✅ Keep the selected value persistent
               onChange={(value) => value && navigate(value)} // ✅ Prevent clearing when clicking again
-              rightSection={<FaChevronDown size={14} color="#333B69" />}
+              rightSection={<FaChevronDown size={15} color="#333B69" />}
               checkIconPosition="right"
               clearable={false} // ✅ Prevent unchecking selected value
               styles={{
                 input: {
+                  width: "232px",
                   border: "none",
-                  borderBottom: "2px solid #333B69",
+                  borderBottom: "1px solid #000000",
                   borderRadius: 0,
-                  paddingRight: "2rem",
                   color: "#333B69",
-                  fontSize: "1.2rem",
+                  fontSize: "18px",
+                  backgroundColor: "transparent",
                 },
               }}
             />
           </section>
 
           {/* Render the active tab component */}
-          <div className="mt-6 lg:mt-0 !text-[18px] !font-normal ">
+          <div className="mt-6 lg:mt-0 !text-[18px] !font-normal">
             <Outlet />
           </div>
         </Paper>

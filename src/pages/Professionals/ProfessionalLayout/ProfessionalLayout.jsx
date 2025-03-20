@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import OrganizationOwnerSidebar from "../../OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSidebar/OrganizationOwnerSidebar";
-import OrganizationOwnerMobileNav from "../../OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSidebar/OrganizationOwnerMobileNav";
+import ProfessionalSidebar from "./ProfessionalSidebar/ProfessionalSidebar";
+import ProfessionalMobileNav from "./ProfessionalSidebar/ProfessionalMobileNav";
 
 export default function ProfessionalLayout() {
   return (
@@ -9,11 +9,11 @@ export default function ProfessionalLayout() {
       <aside className="hidden lg:block sticky top-0 left-0  w-[300px] h-screen self-start">
         {" "}
         {/* Added h-screen and self-start */}
-        <OrganizationOwnerSidebar />
+        <ProfessionalSidebar />
       </aside>
 
       <nav className="lg:hidden">
-        <OrganizationOwnerMobileNav />
+        <ProfessionalMobileNav />
       </nav>
 
       {/* Main Content (Right side) */}

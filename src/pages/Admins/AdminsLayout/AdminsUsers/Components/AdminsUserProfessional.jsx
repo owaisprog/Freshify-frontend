@@ -15,19 +15,14 @@ import { toast } from "react-toastify";
 
 function AdminsUserProfessional({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
-  const { id } = JSON.parse(localStorage.getItem("data"));
+  const { location, email, id } = JSON.parse(localStorage.getItem("data"));
 
   // ✅ Fetch locations
-  const { data: ownerLocations = [], error: locationError } = useQueryHook({
-    queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 15 * 60 * 1000,
-  });
 
   // ✅ Fetch services
   const { data: services = [] } = useQueryHook({
     queryKey: "services",
-    endpoint: "/api/get-services-by-owner",
+    endpoint: `/api/get-service/${location._id}`,
     staleTime: 15 * 60 * 1000, // 15 minutes cache
   });
 
@@ -73,7 +68,7 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
     initialValues: {
       name: "",
       email: "",
-      location: "",
+      location: location._id,
       role: "barber",
       services: [],
     },
@@ -90,11 +85,6 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
   const handleSubmit = async (values) => {
     setLoading(true);
 
-    // ✅ Find location ID based on selected location name
-    const locationId = ownerLocations.find(
-      (loc) => loc.name === values.location
-    )?._id;
-
     // ✅ Find service IDs based on selected service names
     const servicesId = services
       ?.filter((val) => values?.services?.includes(val?.name))
@@ -105,13 +95,13 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
         // ✅ Update user
         updateUser({
           endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, location: locationId, services: servicesId },
+          payload: { ...values, services: servicesId },
         });
       } else {
         // ✅ Create new user
         createUser({
           endpoint: "/api/invite-user",
-          payload: { ...values, location: locationId, services: servicesId },
+          payload: { ...values, services: servicesId },
         });
       }
       toast("Success", { position: "top-right" });
@@ -227,13 +217,7 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
           placeholder="Enter Email"
           id="email"
         />
-        <Popup.SingleSelector
-          data={ownerLocations.map((loc) => loc.name)}
-          label="Select the location"
-          placeholder="Select at least one location"
-          id="location"
-          error={locationError}
-        />
+
         <Popup.MutltiSelector
           data={services.map((serve) => serve.name)}
           label="Select the Services"

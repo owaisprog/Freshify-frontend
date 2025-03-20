@@ -1,17 +1,12 @@
-import { Tabs, Text, Title } from "@mantine/core";
-import { useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
-import AdminsUserAdmin from "./Components/AdminsUserAdmin";
+import { Text, Title } from "@mantine/core";
+
 import AdminsUserProfessional from "./Components/AdminsUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
 
 function AdminsUsers() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { id } = JSON.parse(localStorage.getItem("data"));
+  const { id, createdBy } = JSON.parse(localStorage.getItem("data"));
 
   // Get active tab from query params or default to "admin"
-  const currentTab = searchParams.get("tab") || "admin";
-  const [activeTab, setActiveTab] = useState(currentTab);
 
   // ✅ Fetch all users with React Query
   const {
@@ -20,20 +15,12 @@ function AdminsUsers() {
     error,
   } = useQueryHook({
     queryKey: ["users", id], // ✅ Cache users by owner ID
-    endpoint: `/api/get-users-by-owner/${id}`,
+    endpoint: `/api/get-users-by-owner/${createdBy}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
+  console.log(allUsers);
   // ✅ Filter users based on active tab
-  const filteredUsers = useMemo(() => {
-    return allUsers?.filter((val) => val.role === activeTab);
-  }, [allUsers, activeTab]);
-
-  // ✅ Handle tab change & update URL params
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setSearchParams({ tab }); // Update URL
-  };
 
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
@@ -81,48 +68,13 @@ function AdminsUsers() {
             <Text className="!text-[30px] !font-[600]">1,360</Text>
           </div>
         </section>
-        <section className="max-w-fit">
-          <Tabs value={activeTab} onChange={handleTabChange}>
-            <Tabs.List>
-              <Tabs.Tab
-                value="admin"
-                style={{
-                  color: activeTab === "admin" ? "black" : "#718EBF",
-                  borderBottom:
-                    activeTab === "admin" ? "2px solid black" : "none",
-                }}
-              >
-                Admins
-              </Tabs.Tab>
-              <Tabs.Tab
-                value="barber"
-                style={{
-                  color: activeTab === "barber" ? "black" : "#718EBF",
-                  borderBottom:
-                    activeTab === "barber" ? "2px solid black" : "none",
-                }}
-              >
-                Professionals
-              </Tabs.Tab>
-            </Tabs.List>
-          </Tabs>
-        </section>
 
         <section>
-          {/* ✅ Show loading state */}
-          {activeTab === "admin" ? (
-            <AdminsUserAdmin
-              userdata={filteredUsers}
-              isLoading={isLoading}
-              error={error}
-            />
-          ) : (
-            <AdminsUserProfessional
-              userdata={filteredUsers}
-              isLoading={isLoading}
-              error={error}
-            />
-          )}
+          <AdminsUserProfessional
+            userdata={allUsers.filter((val) => val.role === "barber")}
+            isLoading={isLoading}
+            error={error}
+          />
         </section>
       </section>
     </main>

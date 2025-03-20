@@ -1,12 +1,10 @@
 import { Button } from "@mantine/core";
-import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDeleteMutation } from "../../../../../services/reactQuery";
 
 function AdminDelete() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
   // Use the delete mutation from react-query
   const { mutate: deleteAdmin, isPending } = useDeleteMutation("Admin");
@@ -21,9 +19,6 @@ function AdminDelete() {
             // Clear localStorage
             localStorage.removeItem("token");
             localStorage.removeItem("data");
-
-            // Invalidate any related queries (optional)
-            queryClient.invalidateQueries(["Admin"]);
 
             // Show success message
             toast.success("Admin deleted successfully!");
@@ -47,6 +42,7 @@ function AdminDelete() {
         color="dark"
         loaderProps={{ type: "dots" }}
         radius="md"
+        className="!w-[131px] !text-[18px] !font-[400]"
         onClick={handleDelete}
         loading={isPending}
       >
