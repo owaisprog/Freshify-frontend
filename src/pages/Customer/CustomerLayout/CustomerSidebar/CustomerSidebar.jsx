@@ -5,52 +5,14 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 // react icons import
-import {
-  MdDashboard,
-  MdMyLocation,
-  MdCalendarMonth,
-  MdOutlinePayment,
-  MdOutlineSettings,
-} from "react-icons/md";
-import { HiWrenchScrewdriver } from "react-icons/hi2";
-import { ImUsers } from "react-icons/im";
+import { MdCalendarMonth, MdOutlineSettings } from "react-icons/md";
 
 const data = [
   {
     link: "",
-    label: "Dashboard",
-    activePath: "/CustomerDashboard",
-    icon: MdDashboard,
-  },
-  {
-    link: "Services",
-    label: "Services",
-    activePath: "/CustomerDashboard/Services",
-    icon: HiWrenchScrewdriver,
-  },
-  {
-    link: "locations",
-    label: "Locations",
-    activePath: "/CustomerDashboard/Locations",
-    icon: MdMyLocation,
-  },
-  {
-    link: "",
     label: "Calendar",
-    activePath: "/CustomerDashboard/Calendar",
+    activePath: "/CustomerDashboard",
     icon: MdCalendarMonth,
-  },
-  {
-    link: "",
-    label: "Payout",
-    activePath: "/CustomerDashboard/Payout",
-    icon: MdOutlinePayment,
-  },
-  {
-    link: "Users",
-    label: "Users",
-    activePath: "/CustomerDashboard/Users",
-    icon: ImUsers,
   },
 ];
 
@@ -61,7 +23,7 @@ export default function CustomerSidebar() {
 
   const links = data.map((item) => (
     <Link
-      className={`flex items-center no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
+      className={`flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
         item.activePath === active
           ? "bg-[#f5f7fa] border-l-4 border-black text-black"
           : ""
@@ -82,7 +44,7 @@ export default function CustomerSidebar() {
   return (
     <nav className="  flex flex-col  h-screen bg-[#FFFFFF]">
       <div className="flex-1">
-        <Image mb={"lg"} className="w-full " radius="md" src={freshifyLogo} />
+        <Image className="w-full h-[78px] " radius="md" src={freshifyLogo} />
 
         {links}
       </div>
@@ -91,7 +53,9 @@ export default function CustomerSidebar() {
         <Link
           to={"settings"}
           className={`flex items-center no-underline text-[18px] px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black${
-            "settings" === active ? " border-l-4 border-black text-black" : ""
+            "settings" === active
+              ? " border-l-4 border-black text-black bg-[#f5f7fa]"
+              : ""
           }`}
           onClick={() => setActive("settings")}
         >

@@ -10,7 +10,6 @@ export const useQueryHook = ({
     queryKey: [queryKey], // ✅ Dynamic key
     queryFn: async () => {
       const response = await apiGet(endpoint);
-      console.log(response, "response");
       return response;
     },
     staleTime, // ✅ Custom stale time (default 5 mins)

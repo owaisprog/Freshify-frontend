@@ -1,56 +1,18 @@
 import { useState } from "react";
-import freshifyLogo from "../.././../../assets/freshifyLogo.png";
+import freshifyLogoMobile from "../.././../../assets/freshifyLogoMobile.png";
 import { Image, Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
 
 // Reuse your existing icons and data
-import {
-  MdDashboard,
-  MdMyLocation,
-  MdCalendarMonth,
-  MdOutlinePayment,
-  MdOutlineSettings,
-} from "react-icons/md";
-import { HiWrenchScrewdriver } from "react-icons/hi2";
-import { ImUsers } from "react-icons/im";
+import { MdCalendarMonth, MdOutlineSettings } from "react-icons/md";
 
 // Reuse your existing data array
 const data = [
   {
     link: "",
-    label: "Dashboard",
-    activePath: "/CustomerDashboard",
-    icon: MdDashboard,
-  },
-  {
-    link: "Services",
-    label: "Services",
-    activePath: "/CustomerDashboard/Services",
-    icon: HiWrenchScrewdriver,
-  },
-  {
-    link: "locations",
-    label: "Locations",
-    activePath: "/CustomerDashboard/Locations",
-    icon: MdMyLocation,
-  },
-  {
-    link: "",
     label: "Calendar",
-    activePath: "/CustomerDashboard/Calendar",
+    activePath: "/CustomerDashboard",
     icon: MdCalendarMonth,
-  },
-  {
-    link: "",
-    label: "Payout",
-    activePath: "/CustomerDashboard/Payout",
-    icon: MdOutlinePayment,
-  },
-  {
-    link: "Users",
-    label: "Users",
-    activePath: "/CustomerDashboard/Users",
-    icon: ImUsers,
   },
 ];
 
@@ -86,11 +48,12 @@ export default function CustomerMobileNav() {
   ));
 
   return (
-    <div className="lg:hidden fixed top-0 w-full z-50">
+    <div className="lg:hidden bg-[#FFFFFF] fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
-      <nav className=" z-20 bg-white  px-4 py-3 flex justify-between items-center">
-        <Image radius="md" src={freshifyLogo} w={250} />
-
+      <nav className=" z-20  pr-4 flex justify-between items-center ">
+        <div className=" h-[80px]  w-[85%]">
+          <Image className="h-full" radius="md" src={freshifyLogoMobile} />
+        </div>
         <Burger
           opened={isMenuOpen}
           onClick={toggleMenu}
@@ -103,7 +66,7 @@ export default function CustomerMobileNav() {
         opened={isMenuOpen}
         onClose={toggleMenu}
         position="left"
-        size="80%"
+        size="100%"
         zIndex={40}
         withCloseButton={false}
         classNames={{
@@ -112,28 +75,27 @@ export default function CustomerMobileNav() {
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
-        <div className="flex flex-col h-full  ">
+        <div className="flex flex-col h-full    ">
           <div className="flex-1 overflow-y-auto">
             <div className="mt-2">{links}</div>
-          </div>
-
-          {/* Settings Link */}
-          <div className="pt-4 ">
-            <Link
-              to="#"
-              className={`flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 ${
-                "settings" === active
-                  ? "bg-[#f5f7fa] border-l-4 border-black text-black"
-                  : ""
-              }`}
-              onClick={() => {
-                setActive("settings");
-                setIsMenuOpen(false);
-              }}
-            >
-              <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
-              <span>Settings</span>
-            </Link>
+            {/* Settings Link */}
+            <div className="pt-4  ">
+              <Link
+                to="settings"
+                className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
+                  "settings" === active
+                    ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
+                    : ""
+                }`}
+                onClick={() => {
+                  setActive("settings");
+                  setIsMenuOpen(false);
+                }}
+              >
+                <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
+                <span>Settings</span>
+              </Link>
+            </div>
           </div>
         </div>
       </Drawer>

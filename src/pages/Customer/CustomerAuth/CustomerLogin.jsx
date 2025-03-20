@@ -16,7 +16,7 @@ export default function CustomerLogin() {
       const userData = await loginUser(
         values.email,
         values.password,
-        "Customer"
+        "customer"
       );
       console.log(userData, values);
       toast(userData.message, { position: "top-right" });

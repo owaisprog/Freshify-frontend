@@ -4,7 +4,7 @@ import AdminsUserProfessional from "./Components/AdminsUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
 
 function AdminsUsers() {
-  const { id, createdBy } = JSON.parse(localStorage.getItem("data"));
+  const { id } = JSON.parse(localStorage.getItem("data"));
 
   // Get active tab from query params or default to "admin"
 
@@ -15,11 +15,11 @@ function AdminsUsers() {
     error,
   } = useQueryHook({
     queryKey: ["users", id], // ✅ Cache users by owner ID
-    endpoint: `/api/get-users-by-owner/${createdBy}`,
+    endpoint: `/api/get-barbers`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
-  console.log(allUsers);
+  console.log(allUsers, "✅");
   // ✅ Filter users based on active tab
 
   return (
@@ -71,7 +71,7 @@ function AdminsUsers() {
 
         <section>
           <AdminsUserProfessional
-            userdata={allUsers.filter((val) => val.role === "barber")}
+            userdata={allUsers}
             isLoading={isLoading}
             error={error}
           />

@@ -15,17 +15,14 @@ import { toast } from "react-toastify";
 
 function AdminsUserProfessional({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
-  const { location, email, id } = JSON.parse(localStorage.getItem("data"));
+  const { location, id, createdBy } = JSON.parse(localStorage.getItem("data"));
 
-  // ✅ Fetch locations
-
-  // ✅ Fetch services
   const { data: services = [] } = useQueryHook({
     queryKey: "services",
     endpoint: `/api/get-service/${location._id}`,
-    staleTime: 15 * 60 * 1000, // 15 minutes cache
+    staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
-
+  // const
   // ✅ Mutations for CRUD operations
   const { mutate: createUser, isPending: isLoadingCreate } = usePostMutation([
     "users",
@@ -93,18 +90,42 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
     try {
       if (selectedUser) {
         // ✅ Update user
-        updateUser({
-          endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, services: servicesId },
-        });
+        updateUser(
+          {
+            endpoint: `/api/update-user/${selectedUser._id}`,
+            payload: { ...values, services: servicesId, createdBy },
+          },
+          {
+            onSuccess: () => {
+              toast("Success", { position: "top-right" });
+            },
+            onError: (error) => {
+              toast(error, {
+                position: "top-right",
+              });
+            },
+          }
+        );
       } else {
         // ✅ Create new user
-        createUser({
-          endpoint: "/api/invite-user",
-          payload: { ...values, services: servicesId },
-        });
+        createUser(
+          {
+            endpoint: "/api/invite-user",
+            payload: { ...values, services: servicesId, createdBy: createdBy },
+          },
+          {
+            onSuccess: () => {
+              toast("Success", { position: "top-right" });
+            },
+            onError: (error) => {
+              toast(error, {
+                position: "top-right",
+              });
+            },
+          }
+        );
       }
-      toast("Success", { position: "top-right" });
+      // toast("Success", { position: "top-right" });
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);
@@ -147,7 +168,7 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
             form.setValues({
               name: val.name,
               email: val.email,
-              location: val.location?.name || "",
+              location: val.location?._id || "",
               role: val.role,
               services: val.services?.map((service) => service.name) || [], // Set selected services
             });
