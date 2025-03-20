@@ -60,9 +60,12 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
     deleteUser(
       { endpoint: `/api/delete-user/${userId}` },
       {
-        onSuccess: () => toast("Success", { position: "top-right" }),
+        onSuccess: () =>
+          toast.success("Professional Deleted Successfully", {
+            position: "top-center",
+          }),
         onError: () =>
-          toast("Deletion Failed Try Again", { position: "top-right" }),
+          toast.error("Deletion Failed Try Again", { position: "top-right" }),
       }
     );
   };
@@ -103,10 +106,22 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
     try {
       if (selectedUser) {
         // ✅ Update user
-        updateUser({
-          endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, location: locationId, services: servicesId },
-        });
+        updateUser(
+          {
+            endpoint: `/api/update-user/${selectedUser._id}`,
+            payload: { ...values, location: locationId, services: servicesId },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Professional Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Deletion Error Try Again", {
+                position: "top-right",
+              }),
+          }
+        );
       } else {
         // ✅ Create new user
         createUser({
@@ -114,7 +129,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
           payload: { ...values, location: locationId, services: servicesId },
         });
       }
-      toast("Success", { position: "top-right" });
+
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);

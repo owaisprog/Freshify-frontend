@@ -52,9 +52,12 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
     deleteUser(
       { endpoint: `/api/delete-user/${userId}` },
       {
-        onSuccess: () => toast("Success", { position: "top-right" }),
+        onSuccess: () =>
+          toast.success("Professional Deleted Successfully", {
+            position: "top-center",
+          }),
         onError: () =>
-          toast("Deletion Failed Try Again", { position: "top-right" }),
+          toast("Deletion Failed Try Again", { position: "top-center" }),
       }
     );
   };
@@ -95,15 +98,14 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
             endpoint: `/api/update-user/${selectedUser._id}`,
             payload: { ...values, services: servicesId, createdBy },
           },
+
           {
-            onSuccess: () => {
-              toast("Success", { position: "top-right" });
-            },
-            onError: (error) => {
-              toast(error, {
-                position: "top-right",
-              });
-            },
+            onSuccess: () =>
+              toast.success("Professional Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast("Updation Failed Try Again", { position: "top-center" }),
           }
         );
       } else {
@@ -114,14 +116,14 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
             payload: { ...values, services: servicesId, createdBy: createdBy },
           },
           {
-            onSuccess: () => {
-              toast("Success", { position: "top-right" });
-            },
-            onError: (error) => {
-              toast(error, {
-                position: "top-right",
-              });
-            },
+            onSuccess: () =>
+              toast.success("Invitation Link Sent on Email Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Creation Failed Try Again", {
+                position: "top-center",
+              }),
           }
         );
       }
@@ -132,7 +134,7 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
       }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
-      toast("Someting went wrong try again ", { position: "top-right" });
+      toast.error("Someting went wrong try again ", { position: "top-center" });
     } finally {
       setLoading(false);
     }

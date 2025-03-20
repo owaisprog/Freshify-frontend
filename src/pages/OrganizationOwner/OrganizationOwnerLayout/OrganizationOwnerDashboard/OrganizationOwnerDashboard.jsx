@@ -90,7 +90,7 @@ export default function OrganizationOwnerDashboard() {
 
       {/* Second Section  */}
 
-      <section className="  w-full  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
+      <section className="  max-w-[1720px]  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
         {/* Weekly Sales Section   */}
         <section className="  lg:w-full  flex flex-col gap-[10px] lg:max-w-[749px]">
           {/* Sales Section  */}
@@ -178,7 +178,7 @@ export default function OrganizationOwnerDashboard() {
       </section>
 
       {/* Third Section  */}
-      <section className="  w-full  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
+      <section className="   max-w-[1720px]  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
         {/* Sales and Top performer section  */}
         <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
           {/* Sales Section  */}

@@ -9,7 +9,7 @@ export default function ProfessionalDashboard() {
         c={"black"}
         className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
       >
-        Dashboard
+        Calender
       </Title>
 
       {/* First Section  */}

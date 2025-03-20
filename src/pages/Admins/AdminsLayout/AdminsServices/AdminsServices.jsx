@@ -68,11 +68,13 @@ function AdminsServices() {
           );
           queryClient.setQueryData(["services"], updatedServices);
           // console.log("Service deleted successfully!");
-          toast("Success", { position: "top-right" });
+          toast.success("Service Delete Successfully", {
+            position: "top-center",
+          });
         },
         onError: (error) => {
           console.error("Error deleting service:", error);
-          toast("Error deleting service", { position: "top-right" });
+          toast("Error deleting service", { position: "top-center" });
         },
       }
     );
@@ -121,11 +123,13 @@ function AdminsServices() {
           },
           {
             onSuccess: () => {
-              toast("Success", { position: "top-right" });
+              toast.success("Update Service Successfully", {
+                position: "top-center",
+              });
             },
-            onError: (error) => {
-              toast(error, {
-                position: "top-right",
+            onError: () => {
+              toast.error("Updation Failed Try Again", {
+                position: "top-center",
               });
             },
           }
@@ -138,11 +142,13 @@ function AdminsServices() {
           },
           {
             onSuccess: () => {
-              toast("Success", { position: "top-right" });
+              toast.success("Service Create Successfully", {
+                position: "top-center",
+              });
             },
             onError: () => {
-              toast("Error Creating/Updating service", {
-                position: "top-right",
+              toast("Creation Failed Try Again", {
+                position: "top-center",
               });
             },
           }
@@ -226,12 +232,10 @@ function AdminsServices() {
   }));
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
       <Title
-        px={"lg"}
-        py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
       >
         Services
       </Title>

@@ -94,9 +94,6 @@ export default function OrganizationOwnerUserLogin() {
           >
             Login
           </Text>
-          <Text c="dimmed" size="sm" ta="center">
-            Enter your credentials to access your account.
-          </Text>
 
           {/* Input Fields */}
           <div className="flex flex-col gap-[10px]">
