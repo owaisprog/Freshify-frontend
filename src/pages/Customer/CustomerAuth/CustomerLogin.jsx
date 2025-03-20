@@ -39,7 +39,7 @@ export default function CustomerLogin() {
     },
   });
   return (
-    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0">
+    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0 ">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -59,7 +59,7 @@ export default function CustomerLogin() {
           fallbackSrc="https://placehold.co/600x400?text=Placeholder"
         />
       </section>
-      <section className=" h-full  flex items-center  justify-center ">
+      <section className="  h-full  flex items-center  justify-center  ">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
@@ -80,26 +80,30 @@ export default function CustomerLogin() {
             </Link>
           </Text>
 
-          <TextInput
-            radius={"md"}
-            label="Email Address"
-            placeholder="Enter your email"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
-          <PasswordInput
-            radius={"md"}
-            label="Password"
-            placeholder="Enter you password"
-            key={form.key("password")}
-            {...form.getInputProps("password")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
+          {/* Email Address Input Field  */}
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Email Address
+            </span>
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your email"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+            />
+          </div>
+          {/* Email Address Input Field  */}
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Password
+            </span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Enter you password"
+              key={form.key("password")}
+              {...form.getInputProps("password")}
+            />
+          </div>
 
           <Button
             fullWidth
@@ -114,12 +118,12 @@ export default function CustomerLogin() {
             Login
           </Button>
 
-          <Text c="dimmed" size="xs" ta="right">
+          <Text ta="right">
             <Link
               to={"/CustomerResetPassword"}
-              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
+              className="text-black text-[14px] font-[400] underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
-              Forgot Password
+              Forget Password
             </Link>
           </Text>
         </form>

@@ -33,7 +33,7 @@ export default function CustomerResetPassword() {
   });
 
   return (
-    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0">
+    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0 ">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -55,7 +55,7 @@ export default function CustomerResetPassword() {
       </section>
 
       {/* Right Section - Form */}
-      <section className="  h-full  flex items-center  justify-center">
+      <section className=" h-full  flex items-center  justify-center">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
@@ -70,16 +70,18 @@ export default function CustomerResetPassword() {
             Reset Password Link will be sent to your email address
           </Text>
 
-          <TextInput
-            radius={"md"}
-            label="Email Address"
-            placeholder="Enter your email"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Email Address
+            </span>
+
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your email"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+            />
+          </div>
 
           <Button
             fullWidth
