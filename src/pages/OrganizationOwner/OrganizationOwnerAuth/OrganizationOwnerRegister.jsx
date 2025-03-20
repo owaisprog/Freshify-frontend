@@ -101,43 +101,48 @@ export default function OrganizationOwnerRegister() {
           </Text>
 
           {/* Input Fields */}
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Email Address
+            </span>
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your email"
+              {...form.getInputProps("email")}
+            />
+          </div>
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Full Name
+            </span>
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your full name"
+              {...form.getInputProps("name")}
+            />
+          </div>
 
-          <TextInput
-            radius={"md"}
-            label="Email Address"
-            placeholder="Enter your email"
-            {...form.getInputProps("email")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
-          <TextInput
-            radius={"md"}
-            label="Full Name"
-            placeholder="Enter your full name"
-            {...form.getInputProps("name")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
-          <TextInput
-            radius={"md"}
-            label="Phone Number"
-            placeholder="Enter your phone number"
-            {...form.getInputProps("phone")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
-          <PasswordInput
-            radius={"md"}
-            label="Password"
-            placeholder="Enter your password"
-            {...form.getInputProps("password")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Phone Number
+            </span>
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your phone number"
+              {...form.getInputProps("phone")}
+            />
+          </div>
+
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Password
+            </span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Enter your password"
+              {...form.getInputProps("password")}
+            />
+          </div>
 
           {/* Signup Button */}
           <Button

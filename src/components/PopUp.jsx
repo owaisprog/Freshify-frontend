@@ -95,6 +95,7 @@ function TextArea({ label, placeholder, id }) {
   return (
     <Textarea
       label={label}
+      radius={"md"}
       placeholder={placeholder}
       {...form.getInputProps(id)}
     />
@@ -153,6 +154,7 @@ function FileInputField({ label, placeholder, filetype, id }) {
     <FileInput
       rightSection={loading ? <Loader size="sm" /> : <FiUpload size={18} />}
       label={label}
+      radius={"md"}
       placeholder={placeholder}
       rightSectionPointerEvents="none"
       accept={filetype}
@@ -168,6 +170,7 @@ function MutltiSelector({ data, label, placeholder, id, error }) {
     <>
       <MultiSelect
         checkIconPosition="right"
+        radius={"md"}
         data={Array.isArray(data) ? data : []}
         label={label}
         placeholder={error ? error : placeholder}

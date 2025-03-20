@@ -131,6 +131,7 @@ export default function ProfileForm() {
             <TextInput
               {...form.getInputProps("email")}
               mt="xs"
+              readOnly
               radius="md"
               styles={{
                 input: {

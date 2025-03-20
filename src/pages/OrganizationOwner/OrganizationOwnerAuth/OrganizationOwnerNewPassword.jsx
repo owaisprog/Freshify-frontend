@@ -79,14 +79,15 @@ export default function OrganizationOwnerNewPassword({ path }) {
           </Text>
 
           {/* Password Input Fields */}
-
-          <PasswordInput
-            radius={"md"}
-            label="New Password"
-            placeholder="Enter your new password"
-            key={form.key("newPassword")}
-            {...form.getInputProps("newPassword")}
-          />
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]"></span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Enter your new password"
+              key={form.key("newPassword")}
+              {...form.getInputProps("newPassword")}
+            />
+          </div>
           <PasswordInput
             radius={"md"}
             label="Confirm Password"

@@ -14,6 +14,8 @@ import {
 
 // react tostify imports
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import { createRoot } from "react-dom/client";
@@ -25,6 +27,7 @@ import OrganizationOwnerLayout from "./pages/OrganizationOwner/OrganizationOwner
 import OrganizationOwnerDashboard from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerDashboard/OrganizationOwnerDashboard.jsx";
 import OrganizationOwnerServices from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerServices/OrganizationOwnerServices.jsx";
 import OrganizationOwnerUsers from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/OrganizationOwnerUsers.jsx";
+import OrganizationOwnerCalendar from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerCalendar/OrganizationOwnerCalendar.jsx";
 import OrganizationOwnerLogin from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerLogin.jsx";
 import OrganizationOwnerRegister from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerRegister.jsx";
 import OrganizationOwnerResetPassword from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerResetPassword.jsx";
@@ -84,6 +87,7 @@ import ProfessionalNotification from "./pages/Professionals/ProfessionalLayout/P
 import ProfessionalProfile from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalProfile.jsx";
 import ProfessionalDelete from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalDelete.jsx";
 import AdminsUsers from "./pages/Admins/AdminsLayout/AdminsUsers/OrganizationOwnerUsers.jsx";
+import OrganizationOwnerPayout from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerPayout/OrganizationOwnerPayout.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -151,6 +155,8 @@ const router = createBrowserRouter(
         <Route index element={<OrganizationOwnerDashboard />} />
         <Route path="Services" element={<OrganizationOwnerServices />} />
         <Route path="Users" element={<OrganizationOwnerUsers />} />
+        <Route path="Calendar" element={<OrganizationOwnerCalendar />} />
+        <Route path="Payout" element={<OrganizationOwnerPayout />} />
         <Route path="locations" element={<OrganizationOwnerLocations />} />
         <Route path="settings" element={<OrganizationOwnerSettings />}>
           <Route index element={<OrganizationsSettings />} />

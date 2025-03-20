@@ -80,26 +80,30 @@ export default function OrganizationOwnerLogin() {
             </Link>
           </Text>
 
-          <TextInput
-            radius={"md"}
-            label="Email Address"
-            placeholder="Enter your email"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
-          <PasswordInput
-            radius={"md"}
-            label="Password"
-            placeholder="Enter you password"
-            key={form.key("password")}
-            {...form.getInputProps("password")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
+          {/* Email Address Input Field  */}
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Email Address
+            </span>
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your email"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+            />
+          </div>
+          {/* Email Address Input Field  */}
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Password
+            </span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Enter you password"
+              key={form.key("password")}
+              {...form.getInputProps("password")}
+            />
+          </div>
 
           <Button
             fullWidth
@@ -114,12 +118,12 @@ export default function OrganizationOwnerLogin() {
             Login
           </Button>
 
-          <Text c="dimmed" size="xs" ta="right">
+          <Text ta="right">
             <Link
               to={"/OrganizationOwnerResetPassword"}
-              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
+              className="text-black text-[14px] font-[400] underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
-              Forgot Password
+              Forget Password
             </Link>
           </Text>
         </form>

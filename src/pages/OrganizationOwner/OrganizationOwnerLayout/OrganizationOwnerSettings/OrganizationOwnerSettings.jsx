@@ -13,13 +13,13 @@ export default function OrganizationOwnerSettings() {
         px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="!hidden lg:!block lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
       >
         Settings
       </Title>
       <section className="lg:p-6 flex   flex-col h-full gap-8">
         <Paper
-          p="md"
+          p={"xs"}
           radius="25px"
           // bg={"#F5F7FA"}
           className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white "
@@ -49,8 +49,8 @@ export default function OrganizationOwnerSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center gap-8  shadow-sm rounded-[10px] py-4 px-2 justify-between lg:hidden ">
-            <Title fz={"h2"} c={"#333B69"}>
+          <section className="flex items-center  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
+            <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>
             <Select
@@ -74,15 +74,15 @@ export default function OrganizationOwnerSettings() {
               ]}
               value={location.pathname} // ✅ Keep the selected value persistent
               onChange={(value) => value && navigate(value)} // ✅ Prevent clearing when clicking again
-              rightSection={<FaChevronDown size={14} color="#333B69" />}
+              rightSection={<FaChevronDown size={15} color="#333B69" />}
               checkIconPosition="right"
               clearable={false} // ✅ Prevent unchecking selected value
               styles={{
                 input: {
+                  width: "232px",
                   border: "none",
                   borderBottom: "1px solid #000000",
                   borderRadius: 0,
-                  paddingRight: "2rem",
                   color: "#333B69",
                   fontSize: "18px",
                   backgroundColor: "transparent",
@@ -92,7 +92,7 @@ export default function OrganizationOwnerSettings() {
           </section>
 
           {/* Render the active tab component */}
-          <div className="mt-6 lg:mt-0 !text-[18px] !font-normal ">
+          <div className="mt-6  lg:mt-0 !text-[18px] !font-normal ">
             <Outlet />
           </div>
         </Paper>

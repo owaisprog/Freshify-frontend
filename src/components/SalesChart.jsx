@@ -41,7 +41,7 @@ export default function SalesChart() {
         className="h-[235px] "
         strokeDasharray="0 0"
         barChartProps={{ barCategoryGap: "10%" }}
-        maxBarWidth={20}
+        maxBarWidth={12}
         series={[
           { name: "NewYork", color: "#000000" }, // Black
           { name: "Texas", color: "#71BF7D" }, // Green

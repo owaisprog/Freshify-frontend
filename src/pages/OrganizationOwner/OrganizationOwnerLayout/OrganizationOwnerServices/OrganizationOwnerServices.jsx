@@ -108,10 +108,7 @@ function OrganizationOwnerServices() {
         !Number.isInteger(Number(value))
           ? "Duration must be a positive whole number"
           : null,
-      price: (value) =>
-        !/^\$[0-9]+(\.[0-9]{1,2})?$/.test(value) // Regex: Starts with $ and allows two decimal places
-          ? "Price must start with a $ sign and be a valid number"
-          : null,
+      price: (value) => (value <= 0 ? "Must be a positive number" : null),
     },
   });
 
@@ -177,7 +174,7 @@ function OrganizationOwnerServices() {
         }}
       />
     ),
-    Price: val.price,
+    Price: <div>${val.price}</div>,
     Actions: (
       <div className="flex gap-2.5">
         <div
@@ -213,10 +210,9 @@ function OrganizationOwnerServices() {
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
-        px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] !py-[18px]   "
       >
         Services
       </Title>
@@ -256,12 +252,14 @@ function OrganizationOwnerServices() {
         </section>
 
         <section className="flex justify-between items-center">
-          <Text className="!text-[22px] !font-[700]">All Services</Text>
+          <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+            All Services
+          </Text>
           <Button
             bg="black"
             radius="md"
             fw={"normal"}
-            className="!text-[18px] !px-[40px] !py-[10px]"
+            className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
             onClick={() => {
               setToggleTitle("Add Service");
               setSelectedService(null);
@@ -310,6 +308,7 @@ function OrganizationOwnerServices() {
             label="Price"
             placeholder="Enter Service Price in Dollars"
             id="price"
+            type="number"
           />
           <Popup.MutltiSelector
             data={locationNames}

@@ -19,6 +19,16 @@ body {
   border-bottom: 0.5px solid  #8298be !important;/* Horizontal offset, Vertical offset, Blur radius, and color */
 }
 
+.custom-gap .mantine-Input-label {
+  margin-bottom: 10px; /* Adjust the gap as needed */
+}
 
 
 
+:root {
+  --toastify-toast-width: auto;
+}
+
+.Toastify__toast {
+  min-width: 300px; /* Set your desired minimum width */
+}
