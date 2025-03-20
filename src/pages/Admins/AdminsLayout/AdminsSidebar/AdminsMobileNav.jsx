@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 // Reuse your existing icons and data
 import {
   MdDashboard,
-  MdMyLocation,
+  // MdMyLocation,
   MdCalendarMonth,
   MdOutlinePayment,
   MdOutlineSettings,
@@ -28,12 +28,12 @@ const data = [
     activePath: "/AdminsDashboard/Services",
     icon: HiWrenchScrewdriver,
   },
-  {
-    link: "locations",
-    label: "Locations",
-    activePath: "/AdminsDashboard/Locations",
-    icon: MdMyLocation,
-  },
+  // {
+  //   link: "locations",
+  //   label: "Locations",
+  //   activePath: "/AdminsDashboard/Locations",
+  //   icon: MdMyLocation,
+  // },
   {
     link: "Users",
     label: "Users",

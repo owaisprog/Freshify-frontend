@@ -71,7 +71,6 @@ import SuperAdminSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSe
 import AdminsLayout from "./pages/Admins/AdminsLayout/AdminsLayout.jsx";
 import AdminsDashboard from "./pages/Admins/AdminsLayout/AdminsDashboard/AdminsDashboard.jsx";
 import AdminsServices from "./pages/Admins/AdminsLayout/AdminsServices/AdminsServices.jsx";
-import AdminsLocations from "./pages/Admins/AdminsLayout/AdminsLocation/AdminsLocation.jsx";
 import AdminSettings from "./pages/Admins/AdminsLayout/AdminsSettings/AdminSettings.jsx";
 import AdminsSettings from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsSettings.jsx";
 import AdminNotification from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsNotification.jsx";
@@ -84,6 +83,7 @@ import ProfessionalsSettings from "./pages/Professionals/ProfessionalLayout/Prof
 import ProfessionalNotification from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalNotification.jsx";
 import ProfessionalProfile from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalProfile.jsx";
 import ProfessionalDelete from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalDelete.jsx";
+import AdminsUsers from "./pages/Admins/AdminsLayout/AdminsUsers/OrganizationOwnerUsers.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -231,9 +231,9 @@ const router = createBrowserRouter(
         }
       >
         <Route index element={<AdminsDashboard />} />
-        {/* <Route path="Services" element={<AdminsServices />} /> */}
-        {/* <Route path="Users" element={<AdminsUsers />} /> */}
-        {/* <Route path="locations" element={<AdminsLocations />} /> */}
+        <Route path="Services" element={<AdminsServices />} />
+        <Route path="Users" element={<AdminsUsers />} />
+        {/* <Route path="locations" element={<AdminsLocations />} />  */}
         <Route path="settings" element={<AdminSettings />}>
           <Route index element={<AdminsSettings />} />
           <Route path="email" element={<AdminNotification />} />

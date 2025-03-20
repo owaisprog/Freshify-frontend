@@ -16,7 +16,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 function AdminsServices() {
-  const { id } = JSON.parse(localStorage.getItem("data"));
+  const { location, email, id } = JSON.parse(localStorage.getItem("data"));
+
+  console.log(location, email, id);
 
   const {
     data: services = [],
@@ -24,17 +26,10 @@ function AdminsServices() {
     error: servicesError,
   } = useQueryHook({
     queryKey: "services",
-    endpoint: "/api/get-services-by-owner",
+    endpoint: `/api/get-service/${location._id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
-  const { data: ownerLocations = [], error: locationsError } = useQueryHook({
-    queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 0 * 60 * 1000, // 15 minutes cache
-  });
-
-  const locationNames = ownerLocations.map((val) => val?.name) || [];
   const { mutate: createService, isPending: isLoadCreate } =
     usePostMutation("services");
   const { mutate: updateService, isPending: isLoadUpdate } =
@@ -85,7 +80,7 @@ function AdminsServices() {
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      locations: [],
+      locations: location._id,
       description: "",
       category: "",
       duration: "",
@@ -93,8 +88,8 @@ function AdminsServices() {
     },
     validate: {
       name: (value) => (value.trim().length < 1 ? "Name is required" : null),
-      locations: (value) =>
-        value.length === 0 ? "At least one location is required" : null,
+      // locations: (value) =>
+      //   value.length === 0 ? "At least one location is required" : null,
       description: (value) =>
         value.trim().length < 10
           ? "Description must be at least 10 characters long"
@@ -117,20 +112,17 @@ function AdminsServices() {
 
   const handleSubmit = (values) => {
     setLoading(true);
-    const filterIdLocations = ownerLocations
-      ?.filter((val) => values?.locations?.includes(val?.name))
-      ?.map((val) => val?._id);
 
     try {
       if (selectedService) {
         updateService({
           endpoint: `/api/update-service/${selectedService._id}`,
-          payload: { ...values, locations: filterIdLocations },
+          payload: { ...values },
         });
       } else {
         createService({
           endpoint: "/api/create-service",
-          payload: { ...values, locations: filterIdLocations },
+          payload: { ...values },
         });
       }
       toast("Success", { position: "top-right" });
@@ -144,6 +136,7 @@ function AdminsServices() {
       setLoading(false);
     }
   };
+  console.log(services);
 
   const data = services?.map((val) => ({
     Services: val.name,
@@ -310,13 +303,7 @@ function AdminsServices() {
             placeholder="Enter Service Price in Dollars"
             id="price"
           />
-          <Popup.MutltiSelector
-            data={locationNames}
-            label="Select the location"
-            placeholder="Select at least one location"
-            id="locations"
-            error={locationsError}
-          />
+
           <Popup.TextArea
             label="Description"
             placeholder="Enter  Description"

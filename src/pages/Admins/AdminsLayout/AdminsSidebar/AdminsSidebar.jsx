@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 // react icons import
 import {
   MdDashboard,
-  MdMyLocation,
+  // MdMyLocation,
   MdCalendarMonth,
   MdOutlinePayment,
   MdOutlineSettings,
@@ -34,12 +34,12 @@ const data = [
     activePath: "/AdminsDashboard/Users",
     icon: ImUsers,
   },
-  {
-    link: "locations",
-    label: "Locations",
-    activePath: "/AdminsDashboard/Locations",
-    icon: MdMyLocation,
-  },
+  // {
+  //   link: "locations",
+  //   label: "Locations",
+  //   activePath: "/AdminsDashboard/Locations",
+  //   icon: MdMyLocation,
+  // },
   {
     link: "",
     label: "Calendar",
