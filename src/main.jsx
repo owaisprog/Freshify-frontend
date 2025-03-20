@@ -59,13 +59,7 @@ import CustomerResetPassword from "./pages/Customer/CustomerAuth/CustomerPasswor
 import CustomerResendOTP from "./pages/Customer/CustomerAuth/CustomerResendOTP.jsx";
 
 import CustomerLayout from "./pages/Customer/CustomerLayout/CustomerLayout.jsx";
-import CustomerDashboard from "./pages/Customer/CustomerLayout/CustomerDashboard/CustomerDashboard.jsx";
 import NewPassword from "./components/NewPassword.jsx";
-import CustomerSettings from "./pages/Customer/CustomerLayout/CustomerSettings/CustomersSettings.jsx";
-import CustomersSettings from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerSettings.jsx";
-import CustomerNotification from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerNotification.jsx";
-import CustomerProfile from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerProfile.jsx";
-import CustomerDelete from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerDelete.jsx";
 import SuperAdminsSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminSettings.jsx";
 import SuperAdminNotification from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminNotification.jsx";
 import SuperAdminProfile from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminProfile.jsx";
@@ -88,6 +82,12 @@ import ProfessionalDelete from "./pages/Professionals/ProfessionalLayout/Profess
 import AdminsUsers from "./pages/Admins/AdminsLayout/AdminsUsers/OrganizationOwnerUsers.jsx";
 import OrganizationOwnerPayout from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerPayout/OrganizationOwnerPayout.jsx";
 import ProfessionalUpdatePassword from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalUpdatePassword.jsx";
+import CustomerDashboard from "./pages/Customer/CustomerLayout/CustomerDashboard/CustomerDashboard.jsx";
+import CustomerSettings from "./pages/Customer/CustomerLayout/CustomerSettings/CustomerSettings.jsx";
+import CustomerProfile from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerProfile.jsx";
+import CustomerUpdatePassword from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerUpdatePassword.jsx";
+import CustomerNotification from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerNotification.jsx";
+import CustomerDelete from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerDelete.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -210,16 +210,17 @@ const router = createBrowserRouter(
       <Route
         path="CustomerDashboard"
         element={
-          <ProtectedRoute path="/customerLogin" requiredRole="customer">
+          <ProtectedRoute path="/CustomerLogin" requiredRole="customer">
             <CustomerLayout />
           </ProtectedRoute>
         }
       >
         <Route index element={<CustomerDashboard />} />
         <Route path="settings" element={<CustomerSettings />}>
-          <Route index element={<CustomersSettings />} />
+          {/* <Route index element={<CustomersSettings />} /> */}
+          <Route index element={<CustomerProfile />} />
+          <Route path="password" element={<CustomerUpdatePassword />} />
           <Route path="email" element={<CustomerNotification />} />
-          <Route path="personal" element={<CustomerProfile />} />
           <Route path="delete" element={<CustomerDelete />} />
         </Route>
       </Route>

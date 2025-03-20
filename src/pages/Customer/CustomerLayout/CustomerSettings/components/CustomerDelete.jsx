@@ -9,14 +9,13 @@ function CustomerDelete() {
   const queryClient = useQueryClient();
 
   // Use the delete mutation from react-query
-  const { mutate: deleteOrganization, isPending } =
-    useDeleteMutation("organization");
+  const { mutate: deleteCustomer, isPending } = useDeleteMutation("Customer");
 
   // Handle delete button click
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete your organization?")) {
-      deleteOrganization(
-        { endpoint: "/api/delete-organization" },
+    if (window.confirm("Are you sure you want to delete your Customer?")) {
+      deleteCustomer(
+        { endpoint: "/api/delete-account" },
         {
           onSuccess: () => {
             // Clear localStorage
@@ -24,17 +23,17 @@ function CustomerDelete() {
             localStorage.removeItem("data");
 
             // Invalidate any related queries (optional)
-            queryClient.invalidateQueries(["organization"]);
+            queryClient.invalidateQueries(["Customer"]);
 
             // Show success message
-            toast.success("Organization deleted successfully!");
+            toast.success("Customer deleted successfully!");
 
             // Redirect to home page
             navigate("/");
           },
           onError: (error) => {
-            toast.error("Failed to delete organization.");
-            console.error("Error deleting organization:", error);
+            toast.error("Failed to delete Customer.");
+            console.error("Error deleting Customer:", error);
           },
         }
       );
