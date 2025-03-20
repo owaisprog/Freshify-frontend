@@ -60,8 +60,12 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     deleteUser(
       { endpoint: `/api/delete-user/${userId}` },
       {
-        onSuccess: () => toast("Success", { position: "top-right" }),
-        onError: () => toast("Deletion Error", { position: "top-right" }),
+        onSuccess: () =>
+          toast.success("Admin Deleted Successfully", {
+            position: "top-center",
+          }),
+        onError: () =>
+          toast.error("Deletion Error", { position: "top-center" }),
       }
     );
   };
@@ -99,18 +103,37 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     try {
       if (selectedUser) {
         // ✅ Update user
-        updateUser({
-          endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, location: locationId, services: servicesId },
-        });
+        updateUser(
+          {
+            endpoint: `/api/update-user/${selectedUser._id}`,
+            payload: { ...values, location: locationId, services: servicesId },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Admin Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Admin Updation Error", { position: "top-center" }),
+          }
+        );
       } else {
         // ✅ Create new user
-        createUser({
-          endpoint: "/api/invite-user",
-          payload: { ...values, location: locationId, services: servicesId },
-        });
+        createUser(
+          {
+            endpoint: "/api/invite-user",
+            payload: { ...values, location: locationId, services: servicesId },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Admin Created. Please Check Your Email", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Admin Creation Error", { position: "top-center" }),
+          }
+        );
       }
-      toast("Success", { position: "top-right" });
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);

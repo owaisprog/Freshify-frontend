@@ -65,13 +65,13 @@ function OrganizationOwnerServices() {
       { endpoint: `/api/delete-service/${id}` },
       {
         onSuccess: () => {
+          toast("Service Deleted Successfully", { position: "top-center" });
           const previousServices = queryClient.getQueryData(["services"]) || [];
           const updatedServices = previousServices.filter(
             (service) => service._id !== id
           );
           queryClient.setQueryData(["services"], updatedServices);
           // console.log("Service deleted successfully!");
-          toast("Success", { position: "top-right" });
         },
         onError: (error) => {
           console.error("Error deleting service:", error);
@@ -120,17 +120,39 @@ function OrganizationOwnerServices() {
 
     try {
       if (selectedService) {
-        updateService({
-          endpoint: `/api/update-service/${selectedService._id}`,
-          payload: { ...values, locations: filterIdLocations },
-        });
+        updateService(
+          {
+            endpoint: `/api/update-service/${selectedService._id}`,
+            payload: { ...values, locations: filterIdLocations },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Service Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error Updated Location", { position: "top-center" }),
+          }
+        );
       } else {
-        createService({
-          endpoint: "/api/create-service",
-          payload: { ...values, locations: filterIdLocations },
-        });
+        createService(
+          {
+            endpoint: "/api/create-service",
+            payload: { ...values, locations: filterIdLocations },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Service Created Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error Creating Location", {
+                position: "top-center",
+              }),
+          }
+        );
       }
-      toast("Success", { position: "top-right" });
+
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
