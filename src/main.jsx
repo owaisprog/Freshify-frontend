@@ -65,6 +65,9 @@ import SuperAdminSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSe
 import AdminsLayout from "./pages/Admins/AdminsLayout/AdminsLayout.jsx";
 import AdminsDashboard from "./pages/Admins/AdminsLayout/AdminsDashboard/AdminsDashboard.jsx";
 import AdminsServices from "./pages/Admins/AdminsLayout/AdminsServices/AdminsServices.jsx";
+import AdminsPayout from "./pages/Admins/AdminsLayout/AdminsPayout/AdminsPayout.jsx";
+import AdminsCalendar from "./pages/Admins/AdminsLayout/AdminsCalendar/AdminsCalendar.jsx";
+
 import AdminSettings from "./pages/Admins/AdminsLayout/AdminsSettings/AdminSettings.jsx";
 import AdminsSettings from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsSettings.jsx";
 import AdminNotification from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminsNotification.jsx";
@@ -228,6 +231,8 @@ const router = createBrowserRouter(
         <Route index element={<AdminsDashboard />} />
         <Route path="Services" element={<AdminsServices />} />
         <Route path="Users" element={<AdminsUsers />} />
+        <Route path="Calendar" element={<AdminsCalendar />} />
+        <Route path="Payout" element={<AdminsPayout />} />
         {/* <Route path="locations" element={<AdminsLocations />} />  */}
         <Route path="settings" element={<AdminSettings />}>
           <Route index element={<AdminsSettings />} />

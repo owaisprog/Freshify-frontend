@@ -52,12 +52,15 @@ export default function OrganizationOwnerLocations() {
     deleteLocation(
       { endpoint: `/api/delete-location/${delId}` },
       {
-        onSuccess: () => {
-          toast("Success", { position: "top-right" });
+        onSuccess: (response) => {
+          console.log("Response Message", response);
+          toast.success("Location Deleted Successfully", {
+            position: "top-center",
+          });
         },
         onError: (error) => {
           console.error("Error deleting location:", error);
-          toast("Error deleting location", { position: "top-right" });
+          toast.error("Error deleting location", { position: "top-center" });
         },
       }
     );
@@ -110,24 +113,45 @@ export default function OrganizationOwnerLocations() {
     console.log(payload);
     try {
       if (selectedLocation) {
-        updateLocation({
-          endpoint: `/api/update-location/${selectedLocation._id}`,
-          payload: payload,
-        });
+        updateLocation(
+          {
+            endpoint: `/api/update-location/${selectedLocation._id}`,
+            payload: payload,
+          },
+          {
+            onSuccess: () =>
+              toast.success("Location Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error Updated Location", { position: "top-center" }),
+          }
+        );
       } else {
-        createLocation({
-          endpoint: "/api/create-location",
-          payload: payload,
-        });
+        createLocation(
+          {
+            endpoint: "/api/create-location",
+            payload: payload,
+          },
+          {
+            onSuccess: () =>
+              toast.success("Location Created Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error While Creating Location", {
+                position: "top-center",
+              }),
+          }
+        );
       }
-      toast("Success", { position: "top-right" });
+
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
       }, 1000);
     } catch (error) {
       console.error("Error Creating/Updating location", error);
-      toast("Something went wrong try again", { position: "top-right" });
       setLoading(false);
     }
   };
