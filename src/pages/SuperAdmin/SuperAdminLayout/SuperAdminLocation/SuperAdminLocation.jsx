@@ -188,7 +188,7 @@ export default function SuperAdminLocations() {
           </Button>
         </section>
 
-        <Table.ScrollContainer minWidth={900}>
+        <Table.ScrollContainer minWidth={950}>
           <Box
             className="flex flex-col border-r-green-500
            gap-4 p-2 justify-center items-center"
@@ -203,11 +203,11 @@ export default function SuperAdminLocations() {
               locations?.map((val, index) => (
                 <section
                   key={val._id}
-                  className="min-w-full grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
+                  className="min-w-full grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] "
                 >
-                  <div className=" col-span-2   flex items-center gap-3">
+                  <div className=" col-span-2  flex gap-3 ">
                     {index % 3 === 0 ? (
-                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
+                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7EDFF] rounded-[20px]">
                         <img
                           className="w-[40.83px] h-[58.33px]"
                           src="/usaLocationIcon.png"
@@ -223,7 +223,7 @@ export default function SuperAdminLocations() {
                         />
                       </div>
                     ) : (
-                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7FFEB] rounded-[20px]">
+                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7FFEB] rounded-[20px]">
                         <img
                           className="w-[40.83px] h-[58.33px]"
                           src="/australiaLocationIcon.png"
@@ -231,7 +231,7 @@ export default function SuperAdminLocations() {
                         />
                       </div>
                     )}
-                    <div>
+                    <div className=" flex flex-col justify-center">
                       <Text
                         tt={"capitalize"}
                         className="!text-[22px] !font-[700]"

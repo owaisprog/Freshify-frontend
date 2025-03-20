@@ -3,7 +3,7 @@ import { Loader, Table } from "@mantine/core";
 const TableCom = ({ columns, data, isLoading, error }) => {
   return (
     <>
-      <Table.ScrollContainer className="rounded-[25px]" minWidth={900}>
+      <Table.ScrollContainer className="rounded-[25px]" minWidth={920}>
         <div className="bg-[#FFFFFF] p-2 rounded-[25px]">
           <Table
             withRowBorders
