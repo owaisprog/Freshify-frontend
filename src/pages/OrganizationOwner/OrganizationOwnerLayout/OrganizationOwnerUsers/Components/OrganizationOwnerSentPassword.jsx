@@ -42,10 +42,10 @@ export default function OrganizationOwnerSentPassword() {
   });
 
   return (
-    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0 px-3 lg:px-0">
+    <main className="flex flex-col lg:grid h-screen mx-auto lg:grid-cols-2 lg:gap-x-4 lg:gap-y-0 px-3 lg:px-0">
       {/* Left Side - Image */}
-      {/* This image will be visible on large devices  */}
-      <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
+      {/* This image will be visible on large devices */}
+      <section className="hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
           radius="md"
           height={"full"}
@@ -54,24 +54,23 @@ export default function OrganizationOwnerSentPassword() {
         />
       </section>
 
-      {/* This image will be visible on Mobile devices  */}
-      <section className=" lg:hidden h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
+      {/* This image will be visible on Mobile devices */}
+      <section className="lg:hidden h-[85px] md:h-[100px] md:py-2 overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
         <Image
           radius="md"
-          className="object-contain  w-full lg:w-[60%]  "
+          className="object-contain w-full lg:w-[60%]"
           src={freshifyImage}
           fallbackSrc="https://placehold.co/600x400?text=Placeholder"
         />
       </section>
 
       {/* Right Side - Form */}
-      <section className=" h-full  flex items-center  justify-center">
+      <section className="h-full flex items-center justify-center">
         <form
-          className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
+          className="w-full flex flex-col max-w-[547px] bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
           {/* Heading */}
-
           <Text
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
@@ -83,24 +82,31 @@ export default function OrganizationOwnerSentPassword() {
           </Text>
 
           {/* Password Input Fields */}
+          <div className="flex flex-col gap-[10px]">
+            <span className="!font-[400] !text-[18px] !text-[#000000]">
+              New Password
+            </span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Enter your new password"
+              key={form.key("newPassword")}
+              {...form.getInputProps("newPassword")}
+            />
+          </div>
 
-          <PasswordInput
-            radius={"md"}
-            label="New Password"
-            placeholder="Enter your new password"
-            key={form.key("newPassword")}
-            {...form.getInputProps("newPassword")}
-          />
-          <PasswordInput
-            radius={"md"}
-            label="Confirm Password"
-            placeholder="Confirm your password"
-            key={form.key("confirmPassword")}
-            {...form.getInputProps("confirmPassword")}
-          />
+          <div className="flex flex-col gap-[10px]">
+            <span className="!font-[400] !text-[18px] !text-[#000000]">
+              Confirm Password
+            </span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Confirm your password"
+              key={form.key("confirmPassword")}
+              {...form.getInputProps("confirmPassword")}
+            />
+          </div>
 
           {/* Submit Button */}
-
           <Button
             fullWidth
             type="submit"

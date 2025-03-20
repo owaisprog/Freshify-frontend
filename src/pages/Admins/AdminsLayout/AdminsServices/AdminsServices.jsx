@@ -16,7 +16,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 function AdminsServices() {
-  const { location, email, id } = JSON.parse(localStorage.getItem("data"));
+  const { location, email, id, createdBy } = JSON.parse(
+    localStorage.getItem("data")
+  );
 
   console.log(location, email, id);
 
@@ -117,12 +119,12 @@ function AdminsServices() {
       if (selectedService) {
         updateService({
           endpoint: `/api/update-service/${selectedService._id}`,
-          payload: { ...values },
+          payload: { ...values, createdBy },
         });
       } else {
         createService({
           endpoint: "/api/create-service",
-          payload: { ...values },
+          payload: { ...values, createdBy },
         });
       }
       toast("Success", { position: "top-right" });

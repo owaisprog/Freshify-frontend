@@ -61,7 +61,7 @@ export default function AdminsSidebar() {
 
   const links = data.map((item) => (
     <Link
-      className={`flex items-center no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
+      className={`flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
         item.activePath === active
           ? "bg-[#f5f7fa] border-l-4 border-black text-black"
           : ""
@@ -71,9 +71,7 @@ export default function AdminsSidebar() {
       onClick={() => setActive(item.activePath)}
     >
       <item.icon
-        className={`${
-          item.activePath === active ? "text-black" : "text-[#b1b1b1]"
-        } mr-4 w-[30px] h-[30px]`}
+        className={`${item.activePath === active ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
       />
       <span>{item.label}</span>
     </Link>
@@ -82,7 +80,7 @@ export default function AdminsSidebar() {
   return (
     <nav className="  flex flex-col  h-screen bg-[#FFFFFF]">
       <div className="flex-1">
-        <Image mb={"lg"} className="w-full " radius="md" src={freshifyLogo} />
+        <Image className="w-full h-[78px] " radius="md" src={freshifyLogo} />
 
         {links}
       </div>
@@ -98,9 +96,7 @@ export default function AdminsSidebar() {
           onClick={() => setActive("settings")}
         >
           <MdOutlineSettings
-            className={`${
-              active === "settings" ? "text-black" : "text-[#b1b1b1]"
-            } mr-4 w-[30px] h-[30px]`}
+            className={`${active === "settings" ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
           />
           <span>Settings</span>
         </Link>
