@@ -1,7 +1,8 @@
-import { Button, Select, Text, Title } from "@mantine/core";
+import { Button, Select, Text, Title, Modal } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
-import { FiTrash, FiUpload } from "react-icons/fi";
-import { useState } from "react";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
+import { use, useState } from "react";
 import TableCom from "../../../../components/Table";
 import { useForm } from "@mantine/form";
 import Popup from "../../../../components/PopUp";
@@ -12,36 +13,29 @@ import {
   useUpdateMutation,
 } from "../../../../services/reactQuery";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 function SuperAdminServices() {
-  // ✅ Retrieve Owner ID from localStorage
-  const { id } = JSON.parse(localStorage.getItem("data"));
+  const { ownerId } = useParams();
 
-  // ✅ Fetch services using React Query
   const {
     data: services = [],
     isLoading: isServicesLoading,
     error: servicesError,
   } = useQueryHook({
     queryKey: "services",
-    endpoint: "/api/get-services-by-owner",
+    endpoint: `/api/get-services-by-owner/${ownerId}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
-  // ✅ Fetch owner locations using React Query
-  const {
-    data: ownerLocations = [],
-    // isLoading: isLocationsLoading,
-    error: locationsError,
-  } = useQueryHook({
-    queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
+  const { data: ownerLocations = [], error: locationsError } = useQueryHook({
+    queryKey: ["locations", ownerId],
+    endpoint: `/api/get-locations-by-owner/${ownerId}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
-  // ✅ Extract location names
   const locationNames = ownerLocations.map((val) => val?.name) || [];
-  // ✅ Initialize Mutations for CRUD Operations
   const { mutate: createService, isPending: isLoadCreate } =
     usePostMutation("services");
   const { mutate: updateService, isPending: isLoadUpdate } =
@@ -49,12 +43,14 @@ function SuperAdminServices() {
   const { mutate: deleteService, isPending: isLoadDelete } =
     useDeleteMutation("services");
 
-  // ✅ State Management
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [selectedService, setSelectedService] = useState(null); // Holds the service being edited
+  const [selectedService, setSelectedService] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
 
-  // ✅ Table Headers
+  const [toggleTitle, setToggleTitle] = useState("Add Service");
+
   const columns = [
     "Services",
     "Location",
@@ -64,39 +60,33 @@ function SuperAdminServices() {
     "Actions",
   ];
 
-  // ✅ Delete Service
   const queryClient = useQueryClient();
   const handleDeleteService = (id) => {
     deleteService(
       { endpoint: `/api/delete-service/${id}` },
       {
         onSuccess: () => {
-          // ✅ Get current list of services
+          toast("Service Deleted Successfully", { position: "top-center" });
           const previousServices = queryClient.getQueryData(["services"]) || [];
-
-          // ✅ Filter out the deleted service
           const updatedServices = previousServices.filter(
             (service) => service._id !== id
           );
-
-          // ✅ Set the new list in cache
           queryClient.setQueryData(["services"], updatedServices);
-
-          console.log("Service deleted successfully!");
+          // console.log("Service deleted successfully!");
         },
         onError: (error) => {
           console.error("Error deleting service:", error);
+          toast("Error deleting service", { position: "top-right" });
         },
       }
     );
   };
 
-  // ✅ Form Validation & Handling using Mantine
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      locations: [], // Array of location IDs
+      locations: [],
       description: "",
       category: "",
       duration: "",
@@ -119,53 +109,79 @@ function SuperAdminServices() {
         !Number.isInteger(Number(value))
           ? "Duration must be a positive whole number"
           : null,
-      price: (value) =>
-        value === "" || isNaN(value) || value <= 0
-          ? "Price must be a positive number"
-          : null,
+      price: (value) => (value <= 0 ? "Must be a positive number" : null),
     },
   });
 
-  // ✅ Handle Form Submission (Create/Update Service)
   const handleSubmit = (values) => {
     setLoading(true);
-
-    // ✅ Convert Location Names to IDs
     const filterIdLocations = ownerLocations
       ?.filter((val) => values?.locations?.includes(val?.name))
       ?.map((val) => val?._id);
 
     try {
       if (selectedService) {
-        // ✅ Update existing service
-        updateService({
-          endpoint: `/api/update-service/${selectedService._id}`,
-          payload: { ...values, locations: filterIdLocations },
-        });
+        updateService(
+          {
+            endpoint: `/api/update-service/${selectedService._id}`,
+            payload: { ...values, locations: filterIdLocations },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Service Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error Updated Location", { position: "top-center" }),
+          }
+        );
       } else {
-        // ✅ Create new service
-        createService({
-          endpoint: "/api/create-service",
-          payload: { ...values, locations: filterIdLocations },
-        });
+        createService(
+          {
+            endpoint: "/api/create-service",
+            payload: { ...values, locations: filterIdLocations },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Service Created Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error Creating Location", {
+                position: "top-center",
+              }),
+          }
+        );
       }
 
-      // ✅ Close Modal & Stop Loading
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
       }, 2000);
     } catch (error) {
+      toast("Error Creating/Updating service", { position: "top-right" });
       console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
   };
 
-  // ✅ Transform services into table-compatible format
   const data = services?.map((val) => ({
     Services: val.name,
     Duration: val.duration,
-    Description: val.description,
+    Description: (
+      <Text
+        fz={"lg"}
+        td={"underline"}
+        c={"black"} // Set color to black
+        className="cursor-pointer"
+        onClick={() => {
+          setModalContent(val.description);
+          setModalOpen(true);
+        }}
+      >
+        View Description
+      </Text>
+    ),
     Location: (
       <Select
         placeholder="Available on locations"
@@ -173,38 +189,38 @@ function SuperAdminServices() {
         rightSection={<FaChevronDown size={11} style={{ color: "#B0B0B0" }} />}
         variant="unstyled"
         clearable={false}
-        value={null} // Prevents selection
-        onChange={() => null} // Stops selection
+        value={null}
+        onChange={() => null}
         styles={{
-          input: { fontSize: "13.7px", color: "black" }, // Ensures black text
-          rightSection: { marginRight: "4px" }, // Adjust icon spacing
+          input: { fontSize: "13.7px", color: "black" },
+          rightSection: { marginRight: "4px" },
         }}
       />
     ),
-    Price: val.price,
+    Price: <div>${val.price}</div>,
     Actions: (
       <div className="flex gap-2.5">
-        {/* ✅ Edit Service Button */}
         <div
           className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
           onClick={() => {
-            setSelectedService(val); // Set selected service for editing
+            setToggleTitle("Update Service");
+            setSelectedService(val);
             form.setValues({
               name: val.name,
               category: val.category,
               duration: val.duration,
               price: val.price,
-              locations: val.locations.map((loc) => loc.name), // Extract location names
+              locations: val.locations.map((loc) => loc.name),
               description: val.description,
             });
-            setOpened(true); // Open the popup
+            setOpened(true);
           }}
         >
           <FiUpload size={18} style={{ color: "#427B42" }} />
         </div>
 
         {/* ✅ Delete Service Button */}
-        <FiTrash
+        <BsTrash
           size={18}
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
           style={{ cursor: "pointer", color: "#622929" }}
@@ -213,21 +229,19 @@ function SuperAdminServices() {
       </div>
     ),
   }));
+
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
-        px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] !py-[18px]   "
       >
         Services
       </Title>
 
-      <section className=" p-6 flex flex-col h-full  gap-8">
-        {/* First Section  */}
+      <section className="max-w-[1720px] p-6 flex flex-col h-full  gap-8">
         <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
-          {/* Most Sold Service Section */}
           <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
             <div className="flex items-center gap-2">
               <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
@@ -235,25 +249,24 @@ function SuperAdminServices() {
                 <img src="/mostSoldServiceIcons.png" alt="" />
               </div>
               <div>
-                <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                <Text className="!text-[#000000] !text-[14px] !font-[400]">
                   Most Sold Service
                 </Text>
-
-                <Text className="!text-[14px] !font-[400]">Haircut</Text>
+                <Text className="!text-[14px] !text-[#333B69] !font-[400]">
+                  Haircut
+                </Text>
               </div>
             </div>
             <Text className="!text-[30px] !font-[600]">$4,790</Text>
           </div>
 
-          {/* Haircut Total Orders Section  */}
           <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
             <div className="flex items-center gap-2">
               <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#E7EDFF] rounded-3xl">
                 {" "}
                 <img src="/haircutTotalOrdersIcon.png" alt="" />
               </div>
-
-              <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+              <Text className="!text-[#000000] !text-[14px] !font-[400]">
                 Haircut Total Orders
               </Text>
             </div>
@@ -261,20 +274,23 @@ function SuperAdminServices() {
           </div>
         </section>
 
-        {/* Services Table */}
-
         <section className="flex justify-between items-center">
-          <Text className="!text-[22px] !font-[700]">All Services</Text>
+          <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+            All Services
+          </Text>
           <Button
             bg="black"
             radius="md"
+            fw={"normal"}
+            className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
             onClick={() => {
-              setSelectedService(null); // Reset selectedService (means we are creating a new service)
-              form.reset(); // Clear form fields
-              setOpened(true); // Open the popup
+              setToggleTitle("Add Service");
+              setSelectedService(null);
+              form.reset();
+              setOpened(true);
             }}
           >
-            Add Services
+            Add Service
           </Button>
         </section>
 
@@ -287,12 +303,12 @@ function SuperAdminServices() {
           }
         />
 
-        {/* Service Creation Popup */}
         <Popup
           form={form}
           opened={opened}
           setOpened={setOpened}
           handleSubmit={handleSubmit}
+          title={toggleTitle}
         >
           <Popup.TextInputField
             label="Service Name"
@@ -306,6 +322,7 @@ function SuperAdminServices() {
           />
           <Popup.Input
             label="Duration"
+            description={"Duration will be in minutes"}
             placeholder="Enter Service Duration in minutes"
             id="duration"
             type="number"
@@ -325,11 +342,20 @@ function SuperAdminServices() {
           />
           <Popup.TextArea
             label="Description"
-            placeholder="Enter Location Description"
+            placeholder="Enter  Description"
             id="description"
           />
           <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
         </Popup>
+
+        <Modal
+          opened={modalOpen}
+          onClose={() => setModalOpen(false)}
+          title="Description"
+          centered
+        >
+          <p>{modalContent}</p>
+        </Modal>
       </section>
     </main>
   );

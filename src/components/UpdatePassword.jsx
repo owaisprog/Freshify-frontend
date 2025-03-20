@@ -2,44 +2,52 @@ import { Button, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { toast } from "react-toastify";
 import { useUpdateMutation } from "../services/reactQuery";
+import { useQueryClient } from "@tanstack/react-query"; // Import useQueryClient
 
 function UpdatePassword() {
-  const data = JSON.parse(localStorage.getItem("data")) || {};
-  const { name } = data;
+  const queryClient = useQueryClient(); // Initialize queryClient
   const { mutate: updateProfile, isPending } = useUpdateMutation("profile");
 
   const form = useForm({
     initialValues: {
-      currentPassword: name || "",
-      newPassword: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validate: {
+      password: (value) =>
+        value.trim().length < 6
+          ? "Password must be at least 6 characters"
+          : null,
+      confirmPassword: (value, values) =>
+        value !== values.password ? "Passwords do not match" : null,
     },
   });
-  // Handle form submission
+
   const handleSubmit = async (values) => {
+    console.log(values, values.password);
     try {
       updateProfile(
         {
           endpoint: `/api/update-info`, // Adjust the endpoint
-          payload: values,
+          payload: { password: values.password },
         },
         {
           onSuccess: () => {
-            toast.success("Profile updated successfully!");
-            // Update localStorage with new data
-            localStorage.setItem(
-              "data",
-              JSON.stringify({ ...data, ...values })
-            );
+            toast.success("Password updated successfully!");
+
+            // Clear the "profile" cache
+            // queryClient.invalidateQueries("profile"); // Invalidate and refetch
+            queryClient.removeQueries("profile"); // Remove without refetching
           },
           onError: (error) => {
-            toast.error("Failed to update profile.");
-            console.error("Error updating profile:", error);
+            toast.error("Failed to update password.");
+            console.error("Error updating password:", error);
           },
         }
       );
     } catch (error) {
-      toast.error("Failed to update profile.");
-      console.error("Error updating profile:", error);
+      toast.error("Failed to update password.");
+      console.error("Error updating password:", error);
     }
   };
 
@@ -49,13 +57,13 @@ function UpdatePassword() {
       className="w-full flex flex-col gap-6 pb-6 px-6 pt-2"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Name Field */}
         <div>
-          <label className="text-[18px] text-[#333B69]">Current Password</label>
+          <label className="text-[18px] text-[#333B69]">New Password</label>
           <TextInput
-            {...form.getInputProps("currentPassword")}
+            {...form.getInputProps("password")}
             mt="xs"
             radius="md"
+            type="password"
             styles={{
               input: {
                 borderColor: "#718EBF",
@@ -65,14 +73,13 @@ function UpdatePassword() {
           />
         </div>
 
-        {/* Email Field */}
         <div>
-          <label className="text-[18px] text-[#333B69]">New Password</label>
+          <label className="text-[18px] text-[#333B69]">Confirm Password</label>
           <TextInput
-            {...form.getInputProps("newPassword")}
+            {...form.getInputProps("confirmPassword")}
             mt="xs"
-            readOnly
             radius="md"
+            type="password"
             styles={{
               input: {
                 borderColor: "#718EBF",
@@ -83,7 +90,6 @@ function UpdatePassword() {
         </div>
       </div>
 
-      {/* Save Button */}
       <div className="text-right">
         <Button
           type="submit"

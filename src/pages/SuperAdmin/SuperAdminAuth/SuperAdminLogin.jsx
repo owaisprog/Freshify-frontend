@@ -1,6 +1,6 @@
 import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { loginUser } from "./services/AuthServices";
@@ -20,7 +20,7 @@ export default function SuperAdminLogin() {
       );
       console.log(userData, values);
       toast(userData.message, { position: "top-right" });
-      navigate("/SuperAdminDashboard");
+      navigate("/SuperAdminOrganization");
     } catch (error) {
       toast(error, { position: "top-right" });
       setLoading(false);
@@ -70,15 +70,6 @@ export default function SuperAdminLogin() {
           >
             Login
           </Text>
-          <Text c="dimmed" size="sm" ta="center">
-            Do not have an account yet?{" "}
-            <Link
-              to={"/SuperAdminRegister"}
-              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
-            >
-              Register
-            </Link>
-          </Text>
 
           <TextInput
             radius={"md"}
@@ -113,15 +104,6 @@ export default function SuperAdminLogin() {
           >
             Login
           </Button>
-
-          <Text c="dimmed" size="xs" ta="right">
-            <Link
-              to={"/SuperAdminResetPassword"}
-              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
-            >
-              Forgot Password
-            </Link>
-          </Text>
         </form>
       </section>
     </main>
