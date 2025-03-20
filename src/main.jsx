@@ -47,9 +47,6 @@ import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayou
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SuperAdminLogin from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminLogin.jsx";
 
-import SuperAdminVerifyEmail from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminVerifyEmail.jsx";
-import SuperAdminResetPassword from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminResetPassword.jsx";
-import SuperAdminResendOTP from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminResendOTP.jsx";
 import SuperAdminDashboard from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminDashboard/SuperAdminDashboard.jsx";
 import SuperAdminLayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLayout.jsx";
 import CustomerLogin from "./pages/Customer/CustomerAuth/CustomerLogin.jsx";
@@ -169,15 +166,6 @@ const router = createBrowserRouter(
       {/* super admin auth */}
 
       <Route path="SuperAdminLogin" element={<SuperAdminLogin />} />
-
-      <Route path="SuperAdminVerifyEmail" element={<SuperAdminVerifyEmail />} />
-
-      <Route
-        path="SuperAdminResetPassword"
-        element={<SuperAdminResetPassword />}
-      />
-
-      <Route path="SuperAdminResendOTP" element={<SuperAdminResendOTP />} />
 
       <Route
         path="SuperAdminDashboard"
