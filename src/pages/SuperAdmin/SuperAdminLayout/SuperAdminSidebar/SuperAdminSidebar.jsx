@@ -5,53 +5,16 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 // react icons import
-import {
-  MdDashboard,
-  MdMyLocation,
-  MdCalendarMonth,
-  MdOutlinePayment,
-  MdOutlineSettings,
-} from "react-icons/md";
-import { HiWrenchScrewdriver } from "react-icons/hi2";
-import { ImUsers } from "react-icons/im";
+
+import { GoOrganization } from "react-icons/go";
 
 const data = [
   {
     link: "",
-    label: "Organization",
+    label: "Organizations",
     activePath: "/SuperAdminOrganization",
-    icon: MdDashboard,
+    icon: GoOrganization,
   },
-  // {
-  //   link: "Services",
-  //   label: "Services",
-  //   activePath: "/SuperAdminDashboard/Services",
-  //   icon: HiWrenchScrewdriver,
-  // },
-  // {
-  //   link: "Users",
-  //   label: "Users",
-  //   activePath: "/SuperAdminDashboard/Users",
-  //   icon: ImUsers,
-  // },
-  // {
-  //   link: "locations",
-  //   label: "Locations",
-  //   activePath: "/SuperAdminDashboard/Locations",
-  //   icon: MdMyLocation,
-  // },
-  // {
-  //   link: "Calendar",
-  //   label: "Calendar",
-  //   activePath: "/SuperAdminDashboard/Calendar",
-  //   icon: MdCalendarMonth,
-  // },
-  // {
-  //   link: "Payout",
-  //   label: "Payout",
-  //   activePath: "/SuperAdminDashboard/Payout",
-  //   icon: MdOutlinePayment,
-  // },
 ];
 
 export default function SuperAdminSidebar() {
@@ -86,25 +49,6 @@ export default function SuperAdminSidebar() {
 
         {links}
       </div>
-
-      {/* <div className="pb-1  ">
-        <Link
-          to={"settings"}
-          className={`flex items-center no-underline text-[18px] px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black${
-            "settings" === active
-              ? " border-l-4 border-black text-black bg-[#f5f7fa]"
-              : ""
-          }`}
-          onClick={() => setActive("settings")}
-        >
-          <MdOutlineSettings
-            className={`${
-              active === "settings" ? "text-black" : "text-[#b1b1b1]"
-            } mr-4 w-[30px] h-[30px]`}
-          />
-          <span>Settings</span>
-        </Link>
-      </div> */}
     </nav>
   );
 }

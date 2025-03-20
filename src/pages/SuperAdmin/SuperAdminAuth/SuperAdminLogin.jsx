@@ -71,26 +71,30 @@ export default function SuperAdminLogin() {
             Login
           </Text>
 
-          <TextInput
-            radius={"md"}
-            label="Email Address"
-            placeholder="Enter your email"
-            key={form.key("email")}
-            {...form.getInputProps("email")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
-          <PasswordInput
-            radius={"md"}
-            label="Password"
-            placeholder="Enter you password"
-            key={form.key("password")}
-            {...form.getInputProps("password")}
-            labelProps={{
-              className: "!font-[400] !text-[18px] !text-[#000000]",
-            }}
-          />
+          {/* Email Address Input Field  */}
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Email Address
+            </span>
+            <TextInput
+              radius={"md"}
+              placeholder="Enter your email"
+              key={form.key("email")}
+              {...form.getInputProps("email")}
+            />
+          </div>
+
+          <div className="flex flex-col gap-[10px]">
+            <span className=" !font-[400] !text-[18px] !text-[#000000]">
+              Password
+            </span>
+            <PasswordInput
+              radius={"md"}
+              placeholder="Enter you password"
+              key={form.key("password")}
+              {...form.getInputProps("password")}
+            />
+          </div>
 
           <Button
             fullWidth
