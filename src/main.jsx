@@ -82,12 +82,12 @@ import AdminDelete from "./pages/Admins/AdminsLayout/AdminsSettings/components/A
 import ProfessionalLayout from "./pages/Professionals/ProfessionalLayout/ProfessionalLayout.jsx";
 import ProfessionalDashboard from "./pages/Professionals/ProfessionalLayout/ProfessionalDashboard/ProfessionalDashboard.jsx";
 import ProfessionalSettings from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/ProfessionalSettings.jsx";
-import ProfessionalsSettings from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalsSettings.jsx";
 import ProfessionalNotification from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalNotification.jsx";
 import ProfessionalProfile from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalProfile.jsx";
 import ProfessionalDelete from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalDelete.jsx";
 import AdminsUsers from "./pages/Admins/AdminsLayout/AdminsUsers/OrganizationOwnerUsers.jsx";
 import OrganizationOwnerPayout from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerPayout/OrganizationOwnerPayout.jsx";
+import ProfessionalUpdatePassword from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalUpdatePassword.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -263,9 +263,10 @@ const router = createBrowserRouter(
         <Route index element={<ProfessionalDashboard />} />
 
         <Route path="settings" element={<ProfessionalSettings />}>
-          <Route index element={<ProfessionalsSettings />} />
+          {/* <Route index element={<ProfessionalsSettings />} /> */}
+          <Route index element={<ProfessionalProfile />} />
+          <Route path="password" element={<ProfessionalUpdatePassword />} />
           <Route path="email" element={<ProfessionalNotification />} />
-          <Route path="personal" element={<ProfessionalProfile />} />
           <Route path="delete" element={<ProfessionalDelete />} />
         </Route>
       </Route>
