@@ -3,7 +3,6 @@ import axiosInstance from "./axiosInstance";
 export const apiGet = async (url) => {
   try {
     const response = await axiosInstance.get(url);
-    console.log(response.data, "👌👌");
 
     return response.data;
   } catch (error) {
