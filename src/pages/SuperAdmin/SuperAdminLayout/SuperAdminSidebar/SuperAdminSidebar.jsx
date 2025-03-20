@@ -87,7 +87,7 @@ export default function SuperAdminSidebar() {
         {links}
       </div>
 
-      <div className="pb-1  ">
+      {/* <div className="pb-1  ">
         <Link
           to={"settings"}
           className={`flex items-center no-underline text-[18px] px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black${
@@ -104,7 +104,7 @@ export default function SuperAdminSidebar() {
           />
           <span>Settings</span>
         </Link>
-      </div>
+      </div> */}
     </nav>
   );
 }

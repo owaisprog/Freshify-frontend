@@ -5,21 +5,19 @@ import { useDeleteMutation } from "../../../../../services/reactQuery";
 
 function SuperAdminDelete() {
   const navigate = useNavigate();
+  const { ownerId } = useParams();
 
   // Use the delete mutation from react-query
-  const { mutate: deleteSuperAdmin, isPending } =
-    useDeleteMutation("SuperAdmin");
+  const { mutate: deleteSuperAdmin, isPending } = useDeleteMutation("profile");
 
   // Handle delete button click
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete your SuperAdmin?")) {
       deleteSuperAdmin(
-        { endpoint: "/api/delete-SuperAdmin" },
+        { endpoint: `/api/delete-organizationbyowner/${ownerId}` },
         {
           onSuccess: () => {
             // Clear localStorage
-            localStorage.removeItem("token");
-            localStorage.removeItem("data");
 
             // Show success message
             toast.success("SuperAdmin deleted successfully!");

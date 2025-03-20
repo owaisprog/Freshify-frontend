@@ -4,16 +4,7 @@ import { Image, Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
 
 // Reuse your existing icons and data
-import {
-  MdDashboard,
-  MdMyLocation,
-  MdCalendarMonth,
-  MdOutlinePayment,
-  MdOutlineSettings,
-} from "react-icons/md";
-import { HiWrenchScrewdriver } from "react-icons/hi2";
-import { ImUsers } from "react-icons/im";
-
+import { MdDashboard, MdOutlineSettings } from "react-icons/md";
 // Reuse your existing data array
 const data = [
   {
@@ -117,7 +108,7 @@ export default function SuperAdminMobileNav() {
           <div className="flex-1 overflow-y-auto">
             <div className="mt-2">{links}</div>
             {/* Settings Link */}
-            <div className="pt-4  ">
+            {/* <div className="pt-4  ">
               <Link
                 to="settings"
                 className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
@@ -133,7 +124,7 @@ export default function SuperAdminMobileNav() {
                 <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
                 <span>Settings</span>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </Drawer>

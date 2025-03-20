@@ -1,11 +1,12 @@
 import { Paper, Tabs, Title, Select } from "@mantine/core";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import Tab from "../../../../components/Tab";
 import { FaChevronDown } from "react-icons/fa";
 
 export default function SuperAdminSettings() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { ownerId } = useParams();
 
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
@@ -29,19 +30,19 @@ export default function SuperAdminSettings() {
             <Tabs value={location.pathname} onChange={() => {}}>
               <Tabs.List>
                 <Tab
-                  path="/SuperAdminOrganization/settings"
+                  path={`/SuperAdminOrganization/settings/${ownerId}`} // Include `ownerId`
                   text="SuperAdmins Settings"
                 />
                 <Tab
-                  path="/SuperAdminOrganization/settings/email"
+                  path={`/SuperAdminOrganization/settings/${ownerId}/email`} // Include `ownerId`
                   text="Email Notifications"
                 />
                 <Tab
-                  path="/SuperAdminOrganization/settings/personal"
+                  path={`/SuperAdminOrganization/settings/${ownerId}/personal`} // Include `ownerId`
                   text="Personal Info"
                 />
                 <Tab
-                  path="/SuperAdminOrganization/settings/delete"
+                  path={`/SuperAdminOrganization/settings/${ownerId}/delete`} // Include `ownerId`
                   text="Delete Account"
                 />
               </Tabs.List>
@@ -57,26 +58,26 @@ export default function SuperAdminSettings() {
               data={[
                 {
                   label: "SuperAdmins Settings",
-                  value: "/SuperAdminOrganization/settings",
+                  value: `/SuperAdminOrganization/settings/${ownerId}`, // Include `ownerId`
                 },
                 {
                   label: "Email Notifications",
-                  value: "/SuperAdminOrganization/settings/email",
+                  value: `/SuperAdminOrganization/settings/${ownerId}/email`, // Include `ownerId`
                 },
                 {
                   label: "Personal Info",
-                  value: "/SuperAdminOrganization/settings/personal",
+                  value: `/SuperAdminOrganization/settings/${ownerId}/personal`, // Include `ownerId`
                 },
                 {
                   label: "Delete Account",
-                  value: "/SuperAdminOrganization/settings/delete",
+                  value: `/SuperAdminOrganization/settings/${ownerId}/delete`, // Include `ownerId`
                 },
               ]}
-              value={location.pathname} // ✅ Keep the selected value persistent
-              onChange={(value) => value && navigate(value)} // ✅ Prevent clearing when clicking again
+              value={location.pathname}
+              onChange={(value) => value && navigate(value)}
               rightSection={<FaChevronDown size={15} color="#333B69" />}
               checkIconPosition="right"
-              clearable={false} // ✅ Prevent unchecking selected value
+              clearable={false}
               styles={{
                 input: {
                   width: "232px",
