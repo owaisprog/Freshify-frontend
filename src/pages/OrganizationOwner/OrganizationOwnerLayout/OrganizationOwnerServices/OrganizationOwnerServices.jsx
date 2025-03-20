@@ -24,7 +24,7 @@ function OrganizationOwnerServices() {
     error: servicesError,
   } = useQueryHook({
     queryKey: "services",
-    endpoint: "/api/get-services-by-owner",
+    endpoint: `/api/get-services-by-owner/${id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 

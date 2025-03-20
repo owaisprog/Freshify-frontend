@@ -1,6 +1,7 @@
-import { Button, Title } from "@mantine/core";
+import { Button, Title, Modal, Text } from "@mantine/core";
 import { useState } from "react";
-import { FiTrash, FiUpload } from "react-icons/fi";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 import { useForm } from "@mantine/form";
 import TableCom from "../../../../../components/Table";
 import Popup from "../../../../../components/PopUp";
@@ -10,46 +11,62 @@ import {
   useQueryHook,
   useUpdateMutation,
 } from "../../../../../services/reactQuery";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 function SuperAdminUserAdmin({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
-  const { id } = JSON.parse(localStorage.getItem("data"));
-
-  // ✅ Fetch users (no need for state)
+  const { ownerId } = useParams();
 
   // ✅ Fetch locations
   const { data: ownerLocations = [], error: locationError } = useQueryHook({
-    queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
+    queryKey: ["locations", ownerId],
+    endpoint: `/api/get-locations-by-owner/${ownerId}`,
     staleTime: 0 * 60 * 1000,
+  });
+
+  // ✅ Fetch services
+  const { data: services = [] } = useQueryHook({
+    queryKey: "services",
+    endpoint: `/api/get-services-by-owner/${ownerId}`,
+    staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
   // ✅ Mutations for CRUD operations
   const { mutate: createUser, isPending: isLoadingCreate } = usePostMutation([
     "users",
-    id,
+    ownerId,
   ]);
   const { mutate: updateUser, isPending: isLoadingUpdate } = useUpdateMutation([
     "users",
-    id,
+    ownerId,
   ]);
-  const { mutate: deleteUser } = useDeleteMutation(["users", id]);
+  const { mutate: deleteUser } = useDeleteMutation(["users", ownerId]);
 
   // ✅ State for popup/modal
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [toggleTitle, setToggleTitle] = useState("Add Admin");
+
+  // ✅ State for services modal
+  const [servicesModalOpen, setServicesModalOpen] = useState(false);
+  const [servicesModalContent, setServicesModalContent] = useState([]);
 
   // ✅ Table Columns
-  const columns = ["Name", "Location", "Email", "Role", "Actions"];
+  const columns = ["Name", "Location", "Email", " Services", "Actions"];
 
   // ✅ Delete User
   const handleDeleteUser = (userId) => {
     deleteUser(
       { endpoint: `/api/delete-user/${userId}` },
       {
-        onSuccess: () => console.log("User deleted successfully!"),
-        onError: (error) => console.error("Error deleting user:", error),
+        onSuccess: () =>
+          toast.success("Admin Deleted Successfully", {
+            position: "top-center",
+          }),
+        onError: () =>
+          toast.error("Deletion Error", { position: "top-center" }),
       }
     );
   };
@@ -62,6 +79,7 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
       email: "",
       location: "",
       role: "admin",
+      services: [],
     },
     validate: {
       name: (value) => (value.trim().length < 1 ? "Name is required" : null),
@@ -80,20 +98,42 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
     const locationId = ownerLocations.find(
       (loc) => loc.name === values.location
     )?._id;
-
+    const servicesId = services
+      ?.filter((val) => values?.services?.includes(val?.name))
+      ?.map((val) => val?._id);
     try {
       if (selectedUser) {
         // ✅ Update user
-        updateUser({
-          endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, location: locationId },
-        });
+        updateUser(
+          {
+            endpoint: `/api/update-user/${selectedUser._id}`,
+            payload: { ...values, location: locationId, services: servicesId },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Admin Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Admin Updation Error", { position: "top-center" }),
+          }
+        );
       } else {
         // ✅ Create new user
-        createUser({
-          endpoint: "/api/invite-user",
-          payload: { ...values, location: locationId },
-        });
+        createUser(
+          {
+            endpoint: "/api/invite-user",
+            payload: { ...values, location: locationId, services: servicesId },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Admin Created. Please Check Your Email", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Admin Creation Error", { position: "top-center" }),
+          }
+        );
       }
       setTimeout(() => {
         setOpened(false);
@@ -101,30 +141,46 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
       }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
+      toast("Something went wrong", { position: "top-right" });
     } finally {
       setLoading(false);
     }
   };
-  console.log(isLoading, "iiiisLoading");
 
+  console.log(services.map((serve) => serve.name));
   // ✅ Transform Users into Table Format
   const data = userdata?.map((val) => ({
     Name: val.name,
     Location: val.location?.name || "N/A",
     Email: val.email,
-    Role: val.role,
+    " Services": (
+      <Text
+        fz={"lg"}
+        td={"underline"}
+        c={"black"} // Set color to black
+        className="cursor-pointer"
+        onClick={() => {
+          setServicesModalContent(val.services); // Set services for the modal
+          setServicesModalOpen(true); // Open the modal
+        }}
+      >
+        View Services
+      </Text>
+    ),
     Actions: (
       <div className="flex gap-2.5">
         {/* ✅ Edit User */}
         <div
           className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
           onClick={() => {
+            setToggleTitle("Update Admin");
             setSelectedUser(val);
             form.setValues({
               name: val.name,
               email: val.email,
               location: val.location?.name || "",
               role: val.role,
+              services: val.services.map((service) => service.name),
             });
             setOpened(true);
           }}
@@ -133,7 +189,7 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
         </div>
 
         {/* ✅ Delete User */}
-        <FiTrash
+        <BsTrash
           size={18}
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
           style={{ cursor: "pointer", color: "#622929" }}
@@ -148,16 +204,18 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
       {/* Table Section */}
       <section>
         <div className="flex justify-between items-end">
-          <Title fz={"h4"} fw={"bold"}>
-            All Admins
+          <Title className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+            Admins
           </Title>
           <Button
             bg="black"
             radius="md"
+            className="!text-[18px] !font-[400] !px-[40px] !py-[10px]"
             onClick={() => {
               setSelectedUser(null);
               form.reset();
               setOpened(true);
+              setToggleTitle("Add Admin");
             }}
           >
             Add Admin
@@ -179,9 +237,10 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
         opened={opened}
         setOpened={setOpened}
         handleSubmit={handleSubmit}
+        title={toggleTitle}
       >
         <Popup.TextInputField
-          label="User Name"
+          label="Full Name"
           placeholder="Enter User Name"
           id="name"
         />
@@ -197,21 +256,35 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
           id="location"
           error={locationError}
         />
-        {/* <Popup.Select
-          data={[
-            { value: "admin", label: "Admin" },
-            { value: "barber", label: "Barber" },
-          ]}
-          label="Role"
-          placeholder="Select Role"
-          id="role"
-        /> */}
+        <Popup.MutltiSelector
+          data={services.map((serve) => serve.name)}
+          label="Select the Services"
+          placeholder="Select at least one Service"
+          id="services"
+        />
+
         <Popup.SubmitButton
           loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
         >
           {selectedUser ? "Update User" : "Add User"}
         </Popup.SubmitButton>
       </Popup>
+
+      {/* Services Modal */}
+      <Modal
+        opened={servicesModalOpen}
+        onClose={() => setServicesModalOpen(false)}
+        title="Services"
+        centered
+      >
+        <div>
+          {servicesModalContent.map((service, index) => (
+            <div key={index} className="mb-2">
+              <Text>{service.name}</Text>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </main>
   );
 }

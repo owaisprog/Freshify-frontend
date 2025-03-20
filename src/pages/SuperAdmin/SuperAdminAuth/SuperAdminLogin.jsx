@@ -20,7 +20,7 @@ export default function SuperAdminLogin() {
       );
       console.log(userData, values);
       toast(userData.message, { position: "top-right" });
-      navigate("/SuperAdminDashboard");
+      navigate("/SuperAdminOrganization");
     } catch (error) {
       toast(error, { position: "top-right" });
       setLoading(false);

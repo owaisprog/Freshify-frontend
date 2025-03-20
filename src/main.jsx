@@ -47,7 +47,7 @@ import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayou
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SuperAdminLogin from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminLogin.jsx";
 
-import SuperAdminDashboard from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminDashboard/SuperAdminDashboard.jsx";
+import SuperAdminOrganization from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminOrganization/SuperAdminDashboard.jsx";
 import SuperAdminLayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLayout.jsx";
 import CustomerLogin from "./pages/Customer/CustomerAuth/CustomerLogin.jsx";
 import CustomerRegister from "./pages/Customer/CustomerAuth/CustomerRegister.jsx";
@@ -57,7 +57,6 @@ import CustomerResendOTP from "./pages/Customer/CustomerAuth/CustomerResendOTP.j
 
 import CustomerLayout from "./pages/Customer/CustomerLayout/CustomerLayout.jsx";
 import NewPassword from "./components/NewPassword.jsx";
-import SuperAdminsSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminSettings.jsx";
 import SuperAdminNotification from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminNotification.jsx";
 import SuperAdminProfile from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminProfile.jsx";
 import SuperAdminDelete from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminDelete.jsx";
@@ -88,6 +87,11 @@ import CustomerProfile from "./pages/Customer/CustomerLayout/CustomerSettings/co
 import CustomerUpdatePassword from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerUpdatePassword.jsx";
 import CustomerNotification from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerNotification.jsx";
 import CustomerDelete from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerDelete.jsx";
+import SuperAdminsSettings from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminsSettings.jsx";
+import SuperAdminServices from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminServices/SuperAdminServices.jsx";
+import SuperAdminPayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminPayout/SuperAdminPayout.jsx";
+import SuperAdminLocations from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLocation/SuperAdminLocation.jsx";
+import SuperAdminUsers from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminUsers/SuperAdminUsers.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -171,15 +175,20 @@ const router = createBrowserRouter(
       <Route path="SuperAdminLogin" element={<SuperAdminLogin />} />
 
       <Route
-        path="SuperAdminDashboard"
+        path="SuperAdminOrganization"
         element={
           <ProtectedRoute path="/SuperAdminLogin" requiredRole="superadmin">
             <SuperAdminLayout />
           </ProtectedRoute>
         }
       >
-        <Route index element={<SuperAdminDashboard />} />
-        <Route path="settings" element={<SuperAdminSettings />}>
+        <Route index element={<SuperAdminOrganization />} />
+        <Route path="Services/:ownerId" element={<SuperAdminServices />} />
+        <Route path="Users/:ownerId" element={<SuperAdminUsers />} />
+        {/* <Route path="Calendar" element={<SuperAdminCalendar />} /> */}
+        <Route path="Payout/:ownerId" element={<SuperAdminPayout />} />
+        <Route path="locations/:ownerId" element={<SuperAdminLocations />} />
+        <Route path="settings/:ownerId" element={<SuperAdminSettings />}>
           <Route index element={<SuperAdminsSettings />} />
           <Route path="email" element={<SuperAdminNotification />} />
           <Route path="personal" element={<SuperAdminProfile />} />

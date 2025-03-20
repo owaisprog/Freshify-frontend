@@ -1,48 +1,43 @@
 import {
-  Avatar,
   Box,
   Button,
   Loader,
   Modal,
   Paper,
-  ScrollArea,
   Table,
   Text,
   Title,
 } from "@mantine/core";
-import { FiTrash, FiUpload } from "react-icons/fi";
-import { IoLocationSharp } from "react-icons/io5";
-// import { RiDeleteBin6Line } from "react-icons/ri";
+import { FiUpload } from "react-icons/fi";
+import { BsTrash } from "react-icons/bs";
 import Popup from "../../../../components/PopUp";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
-
 import {
   useDeleteMutation,
   usePostMutation,
   useQueryHook,
   useUpdateMutation,
 } from "../../../../services/reactQuery";
-import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 export default function SuperAdminLocations() {
-  const { id } = JSON.parse(localStorage.getItem("data"));
+  // const { id } = JSON.parse(localStorage.getItem("data"));
+  const { ownerId } = useParams();
 
-  //query logic
-  //delete
-  const { mutate: deleteLocation } = useDeleteMutation(["locations", id]);
+  // Query logic
+  const { mutate: deleteLocation } = useDeleteMutation(["locations", ownerId]);
+  const { mutate: createLocation } = usePostMutation(["locations", ownerId]);
+  const { mutate: updateLocation } = useUpdateMutation(["locations", ownerId]);
 
-  //mutate
-  const { mutate: createLocation } = usePostMutation(["locations", id]);
-  const { mutate: updateLocation } = useUpdateMutation(["locations", id]);
-
+  const [toggleTitle, setToggleTitle] = useState("");
   const [loading, setLoading] = useState(false);
-  const [opened, setOpened] = useState(false); // Controls the popup modal
-  const [modalOpen, setModalOpen] = useState(false); // Controls the view modal
-  const [modalContent, setModalContent] = useState(""); // Stores address/description
-  const [modalTitle, setModalTitle] = useState(""); // Title for the modal
-  // const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null); // Track selected location
+  const [opened, setOpened] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   const copyToClipboard = (text) => {
     navigator.clipboard
@@ -55,31 +50,35 @@ export default function SuperAdminLocations() {
       });
   };
 
-  const queryClient = useQueryClient();
   const DelLocation = (delId) => {
     deleteLocation(
       { endpoint: `/api/delete-location/${delId}` },
       {
-        onSuccess: () => {
-          console.log("Location deleted successfully!");
+        onSuccess: (response) => {
+          console.log("Response Message", response);
+          toast.success("Location Deleted Successfully", {
+            position: "top-center",
+          });
         },
         onError: (error) => {
           console.error("Error deleting location:", error);
+          toast.error("Error deleting location", { position: "top-center" });
         },
       }
     );
   };
-  console.log(selectedLocation);
+
   // Fetch locations
   const {
     data: locations = [],
     isLoading,
     error,
   } = useQueryHook({
-    queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
+    queryKey: ["locations", ownerId],
+    endpoint: `/api/get-locations-by-owner/${ownerId}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
+  console.log(locations);
 
   // Form logic
   const form = useForm({
@@ -89,7 +88,7 @@ export default function SuperAdminLocations() {
       image: "",
       address: "",
       googleLink: "",
-      enableCashPayments: false,
+      enableCashPayments: "false", // Default to string "false"
       workingHours: "",
       description: "",
     },
@@ -108,17 +107,46 @@ export default function SuperAdminLocations() {
   const handleSubmit = (values) => {
     setLoading(true);
 
+    // Convert "enableCashPayments" from string to boolean
+    const payload = {
+      ...values,
+      enableCashPayments: values.enableCashPayments === "true", // Convert to boolean
+    };
+
+    console.log(payload);
     try {
       if (selectedLocation) {
-        updateLocation({
-          endpoint: `/api/update-location/${selectedLocation._id}`,
-          payload: values,
-        });
+        updateLocation(
+          {
+            endpoint: `/api/update-location/${selectedLocation._id}`,
+            payload: payload,
+          },
+          {
+            onSuccess: () =>
+              toast.success("Location Updated Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error Updated Location", { position: "top-center" }),
+          }
+        );
       } else {
-        createLocation({
-          endpoint: "/api/create-location",
-          payload: values,
-        });
+        createLocation(
+          {
+            endpoint: "/api/create-location",
+            payload: payload,
+          },
+          {
+            onSuccess: () =>
+              toast.success("Location Created Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Error While Creating Location", {
+                position: "top-center",
+              }),
+          }
+        );
       }
 
       setTimeout(() => {
@@ -130,160 +158,196 @@ export default function SuperAdminLocations() {
       setLoading(false);
     }
   };
-  // if (isLoading)
-  //   return (
-  //     <div className="h-screen grid place-content-center">
 
-  //     </div>
-  //   );
-  console.log(error);
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
-        px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="lg:px-6 px-2 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] !py-[18px] "
       >
         Locations
       </Title>
-      <section className="p-6 flex flex-col h-full  gap-10">
+      <section className="p-6 max-w-[1720px] flex flex-col h-full gap-10">
         <section className="flex justify-between items-center">
-          <Text className="!text-[22px] !font-[700]">All Services</Text>
+          <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+            All Locations
+          </Text>
           <Button
             onClick={() => {
+              setToggleTitle("Add Location");
               setSelectedLocation(null);
               form.reset();
-              setOpened(true); // Open the add location popup
+              setOpened(true);
             }}
             bg="black"
             radius="md"
+            className="!text-[18px] !px-[40px] !font-[400]  !py-[10px]"
           >
             Add Location
           </Button>
         </section>
 
-        <ScrollArea
-          offsetScrollbars
-          className="h-[400px] rounded-lg p-2 shadow-sm"
-        >
-          <Table.ScrollContainer minWidth={1000}>
-            <Box className="flex flex-col gap-4  justify-center items-center">
-              {isLoading ? (
-                <Loader className="mx-auto" color="blue" type="bars" />
-              ) : error ? (
-                <Paper mt={30} className="!bg-[#F5F7FA] font-[1.2rem]  ">
-                  {" "}
-                  {error}
-                </Paper>
-              ) : (
-                locations?.map((val) => (
-                  <Box
-                    key={val._id}
-                    className="grid grid-cols-6 gap-x-2  items-center w-full p-2 rounded-xl border border-gray-200 bg-[#FFFFFF] "
-                  >
-                    <div className="flex items-center gap-3 ">
-                      <Avatar size={"lg"} color="blue" radius="lg">
-                        <IoLocationSharp size={20} />
-                      </Avatar>
-                      <div>
-                        <Text fz={"sm"} fw={"bold"}>
-                          {val.name}
-                        </Text>
-                        <Text
-                          fz={"xs"}
-                          td={"underline"}
-                          c={"blue"}
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setModalTitle("Address");
-                            setModalContent(val.address);
-                            setModalOpen(true); // Open view modal
-                          }}
-                        >
-                          View Address
-                        </Text>
+        <Table.ScrollContainer minWidth={900}>
+          <Box
+            className="flex flex-col border-r-green-500
+           gap-4 p-2 justify-center items-center"
+          >
+            {isLoading ? (
+              <Loader className="mx-auto" color="blue" type="bars" />
+            ) : error ? (
+              <Paper p={"md"} mt={30} className="!bg-[#F5F7FA] font-[1.2rem]">
+                {error}
+              </Paper>
+            ) : (
+              locations?.map((val, index) => (
+                <section
+                  key={val._id}
+                  className="min-w-full grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
+                >
+                  <div className=" col-span-2   flex items-center gap-3">
+                    {index % 3 === 0 ? (
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/usaLocationIcon.png"
+                          alt=""
+                        />
                       </div>
-                    </div>
-                    <div className="text-center">
-                      <Text fz={"sm"} fw={"bold"}>
-                        Google Places
+                    ) : index % 3 === 1 ? (
+                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#FFE7E7] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/canadaLocationIcon.png"
+                          alt=""
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7FFEB] rounded-[20px]">
+                        <img
+                          className="w-[40.83px] h-[58.33px]"
+                          src="/australiaLocationIcon.png"
+                          alt=""
+                        />
+                      </div>
+                    )}
+                    <div>
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
+                        {val.name}
                       </Text>
                       <Text
-                        fz={"xs"}
-                        td={"underline"}
-                        c={"blue"}
-                        className="cursor-pointer"
-                        onClick={() => copyToClipboard(val.googleLink)}
-                      >
-                        Copy Link
-                      </Text>
-                    </div>
-                    <div>
-                      <Text fz={"sm"} fw={"bold"}>
-                        On-site Payments
-                      </Text>
-                      <Text fz={"xs"}>
-                        {val.enableCashPayments ? "Yes" : "No"}
-                      </Text>
-                    </div>
-                    <div>
-                      <Text fz={"sm"} fw={"bold"}>
-                        Working Hours
-                      </Text>
-                      <Text fz={"xs"}>{val.workingHours} Hours</Text>
-                    </div>
-                    <div>
-                      <Text fz={"sm"} fw={"bold"}>
-                        Description
-                      </Text>
-                      <Text
-                        fz={"xs"}
-                        td={"underline"}
-                        c={"blue"}
-                        className="cursor-pointer"
+                        c={"#718EBF"}
+                        className="cursor-pointer !text-[18px] !font-[400]"
                         onClick={() => {
-                          setModalTitle("Description");
-                          setModalContent(val.description);
-                          setModalOpen(true); // Open view modal
+                          setModalTitle("Address");
+                          setModalContent(val.address);
+                          setModalOpen(true);
                         }}
                       >
-                        View Description
+                        View Address
                       </Text>
                     </div>
-                    <div className="flex h-fit justify-end gap-2 rounded-xl">
-                      <button
-                        className="bg-[#E7FFEB] rounded p-2 cursor-pointer"
-                        onClick={() => {
-                          setSelectedLocation(val);
-                          form.setValues({
-                            name: val.name,
-                            image: val.image,
-                            address: val.address,
-                            googleLink: val.googleLink,
-                            enableCashPayments: val.enableCashPayments,
-                            workingHours: val.workingHours,
-                            description: val.description,
-                          });
-                          setOpened(true); // Open edit popup
-                        }}
-                      >
-                        <FiUpload size={18} style={{ color: "#427B42" }} />
-                      </button>
+                  </div>
+                  {/* google places  */}
+                  <div className=" col-span-1">
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      Google Places
+                    </Text>
+                    <Text
+                      c={"#718EBF"}
+                      className="cursor-pointer !text-[18px] !font-[400]"
+                      td={"underline"}
+                      onClick={() => copyToClipboard(val.googleLink)}
+                    >
+                      Copy Link
+                    </Text>
+                  </div>
 
-                      <button
-                        className="bg-[#FFE0EB] rounded p-2 cursor-pointer"
-                        onClick={() => DelLocation(val._id)}
-                      >
-                        <FiTrash size={18} style={{ color: "#622929" }} />
-                      </button>
-                    </div>
-                  </Box>
-                ))
-              )}
-            </Box>
-          </Table.ScrollContainer>
-        </ScrollArea>
+                  {/* Onsite Payment  */}
+                  <div className=" col-span-1">
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      On-site Payments
+                    </Text>
+                    <Text c={"#718EBF"} className="!text-[18px] !font-[400]">
+                      {val.enableCashPayments ? "Yes" : "No"}
+                    </Text>
+                  </div>
+                  <div>
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      Working Hours
+                    </Text>
+                    <Text
+                      c={"#718EBF"}
+                      className="cursor-pointer !text-[18px] !font-[400]"
+                    >
+                      {val.workingHours} Hours
+                    </Text>
+                  </div>
+                  <div>
+                    <Text
+                      tt={"capitalize"}
+                      className="!text-[22px] !font-[700]"
+                    >
+                      Description
+                    </Text>
+                    <Text
+                      td={"underline"}
+                      c={"#718EBF"}
+                      className="cursor-pointer !text-[18px] !font-[400]"
+                      onClick={() => {
+                        setModalTitle("Description");
+                        setModalContent(val.description);
+                        setModalOpen(true);
+                      }}
+                    >
+                      View Description
+                    </Text>
+                  </div>
+                  <div className="flex h-fit justify-end gap-2 rounded-xl">
+                    <button
+                      className="bg-[#427B42] rounded p-2 cursor-pointer"
+                      onClick={() => {
+                        setToggleTitle("Update Location");
+                        setSelectedLocation(val);
+                        form.setValues({
+                          name: val.name,
+                          image: val.image,
+                          address: val.address,
+                          googleLink: val.googleLink,
+                          enableCashPayments: val.enableCashPayments.toString(), // Convert boolean to string
+                          workingHours: val.workingHours,
+                          description: val.description,
+                        });
+                        setOpened(true);
+                      }}
+                    >
+                      <FiUpload size={18} style={{ color: "white" }} />
+                    </button>
+
+                    <button
+                      className="bg-[#622929] rounded p-2 cursor-pointer"
+                      onClick={() => DelLocation(val._id)}
+                    >
+                      <BsTrash size={18} style={{ color: "white" }} />
+                    </button>
+                  </div>
+                </section>
+              ))
+            )}
+          </Box>
+        </Table.ScrollContainer>
 
         {/* Popup for Adding/Editing Locations */}
         <Popup
@@ -291,6 +355,7 @@ export default function SuperAdminLocations() {
           opened={opened}
           setOpened={setOpened}
           handleSubmit={handleSubmit}
+          title={toggleTitle}
         >
           <Popup.TextInputField
             label="Location Name"
@@ -317,7 +382,16 @@ export default function SuperAdminLocations() {
             label="Upload Image"
             placeholder="Select an image"
             filetype="image/*"
-            id="image" // ✅ Ensure this matches the form field
+            id="image"
+          />
+          <Popup.SingleSelector
+            id="enableCashPayments"
+            label="Enable Cash Payment"
+            placeholder="Select an option"
+            data={[
+              { value: "true", label: "Yes" }, // Use string "true"
+              { value: "false", label: "No" }, // Use string "false"
+            ]}
           />
           <Popup.TextArea
             label="Description"

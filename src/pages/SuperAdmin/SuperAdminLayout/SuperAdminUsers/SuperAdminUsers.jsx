@@ -1,14 +1,14 @@
 import { Tabs, Text, Title } from "@mantine/core";
 import { useState, useMemo } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import SuperAdminUserAdmin from "./Components/SuperAdminUserAdmin";
 import SuperAdminUserProfessional from "./Components/SuperAdminUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
 
 function SuperAdminUsers() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { id } = JSON.parse(localStorage.getItem("data"));
-
+  // const { id } = JSON.parse(localStorage.getItem("data"));
+  const { ownerId } = useParams();
   // Get active tab from query params or default to "admin"
   const currentTab = searchParams.get("tab") || "admin";
   const [activeTab, setActiveTab] = useState(currentTab);
@@ -19,8 +19,8 @@ function SuperAdminUsers() {
     isLoading,
     error,
   } = useQueryHook({
-    queryKey: ["users", id], // ✅ Cache users by owner ID
-    endpoint: `/api/get-users-by-owner/${id}`,
+    queryKey: ["users", ownerId], // ✅ Cache users by owner ID
+    endpoint: `/api/get-users-by-owner/${ownerId}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
@@ -36,16 +36,15 @@ function SuperAdminUsers() {
   };
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
-        px={"lg"}
         py={"sm"}
         c={"black"}
-        className="!roboto lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] !py-[18px]  "
       >
         Users
       </Title>
-      <section className=" p-6 flex flex-col h-full  gap-8">
+      <section className="max-w-[1720px] p-6 flex flex-col h-full  gap-8">
         {/* First Section  */}
         <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
           {/*Most Sales Professional Section */}
@@ -56,7 +55,7 @@ function SuperAdminUsers() {
                 <img src="/mostSalesProfessionalIcon.png" alt="" />
               </div>
               <div>
-                <Text className="!text-[#333B69] !text-[14px] !font-[400]">
+                <Text className="!text-[#000000] !text-[14px] !font-[400]">
                   Most Sales Professional
                 </Text>
 
@@ -76,9 +75,7 @@ function SuperAdminUsers() {
                 <img src="/yelloArrowIcon.png" alt="" />
               </div>
 
-              <Text className="!text-[#333B69] !text-[14px] !font-[400]">
-                Orders By Mirza
-              </Text>
+              <Text className=" !text-[14px] !font-[400]">Orders By Mirza</Text>
             </div>
             <Text className="!text-[30px] !font-[600]">1,360</Text>
           </div>
