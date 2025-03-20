@@ -82,7 +82,7 @@ function AdminsServices() {
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      locations: location._id,
+      locations: [location._id],
       description: "",
       category: "",
       duration: "",
@@ -105,29 +105,49 @@ function AdminsServices() {
         !Number.isInteger(Number(value))
           ? "Duration must be a positive whole number"
           : null,
-      price: (value) =>
-        !/^\$[0-9]+(\.[0-9]{1,2})?$/.test(value) // Regex: Starts with $ and allows two decimal places
-          ? "Price must start with a $ sign and be a valid number"
-          : null,
+      price: (value) => (value <= 0 ? "Must be a positive number" : null),
     },
   });
 
   const handleSubmit = (values) => {
     setLoading(true);
-
+    console.log(values);
     try {
       if (selectedService) {
-        updateService({
-          endpoint: `/api/update-service/${selectedService._id}`,
-          payload: { ...values, createdBy },
-        });
+        updateService(
+          {
+            endpoint: `/api/update-service/${selectedService._id}`,
+            payload: { ...values, createdBy },
+          },
+          {
+            onSuccess: () => {
+              toast("Success", { position: "top-right" });
+            },
+            onError: (error) => {
+              toast(error, {
+                position: "top-right",
+              });
+            },
+          }
+        );
       } else {
-        createService({
-          endpoint: "/api/create-service",
-          payload: { ...values, createdBy },
-        });
+        createService(
+          {
+            endpoint: "/api/create-service",
+            payload: { ...values, createdBy },
+          },
+          {
+            onSuccess: () => {
+              toast("Success", { position: "top-right" });
+            },
+            onError: () => {
+              toast("Error Creating/Updating service", {
+                position: "top-right",
+              });
+            },
+          }
+        );
       }
-      toast("Success", { position: "top-right" });
       setTimeout(() => {
         setLoading(false);
         setOpened(false);
@@ -172,7 +192,7 @@ function AdminsServices() {
         }}
       />
     ),
-    Price: val.price,
+    Price: <div>${val.price}</div>,
     Actions: (
       <div className="flex gap-2.5">
         <div
@@ -185,7 +205,7 @@ function AdminsServices() {
               category: val.category,
               duration: val.duration,
               price: val.price,
-              locations: val.locations.map((loc) => loc.name),
+              locations: val.locations.map((loc) => loc._id),
               description: val.description,
             });
             setOpened(true);
@@ -304,6 +324,7 @@ function AdminsServices() {
             label="Price"
             placeholder="Enter Service Price in Dollars"
             id="price"
+            type="number"
           />
 
           <Popup.TextArea

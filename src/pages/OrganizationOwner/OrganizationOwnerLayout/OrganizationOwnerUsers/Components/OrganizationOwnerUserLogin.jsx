@@ -16,10 +16,7 @@ export default function OrganizationOwnerUserLogin() {
     mode: "uncontrolled",
     initialValues: { email: "", password: "" },
     validate: {
-      email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email address",
-      password: (value) =>
-        value.length >= 6 ? null : "Password must have at least 6 characters",
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
 
