@@ -28,7 +28,7 @@ function AdminsServices() {
     error: servicesError,
   } = useQueryHook({
     queryKey: "services",
-    endpoint: `/api/get-service/${location._id}`,
+    endpoint: `/api/get-service/${location?._id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
@@ -84,7 +84,7 @@ function AdminsServices() {
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      locations: [location._id],
+      locations: [location?._id],
       description: "",
       category: "",
       duration: "",
@@ -113,7 +113,6 @@ function AdminsServices() {
 
   const handleSubmit = (values) => {
     setLoading(true);
-    console.log(values);
     try {
       if (selectedService) {
         updateService(
@@ -164,7 +163,6 @@ function AdminsServices() {
       setLoading(false);
     }
   };
-  console.log(services);
 
   const data = services?.map((val) => ({
     Services: val.name,

@@ -20,6 +20,7 @@ import {
   useUpdateMutation,
 } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function OrganizationOwnerLocations() {
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -47,13 +48,26 @@ export default function OrganizationOwnerLocations() {
         console.error("Failed to copy: ", err);
       });
   };
+  const {
+    data: locations = [],
+    isLoading,
+    error,
+  } = useQueryHook({
+    queryKey: ["locations", id],
+    endpoint: `/api/get-locations-by-owner/${id}`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+
+  const queryClient = useQueryClient();
 
   const DelLocation = (delId) => {
     deleteLocation(
       { endpoint: `/api/delete-location/${delId}` },
       {
-        onSuccess: (response) => {
-          console.log("Response Message", response);
+        onSuccess: (responseData) => {
+          console.log(responseData);
+          queryClient.invalidateQueries({ queryKey: ["locations", id] });
+          window.location.reload();
           toast.success("Location Deleted Successfully", {
             position: "top-center",
           });
@@ -67,15 +81,6 @@ export default function OrganizationOwnerLocations() {
   };
 
   // Fetch locations
-  const {
-    data: locations = [],
-    isLoading,
-    error,
-  } = useQueryHook({
-    queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
-  });
 
   // Form logic
   const form = useForm({
@@ -110,7 +115,6 @@ export default function OrganizationOwnerLocations() {
       enableCashPayments: values.enableCashPayments === "true", // Convert to boolean
     };
 
-    console.log(payload);
     try {
       if (selectedLocation) {
         updateLocation(

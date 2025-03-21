@@ -17,17 +17,26 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
 
-  // ✅ Fetch locations
-  const { data: ownerLocations = [], error: locationError } = useQueryHook({
+  // State to control when to fetch locations
+  const [fetchLocations, setFetchLocations] = useState(false);
+
+  // ✅ Fetch locations only when fetchLocations is true
+  const {
+    data: ownerLocations = [],
+    error: locationError,
+    isLoading: isLocationsLoading,
+    refetch: refetchLocations,
+  } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 15 * 60 * 1000,
+    staleTime: 15 * 60 * 1000, // 15 minutes cache
+    enabled: fetchLocations, // Only fetch when fetchLocations is true
   });
 
-  // ✅ Fetch services
+  // ✅ Fetch services (always enabled)
   const { data: services = [] } = useQueryHook({
     queryKey: "services",
-    endpoint: "/api/get-services-by-owner",
+    endpoint: `/api/get-services-by-owner/${id}`,
     staleTime: 15 * 60 * 1000, // 15 minutes cache
   });
 
@@ -136,7 +145,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
       }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
-      toast("Someting went wrong try again ", { position: "top-right" });
+      toast("Something went wrong try again", { position: "top-right" });
     } finally {
       setLoading(false);
     }
@@ -193,6 +202,20 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
     ),
   }));
 
+  // ✅ Handle "Add Professional" button click
+  const handleAddProfessionalClick = async () => {
+    setSelectedUser(null);
+    form.reset();
+    setToggleTitle("Add Professional");
+
+    // Trigger the locations query
+    setFetchLocations(true);
+    await refetchLocations();
+
+    // Open the popup
+    setOpened(true);
+  };
+
   return (
     <main>
       {/* Table Section */}
@@ -205,12 +228,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
             bg="black"
             radius="md"
             className="!text-[18px]  !font-[400] lg:!px-[40px] lg:!py-[10px]"
-            onClick={() => {
-              setToggleTitle("Add Professional");
-              setSelectedUser(null);
-              form.reset();
-              setOpened(true);
-            }}
+            onClick={handleAddProfessionalClick} // Updated click handler
           >
             Add Professional
           </Button>
@@ -233,34 +251,44 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
         handleSubmit={handleSubmit}
         title={toggleTitle}
       >
-        <Popup.TextInputField
-          label="Full Name"
-          placeholder="Enter User Name"
-          id="name"
-        />
-        <Popup.TextInputField
-          label="Email"
-          placeholder="Enter Email"
-          id="email"
-        />
-        <Popup.SingleSelector
-          data={ownerLocations.map((loc) => loc.name)}
-          label="Select the location"
-          placeholder="Select at least one location"
-          id="location"
-          error={locationError}
-        />
-        <Popup.MutltiSelector
-          data={services.map((serve) => serve.name)}
-          label="Select the Services"
-          placeholder="Select at least one Service"
-          id="services"
-        />
-        <Popup.SubmitButton
-          loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
-        >
-          {selectedUser ? "Update User" : "Add User"}
-        </Popup.SubmitButton>
+        {isLocationsLoading ? (
+          <Text className="!text-[16px] !font-[400]">Loading locations...</Text>
+        ) : ownerLocations.length === 0 ? (
+          <Text className="!text-[16px] !font-[400]">
+            Please create at least one location.
+          </Text>
+        ) : (
+          <>
+            <Popup.TextInputField
+              label="Full Name"
+              placeholder="Enter User Name"
+              id="name"
+            />
+            <Popup.TextInputField
+              label="Email"
+              placeholder="Enter Email"
+              id="email"
+            />
+            <Popup.SingleSelector
+              data={ownerLocations.map((loc) => loc.name)}
+              label="Select the location"
+              placeholder="Select at least one location"
+              id="location"
+              error={locationError}
+            />
+            <Popup.MutltiSelector
+              data={services.map((serve) => serve.name)}
+              label="Select the Services"
+              placeholder="Select at least one Service"
+              id="services"
+            />
+            <Popup.SubmitButton
+              loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
+            >
+              {selectedUser ? "Update User" : "Add User"}
+            </Popup.SubmitButton>
+          </>
+        )}
       </Popup>
 
       {/* Services Modal */}

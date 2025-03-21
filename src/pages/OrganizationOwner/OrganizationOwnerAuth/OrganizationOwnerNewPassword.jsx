@@ -10,7 +10,6 @@ export default function OrganizationOwnerNewPassword({ path }) {
   const [loading, setLoading] = useState(false);
   const { resetToken } = useParams();
   const navigate = useNavigate();
-  console.log(resetToken);
 
   const handleSubmit = async (values) => {
     try {
@@ -18,12 +17,10 @@ export default function OrganizationOwnerNewPassword({ path }) {
       const resetRequest = await apiPost(`/api/reset-password/${resetToken}`, {
         newPassword: values.newPassword,
       });
-      console.log(values.newPassword, values, resetRequest);
       setLoading(false);
       toast("Success", { position: "top-right" });
       navigate(path);
     } catch (error) {
-      console.log(`message:${error.message}`);
       toast(error.message, { position: "top-right" });
     }
   };

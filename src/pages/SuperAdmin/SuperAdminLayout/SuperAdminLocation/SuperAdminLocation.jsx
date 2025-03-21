@@ -54,8 +54,7 @@ export default function SuperAdminLocations() {
     deleteLocation(
       { endpoint: `/api/delete-location/${delId}` },
       {
-        onSuccess: (response) => {
-          console.log("Response Message", response);
+        onSuccess: () => {
           toast.success("Location Deleted Successfully", {
             position: "top-center",
           });
@@ -78,7 +77,6 @@ export default function SuperAdminLocations() {
     endpoint: `/api/get-locations-by-owner/${ownerId}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
-  console.log(locations);
 
   // Form logic
   const form = useForm({

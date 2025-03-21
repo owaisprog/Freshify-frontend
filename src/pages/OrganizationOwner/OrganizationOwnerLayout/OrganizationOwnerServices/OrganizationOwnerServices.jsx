@@ -1,4 +1,4 @@
-import { Button, Select, Text, Title, Modal } from "@mantine/core";
+import { Button, Select, Text, Title, Modal, Loader } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
@@ -17,7 +17,20 @@ import { toast } from "react-toastify";
 
 function OrganizationOwnerServices() {
   const { id } = JSON.parse(localStorage.getItem("data"));
+  const queryClient = useQueryClient();
 
+  // State for controlling popups and loading
+  const [opened, setOpened] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState("");
+  const [toggleTitle, setToggleTitle] = useState("Add Service");
+
+  // State to control when to fetch locations
+  const [fetchLocations, setFetchLocations] = useState(false);
+
+  // Fetch services (always enabled)
   const {
     data: services = [],
     isLoading: isServicesLoading,
@@ -25,16 +38,25 @@ function OrganizationOwnerServices() {
   } = useQueryHook({
     queryKey: "services",
     endpoint: `/api/get-services-by-owner/${id}`,
-    staleTime: 0 * 60 * 1000, // 15 minutes cache
+    staleTime: 0 * 60 * 1000, // No cache
   });
 
-  const { data: ownerLocations = [], error: locationsError } = useQueryHook({
+  // Fetch locations only when fetchLocations is true
+  const {
+    data: ownerLocations = [],
+    error: locationsError,
+    isLoading: isLocationsLoading,
+    refetch: refetchLocations,
+  } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
-    staleTime: 0 * 60 * 1000, // 15 minutes cache
+    staleTime: 0 * 60 * 1000, // No cache
+    enabled: fetchLocations, // Only fetch when fetchLocations is true
   });
 
   const locationNames = ownerLocations.map((val) => val?.name) || [];
+
+  // Mutations for CRUD operations
   const { mutate: createService, isPending: isLoadCreate } =
     usePostMutation("services");
   const { mutate: updateService, isPending: isLoadUpdate } =
@@ -42,14 +64,7 @@ function OrganizationOwnerServices() {
   const { mutate: deleteService, isPending: isLoadDelete } =
     useDeleteMutation("services");
 
-  const [opened, setOpened] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [selectedService, setSelectedService] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState("");
-
-  const [toggleTitle, setToggleTitle] = useState("Add Service");
-
+  // Table columns
   const columns = [
     "Services",
     "Location",
@@ -59,7 +74,7 @@ function OrganizationOwnerServices() {
     "Actions",
   ];
 
-  const queryClient = useQueryClient();
+  // Handle delete service
   const handleDeleteService = (id) => {
     deleteService(
       { endpoint: `/api/delete-service/${id}` },
@@ -71,7 +86,6 @@ function OrganizationOwnerServices() {
             (service) => service._id !== id
           );
           queryClient.setQueryData(["services"], updatedServices);
-          // console.log("Service deleted successfully!");
         },
         onError: (error) => {
           console.error("Error deleting service:", error);
@@ -81,6 +95,7 @@ function OrganizationOwnerServices() {
     );
   };
 
+  // Form handling using Mantine
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -112,6 +127,7 @@ function OrganizationOwnerServices() {
     },
   });
 
+  // Handle form submission (create/update service)
   const handleSubmit = (values) => {
     setLoading(true);
     const filterIdLocations = ownerLocations
@@ -131,7 +147,7 @@ function OrganizationOwnerServices() {
                 position: "top-center",
               }),
             onError: () =>
-              toast.error("Error Updated Location", { position: "top-center" }),
+              toast.error("Error Updating Service", { position: "top-center" }),
           }
         );
       } else {
@@ -146,7 +162,7 @@ function OrganizationOwnerServices() {
                 position: "top-center",
               }),
             onError: () =>
-              toast.error("Error Creating Location", {
+              toast.error("Error Creating Service", {
                 position: "top-center",
               }),
           }
@@ -164,6 +180,21 @@ function OrganizationOwnerServices() {
     }
   };
 
+  // Handle "Add Service" button click
+  const handleAddServiceClick = async () => {
+    setSelectedService(null);
+    form.reset();
+    setToggleTitle("Add Service");
+
+    // Trigger the locations query
+    setFetchLocations(true);
+    await refetchLocations();
+
+    // Open the popup
+    setOpened(true);
+  };
+
+  // Transform services data for the table
   const data = services?.map((val) => ({
     Services: val.name,
     Duration: val.duration,
@@ -171,7 +202,7 @@ function OrganizationOwnerServices() {
       <Text
         fz={"lg"}
         td={"underline"}
-        c={"black"} // Set color to black
+        c={"black"}
         className="cursor-pointer"
         onClick={() => {
           setModalContent(val.description);
@@ -218,7 +249,6 @@ function OrganizationOwnerServices() {
           <FiUpload size={18} style={{ color: "#427B42" }} />
         </div>
 
-        {/* ✅ Delete Service Button */}
         <BsTrash
           size={18}
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
@@ -230,21 +260,21 @@ function OrganizationOwnerServices() {
   }));
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen">
       <Title
         py={"sm"}
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] !py-[18px]   "
+        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] !py-[18px]"
       >
         Services
       </Title>
 
-      <section className="max-w-[1720px] p-6 flex flex-col h-full  gap-8">
-        <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
-          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
+      <section className="max-w-[1720px] p-6 flex flex-col h-full gap-8">
+        {/* Stats Section */}
+        <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6">
+          <div className="bg-[#FFFFFF] rounded-[25px] h-[86px] flex px-[11px] items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
-                {" "}
                 <img src="/mostSoldServiceIcons.png" alt="" />
               </div>
               <div>
@@ -259,10 +289,9 @@ function OrganizationOwnerServices() {
             <Text className="!text-[30px] !font-[600]">$4,790</Text>
           </div>
 
-          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
+          <div className="bg-[#FFFFFF] rounded-[25px] h-[86px] flex px-[11px] items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#E7EDFF] rounded-3xl">
-                {" "}
                 <img src="/haircutTotalOrdersIcon.png" alt="" />
               </div>
               <Text className="!text-[#000000] !text-[14px] !font-[400]">
@@ -273,6 +302,7 @@ function OrganizationOwnerServices() {
           </div>
         </section>
 
+        {/* All Services Section */}
         <section className="flex justify-between items-center">
           <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
             All Services
@@ -282,17 +312,13 @@ function OrganizationOwnerServices() {
             radius="md"
             fw={"normal"}
             className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
-            onClick={() => {
-              setToggleTitle("Add Service");
-              setSelectedService(null);
-              form.reset();
-              setOpened(true);
-            }}
+            onClick={handleAddServiceClick}
           >
             Add Service
           </Button>
         </section>
 
+        {/* Table */}
         <TableCom
           data={data}
           error={servicesError}
@@ -302,6 +328,7 @@ function OrganizationOwnerServices() {
           }
         />
 
+        {/* Add/Edit Service Popup */}
         <Popup
           form={form}
           opened={opened}
@@ -309,44 +336,55 @@ function OrganizationOwnerServices() {
           handleSubmit={handleSubmit}
           title={toggleTitle}
         >
-          <Popup.TextInputField
-            label="Service Name"
-            placeholder="Enter Service name"
-            id="name"
-          />
-          <Popup.TextInputField
-            label="Category"
-            placeholder="Enter Category"
-            id="category"
-          />
-          <Popup.Input
-            label="Duration"
-            description={"Duration will be in minutes"}
-            placeholder="Enter Service Duration in minutes"
-            id="duration"
-            type="number"
-          />
-          <Popup.Input
-            label="Price"
-            placeholder="Enter Service Price in Dollars"
-            id="price"
-            type="number"
-          />
-          <Popup.MutltiSelector
-            data={locationNames}
-            label="Select the location"
-            placeholder="Select at least one location"
-            id="locations"
-            error={locationsError}
-          />
-          <Popup.TextArea
-            label="Description"
-            placeholder="Enter  Description"
-            id="description"
-          />
-          <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
+          {isLocationsLoading ? (
+            <Loader className="mx-auto" color="blue" type="bars" />
+          ) : !selectedService && locationNames.length === 0 ? (
+            <Text className="!text-[16px] !font-[400]">
+              Please create at least one location.
+            </Text>
+          ) : (
+            <>
+              <Popup.TextInputField
+                label="Service Name"
+                placeholder="Enter Service name"
+                id="name"
+              />
+              <Popup.TextInputField
+                label="Category"
+                placeholder="Enter Category"
+                id="category"
+              />
+              <Popup.Input
+                label="Duration"
+                description={"Duration will be in minutes"}
+                placeholder="Enter Service Duration in minutes"
+                id="duration"
+                type="number"
+              />
+              <Popup.Input
+                label="Price"
+                placeholder="Enter Service Price in Dollars"
+                id="price"
+                type="number"
+              />
+              <Popup.MutltiSelector
+                data={locationNames}
+                label="Select the location"
+                placeholder="Select at least one location"
+                id="locations"
+                error={locationsError}
+              />
+              <Popup.TextArea
+                label="Description"
+                placeholder="Enter Description"
+                id="description"
+              />
+              <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
+            </>
+          )}
         </Popup>
 
+        {/* Description Modal */}
         <Modal
           opened={modalOpen}
           onClose={() => setModalOpen(false)}

@@ -29,15 +29,6 @@ export default function OrganizationOwnerUserLogin() {
       // API call to login user
       const response = await apiPost("/api/login-user", values);
 
-      console.log("Login Response:", response);
-
-      console.log(
-        response,
-        response.user.role,
-        response.user,
-        response.token,
-        "this is the end how u breath and count"
-      );
       // Store token & user details in localStorage
       localStorage.setItem("token", response.token);
       localStorage.setItem("data", JSON.stringify(response.user));

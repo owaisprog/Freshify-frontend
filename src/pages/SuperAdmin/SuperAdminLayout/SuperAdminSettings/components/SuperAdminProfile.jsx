@@ -20,7 +20,6 @@ function SuperAdminProfile() {
     endpoint: `/api/get-organizationowner/${ownerId}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
-  console.log(data);
   // Initialize form with empty values
   const form = useForm({
     initialValues: {

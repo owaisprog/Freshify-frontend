@@ -34,7 +34,6 @@ export default function OrganizationOwnerRegister() {
 
   const handleSubmit = async (values) => {
     try {
-      console.log("Form submitted:", values);
       setLoading(true);
       //register
       const userData = await registerUser(values, "organization_owner");

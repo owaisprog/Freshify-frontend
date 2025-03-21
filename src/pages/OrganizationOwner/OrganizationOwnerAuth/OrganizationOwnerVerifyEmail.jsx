@@ -13,8 +13,6 @@ export default function CustomerVerifyEmail() {
   const { userEmail } = location.state || {};
   const [loading, setLoading] = useState(false);
 
-  console.log(location.state);
-
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
@@ -22,12 +20,10 @@ export default function CustomerVerifyEmail() {
         email: userEmail,
         otp: values.pin,
       });
-      console.log(data);
-      console.log(data);
+
       localStorage.setItem("token", data.token);
       localStorage.setItem("data", JSON.stringify(data.user));
       toast(data.message, { position: "top-center" });
-      console.log("Entered PIN:", values.pin);
       setLoading(false);
 
       navigate("/OrganizationOwnerDashboard");

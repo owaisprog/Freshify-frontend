@@ -49,7 +49,6 @@ const Popup = ({
 
 function Input({ label, description, placeholder, id, type = "text" }) {
   const form = usePopupForm();
-  console.log(form.values);
 
   // Handle checkbox separately
   if (type === "checkbox") {
@@ -165,7 +164,6 @@ function FileInputField({ label, placeholder, filetype, id }) {
 
 function MutltiSelector({ data, label, placeholder, id, error }) {
   const form = usePopupForm();
-  console.log(data, label, placeholder, id);
   return (
     <>
       <MultiSelect

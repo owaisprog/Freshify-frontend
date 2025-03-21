@@ -19,7 +19,6 @@ export default function OrganizationOwnerSentPassword() {
         newPassword: values.newPassword,
       });
 
-      console.log("Password set successfully:", response);
       toast(response.message, { position: "top-center" });
       setLoading(false);
       navigate("/OrganizationOwnerUserLogin"); // Redirect to login

@@ -18,7 +18,6 @@ export default function CustomerResendOTP() {
 
     try {
       const response = await apiPost("/api/resend-otp", values);
-      console.log(values, response);
       toast(response.message, { position: "top-center" });
       navigate("/CustomerVerifyEmail", {
         state: { userEmail: values.email },

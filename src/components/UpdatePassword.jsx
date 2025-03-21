@@ -24,7 +24,6 @@ function UpdatePassword() {
   });
 
   const handleSubmit = async (values) => {
-    console.log(values, values.password);
     try {
       updateProfile(
         {

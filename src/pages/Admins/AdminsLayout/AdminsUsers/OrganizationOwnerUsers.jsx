@@ -19,7 +19,6 @@ function AdminsUsers() {
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
-  console.log(allUsers, "✅");
   // ✅ Filter users based on active tab
 
   return (

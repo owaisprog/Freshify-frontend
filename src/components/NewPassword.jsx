@@ -9,7 +9,6 @@ export default function NewPassword() {
   const [loading, setLoading] = useState(false);
   const { resetToken } = useParams();
   const navigate = useNavigate();
-  console.log(resetToken);
 
   const handleSubmit = async (values) => {
     try {
@@ -18,7 +17,6 @@ export default function NewPassword() {
         newPassword: values.newPassword,
       });
 
-      console.log(values.newPassword, values, resetRequest);
       setLoading(false);
 
       if (resetRequest.role === "organization_owner") {

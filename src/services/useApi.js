@@ -6,7 +6,7 @@ export const apiGet = async (url) => {
 
     return response.data;
   } catch (error) {
-    console.error("GET Error:", url, error.response || error);
+    // console.error("GET Error:", url, error.response || error);
     throw error.response?.data?.message || error.message;
   }
 };
@@ -16,7 +16,7 @@ export const apiPost = async (url, data) => {
     const response = await axiosInstance.post(url, data);
     return response.data;
   } catch (error) {
-    console.error("POST Error:", url, error.response || error);
+    // console.error("POST Error:", url, error.response || error);
     throw error.response?.data?.message || error.message;
   }
 };

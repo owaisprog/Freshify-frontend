@@ -34,12 +34,10 @@ export default function CustomerRegister() {
 
   const handleSubmit = async (values) => {
     try {
-      console.log("Form submitted:", values);
       setLoading(true);
       //register
       const userData = await registerUser(values);
 
-      console.log(userData.newUser);
       toast(userData.message, { position: "top-center" });
       // Simulate API call
       setTimeout(() => {
@@ -49,7 +47,6 @@ export default function CustomerRegister() {
         });
       }, 1500);
     } catch (error) {
-      console.log("Signup Error", error);
       toast(error, { position: "top-center" });
       setLoading(false);
     }
