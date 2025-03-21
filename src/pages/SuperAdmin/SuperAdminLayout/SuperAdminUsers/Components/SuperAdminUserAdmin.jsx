@@ -147,7 +147,6 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
     }
   };
 
-  console.log(services.map((serve) => serve.name));
   // ✅ Transform Users into Table Format
   const data = userdata?.map((val) => ({
     Name: val.name,

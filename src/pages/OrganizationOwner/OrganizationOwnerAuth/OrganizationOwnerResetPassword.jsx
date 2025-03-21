@@ -13,7 +13,6 @@ export default function OrganizationOwnerResetPassword() {
     try {
       setLoading(true);
       const resetRequest = await apiPost("/api/forgot-password", values);
-      console.log(values, resetRequest);
       toast(resetRequest.message, { position: "top-center" });
       setLoading(false);
     } catch (error) {

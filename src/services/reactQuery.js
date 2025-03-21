@@ -4,17 +4,20 @@ import { apiDelete, apiGet, apiPost, apiUpdate } from "./useApi";
 export const useQueryHook = ({
   queryKey,
   endpoint,
+  enabled = true,
   staleTime = 0 * 60 * 1000,
 }) => {
-  const { data, error, isLoading, isSuccess } = useQuery({
+  const { data, error, refetch, isLoading, isSuccess } = useQuery({
     queryKey: [queryKey], // ✅ Dynamic key
     queryFn: async () => {
       const response = await apiGet(endpoint);
       return response;
     },
     staleTime, // ✅ Custom stale time (default 5 mins)
+    retry: false,
+    enabled,
   });
-  return { data, error, isLoading, isSuccess };
+  return { data, error, refetch, isLoading, isSuccess };
 };
 
 export const usePostMutation = (queryKey) => {

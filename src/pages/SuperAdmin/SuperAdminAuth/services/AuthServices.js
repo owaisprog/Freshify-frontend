@@ -4,7 +4,6 @@ import { apiGet, apiPost } from "../../../../services/useApi";
 export const loginUser = async (email, password, role) => {
   try {
     const data = await apiPost("/api/login", { email, password });
-    console.log(data.user.role);
     if (data && data.user.role !== role) {
       toast("Unauthorized: You do not have permission to access this page.", {
         position: "top-right",
@@ -34,7 +33,6 @@ export const registerUser = async (userData) => {
     //   );
     // }
     // ✅ Store the token after login
-    console.log(data.newUser);
     localStorage.setItem("token", JSON.stringify(data.newUser.token));
     localStorage.setItem("data", JSON.stringify(data.newUser));
     return data;

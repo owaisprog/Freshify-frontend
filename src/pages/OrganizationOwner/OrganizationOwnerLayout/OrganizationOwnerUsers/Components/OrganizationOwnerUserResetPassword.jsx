@@ -28,7 +28,6 @@ export default function OrganizationOwnerUserResetPassword() {
 
       // API call to request password reset
       const resetRequest = await apiPost("/api/forgot-password-user", values);
-      console.log("Reset Request Sent:", resetRequest);
 
       // Show success message
       toast(resetRequest.message, { position: "top-center" });

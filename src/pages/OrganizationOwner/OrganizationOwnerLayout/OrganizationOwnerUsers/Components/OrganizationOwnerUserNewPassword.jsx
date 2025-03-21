@@ -38,7 +38,6 @@ export default function OrganizationOwnerUserNewPassword() {
         }
       );
 
-      console.log("Reset Password Request:", resetRequest);
       toast(resetRequest.message, { position: "top-center" });
 
       // Show success message & redirect to login

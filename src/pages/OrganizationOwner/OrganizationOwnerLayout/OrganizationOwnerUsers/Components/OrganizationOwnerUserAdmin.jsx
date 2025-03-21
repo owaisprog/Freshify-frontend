@@ -1,4 +1,4 @@
-import { Button, Title, Modal, Text } from "@mantine/core";
+import { Button, Title, Modal, Text, Loader } from "@mantine/core";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
@@ -17,17 +17,26 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
   // Retrieve Owner ID from localStorage
   const { id } = JSON.parse(localStorage.getItem("data"));
 
-  // ✅ Fetch locations
-  const { data: ownerLocations = [], error: locationError } = useQueryHook({
+  // State to control when to fetch locations
+  const [fetchLocations, setFetchLocations] = useState(false);
+
+  // ✅ Fetch locations only when fetchLocations is true
+  const {
+    data: ownerLocations = [],
+    error: locationError,
+    isLoading: isLocationsLoading,
+    refetch: refetchLocations,
+  } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
     staleTime: 0 * 60 * 1000,
+    enabled: fetchLocations, // Only fetch when fetchLocations is true
   });
 
   // ✅ Fetch services
   const { data: services = [] } = useQueryHook({
     queryKey: "services",
-    endpoint: "/api/get-services-by-owner",
+    endpoint: `/api/get-services-by-owner/${id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
@@ -146,7 +155,6 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     }
   };
 
-  console.log(services.map((serve) => serve.name));
   // ✅ Transform Users into Table Format
   const data = userdata?.map((val) => ({
     Name: val.name,
@@ -198,6 +206,20 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     ),
   }));
 
+  // ✅ Handle Add Admin Button Click
+  const handleAddAdminClick = async () => {
+    setSelectedUser(null);
+    form.reset();
+    setToggleTitle("Add Admin");
+
+    // Trigger the locations query
+    setFetchLocations(true);
+    await refetchLocations();
+
+    // Open the popup after fetching locations
+    setOpened(true);
+  };
+
   return (
     <main>
       {/* Table Section */}
@@ -210,12 +232,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
             bg="black"
             radius="md"
             className="!text-[18px] !font-[400] !px-[40px] !py-[10px]"
-            onClick={() => {
-              setSelectedUser(null);
-              form.reset();
-              setOpened(true);
-              setToggleTitle("Add Admin");
-            }}
+            onClick={handleAddAdminClick} // Updated click handler
           >
             Add Admin
           </Button>
@@ -238,35 +255,45 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         handleSubmit={handleSubmit}
         title={toggleTitle}
       >
-        <Popup.TextInputField
-          label="Full Name"
-          placeholder="Enter User Name"
-          id="name"
-        />
-        <Popup.TextInputField
-          label="Email"
-          placeholder="Enter Email"
-          id="email"
-        />
-        <Popup.SingleSelector
-          data={ownerLocations.map((loc) => loc.name)}
-          label="Select the location"
-          placeholder="Select at least one location"
-          id="location"
-          error={locationError}
-        />
-        <Popup.MutltiSelector
-          data={services.map((serve) => serve.name)}
-          label="Select the Services"
-          placeholder="Select at least one Service"
-          id="services"
-        />
-
-        <Popup.SubmitButton
-          loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
-        >
-          {selectedUser ? "Update User" : "Add User"}
-        </Popup.SubmitButton>
+        {/* Show message if no locations exist */}
+        {isLocationsLoading ? (
+          <Loader className="mx-auto" color="blue" type="bars" />
+        ) : !selectedUser && ownerLocations.length === 0 ? (
+          <Text className="!text-[16px] !font-[400] ">
+            Please create a location first.
+          </Text>
+        ) : (
+          <>
+            <Popup.TextInputField
+              label="Full Name"
+              placeholder="Enter User Name"
+              id="name"
+            />
+            <Popup.TextInputField
+              label="Email"
+              placeholder="Enter Email"
+              id="email"
+            />
+            <Popup.SingleSelector
+              data={ownerLocations.map((loc) => loc.name)}
+              label="Select the location"
+              placeholder="Select at least one location"
+              id="location"
+              error={locationError}
+            />
+            <Popup.MutltiSelector
+              data={services.map((serve) => serve.name)}
+              label="Select the Services"
+              placeholder="Select at least one Service"
+              id="services"
+            />
+            <Popup.SubmitButton
+              loading={selectedUser ? isLoadingUpdate : isLoadingCreate}
+            >
+              {selectedUser ? "Update User" : "Add User"}
+            </Popup.SubmitButton>
+          </>
+        )}
       </Popup>
 
       {/* Services Modal */}

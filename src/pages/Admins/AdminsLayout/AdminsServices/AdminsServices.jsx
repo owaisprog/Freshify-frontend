@@ -113,7 +113,6 @@ function AdminsServices() {
 
   const handleSubmit = (values) => {
     setLoading(true);
-    console.log(values);
     try {
       if (selectedService) {
         updateService(
@@ -164,7 +163,6 @@ function AdminsServices() {
       setLoading(false);
     }
   };
-  console.log(services);
 
   const data = services?.map((val) => ({
     Services: val.name,

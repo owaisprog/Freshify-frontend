@@ -18,14 +18,11 @@ export default function CustomerLogin() {
         values.password,
         "customer"
       );
-      console.log(userData, values);
       toast(userData.message, { position: "top-right" });
       navigate("/CustomerDashboard");
     } catch (error) {
       toast(error, { position: "top-right" });
       setLoading(false);
-
-      console.log("ORGANIZATION LOGIN ERROR", error);
     }
   };
 

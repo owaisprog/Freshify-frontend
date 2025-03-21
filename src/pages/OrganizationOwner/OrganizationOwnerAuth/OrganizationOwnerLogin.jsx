@@ -18,14 +18,11 @@ export default function OrganizationOwnerLogin() {
         values.password,
         "organization_owner"
       );
-      console.log(userData, values);
       toast(userData.message, { position: "top-right" });
       navigate("/OrganizationOwnerDashboard");
     } catch (error) {
       toast(error, { position: "top-right" });
       setLoading(false);
-
-      console.log("ORGANIZATION LOGIN ERROR", error);
     }
   };
 
