@@ -1,6 +1,6 @@
 import { Button } from "@mantine/core";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDeleteMutation } from "../../../../../services/reactQuery";
 
 function SuperAdminDelete() {
@@ -23,7 +23,7 @@ function SuperAdminDelete() {
             toast.success("SuperAdmin deleted successfully!");
 
             // Redirect to home page
-            navigate("/");
+            navigate("/SuperAdminOrganization");
           },
           onError: (error) => {
             toast.error("Failed to delete SuperAdmin.");

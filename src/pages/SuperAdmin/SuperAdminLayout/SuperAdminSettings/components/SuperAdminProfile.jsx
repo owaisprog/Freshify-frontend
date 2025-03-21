@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { Avatar, Button, TextInput, Loader } from "@mantine/core";
 import { FaPencilAlt } from "react-icons/fa";
 import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 function SuperAdminProfile() {
   const { ownerId } = useParams();
@@ -46,6 +47,7 @@ function SuperAdminProfile() {
   const { mutate: updateProfile, isPending } = useUpdateMutation("profile");
 
   // Handle form submission
+  const query = useQueryClient();
   const handleSubmit = async (values) => {
     try {
       updateProfile(
@@ -57,6 +59,7 @@ function SuperAdminProfile() {
           onSuccess: () => {
             toast.success("Profile updated successfully!");
             // Update localStorage with new data
+            query.invalidateQueries("profile");
           },
           onError: (error) => {
             toast.error("Failed to update profile.");
