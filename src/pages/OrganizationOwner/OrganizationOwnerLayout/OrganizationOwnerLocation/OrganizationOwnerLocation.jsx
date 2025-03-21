@@ -169,7 +169,7 @@ export default function OrganizationOwnerLocations() {
       >
         Locations
       </Title>
-      <section className="p-6 max-w-[1440px] mx-auto w-full flex flex-col h-full gap-10">
+      <section className="p-6  max-w-[1440px] w-full mx-auto flex flex-col h-full gap-10">
         <section className="flex justify-between items-center">
           <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
             All Locations
@@ -189,10 +189,10 @@ export default function OrganizationOwnerLocations() {
           </Button>
         </section>
 
-        <Table.ScrollContainer minWidth={900}>
+        <Table.ScrollContainer minWidth={950}>
           <Box
-            className="flex flex-col bg-[#FFFFFF] rounded-[25px]
-           gap-4 p-2 justify-center items-center"
+            className="flex flex-col 
+              gap-4 p-2 justify-center items-center"
           >
             {isLoading ? (
               <Loader className="mx-auto" color="blue" type="bars" />
@@ -204,11 +204,11 @@ export default function OrganizationOwnerLocations() {
               locations?.map((val, index) => (
                 <section
                   key={val._id}
-                  className="min-w-full grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder h-[120px]   bg-[#FFFFFF] "
+                  className="min-w-full grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] "
                 >
-                  <div className=" col-span-2   flex items-center gap-3">
+                  <div className=" col-span-2  flex gap-3 ">
                     {index % 3 === 0 ? (
-                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7EDFF] rounded-[20px]">
+                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7EDFF] rounded-[20px]">
                         <img
                           className="w-[40.83px] h-[58.33px]"
                           src="/usaLocationIcon.png"
@@ -224,7 +224,7 @@ export default function OrganizationOwnerLocations() {
                         />
                       </div>
                     ) : (
-                      <div className="h-[100px] flex items-center justify-center w-[100px] bg-[#E7FFEB] rounded-[20px]">
+                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7FFEB] rounded-[20px]">
                         <img
                           className="w-[40.83px] h-[58.33px]"
                           src="/australiaLocationIcon.png"
@@ -232,7 +232,7 @@ export default function OrganizationOwnerLocations() {
                         />
                       </div>
                     )}
-                    <div>
+                    <div className=" flex flex-col justify-center">
                       <Text
                         tt={"capitalize"}
                         className="!text-[22px] !font-[700]"
@@ -241,7 +241,7 @@ export default function OrganizationOwnerLocations() {
                       </Text>
                       <Text
                         c={"#718EBF"}
-                        className="cursor-pointer !text-[18px] !font-[400]"
+                        className="!cursor-pointer !underline !text-[18px] !font-[400]"
                         onClick={() => {
                           setModalTitle("Address");
                           setModalContent(val.address);
