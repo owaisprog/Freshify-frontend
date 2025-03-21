@@ -17,7 +17,7 @@ export default function ProfessionalDashboard() {
         px={"xl"}
         py={"sm"}
         c={"black"}
-        className="!grid !min-h-[80vh] items-center place-self-center"
+        className="!grid  items-center place-self-center"
       >
         Welcome {data.name}
       </Title>
