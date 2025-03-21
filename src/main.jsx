@@ -47,7 +47,6 @@ import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayou
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SuperAdminLogin from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminLogin.jsx";
 
-import SuperAdminOrganization from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminOrganization/SuperAdminDashboard.jsx";
 import SuperAdminLayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLayout.jsx";
 import CustomerLogin from "./pages/Customer/CustomerAuth/CustomerLogin.jsx";
 import CustomerRegister from "./pages/Customer/CustomerAuth/CustomerRegister.jsx";
@@ -92,6 +91,7 @@ import SuperAdminServices from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSe
 import SuperAdminPayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminPayout/SuperAdminPayout.jsx";
 import SuperAdminLocations from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLocation/SuperAdminLocation.jsx";
 import SuperAdminUsers from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminUsers/SuperAdminUsers.jsx";
+import SuperAdminOrganization from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminOrganization/SuperAdminOrganization.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
