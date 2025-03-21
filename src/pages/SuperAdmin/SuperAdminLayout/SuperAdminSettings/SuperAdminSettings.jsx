@@ -9,7 +9,7 @@ export default function SuperAdminSettings() {
   const { ownerId } = useParams();
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
         px={"lg"}
         py={"sm"}
@@ -18,7 +18,7 @@ export default function SuperAdminSettings() {
       >
         Settings
       </Title>
-      <section className="lg:p-6 flex   flex-col h-full gap-8">
+      <section className="lg:p-6 flex  mx-auto max-w-[1440px] w-full   flex-col h-full gap-8">
         <Paper
           p={"xs"}
           radius="25px"

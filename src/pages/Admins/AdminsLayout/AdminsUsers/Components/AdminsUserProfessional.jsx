@@ -19,7 +19,7 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
 
   const { data: services = [] } = useQueryHook({
     queryKey: "services",
-    endpoint: `/api/get-service/${location._id}`,
+    endpoint: `/api/get-service/${location?._id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
   // const
@@ -68,7 +68,7 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
     initialValues: {
       name: "",
       email: "",
-      location: location._id,
+      location: location?._id,
       role: "barber",
       services: [],
     },

@@ -165,7 +165,7 @@ export default function OrganizationOwnerLocations() {
       >
         Locations
       </Title>
-      <section className="p-6 max-w-[1720px] flex flex-col h-full gap-10">
+      <section className="p-6 max-w-[1440px] mx-auto w-full flex flex-col h-full gap-10">
         <section className="flex justify-between items-center">
           <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
             All Locations
@@ -187,7 +187,7 @@ export default function OrganizationOwnerLocations() {
 
         <Table.ScrollContainer minWidth={900}>
           <Box
-            className="flex flex-col border-r-green-500
+            className="flex flex-col bg-[#FFFFFF] rounded-[25px]
            gap-4 p-2 justify-center items-center"
           >
             {isLoading ? (

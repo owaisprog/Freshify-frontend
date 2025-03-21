@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 // react icons import
 
 import { GoOrganization } from "react-icons/go";
+import { logoutUser } from "../../SuperAdminAuth/services/AuthServices";
 
 const data = [
   {
@@ -49,6 +50,15 @@ export default function SuperAdminSidebar() {
 
         {links}
       </div>
+
+      <button
+        className="!text-[18px] !px-[40px] bg-black !font-[400] !py-[10px] text-white rounded-tr-md cursor-pointer "
+        onClick={() => {
+          logoutUser();
+        }}
+      >
+        Logout
+      </button>
     </nav>
   );
 }

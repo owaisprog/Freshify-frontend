@@ -28,7 +28,7 @@ function AdminsServices() {
     error: servicesError,
   } = useQueryHook({
     queryKey: "services",
-    endpoint: `/api/get-service/${location._id}`,
+    endpoint: `/api/get-service/${location?._id}`,
     staleTime: 0 * 60 * 1000, // 15 minutes cache
   });
 
@@ -84,7 +84,7 @@ function AdminsServices() {
     mode: "uncontrolled",
     initialValues: {
       name: "",
-      locations: [location._id],
+      locations: [location?._id],
       description: "",
       category: "",
       duration: "",
@@ -211,7 +211,7 @@ function AdminsServices() {
               category: val.category,
               duration: val.duration,
               price: val.price,
-              locations: val.locations.map((loc) => loc._id),
+              locations: val.locations.map((loc) => loc?._id),
               description: val.description,
             });
             setOpened(true);
@@ -240,7 +240,7 @@ function AdminsServices() {
         Services
       </Title>
 
-      <section className="max-w-[1720px] p-6 flex flex-col h-full  gap-8">
+      <section className="max-w-[1440px] w-full mx-auto p-6 flex flex-col h-full  gap-8">
         <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
           <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
             <div className="flex items-center gap-2">

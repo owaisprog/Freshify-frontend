@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 
 // Reuse your existing icons and data
 import { MdDashboard, MdOutlineSettings } from "react-icons/md";
+import { logoutUser } from "../../SuperAdminAuth/services/AuthServices";
 // Reuse your existing data array
 const data = [
   {
@@ -104,28 +105,19 @@ export default function SuperAdminMobileNav() {
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
-        <div className="flex flex-col h-full    ">
+        <div className="flex flex-col h-full justify-between    ">
           <div className="flex-1 overflow-y-auto">
             <div className="mt-2">{links}</div>
             {/* Settings Link */}
-            {/* <div className="pt-4  ">
-              <Link
-                to="settings"
-                className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
-                  "settings" === active
-                    ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
-                    : ""
-                }`}
-                onClick={() => {
-                  setActive("settings");
-                  setIsMenuOpen(false);
-                }}
-              >
-                <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
-                <span>Settings</span>
-              </Link>
-            </div> */}
           </div>
+          <button
+            className="!text-[18px] !px-[40px] bg-black !font-[400] !py-[10px] text-white rounded-tr-md cursor-pointer "
+            onClick={() => {
+              logoutUser();
+            }}
+          >
+            Logout
+          </button>
         </div>
       </Drawer>
     </div>

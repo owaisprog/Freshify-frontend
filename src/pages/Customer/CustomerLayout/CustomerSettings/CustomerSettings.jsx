@@ -17,7 +17,7 @@ export default function CustomerSettings() {
       >
         Settings
       </Title>
-      <section className="lg:p-6 flex   flex-col h-full gap-8">
+      <section className="lg:p-6 flex max-w-[1440px] w-full mx-auto  flex-col h-full gap-8">
         <Paper
           p={"xs"}
           radius="25px"

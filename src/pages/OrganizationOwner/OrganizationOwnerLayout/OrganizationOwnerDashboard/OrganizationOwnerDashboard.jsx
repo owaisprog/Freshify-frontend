@@ -4,7 +4,7 @@ import SalesChart from "../../../../components/SalesChart";
 
 export default function OrganizationOwnerDashboard() {
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
+    <main className=" pt-20 lg:pt-0 b  min-h-screen  ">
       <Title
         c={"black"}
         className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
@@ -13,7 +13,7 @@ export default function OrganizationOwnerDashboard() {
       </Title>
 
       {/* First Section  */}
-      <section className=" max-w-[1720px]  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
+      <section className="  flex flex-col justify-center w-full lg:flex-row gap-8 lg:gap-6  p-6">
         {/* Sales and Top performer section  */}
         <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
           {/* Sales Section  */}
@@ -90,7 +90,7 @@ export default function OrganizationOwnerDashboard() {
 
       {/* Second Section  */}
 
-      <section className="  max-w-[1720px]  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
+      <section className="  flex flex-col w-full justify-center lg:flex-row gap-8 lg:gap-6  p-6">
         {/* Weekly Sales Section   */}
         <section className="  lg:w-full  flex flex-col gap-[10px] lg:max-w-[749px]">
           {/* Sales Section  */}
@@ -178,7 +178,7 @@ export default function OrganizationOwnerDashboard() {
       </section>
 
       {/* Third Section  */}
-      <section className="   max-w-[1720px]  flex flex-col lg:flex-row gap-8 lg:gap-6  p-6">
+      <section className="  flex flex-col w-full justify-center lg:flex-row gap-8 lg:gap-6  p-6">
         {/* Sales and Top performer section  */}
         <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
           {/* Sales Section  */}

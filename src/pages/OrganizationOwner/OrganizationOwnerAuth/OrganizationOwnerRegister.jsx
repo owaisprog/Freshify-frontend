@@ -27,8 +27,14 @@ export default function OrganizationOwnerRegister() {
           : "Full Name must be at least 3 characters",
       phone: (value) =>
         /^\+?\d{10,15}$/.test(value) ? null : "Invalid phone number",
-      password: (value) =>
-        value.length >= 6 ? null : "Password must have at least 6 characters",
+      password: (value) => {
+        if (
+          !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(value)
+        ) {
+          return "Password must be at least 8 characters and include:\n- One uppercase letter\n- One lowercase letter\n- One number\n- One special character (!@#$%^&*)";
+        }
+        return null;
+      },
     },
   });
 

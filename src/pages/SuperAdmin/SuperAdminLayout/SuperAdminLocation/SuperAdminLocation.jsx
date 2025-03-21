@@ -168,7 +168,7 @@ export default function SuperAdminLocations() {
       >
         Locations
       </Title>
-      <section className="p-6 max-w-[1720px] flex flex-col h-full gap-10">
+      <section className="p-6  max-w-[1440px] w-full mx-auto flex flex-col h-full gap-10">
         <section className="flex justify-between items-center">
           <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
             All Locations

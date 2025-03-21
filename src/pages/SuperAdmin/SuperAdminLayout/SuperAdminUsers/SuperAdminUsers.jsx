@@ -44,7 +44,7 @@ function SuperAdminUsers() {
       >
         Users
       </Title>
-      <section className="max-w-[1720px] p-6 flex flex-col h-full  gap-8">
+      <section className="max-w-[1440px] w-full mx-auto p-6 flex flex-col h-full  gap-8">
         {/* First Section  */}
         <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
           {/*Most Sales Professional Section */}

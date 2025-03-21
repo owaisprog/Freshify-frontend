@@ -31,10 +31,25 @@ export default function OrganizationOwnerNewPassword({ path }) {
     mode: "uncontrolled",
     initialValues: { newPassword: "", confirmPassword: "" },
     validate: {
-      newPassword: (value) =>
-        value.length >= 6 ? null : "Password must have at least 6 characters",
-      confirmPassword: (value, values) =>
-        value === values.newPassword ? null : "Passwords do not match",
+      newPassword: (value) => {
+        if (
+          !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(value)
+        ) {
+          return "Password must contain:\n- 8+ characters\n- 1 uppercase letter\n- 1 lowercase letter\n- 1 number\n- 1 special character (!@#$%^&*)";
+        }
+        return null;
+      },
+      confirmPassword: (value, values) => {
+        if (!value) return "Please confirm your password";
+        if (
+          !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(
+            values.newPassword
+          )
+        ) {
+          return "Fix new password first";
+        }
+        return value === values.newPassword ? null : "Passwords do not match";
+      },
     },
   });
 

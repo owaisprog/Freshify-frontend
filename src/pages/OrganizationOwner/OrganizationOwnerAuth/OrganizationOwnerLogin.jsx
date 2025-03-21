@@ -33,9 +33,9 @@ export default function OrganizationOwnerLogin() {
     mode: "uncontrolled",
     initialValues: { email: "", password: "" },
 
-    // functions will be used to validate values at corresponding key
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      password: (value) => (value.length <= 0 ? "Enter valid passwrod" : null),
     },
   });
   return (

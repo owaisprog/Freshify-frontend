@@ -15,7 +15,7 @@ export default function AdminSettings() {
       >
         Settings
       </Title>
-      <section className=" max-w-[1720px] lg:p-6 flex flex-col h-full gap-8">
+      <section className=" max-w-[1440px] w-full mx-auto lg:p-6 flex flex-col h-full gap-8">
         <Paper
           p="xl"
           radius="25px"

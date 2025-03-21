@@ -102,7 +102,7 @@ export default function SuperAdminOrganization() {
         Organizations
       </Title>
 
-      <section className="max-w-[1720px] p-6 flex flex-col h-full gap-8">
+      <section className="max-w-[1440px] w-full mx-auto  p-6 flex flex-col h-full gap-8">
         {/* Most Organization Section */}
         <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6">
           {/* Most Sales Professional Section */}
@@ -150,43 +150,82 @@ export default function SuperAdminOrganization() {
         {/* Modal for Organization Details */}
         <Modal
           opened={modalOpened}
-          onClose={() => setModalOpened(false)} // Close the modal
+          onClose={() => setModalOpened(false)}
           title="Organization Owner Details"
           centered
+          size="md"
+          overlayProps={{
+            backgroundOpacity: 0.55,
+            blur: 3,
+          }}
+          styles={{
+            title: {
+              fontSize: "1.5rem",
+              fontWeight: 600,
+              color: "#2F3542",
+              textAlign: "center",
+              width: "100%",
+            },
+            body: {
+              padding: "2rem",
+            },
+          }}
         >
           {selectedOrganization && (
-            <div className="flex flex-col  items-center gap-4">
-              {/* Organization Owner Image */}
-              <Avatar
-                src={selectedOrganization.image}
-                alt="Organization Owner"
-                size={120}
-                radius="50%"
-              />
+            <div className="flex flex-col items-center gap-6">
+              {/* Avatar with decorative border */}
+              <div className="relative">
+                <Avatar
+                  src={selectedOrganization.image}
+                  alt="Organization Owner"
+                  size={120}
+                  radius="50%"
+                  className="border-4 border-white shadow-lg"
+                />
+                <div className="absolute inset-0 rounded-full border-2 border-[#747d8c33] pointer-events-none" />
+              </div>
 
-              {/* Organization Owner Name */}
-              <Group>
-                <FaUser size={18} color="#333B69" />
-                <Text fz="lg" fw={500}>
-                  {selectedOrganization.name}
-                </Text>
-              </Group>
+              {/* Details container */}
+              <div className="w-full space-y-4">
+                {/* Name Section */}
+                <div className="bg-[#f8f9fa] p-4 rounded-lg transition-all hover:bg-[#e9ecef]">
+                  <Group spacing="sm">
+                    <FaUser size={20} className="text-[#2F3542] min-w-[24px]" />
+                    <Text fz="xl" fw={600} className="text-[#2F3542]">
+                      {selectedOrganization.name}
+                    </Text>
+                  </Group>
+                </div>
 
-              {/* Organization Owner Email */}
-              <Group>
-                <FaEnvelope size={18} color="#333B69" />
-                <Text fz="md" c="dimmed">
-                  {selectedOrganization.email}
-                </Text>
-              </Group>
+                {/* Email Section */}
+                <div className="bg-[#f8f9fa] p-4 rounded-lg transition-all hover:bg-[#e9ecef]">
+                  <Group spacing="sm">
+                    <FaEnvelope
+                      size={20}
+                      className="text-[#2F3542] min-w-[24px]"
+                    />
+                    <Text fz="md" className="text-[#57606f]">
+                      {selectedOrganization.email}
+                    </Text>
+                  </Group>
+                </div>
 
-              {/* Organization Owner Phone */}
-              <Group>
-                <FaPhone size={18} color="#333B69" />
-                <Text fz="md" c="dimmed">
-                  {selectedOrganization.phone}
-                </Text>
-              </Group>
+                {/* Phone Section */}
+                <div className="bg-[#f8f9fa] p-4 rounded-lg transition-all hover:bg-[#e9ecef]">
+                  <Group spacing="sm">
+                    <FaPhone
+                      size={20}
+                      className="text-[#2F3542] min-w-[24px]"
+                    />
+                    <Text fz="md" className="text-[#57606f]">
+                      {selectedOrganization.phone}
+                    </Text>
+                  </Group>
+                </div>
+              </div>
+
+              {/* Decorative Border Top */}
+              <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#74b9ff] to-[#a4b0fa]" />
             </div>
           )}
         </Modal>
