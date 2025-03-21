@@ -149,6 +149,7 @@ export default function SuperAdminOrganization() {
 
         {/* Modal for Organization Details */}
         <Modal
+          closeOnClickOutside={false}
           opened={modalOpened}
           onClose={() => setModalOpened(false)}
           title="Organization Owner Details"

@@ -404,6 +404,7 @@ export default function OrganizationOwnerLocations() {
 
         {/* Modal for Address & Description */}
         <Modal
+          closeOnClickOutside={false}
           opened={modalOpen}
           onClose={() => setModalOpen(false)}
           title={modalTitle}

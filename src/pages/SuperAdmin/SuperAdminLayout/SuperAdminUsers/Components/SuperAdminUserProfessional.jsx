@@ -252,6 +252,7 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
 
       {/* Services Modal */}
       <Modal
+        closeOnClickOutside={false}
         opened={servicesModalOpen}
         onClose={() => setServicesModalOpen(false)}
         title="Services"

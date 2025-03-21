@@ -401,6 +401,7 @@ export default function SuperAdminLocations() {
 
         {/* Modal for Address & Description */}
         <Modal
+          closeOnClickOutside={false}
           opened={modalOpen}
           onClose={() => setModalOpen(false)}
           title={modalTitle}

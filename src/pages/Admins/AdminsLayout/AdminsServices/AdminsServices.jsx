@@ -338,6 +338,7 @@ function AdminsServices() {
         </Popup>
 
         <Modal
+          closeOnClickOutside={false}
           opened={modalOpen}
           onClose={() => setModalOpen(false)}
           title="Description"

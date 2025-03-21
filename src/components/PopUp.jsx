@@ -31,6 +31,7 @@ const Popup = ({
   return (
     <PopupContext.Provider value={form}>
       <Modal
+        closeOnClickOutside={false}
         opened={opened}
         onClose={() => setOpened(false)}
         title={title}

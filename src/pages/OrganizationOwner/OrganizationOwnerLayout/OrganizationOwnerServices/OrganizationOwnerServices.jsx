@@ -385,6 +385,7 @@ function OrganizationOwnerServices() {
 
         {/* Description Modal */}
         <Modal
+          closeOnClickOutside={false}
           opened={modalOpen}
           onClose={() => setModalOpen(false)}
           title="Description"
