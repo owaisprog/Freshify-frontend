@@ -11,7 +11,7 @@ export default function OrganizationOwnerSettings() {
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
         c={"black"}
-        className="lg:!px-6  !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
+        className="lg:!px-6 !hidden lg:!block !px-2 lg:!bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
       >
         Settings
       </Title>
@@ -47,7 +47,7 @@ export default function OrganizationOwnerSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
+          <section className="flex items-center  shadow-sm rounded-[10px] mt-2 py-4 min-w-[#333B69] bg-[#FFFFFF] px-2 justify-between lg:hidden ">
             <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>

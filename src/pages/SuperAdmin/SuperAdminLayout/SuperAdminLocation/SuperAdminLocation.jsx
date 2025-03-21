@@ -238,7 +238,7 @@ export default function SuperAdminLocations() {
                       </Text>
                       <Text
                         c={"#718EBF"}
-                        className="cursor-pointer !text-[18px] !font-[400]"
+                        className="!cursor-pointer !underline !text-[18px] !font-[400]"
                         onClick={() => {
                           setModalTitle("Address");
                           setModalContent(val.address);

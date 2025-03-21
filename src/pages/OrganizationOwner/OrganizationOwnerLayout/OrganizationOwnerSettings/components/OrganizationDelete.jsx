@@ -37,7 +37,7 @@ function OrganizationDelete() {
   };
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between max-w-[90%] mx-auto">
       <span>Delete Account</span>
       <Button
         color="black"
