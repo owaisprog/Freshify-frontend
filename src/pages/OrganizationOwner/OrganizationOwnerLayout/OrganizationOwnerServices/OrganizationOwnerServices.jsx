@@ -261,6 +261,7 @@ function OrganizationOwnerServices() {
 
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen">
+      {/* sercices title added  */}
       <Title
         py={"sm"}
         c={"black"}
