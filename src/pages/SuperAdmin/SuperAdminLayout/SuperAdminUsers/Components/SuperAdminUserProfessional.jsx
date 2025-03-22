@@ -221,11 +221,15 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
             bg="black"
             radius="md"
             className="!text-[18px]  !font-[400] lg:!px-[40px] lg:!py-[10px]"
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             onClick={() => {
+              setLoading(true);
               setToggleTitle("Add Professional");
               setSelectedUser(null);
               form.reset();
               setOpened(true);
+              setLoading(false);
             }}
           >
             Add Professional

@@ -46,7 +46,7 @@ export default function SuperAdminLocations() {
         //console.log("link copied");
       })
       .catch((err) => {
-        //console.error("Failed to copy: ", err);
+        console.error("Failed to copy: ", err);
       });
   };
 
@@ -59,7 +59,7 @@ export default function SuperAdminLocations() {
             position: "top-center",
           });
         },
-        onError: (error) => {
+        onError: () => {
           //console.error("Error deleting location:", error);
           toast.error("Error deleting location", { position: "top-center" });
         },
@@ -151,8 +151,7 @@ export default function SuperAdminLocations() {
         setLoading(false);
         setOpened(false);
       }, 1000);
-    } catch (error) {
-      //console.error("Error Creating/Updating location", error);
+    } catch {
       setLoading(false);
     }
   };
@@ -173,13 +172,17 @@ export default function SuperAdminLocations() {
           </Text>
           <Button
             onClick={() => {
+              setLoading(true);
               setToggleTitle("Add Location");
               setSelectedLocation(null);
               form.reset();
               setOpened(true);
+              setLoading(false);
             }}
             bg="black"
             radius="md"
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             className="!text-[18px] !px-[40px] !font-[400]  !py-[10px]"
           >
             Add Location

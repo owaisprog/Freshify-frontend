@@ -208,6 +208,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
 
   // ✅ Handle Add Admin Button Click
   const handleAddAdminClick = async () => {
+    setLoading(true);
     setSelectedUser(null);
     form.reset();
     setToggleTitle("Add Admin");
@@ -218,6 +219,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
 
     // Open the popup after fetching locations
     setOpened(true);
+    setLoading(false);
   };
 
   return (
@@ -231,6 +233,8 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
           <Button
             bg="black"
             radius="md"
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             className="!text-[18px] !font-[400] !px-[40px] !py-[10px]"
             onClick={handleAddAdminClick} // Updated click handler
           >

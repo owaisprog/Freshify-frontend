@@ -182,6 +182,7 @@ function OrganizationOwnerServices() {
 
   // Handle "Add Service" button click
   const handleAddServiceClick = async () => {
+    setLoading(true);
     setSelectedService(null);
     form.reset();
     setToggleTitle("Add Service");
@@ -192,6 +193,7 @@ function OrganizationOwnerServices() {
 
     // Open the popup
     setOpened(true);
+    setLoading(false);
   };
 
   // Transform services data for the table
@@ -310,6 +312,8 @@ function OrganizationOwnerServices() {
             bg="black"
             radius="md"
             fw={"normal"}
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
             onClick={handleAddServiceClick}
           >

@@ -215,11 +215,15 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
             bg="black"
             radius="md"
             className="!text-[18px] !font-[400] !px-[40px] !py-[10px]"
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             onClick={() => {
+              setLoading(true);
               setSelectedUser(null);
               form.reset();
               setOpened(true);
               setToggleTitle("Add Admin");
+              setLoading(false);
             }}
           >
             Add Admin
