@@ -12,7 +12,7 @@ body {
 }
 
 .specialBorder {
-  box-shadow: 0 0 0 0.5px #718EBF;
+  border: 1px solid #718EBF !important;
 }
 
 .specialBorderBottom {
