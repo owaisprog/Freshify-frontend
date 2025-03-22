@@ -23,7 +23,7 @@ export default function OrganizationOwnerSentPassword() {
       setLoading(false);
       navigate("/OrganizationOwnerUserLogin"); // Redirect to login
     } catch (error) {
-      console.error("Error setting password:", error);
+      //console.error("Error setting password:", error);
       toast(error, { position: "top-center" });
       setLoading(false);
     }

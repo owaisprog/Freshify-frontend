@@ -31,7 +31,7 @@ export default function NewPassword() {
       }
       // role: "customer"
     } catch (error) {
-      console.log(`message:${error.message}`);
+      //console.log(`message:${error.message}`);
     }
   };
   const form = useForm({

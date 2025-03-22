@@ -29,7 +29,7 @@ function OrganizationDelete() {
           },
           onError: (error) => {
             toast.error("Failed to delete organization.");
-            console.error("Error deleting organization:", error);
+            //console.error("Error deleting organization:", error);
           },
         }
       );

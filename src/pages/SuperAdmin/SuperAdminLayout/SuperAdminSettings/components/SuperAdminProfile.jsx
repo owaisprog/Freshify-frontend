@@ -62,13 +62,13 @@ function SuperAdminProfile() {
           },
           onError: (error) => {
             toast.error("Failed to update profile.");
-            console.error("Error updating profile:", error);
+            //console.error("Error updating profile:", error);
           },
         }
       );
     } catch (error) {
       toast.error("Failed to update profile.");
-      console.error("Error updating profile:", error);
+      //console.error("Error updating profile:", error);
     }
   };
 
@@ -94,7 +94,7 @@ function SuperAdminProfile() {
       toast.success("Image uploaded successfully!");
     } catch (error) {
       toast.error("Failed to upload image.");
-      console.error("Error uploading file to Cloudinary:", error);
+      //console.error("Error uploading file to Cloudinary:", error);
     }
   };
 

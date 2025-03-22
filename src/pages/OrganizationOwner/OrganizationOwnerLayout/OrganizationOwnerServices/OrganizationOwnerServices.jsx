@@ -88,7 +88,7 @@ function OrganizationOwnerServices() {
           queryClient.setQueryData(["services"], updatedServices);
         },
         onError: (error) => {
-          console.error("Error deleting service:", error);
+          //console.error("Error deleting service:", error);
           toast("Error deleting service", { position: "top-right" });
         },
       }
@@ -175,7 +175,7 @@ function OrganizationOwnerServices() {
       }, 2000);
     } catch (error) {
       toast("Error Creating/Updating service", { position: "top-right" });
-      console.error("Error Creating/Updating service", error);
+      //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
   };

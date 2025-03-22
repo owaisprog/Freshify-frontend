@@ -23,7 +23,7 @@ export default function CustomerResendOTP() {
         state: { userEmail: values.email },
       });
     } catch (error) {
-      console.error("Error resending OTP:", error);
+      //console.error("Error resending OTP:", error);
       toast(error, { position: "top-center" });
     } finally {
       setLoading(false);

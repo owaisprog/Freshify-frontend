@@ -20,7 +20,7 @@ function AdminsServices() {
     localStorage.getItem("data")
   );
 
-  console.log(location, email, id);
+  //console.log(location, email, id);
 
   const {
     data: services = [],
@@ -67,13 +67,13 @@ function AdminsServices() {
             (service) => service._id !== id
           );
           queryClient.setQueryData(["services"], updatedServices);
-          // console.log("Service deleted successfully!");
+          // //console.log("Service deleted successfully!");
           toast.success("Service Delete Successfully", {
             position: "top-center",
           });
         },
         onError: (error) => {
-          console.error("Error deleting service:", error);
+          //console.error("Error deleting service:", error);
           toast("Error deleting service", { position: "top-center" });
         },
       }
@@ -159,7 +159,7 @@ function AdminsServices() {
       }, 2000);
     } catch (error) {
       toast("Error Creating/Updating service", { position: "top-right" });
-      console.error("Error Creating/Updating service", error);
+      //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
   };

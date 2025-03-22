@@ -18,7 +18,7 @@ export const loginUser = async (email, password, role) => {
 
     return data;
   } catch (error) {
-    console.error("Login failed:", error);
+    //console.error("Login failed:", error);
     throw error;
   }
 };
@@ -26,7 +26,7 @@ export const loginUser = async (email, password, role) => {
 export const registerUser = async (userData) => {
   try {
     const data = await apiPost("/api/register", userData);
-    // console.log(data);
+    // //console.log(data);
     // if (data && data.user.role !== role) {
     //   throw new Error(
     //     "Unauthorized: You do not have permission to access this page."
@@ -37,7 +37,7 @@ export const registerUser = async (userData) => {
     localStorage.setItem("data", JSON.stringify(data.newUser));
     return data;
   } catch (error) {
-    console.error("Signup error:", error);
+    //console.error("Signup error:", error);
     throw error;
   }
 };
@@ -46,7 +46,7 @@ export const fetchUserData = async () => {
   try {
     return await apiGet("/api/me");
   } catch (error) {
-    console.error("Error fetching user data:", error);
+    //console.error("Error fetching user data:", error);
     throw error;
   }
 };
