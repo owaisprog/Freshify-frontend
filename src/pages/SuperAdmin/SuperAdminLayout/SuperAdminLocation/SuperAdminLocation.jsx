@@ -188,7 +188,7 @@ export default function SuperAdminLocations() {
 
         <Table.ScrollContainer minWidth={950}>
           <Box
-            className="flex flex-col border-r-green-500
+            className="flex flex-col 
            gap-4 p-2 justify-center items-center"
           >
             {isLoading ? (
