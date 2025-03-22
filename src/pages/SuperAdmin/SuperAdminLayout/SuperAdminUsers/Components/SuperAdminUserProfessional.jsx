@@ -112,8 +112,13 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
       } else {
         // ✅ Create new user
         createUser({
-          endpoint: "/api/invite-user",
-          payload: { ...values, location: locationId, services: servicesId },
+          endpoint: "/api/invite-user-by-superadmin",
+          payload: {
+            ...values,
+            location: locationId,
+            services: servicesId,
+            organizationOwnerId: ownerId,
+          },
         });
       }
       toast("Success", { position: "top-right" });

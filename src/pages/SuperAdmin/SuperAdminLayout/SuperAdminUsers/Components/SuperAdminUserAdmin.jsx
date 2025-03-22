@@ -122,8 +122,13 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
         // ✅ Create new user
         createUser(
           {
-            endpoint: "/api/invite-user",
-            payload: { ...values, location: locationId, services: servicesId },
+            endpoint: "/api/invite-user-by-superadmin",
+            payload: {
+              ...values,
+              location: locationId,
+              services: servicesId,
+              organizationOwnerId: ownerId,
+            },
           },
           {
             onSuccess: () =>

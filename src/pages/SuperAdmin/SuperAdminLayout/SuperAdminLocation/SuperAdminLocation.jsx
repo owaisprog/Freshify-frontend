@@ -131,8 +131,8 @@ export default function SuperAdminLocations() {
       } else {
         createLocation(
           {
-            endpoint: "/api/create-location",
-            payload: payload,
+            endpoint: "/api/create-location-by-superadmin",
+            payload: { ...payload, organizationOwnerId: ownerId },
           },
           {
             onSuccess: () =>

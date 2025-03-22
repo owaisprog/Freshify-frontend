@@ -138,8 +138,12 @@ function SuperAdminServices() {
       } else {
         createService(
           {
-            endpoint: "/api/create-service",
-            payload: { ...values, locations: filterIdLocations },
+            endpoint: "/api/create-service-by-superadmin",
+            payload: {
+              ...values,
+              locations: filterIdLocations,
+              organizationOwnerId: ownerId,
+            },
           },
           {
             onSuccess: () =>
