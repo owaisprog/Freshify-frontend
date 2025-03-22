@@ -62,9 +62,10 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
     deleteUser(
       { endpoint: `/api/delete-user/${userId}` },
       {
-        onSuccess: () => toast("Success", { position: "top-right" }),
+        onSuccess: () =>
+          toast.success("Deletion Successfull", { position: "top-center" }),
         onError: () =>
-          toast("Deletion Failed Try Again", { position: "top-right" }),
+          toast.error("Deletion Failed Try Again", { position: "top-center" }),
       }
     );
   };
@@ -105,28 +106,51 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
     try {
       if (selectedUser) {
         // ✅ Update user
-        updateUser({
-          endpoint: `/api/update-user/${selectedUser._id}`,
-          payload: { ...values, location: locationId, services: servicesId },
-        });
+        updateUser(
+          {
+            endpoint: `/api/update-user/${selectedUser._id}`,
+            payload: { ...values, location: locationId, services: servicesId },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Updated Successfull", { position: "top-center" }),
+            onError: () =>
+              toast.error("Updation Failed Try Again", {
+                position: "top-center",
+              }),
+          }
+        );
       } else {
         // ✅ Create new user
-        createUser({
-          endpoint: "/api/invite-user-by-superadmin",
-          payload: {
-            ...values,
-            location: locationId,
-            services: servicesId,
-            organizationOwnerId: ownerId,
+        createUser(
+          {
+            endpoint: "/api/invite-user-by-superadmin",
+            payload: {
+              ...values,
+              location: locationId,
+              services: servicesId,
+              organizationOwnerId: ownerId,
+            },
           },
-        });
+          {
+            onSuccess: () =>
+              toast.success(
+                "Created Successfull Check Email for Invitaion Link",
+                { position: "top-center" }
+              ),
+            onError: () =>
+              toast.error("Invitaion Failed Try Again", {
+                position: "top-center",
+              }),
+          }
+        );
       }
-      toast("Success", { position: "top-right" });
+
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);
       }, 2000);
-    } catch (error) {
+    } catch () {
       //console.error("Error creating/updating user:", error);
       toast("Someting went wrong try again ", { position: "top-right" });
     } finally {
