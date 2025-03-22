@@ -43,8 +43,8 @@ export default function OrganizationOwnerRegister() {
       setLoading(true);
       //register
       const userData = await registerUser(values, "organization_owner");
-      // console.log(userData);
-      // console.log(userData.newUser);
+      // //console.log(userData);
+      // //console.log(userData.newUser);
       // Simulate API call
       toast(userData.message, { position: "top-center" });
       setTimeout(() => {

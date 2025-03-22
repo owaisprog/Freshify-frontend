@@ -33,7 +33,7 @@ function CustomerDelete() {
           },
           onError: (error) => {
             toast.error("Failed to delete Customer.");
-            console.error("Error deleting Customer:", error);
+            //console.error("Error deleting Customer:", error);
           },
         }
       );

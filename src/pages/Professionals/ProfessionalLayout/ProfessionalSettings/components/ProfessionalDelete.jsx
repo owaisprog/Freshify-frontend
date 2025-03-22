@@ -34,7 +34,7 @@ function ProfessionalDelete() {
           },
           onError: (error) => {
             toast.error("Failed to delete Professional.");
-            console.error("Error deleting Professional:", error);
+            //console.error("Error deleting Professional:", error);
           },
         }
       );

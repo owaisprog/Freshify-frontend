@@ -46,7 +46,7 @@ export default function OrganizationOwnerUserNewPassword() {
         navigate("/OrganizationOwnerUserLogin");
       }, 2000);
     } catch (error) {
-      console.error("Error in reset password request:", error);
+      //console.error("Error in reset password request:", error);
       toast(error, { position: "top-center" });
     } finally {
       setLoading(false);

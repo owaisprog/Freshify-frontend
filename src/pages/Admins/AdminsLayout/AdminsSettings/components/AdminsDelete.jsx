@@ -28,7 +28,7 @@ function AdminDelete() {
           },
           onError: (error) => {
             toast.error("Failed to delete Admin.");
-            console.error("Error deleting Admin:", error);
+            //console.error("Error deleting Admin:", error);
           },
         }
       );

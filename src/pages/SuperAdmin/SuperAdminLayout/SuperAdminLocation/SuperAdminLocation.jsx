@@ -43,10 +43,10 @@ export default function SuperAdminLocations() {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        console.log("link copied");
+        //console.log("link copied");
       })
       .catch((err) => {
-        console.error("Failed to copy: ", err);
+        //console.error("Failed to copy: ", err);
       });
   };
 
@@ -60,7 +60,7 @@ export default function SuperAdminLocations() {
           });
         },
         onError: (error) => {
-          console.error("Error deleting location:", error);
+          //console.error("Error deleting location:", error);
           toast.error("Error deleting location", { position: "top-center" });
         },
       }
@@ -111,7 +111,7 @@ export default function SuperAdminLocations() {
       enableCashPayments: values.enableCashPayments === "true", // Convert to boolean
     };
 
-    console.log(payload);
+    //console.log(payload);
     try {
       if (selectedLocation) {
         updateLocation(
@@ -131,8 +131,8 @@ export default function SuperAdminLocations() {
       } else {
         createLocation(
           {
-            endpoint: "/api/create-location",
-            payload: payload,
+            endpoint: "/api/create-location-by-superadmin",
+            payload: { ...payload, organizationOwnerId: ownerId },
           },
           {
             onSuccess: () =>
@@ -152,7 +152,7 @@ export default function SuperAdminLocations() {
         setOpened(false);
       }, 1000);
     } catch (error) {
-      console.error("Error Creating/Updating location", error);
+      //console.error("Error Creating/Updating location", error);
       setLoading(false);
     }
   };

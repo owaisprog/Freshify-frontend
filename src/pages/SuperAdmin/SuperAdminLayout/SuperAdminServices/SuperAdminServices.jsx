@@ -72,10 +72,10 @@ function SuperAdminServices() {
             (service) => service._id !== id
           );
           queryClient.setQueryData(["services"], updatedServices);
-          // console.log("Service deleted successfully!");
+          // //console.log("Service deleted successfully!");
         },
         onError: (error) => {
-          console.error("Error deleting service:", error);
+          //console.error("Error deleting service:", error);
           toast("Error deleting service", { position: "top-right" });
         },
       }
@@ -138,8 +138,12 @@ function SuperAdminServices() {
       } else {
         createService(
           {
-            endpoint: "/api/create-service",
-            payload: { ...values, locations: filterIdLocations },
+            endpoint: "/api/create-service-by-superadmin",
+            payload: {
+              ...values,
+              locations: filterIdLocations,
+              organizationOwnerId: ownerId,
+            },
           },
           {
             onSuccess: () =>
@@ -160,7 +164,7 @@ function SuperAdminServices() {
       }, 2000);
     } catch (error) {
       toast("Error Creating/Updating service", { position: "top-right" });
-      console.error("Error Creating/Updating service", error);
+      //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
   };

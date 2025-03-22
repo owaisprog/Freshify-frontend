@@ -27,7 +27,7 @@ function SuperAdminDelete() {
           },
           onError: (error) => {
             toast.error("Failed to delete SuperAdmin.");
-            console.error("Error deleting SuperAdmin:", error);
+            //console.error("Error deleting SuperAdmin:", error);
           },
         }
       );

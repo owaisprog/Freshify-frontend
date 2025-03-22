@@ -40,13 +40,13 @@ function UpdatePassword() {
           },
           onError: (error) => {
             toast.error("Failed to update password.");
-            console.error("Error updating password:", error);
+            //console.error("Error updating password:", error);
           },
         }
       );
     } catch (error) {
       toast.error("Failed to update password.");
-      console.error("Error updating password:", error);
+      //console.error("Error updating password:", error);
     }
   };
 

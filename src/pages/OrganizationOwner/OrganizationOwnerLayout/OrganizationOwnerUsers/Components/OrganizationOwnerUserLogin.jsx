@@ -43,7 +43,7 @@ export default function OrganizationOwnerUserLogin() {
         }
       }, 2000);
     } catch (error) {
-      console.error("Error in login request:", error);
+      //console.error("Error in login request:", error);
       toast(error, { position: "top-center" });
     } finally {
       setLoading(false);
