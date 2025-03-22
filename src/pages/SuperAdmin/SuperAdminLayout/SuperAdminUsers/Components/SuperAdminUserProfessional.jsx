@@ -150,8 +150,8 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
         setOpened(false);
         setSelectedUser(null);
       }, 2000);
-    } catch () {
-      //console.error("Error creating/updating user:", error);
+    } catch (error) {
+      console.error("Error creating/updating user:", error);
       toast("Someting went wrong try again ", { position: "top-right" });
     } finally {
       setLoading(false);
