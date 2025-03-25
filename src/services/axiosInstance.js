@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleSessionExpiry } from "../pages/OrganizationOwner/OrganizationOwnerAuth/services/AuthServices";
+import { handleSessionExpiry } from "./AuthServices";
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
 

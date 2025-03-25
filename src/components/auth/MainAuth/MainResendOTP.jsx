@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { Button, Image, Text, TextInput } from "@mantine/core";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { apiPost } from "../../../services/useApi";
 import { toast } from "react-toastify";
 
-export default function OrganizationOwnerResendOTP() {
+export default function MainResendOTP() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get("role");
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(""); // Store success/error message
@@ -19,7 +21,7 @@ export default function OrganizationOwnerResendOTP() {
     try {
       const response = await apiPost("/api/resend-otp", values);
       toast(response.message, { position: "top-center" });
-      navigate("/OrganizationOwnerVerifyEmail", {
+      navigate("/VerifyEmail", {
         state: { userEmail: values.email },
       });
     } catch (error) {
@@ -114,7 +116,7 @@ export default function OrganizationOwnerResendOTP() {
 
           <Text c="dimmed" size="xs" ta="right">
             <Link
-              to={"/OrganizationOwnerLogin"}
+              to={`/Login?role=${role}`}
               className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
               Back to Login

@@ -1,22 +1,52 @@
 import { useState } from "react";
-import freshifyLogo from "../.././../../assets/freshifyLogo.png";
+import freshifyLogo from "../../assets/freshifyLogoMobile.png";
 import { Image } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 // react icons import
-import { MdCalendarMonth, MdOutlineSettings } from "react-icons/md";
+import { MdOutlineSettings } from "react-icons/md";
 
-const data = [
-  {
-    link: "",
-    label: "Calendar",
-    activePath: "/CustomerDashboard",
-    icon: MdCalendarMonth,
-  },
-];
+// const data = [
+//   {
+//     link: "",
+//     label: "Dashboard",
+//     activePath: "/OrganizationOwnerDashboard",
+//     icon: MdDashboard,
+//   },
+//   {
+//     link: "Services",
+//     label: "Services",
+//     activePath: "/OrganizationOwnerDashboard/Services",
+//     icon: HiWrenchScrewdriver,
+//   },
+//   {
+//     link: "Users",
+//     label: "Users",
+//     activePath: "/OrganizationOwnerDashboard/Users",
+//     icon: ImUsers,
+//   },
+//   {
+//     link: "locations",
+//     label: "Locations",
+//     activePath: "/OrganizationOwnerDashboard/Locations",
+//     icon: MdMyLocation,
+//   },
+//   {
+//     link: "Calendar",
+//     label: "Calendar",
+//     activePath: "/OrganizationOwnerDashboard/Calendar",
+//     icon: MdCalendarMonth,
+//   },
+//   {
+//     link: "Payout",
+//     label: "Payout",
+//     activePath: "/OrganizationOwnerDashboard/Payout",
+//     icon: MdOutlinePayment,
+//   },
+// ];
 
-export default function CustomerSidebar() {
+export default function Sidebar({ data }) {
   const location = useLocation();
   const currentPath = location.pathname;
   const [active, setActive] = useState(currentPath);

@@ -1,12 +1,14 @@
 import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import freshifyImage from "../../../assets/freshifyImage.png";
 import { useForm } from "@mantine/form";
-import { registerUser } from "./services/AuthServices";
 import { toast } from "react-toastify";
+import { registerUser } from "../../../services/AuthServices";
 
-export default function CustomerRegister() {
+export default function MainRegister() {
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get("role");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +19,7 @@ export default function CustomerRegister() {
       name: "",
       phone: "",
       password: "",
-      role: "customer",
+      role: role,
     },
     validate: {
       email: (value) => (/^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email"),
@@ -42,13 +44,14 @@ export default function CustomerRegister() {
     try {
       setLoading(true);
       //register
-      const userData = await registerUser(values);
-
-      toast(userData.message, { position: "top-center" });
+      const userData = await registerUser(values, role);
+      // //console.log(userData);
+      // //console.log(userData.newUser);
       // Simulate API call
+      toast(userData.message, { position: "top-center" });
       setTimeout(() => {
         setLoading(false);
-        navigate("/CustomerVerifyEmail", {
+        navigate("/VerifyEmail", {
           state: { userEmail: values.email },
         });
       }, 1500);
@@ -97,7 +100,7 @@ export default function CustomerRegister() {
           <Text c="dimmed" size="sm" ta="center">
             Already have an account?{" "}
             <Link
-              to={"/CustomerLogin"}
+              to={`/Login?role=${role}`}
               className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
             >
               Login

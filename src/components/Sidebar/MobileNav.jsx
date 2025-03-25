@@ -1,60 +1,53 @@
 import { useState } from "react";
+import freshifyLogoMobile from "../../assets/freshifyLogoMobile.png";
 import { Image, Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
-import freshifyLogoMobile from "../.././../../assets/freshifyLogoMobile.png";
 
 // Reuse your existing icons and data
-import {
-  MdDashboard,
-  // MdMyLocation,
-  MdCalendarMonth,
-  MdOutlinePayment,
-  MdOutlineSettings,
-} from "react-icons/md";
-import { HiWrenchScrewdriver } from "react-icons/hi2";
-import { ImUsers } from "react-icons/im";
-
+import { MdOutlineSettings } from "react-icons/md";
+import { logoutUser } from "../../services/AuthServices";
 // Reuse your existing data array
-const data = [
-  {
-    link: "",
-    label: "Dashboard",
-    activePath: "/AdminsDashboard",
-    icon: MdDashboard,
-  },
-  {
-    link: "Services",
-    label: "Services",
-    activePath: "/AdminsDashboard/Services",
-    icon: HiWrenchScrewdriver,
-  },
-  // {
-  //   link: "locations",
-  //   label: "Locations",
-  //   activePath: "/AdminsDashboard/Locations",
-  //   icon: MdMyLocation,
-  // },
-  {
-    link: "Users",
-    label: "Users",
-    activePath: "/AdminsDashboard/Users",
-    icon: ImUsers,
-  },
-  {
-    link: "",
-    label: "Calendar",
-    activePath: "/AdminsDashboard/Calendar",
-    icon: MdCalendarMonth,
-  },
-  {
-    link: "",
-    label: "Payout",
-    activePath: "/AdminsDashboard/Payout",
-    icon: MdOutlinePayment,
-  },
-];
+// const data = [
+//   {
+//     link: "",
+//     label: "Dashboard",
+//     activePath: "/OrganizationOwnerDashboard",
+//     icon: MdDashboard,
+//   },
+//   {
+//     link: "Services",
+//     label: "Services",
+//     activePath: "/OrganizationOwnerDashboard/Services",
+//     icon: HiWrenchScrewdriver,
+//   },
+//   {
+//     link: "locations",
+//     label: "Locations",
+//     activePath: "/OrganizationOwnerDashboard/Locations",
+//     icon: MdMyLocation,
+//   },
+//   {
+//     link: "Users",
+//     label: "Users",
+//     activePath: "/OrganizationOwnerDashboard/Users",
+//     icon: ImUsers,
+//   },
+//   {
+//     link: "Calendar",
+//     label: "Calendar",
+//     activePath: "/OrganizationOwnerDashboard/Calendar",
+//     icon: MdCalendarMonth,
+//   },
+//   {
+//     link: "Payout",
+//     label: "Payout",
+//     activePath: "/OrganizationOwnerDashboard/Payout",
+//     icon: MdOutlinePayment,
+//   },
+// ];
 
-export default function AdminsMobileNav() {
+export default function MobileNav({ data }) {
+  const { role } = JSON.parse(localStorage.getItem("data"));
   const location = useLocation();
   const currentPath = location.pathname;
   const [active, setActive] = useState(currentPath);
@@ -115,23 +108,34 @@ export default function AdminsMobileNav() {
           <div className="flex-1 overflow-y-auto">
             <div className="mt-2">{links}</div>
             {/* Settings Link */}
-            <div className="pt-4  ">
-              <Link
-                to="settings"
-                className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
-                  "settings" === active
-                    ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
-                    : ""
-                }`}
+            {role === "superadmin" ? (
+              <button
+                className="!text-[18px] !px-[40px] bg-black !font-[400] !py-[10px] text-white rounded-tr-md cursor-pointer "
                 onClick={() => {
-                  setActive("settings");
-                  setIsMenuOpen(false);
+                  logoutUser();
                 }}
               >
-                <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
-                <span>Settings</span>
-              </Link>
-            </div>
+                Logout
+              </button>
+            ) : (
+              <div className="pt-4  ">
+                <Link
+                  to="settings"
+                  className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
+                    "settings" === active
+                      ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setActive("settings");
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
+                  <span>Settings</span>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </Drawer>

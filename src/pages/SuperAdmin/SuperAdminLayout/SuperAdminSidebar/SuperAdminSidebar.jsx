@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 // react icons import
 
 import { GoOrganization } from "react-icons/go";
-import { logoutUser } from "../../SuperAdminAuth/services/AuthServices";
+import { logoutUser } from "../../../../services/AuthServices";
 
 const data = [
   {

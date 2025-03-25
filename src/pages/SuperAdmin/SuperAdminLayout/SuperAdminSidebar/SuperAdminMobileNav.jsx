@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 
 // Reuse your existing icons and data
 import { MdDashboard, MdOutlineSettings } from "react-icons/md";
-import { logoutUser } from "../../SuperAdminAuth/services/AuthServices";
+import { logoutUser } from "../../../../services/AuthServices";
 // Reuse your existing data array
 const data = [
   {

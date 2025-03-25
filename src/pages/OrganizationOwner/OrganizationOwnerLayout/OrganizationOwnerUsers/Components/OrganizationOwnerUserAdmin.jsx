@@ -147,7 +147,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         setOpened(false);
         setSelectedUser(null);
       }, 2000);
-    } catch (error) {
+    } catch {
       //console.error("Error creating/updating user:", error);
       toast("Something went wrong", { position: "top-right" });
     } finally {

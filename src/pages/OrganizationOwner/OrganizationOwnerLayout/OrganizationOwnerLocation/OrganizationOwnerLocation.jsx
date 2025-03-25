@@ -42,10 +42,10 @@ export default function OrganizationOwnerLocations() {
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        //console.log("link copied");
+        console.log("link copied");
       })
       .catch((err) => {
-        //console.error("Failed to copy: ", err);
+        console.error("Failed to copy: ", err);
       });
   };
   const {
@@ -64,7 +64,7 @@ export default function OrganizationOwnerLocations() {
     deleteLocation(
       { endpoint: `/api/delete-location/${delId}` },
       {
-        onSuccess: (responseData) => {
+        onSuccess: () => {
           //console.log(responseData);
           queryClient.invalidateQueries({ queryKey: ["locations", id] });
           window.location.reload();
@@ -72,7 +72,7 @@ export default function OrganizationOwnerLocations() {
             position: "top-center",
           });
         },
-        onError: (error) => {
+        onError: () => {
           //console.error("Error deleting location:", error);
           toast.error("Error deleting location", { position: "top-center" });
         },
@@ -155,8 +155,8 @@ export default function OrganizationOwnerLocations() {
         setOpened(false);
       }, 1000);
     } catch (error) {
-      //console.error("Error Creating/Updating location", error);
       setLoading(false);
+      console.error("Error Creating/Updating location", error);
     }
   };
 

@@ -8,6 +8,7 @@ import { MantineProvider } from "@mantine/core";
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Link,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -28,13 +29,8 @@ import OrganizationOwnerDashboard from "./pages/OrganizationOwner/OrganizationOw
 import OrganizationOwnerServices from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerServices/OrganizationOwnerServices.jsx";
 import OrganizationOwnerUsers from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/OrganizationOwnerUsers.jsx";
 import OrganizationOwnerCalendar from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerCalendar/OrganizationOwnerCalendar.jsx";
-import OrganizationOwnerLogin from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerLogin.jsx";
-import OrganizationOwnerRegister from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerRegister.jsx";
-import OrganizationOwnerResetPassword from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerResetPassword.jsx";
-import OrganizationOwnerVerifyEmail from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationOwnerVerifyEmail.jsx";
 import OrganizationOwnerLocations from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerLocation/OrganizationOwnerLocation.jsx";
 import ProtectedRoute from "../src/components/ProtectedRoute.jsx";
-import OrganizationOwnerResendOTP from "./pages/OrganizationOwner/OrganizationOwnerAuth/OrganizationResenOTP.jsx";
 import OrganizationOwnerSentPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerSentPassword.jsx";
 import OrganizationOwnerUserResetPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserResetPassword.jsx";
 import OrganizationOwnerUserNewPassword from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerUsers/Components/OrganizationOwnerUserNewPassword.jsx";
@@ -45,17 +41,10 @@ import OrganizationNotification from "./pages/OrganizationOwner/OrganizationOwne
 import OrganizationProfile from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationProfile.jsx";
 import OrganizationDelete from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationDelete.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import SuperAdminLogin from "./pages/SuperAdmin/SuperAdminAuth/SuperAdminLogin.jsx";
 
 import SuperAdminLayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLayout.jsx";
-import CustomerLogin from "./pages/Customer/CustomerAuth/CustomerLogin.jsx";
-import CustomerRegister from "./pages/Customer/CustomerAuth/CustomerRegister.jsx";
-import CustomerVerifyEmail from "./pages/Customer/CustomerAuth/CustomerVerifyEmail.jsx";
-import CustomerResetPassword from "./pages/Customer/CustomerAuth/CustomerPassword.jsx";
-import CustomerResendOTP from "./pages/Customer/CustomerAuth/CustomerResendOTP.jsx";
 
 import CustomerLayout from "./pages/Customer/CustomerLayout/CustomerLayout.jsx";
-import NewPassword from "./components/NewPassword.jsx";
 import SuperAdminNotification from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminNotification.jsx";
 import SuperAdminProfile from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminProfile.jsx";
 import SuperAdminDelete from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminSettings/components/SuperAdminDelete.jsx";
@@ -92,40 +81,40 @@ import SuperAdminPayout from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminPayo
 import SuperAdminLocations from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminLocation/SuperAdminLocation.jsx";
 import SuperAdminUsers from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminUsers/SuperAdminUsers.jsx";
 import SuperAdminOrganization from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminOrganization/SuperAdminOrganization.jsx";
+import MainLogin from "./components/auth/MainAuth/MainLogin.jsx";
+import MainRegister from "./components/auth/MainAuth/MainRegister.jsx";
+import MainVerifyEmail from "./components/auth/MainAuth/MainVerifyEmail.jsx";
+import MainResetPassword from "./components/auth/MainAuth/MainResetPassword.jsx";
+import MainResendOTP from "./components/auth/MainAuth/MainResendOTP.jsx";
+import MainNewPassword from "./components/auth/MainAuth/MainNewPassword.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route
-        path="OrganizationOwnerNewPassword/:resetToken"
-        element={<NewPassword />}
-      />
-      {/* organization owner */}
-      <Route
-        path="OrganizationOwnerLogin"
-        element={<OrganizationOwnerLogin />}
-      />
-      <Route
-        path="OrganizationOwnerRegister"
-        element={<OrganizationOwnerRegister />}
-      />
-
-      <Route
-        path="OrganizationOwnerVerifyEmail"
-        element={<OrganizationOwnerVerifyEmail />}
-      />
-
-      <Route
-        path="OrganizationOwnerResetPassword"
-        element={<OrganizationOwnerResetPassword />}
-      />
-
-      <Route
-        path="OrganizationOwnerResendOTP"
-        element={<OrganizationOwnerResendOTP />}
-      />
-
+        index
+        element={
+          <ul className="font-bold text-[2rem]">
+            <Link to="/Login?role=superadmin">
+              <li>SuperAdmin</li>
+            </Link>
+            <Link to="/Login?role=customer">
+              <li>Customer</li>
+            </Link>
+            <Link to="/Login?role=organization_owner">
+              <li>Organization owner</li>
+            </Link>
+          </ul>
+        }
+      />{" "}
+      {/* main auth */}
+      <Route path="NewPassword/:resetToken" element={<MainNewPassword />} />
+      <Route path="Login" element={<MainLogin />} />
+      <Route path="Register" element={<MainRegister />} />
+      <Route path="VerifyEmail" element={<MainVerifyEmail />} />
+      <Route path="ResetPassword" element={<MainResetPassword />} />
+      <Route path="ResendOTP" element={<MainResendOTP />} />
       {/* user auth routes routes  */}
       <Route
         path="OrganizationOwnerSentPassword/:userKey"
@@ -144,12 +133,12 @@ const router = createBrowserRouter(
         path="OrganizationOwnerUserLogin"
         element={<OrganizationOwnerUserLogin />}
       />
-
+      {/* organization owner */}
       <Route
         path="OrganizationOwnerDashboard"
         element={
           <ProtectedRoute
-            path="/OrganizationOwnerLogin"
+            path="/Login?role=organization_owner"
             requiredRole="organization_owner"
           >
             <OrganizationOwnerLayout />
@@ -169,15 +158,14 @@ const router = createBrowserRouter(
           <Route path="delete" element={<OrganizationDelete />} />
         </Route>
       </Route>
-
       {/* super admin auth */}
-
-      <Route path="SuperAdminLogin" element={<SuperAdminLogin />} />
-
       <Route
         path="SuperAdminOrganization"
         element={
-          <ProtectedRoute path="/SuperAdminLogin" requiredRole="superadmin">
+          <ProtectedRoute
+            path="/Login?role=superadmin"
+            requiredRole="superadmin"
+          >
             <SuperAdminLayout />
           </ProtectedRoute>
         }
@@ -195,22 +183,11 @@ const router = createBrowserRouter(
           <Route path="delete" element={<SuperAdminDelete />} />
         </Route>
       </Route>
-
       {/* Customer auth */}
-
-      <Route path="CustomerLogin" element={<CustomerLogin />} />
-      <Route path="CustomerRegister" element={<CustomerRegister />} />
-
-      <Route path="CustomerVerifyEmail" element={<CustomerVerifyEmail />} />
-
-      <Route path="CustomerResetPassword" element={<CustomerResetPassword />} />
-
-      <Route path="CustomerResendOTP" element={<CustomerResendOTP />} />
-
       <Route
         path="CustomerDashboard"
         element={
-          <ProtectedRoute path="/CustomerLogin" requiredRole="customer">
+          <ProtectedRoute path="/Login?role=customer" requiredRole="customer">
             <CustomerLayout />
           </ProtectedRoute>
         }
@@ -224,7 +201,6 @@ const router = createBrowserRouter(
           <Route path="delete" element={<CustomerDelete />} />
         </Route>
       </Route>
-
       {/* Admins  */}
       <Route
         path="AdminsDashboard"
@@ -250,7 +226,6 @@ const router = createBrowserRouter(
           <Route path="delete" element={<AdminDelete />} />
         </Route>
       </Route>
-
       {/*Professionals  */}
       <Route
         path="ProfessionalDashboard"

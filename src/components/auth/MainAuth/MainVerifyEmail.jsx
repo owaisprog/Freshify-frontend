@@ -1,20 +1,40 @@
 import { useState } from "react";
+import { Button, Image, Text, PinInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Button, Image, Text, TextInput } from "@mantine/core";
-import { Link } from "react-router-dom";
 import freshifyImage from "../../../assets/freshifyImage.png";
+
 import { apiPost } from "../../../services/useApi";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export default function OrganizationOwnerResetPassword() {
+export default function MainVerifyEmail() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { userEmail } = location.state || {};
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const resetRequest = await apiPost("/api/forgot-password", values);
-      toast(resetRequest.message, { position: "top-center" });
+      const data = await apiPost("/api/verify-otp", {
+        email: userEmail,
+        otp: values.pin,
+      });
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("data", JSON.stringify(data.user));
+      toast(data.message, { position: "top-center" });
       setLoading(false);
+
+      if (data.user.role === "organization_owner") {
+        navigate("/OrganizationOwnerDashboard");
+      } else if (data.user.role === "superadmin") {
+        navigate("/ProfessionalDashboard");
+      } else if (data.user.role === "customer") {
+        navigate("/CustomerDashboard");
+      } else {
+        navigate("/");
+      }
     } catch (error) {
       setLoading(false);
       toast(error, { position: "top-center" });
@@ -23,14 +43,15 @@ export default function OrganizationOwnerResetPassword() {
 
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { email: "" },
+    initialValues: { pin: "" },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+      pin: (value) =>
+        value.length === 4 ? null : "Please enter a 4-digit PIN",
     },
   });
 
   return (
-    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0 ">
+    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -51,34 +72,36 @@ export default function OrganizationOwnerResetPassword() {
         />
       </section>
 
-      {/* Right Section - Form */}
-      <section className=" h-full  flex items-center  justify-center">
+      {/* Right Side - Form */}
+      <section className="h-full  flex items-center  justify-center">
         <form
-          className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
+          className="w-full flex items-center flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
         >
+          {/* Heading */}
+
           <Text
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            Reset Password
+            Verify Email
           </Text>
-          <Text c="dimmed" size="sm" ta="center">
-            Reset Password Link will be sent to your email address
+          <Text c="dark" size="sm" ta="center">
+            Enter 4 digit OTP sent to your email address
           </Text>
 
-          <div className="flex flex-col gap-[10px]">
-            <span className=" !font-[400] !text-[18px] !text-[#000000]">
-              Email Address
-            </span>
+          {/* PIN Input Field */}
 
-            <TextInput
-              radius={"md"}
-              placeholder="Enter your email"
-              key={form.key("email")}
-              {...form.getInputProps("email")}
-            />
-          </div>
+          <PinInput
+            autoFocus
+            size="lg"
+            placeholder="-"
+            type="number"
+            length={4}
+            {...form.getInputProps("pin")}
+          />
+
+          {/* Verify OTP Button */}
 
           <Button
             fullWidth
@@ -90,16 +113,8 @@ export default function OrganizationOwnerResetPassword() {
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
-            Reset Password
+            Verify OTP
           </Button>
-          <Text c="dimmed" size="xs" ta="right">
-            <Link
-              to={"/OrganizationOwnerLogin"}
-              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
-            >
-              Back to Login
-            </Link>
-          </Text>
         </form>
       </section>
     </main>

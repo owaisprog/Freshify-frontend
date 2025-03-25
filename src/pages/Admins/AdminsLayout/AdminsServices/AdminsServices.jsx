@@ -16,9 +16,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 function AdminsServices() {
-  const { location, email, id, createdBy } = JSON.parse(
-    localStorage.getItem("data")
-  );
+  const { location, createdBy } = JSON.parse(localStorage.getItem("data"));
 
   //console.log(location, email, id);
 
@@ -72,7 +70,7 @@ function AdminsServices() {
             position: "top-center",
           });
         },
-        onError: (error) => {
+        onError: () => {
           //console.error("Error deleting service:", error);
           toast("Error deleting service", { position: "top-center" });
         },
@@ -157,7 +155,7 @@ function AdminsServices() {
         setLoading(false);
         setOpened(false);
       }, 2000);
-    } catch (error) {
+    } catch {
       toast("Error Creating/Updating service", { position: "top-right" });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);

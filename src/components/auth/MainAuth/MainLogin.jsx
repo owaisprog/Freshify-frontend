@@ -1,25 +1,32 @@
 import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import freshifyImage from "../../../assets/freshifyImage.png";
-import { loginUser } from "./services/AuthServices";
 import { toast } from "react-toastify";
+import { loginUser } from "../../../services/AuthServices";
 
-export default function OrganizationOwnerLogin() {
+export default function MainLogin() {
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get("role");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const userData = await loginUser(
-        values.email,
-        values.password,
-        "organization_owner"
-      );
+      const userData = await loginUser(values.email, values.password, role);
       toast(userData.message, { position: "top-right" });
-      navigate("/OrganizationOwnerDashboard");
+      if (userData.user.role === "organization_owner") {
+        navigate("/OrganizationOwnerDashboard");
+      } else if (userData.user.role === "superadmin") {
+        navigate("/SuperAdminOrganization");
+      } else if (userData.user.role === "customer") {
+        navigate("/CustomerDashboard");
+      } else {
+        // Optional fallback if the role doesn't match any known value
+        navigate("/");
+      }
     } catch (error) {
       toast(error, { position: "top-right" });
       setLoading(false);
@@ -67,15 +74,19 @@ export default function OrganizationOwnerLogin() {
           >
             Login
           </Text>
-          <Text c="dimmed" size="sm" ta="center">
-            Do not have an account yet?{" "}
-            <Link
-              to={"/OrganizationOwnerRegister"}
-              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
-            >
-              Register
-            </Link>
-          </Text>
+          {role === "superadmin" ? (
+            ""
+          ) : (
+            <Text c="dimmed" size="sm" ta="center">
+              Do not have an account yet?{" "}
+              <Link
+                to={`/Register?role=${role}`}
+                className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
+              >
+                Register
+              </Link>
+            </Text>
+          )}
 
           {/* Email Address Input Field  */}
           <div className="flex flex-col gap-[10px]">
@@ -115,14 +126,18 @@ export default function OrganizationOwnerLogin() {
             Login
           </Button>
 
-          <Text ta="right">
-            <Link
-              to={"/OrganizationOwnerResetPassword"}
-              className="text-black text-[14px] font-[400] underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
-            >
-              Forget Password
-            </Link>
-          </Text>
+          {role === "superadmin" ? (
+            ""
+          ) : (
+            <Text ta="right">
+              <Link
+                to={`/ResetPassword?role=${role}`}
+                className="text-black text-[14px] font-[400] underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
+              >
+                Forget Password
+              </Link>
+            </Text>
+          )}
         </form>
       </section>
     </main>

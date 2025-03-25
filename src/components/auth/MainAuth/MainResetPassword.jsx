@@ -1,42 +1,38 @@
-import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from "@mantine/form";
+import { Button, Image, Text, TextInput } from "@mantine/core";
+import { Link, useSearchParams } from "react-router-dom";
 import freshifyImage from "../../../assets/freshifyImage.png";
-import { loginUser } from "./services/AuthServices";
+import { apiPost } from "../../../services/useApi";
 import { toast } from "react-toastify";
 
-export default function SuperAdminLogin() {
-  const navigate = useNavigate();
+export default function MainResetPassword() {
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get("role");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
     try {
       setLoading(true);
-      const userData = await loginUser(
-        values.email,
-        values.password,
-        "superadmin"
-      );
-      toast(userData.message, { position: "top-right" });
-      navigate("/SuperAdminOrganization");
-    } catch (error) {
-      toast(error, { position: "top-right" });
+      const resetRequest = await apiPost("/api/forgot-password", values);
+      toast(resetRequest.message, { position: "top-center" });
       setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast(error, { position: "top-center" });
     }
   };
 
   const form = useForm({
     mode: "uncontrolled",
-    initialValues: { email: "", password: "" },
-
-    // functions will be used to validate values at corresponding key
+    initialValues: { email: "" },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
+
   return (
-    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0 px-3 lg:px-0 ">
+    <main className="flex flex-col  lg:grid h-screen  mx-auto  lg:grid-cols-2 lg:gap-x-4  lg:gap-y-0    px-3 lg:px-0 ">
       {/* This image will be visible on large devices  */}
       <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
         <Image
@@ -56,7 +52,9 @@ export default function SuperAdminLogin() {
           fallbackSrc="https://placehold.co/600x400?text=Placeholder"
         />
       </section>
-      <section className="h-full flex items-center justify-center   ">
+
+      {/* Right Section - Form */}
+      <section className=" h-full  flex items-center  justify-center">
         <form
           className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
           onSubmit={form.onSubmit(handleSubmit)}
@@ -65,31 +63,22 @@ export default function SuperAdminLogin() {
             ta={"center"}
             className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
           >
-            Login
+            Reset Password
+          </Text>
+          <Text c="dimmed" size="sm" ta="center">
+            Reset Password Link will be sent to your email address
           </Text>
 
-          {/* Email Address Input Field  */}
           <div className="flex flex-col gap-[10px]">
             <span className=" !font-[400] !text-[18px] !text-[#000000]">
               Email Address
             </span>
+
             <TextInput
               radius={"md"}
               placeholder="Enter your email"
               key={form.key("email")}
               {...form.getInputProps("email")}
-            />
-          </div>
-
-          <div className="flex flex-col gap-[10px]">
-            <span className=" !font-[400] !text-[18px] !text-[#000000]">
-              Password
-            </span>
-            <PasswordInput
-              radius={"md"}
-              placeholder="Enter you password"
-              key={form.key("password")}
-              {...form.getInputProps("password")}
             />
           </div>
 
@@ -103,8 +92,16 @@ export default function SuperAdminLogin() {
             loading={loading}
             loaderProps={{ type: "dots" }}
           >
-            Login
+            Reset Password
           </Button>
+          <Text c="dimmed" size="xs" ta="right">
+            <Link
+              to={`/Login?role=${role}`}
+              className="text-black underline underline-offset-4 hover:text-blue-500 transition-all duration-300"
+            >
+              Back to Login
+            </Link>
+          </Text>
         </form>
       </section>
     </main>

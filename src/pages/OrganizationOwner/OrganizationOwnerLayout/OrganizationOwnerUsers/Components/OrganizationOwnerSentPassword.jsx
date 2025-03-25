@@ -18,6 +18,7 @@ export default function OrganizationOwnerSentPassword() {
         token: userKey, // Send the token from URL
         newPassword: values.newPassword,
       });
+      console.log(response);
 
       toast(response.message, { position: "top-center" });
       setLoading(false);

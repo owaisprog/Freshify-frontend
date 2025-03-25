@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Button, Image, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../assets/freshifyImage.png";
+import freshifyImage from "../../../assets/freshifyImage.png";
 import { useNavigate, useParams } from "react-router-dom";
-import { apiPost } from "../services/useApi";
+import { toast } from "react-toastify";
+import { apiPost } from "../../../services/useApi";
 
-export default function NewPassword() {
+export default function MainNewPassword() {
   const [loading, setLoading] = useState(false);
   const { resetToken } = useParams();
   const navigate = useNavigate();
@@ -18,20 +19,13 @@ export default function NewPassword() {
       });
 
       setLoading(false);
+      console.log(resetRequest);
+      navigate(`/Login?role=${resetRequest.role}`);
 
-      if (resetRequest.role === "organization_owner") {
-        navigate("/OrganizationOwnerLogin");
-      } else if (resetRequest.role === "superadmin") {
-        navigate("/SuperAdminLogin");
-      } else if (resetRequest.role === "customer") {
-        navigate("/customerLogin");
-      } else {
-        // Optional fallback if the role doesn't match any known value
-        navigate("/");
-      }
       // role: "customer"
     } catch (error) {
-      //console.log(`message:${error.message}`);
+      toast(error, { position: "top-right" });
+      setLoading(false);
     }
   };
   const form = useForm({
