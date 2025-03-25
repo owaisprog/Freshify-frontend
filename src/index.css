@@ -12,11 +12,11 @@ body {
 }
 
 .specialBorder {
-  box-shadow: 0 0 0 0.5px #718EBF;
+  border: 1px solid #c6cfe1 !important;
 }
 
 .specialBorderBottom {
-  border-bottom: 0.5px solid  #8298be !important;/* Horizontal offset, Vertical offset, Blur radius, and color */
+  border-bottom: 0.5px solid  #c6cfe1 !important;/* Horizontal offset, Vertical offset, Blur radius, and color */
 }
 
 .custom-gap .mantine-Input-label {

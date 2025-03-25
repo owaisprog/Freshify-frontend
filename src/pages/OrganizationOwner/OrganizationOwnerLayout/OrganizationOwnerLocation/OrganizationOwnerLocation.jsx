@@ -176,11 +176,15 @@ export default function OrganizationOwnerLocations() {
           </Text>
           <Button
             onClick={() => {
+              setLoading(true);
               setToggleTitle("Add Location");
               setSelectedLocation(null);
               form.reset();
               setOpened(true);
+              setLoading(false);
             }}
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             bg="black"
             radius="md"
             className="!text-[18px] !px-[40px] !font-[400]  !py-[10px]"

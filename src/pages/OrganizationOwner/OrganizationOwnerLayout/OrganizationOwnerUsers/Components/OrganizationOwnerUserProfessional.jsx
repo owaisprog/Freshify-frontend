@@ -204,6 +204,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
 
   // ✅ Handle "Add Professional" button click
   const handleAddProfessionalClick = async () => {
+    setLoading(true);
     setSelectedUser(null);
     form.reset();
     setToggleTitle("Add Professional");
@@ -214,6 +215,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
 
     // Open the popup
     setOpened(true);
+    setLoading(false);
   };
 
   return (
@@ -227,6 +229,8 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
           <Button
             bg="black"
             radius="md"
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             className="!text-[18px]  !font-[400] lg:!px-[40px] lg:!py-[10px]"
             onClick={handleAddProfessionalClick} // Updated click handler
           >

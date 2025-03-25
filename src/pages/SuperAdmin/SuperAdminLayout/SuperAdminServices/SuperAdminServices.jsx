@@ -287,11 +287,15 @@ function SuperAdminServices() {
             radius="md"
             fw={"normal"}
             className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
+            loading={loading}
+            loaderProps={{ type: "bars" }}
             onClick={() => {
+              setLoading(true);
               setToggleTitle("Add Service");
               setSelectedService(null);
               form.reset();
               setOpened(true);
+              setLoading(false);
             }}
           >
             Add Service
