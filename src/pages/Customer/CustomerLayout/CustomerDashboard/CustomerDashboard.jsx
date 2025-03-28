@@ -1,4 +1,5 @@
 import { Title } from "@mantine/core";
+import CalendarComp from "../../../../components/CustomerCalendar";
 
 export default function CustomerDashboard() {
   const data = JSON.parse(localStorage.getItem("data")) || {};
@@ -21,6 +22,7 @@ export default function CustomerDashboard() {
       >
         Welcome {data.name}
       </Title>
+      <CalendarComp />
     </main>
   );
 }
