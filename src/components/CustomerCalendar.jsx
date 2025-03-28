@@ -13,11 +13,11 @@ import {
   getDate,
 } from "date-fns";
 
-const CalendarComp = () => {
+const CalendarComp = ({ selectedDay, onClickDay }) => {
   const today = new Date();
   const [currentDate] = useState(today);
   const [selectedMonth, setSelectedMonth] = useState("current");
-  const [selectedDay, setSelectedDay] = useState("");
+
   const oneMonthFromNow = addMonths(today, 1);
 
   // Get month to display
@@ -33,18 +33,12 @@ const CalendarComp = () => {
   ];
 
   // Handle date selection
-  const onClickDay = (date) => {
-    if (!isBefore(date, today) && !isAfter(date, oneMonthFromNow)) {
-      setSelectedDay(date.toDateString());
-      console.log("Selected Date:", date.toDateString());
-    }
-  };
 
   // Date cell styling
   const getDateStyle = (date) => {
     const isToday = isSameDay(date, today);
     const isOutOfRange =
-      isBefore(date, today) || isAfter(date, oneMonthFromNow);
+      (isBefore(date, today) && !isToday) || isAfter(date, oneMonthFromNow);
     const isSelected = selectedDay === date.toDateString();
 
     return [

@@ -1,28 +1,40 @@
 // components/steps/ProfessionalStep.jsx
-import { useEffect } from "react";
-import { Image } from "@mantine/core";
+import { Image, Loader } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
+import { useQueryHook } from "../../services/reactQuery";
 
-const professionals = [
-  { name: "Mirza Tayyab Khalid", availability: "TODAY", id: 1 },
-  { name: "Ali Ahmed", availability: "TOMORROW", id: 2 },
-  { name: "Sara Khan", availability: "FRIDAY, 7 MARCH", id: 3 },
-];
+// const professionals = [
+//   { name: "Mirza Tayyab Khalid", availability: "TODAY", id: 1 },
+//   { name: "Ali Ahmed", availability: "TOMORROW", id: 2 },
+//   { name: "Sara Khan", availability: "FRIDAY, 7 MARCH", id: 3 },
+// ];
 
 export default function ProfessionalStep() {
-  const { bookingData, updateBookingData } = useBookingContext();
+  const id = "67e6ccdb05463ea8912d9f98";
+  const { updateBookingData } = useBookingContext();
   const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (!bookingData.professional) navigate("/booking/professional");
   // }, []);
+  const {
+    data: allUsers = [],
+    isLoading,
+    // error,
+  } = useQueryHook({
+    queryKey: ["users", id], // ✅ Cache users by owner ID
+    endpoint: `/api/get-users-by-owner/${id}`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+  const professionals = allUsers.filter((val) => val.role == "barber");
 
   const handleSelect = (professional) => {
     updateBookingData({ professional });
     navigate("/booking/services");
   };
-
+  if (isLoading)
+    return <Loader className="mx-auto " color="blue" type="bars" />;
   return (
     <div className="h-full flex flex-col gap-[20px] items-center justify-center p-6 rounded-lg">
       <h1 className="text-2xl font-bold mb-6">Choose Professional</h1>

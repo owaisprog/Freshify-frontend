@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
 import { useEffect } from "react";
 import { useQueryHook } from "../../services/reactQuery";
+import { Loader } from "@mantine/core";
 
 // const locations = [
 //   { name: "New York USA", id: 1 },
@@ -10,7 +11,7 @@ import { useQueryHook } from "../../services/reactQuery";
 // ];
 
 export default function LocationStep() {
-  const id = "67e16777bde93a83b86c623f";
+  const id = "67e6ccdb05463ea8912d9f98";
   const { updateBookingData } = useBookingContext(); // Removed unused bookingData
   const navigate = useNavigate();
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function LocationStep() {
 
   const {
     data: locations = [],
-    // isLoading,
+    isLoading,
     // error,
   } = useQueryHook({
     queryKey: ["locations", id],
@@ -32,14 +33,15 @@ export default function LocationStep() {
     updateBookingData({ location });
     navigate("/booking/professional");
   };
-
+  if (isLoading)
+    return <Loader className="mx-auto " color="blue" type="bars" />;
   return (
     <div className="h-full flex flex-col gap-[20px] items-center justify-center p-6 rounded-lg">
       <h1 className="text-[32px] font-[500]">Select a Location</h1>
       <div className="flex flex-col gap-4">
         {locations.map((location) => (
           <button
-            key={location.id}
+            key={location._id}
             onClick={() => handleSelect(location)}
             className="w-[758px] h-[200px] cursor-pointer flex items-center 
             justify-center bg-[#FFFFFF] rounded-3xl border border-[#718EBF]

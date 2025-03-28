@@ -1,18 +1,28 @@
-// components/steps/ServicesStep.jsx
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
+import { useQueryHook } from "../../services/reactQuery";
+import { Loader } from "@mantine/core";
 
-const services = [
-  { name: "Haircut", time: 30, price: 40 },
-  { name: "Beard Trim", time: 15, price: 30 },
-  { name: "Shaving", time: 20, price: 20 },
-];
+// const services = [
+//   { name: "Haircut", time: 30, price: 40 },
+//   { name: "Beard Trim", time: 15, price: 30 },
+//   { name: "Shaving", time: 20, price: 20 },
+// ];
 
 export default function ServicesStep() {
   const { bookingData, updateBookingData } = useBookingContext();
+  // const id = bookingData.professional?._id;
   const navigate = useNavigate();
-
+  const {
+    data: services = [],
+    isLoading,
+    // error,
+  } = useQueryHook({
+    queryKey: ["services"], // ✅ Cache users by owner ID
+    endpoint: `/api/get-services`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+  console.log(services);
   // useEffect(() => {
   //   if (!bookingData.professional) navigate("/booking/services");
   // }, []);
@@ -26,7 +36,8 @@ export default function ServicesStep() {
 
     updateBookingData({ services: newServices });
   };
-
+  if (isLoading)
+    return <Loader className="mx-auto " color="blue" type="bars" />;
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h1 className="text-2xl font-bold mb-6">Select Services</h1>
@@ -44,7 +55,7 @@ export default function ServicesStep() {
           >
             <p className="font-semibold mb-2">{service.name}</p>
             <div className="flex justify-between text-sm">
-              <span className="text-gray-500">{service.time} MINS</span>
+              <span className="text-gray-500">{service.duration} MINS</span>
               <span className="font-semibold">${service.price}</span>
             </div>
           </button>

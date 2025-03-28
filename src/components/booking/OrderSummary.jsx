@@ -75,7 +75,8 @@ export default function OrderSummary() {
               TOTAL SERVICE TIME
             </p>
             <p className="text-white text-[18px] font-[400]">
-              {bookingData.services.reduce((sum, s) => sum + s.time, 0)} MINS
+              {bookingData.services.reduce((sum, s) => sum + s.duration, 0)}{" "}
+              MINS
             </p>
           </div>
         )}
@@ -110,7 +111,7 @@ export default function OrderSummary() {
                 SUB TOTAL
               </span>
               <span className="text-white uppercase text-[22px] font-[700]">
-                ${bookingData.services.reduce((sum, s) => sum + s.price, 0)}
+                ${bookingData.services.reduce((sum, s) => +sum + +s.price, 0)}
               </span>
             </div>
           </div>
