@@ -1,5 +1,5 @@
-// src/context/BookingContext.jsx (correct extension)
-import { createContext, useContext, useState } from "react";
+// src/context/BookingContext.jsx
+import { createContext, useContext, useEffect, useState } from "react";
 
 const BookingContext = createContext();
 
@@ -11,6 +11,21 @@ export function BookingProvider({ children }) {
     date: null,
     time: null,
   });
+
+  // Get data from localStorage when component mounts
+  useEffect(() => {
+    const savedBookingData = localStorage.getItem("bookingData");
+    if (savedBookingData) {
+      setBookingData(JSON.parse(savedBookingData));
+    }
+  }, []);
+
+  // Save bookingData to localStorage whenever it changes
+  useEffect(() => {
+    if (bookingData) {
+      localStorage.setItem("bookingData", JSON.stringify(bookingData));
+    }
+  }, [bookingData]);
 
   const updateBookingData = (newData) => {
     setBookingData((prev) => ({ ...prev, ...newData }));

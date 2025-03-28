@@ -30,7 +30,7 @@ export default function MainVerifyEmail() {
         navigate("/OrganizationOwnerDashboard");
       } else if (data.user.role === "superadmin") {
         navigate("/ProfessionalDashboard");
-      } else if (data.user.role === "customer") {
+      } else if (data.user.role === "barber") {
         navigate("/CustomerDashboard");
       } else {
         navigate("/");

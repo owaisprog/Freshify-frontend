@@ -13,9 +13,9 @@ export default function ServicesStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!bookingData.professional) navigate("/booking/professional");
-  }, []);
+  // useEffect(() => {
+  //   if (!bookingData.professional) navigate("/booking/services");
+  // }, []);
 
   const toggleService = (service) => {
     const newServices = bookingData.services.some(

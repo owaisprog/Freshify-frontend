@@ -121,7 +121,7 @@ const router = createBrowserRouter(
             <Link to="/Login?role=superadmin">
               <li>SuperAdmin</li>
             </Link>
-            <Link to="/Login?role=customer">
+            <Link to="/Login?role=barber">
               <li>Customer</li>
             </Link>
             <Link to="/Login?role=organization_owner">
@@ -209,7 +209,7 @@ const router = createBrowserRouter(
       <Route
         path="CustomerDashboard"
         element={
-          <ProtectedRoute path="/Login?role=customer" requiredRole="customer">
+          <ProtectedRoute path="/Login?role=barber" requiredRole="barber">
             <CustomerLayout />
           </ProtectedRoute>
         }
