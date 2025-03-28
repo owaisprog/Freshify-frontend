@@ -28,39 +28,38 @@ export default function ServicesStep() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
-      <h1 className="text-2xl font-bold mb-6">Select Services</h1>
-      <div className="grid grid-cols-2 gap-4">
+    <div className=" h-full gap-[10px] flex flex-col justify-center p-6 rounded-lg shadow-sm">
+      <h1 className="text-[32px] font-[500]">Select Services</h1>
+      <div className="grid lg:grid-cols-3 gap-3 ">
         {services.map((service) => (
           <button
             key={service.name}
             onClick={() => toggleService(service)}
-            className={`p-4 border rounded-lg text-left transition-colors
+            className={`relative flex cursor-pointer flex-col items-start max-w-[329px] h-[187px] p-[30px] rounded-[25px] bg-[#FFFFFF] specialBorder
               ${
                 bookingData.services.some((s) => s.name === service.name)
                   ? "bg-blue-50 border-blue-200 ring-2 ring-blue-500"
                   : "hover:bg-gray-50"
               }`}
           >
-            <p className="font-semibold mb-2">{service.name}</p>
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">{service.time} MINS</span>
-              <span className="font-semibold">${service.price}</span>
-            </div>
+            <p className="text-[22px] font-[700] uppercase">{service.name}</p>
+
+            <p className="text-[22px] uppercase">TIME: {service.time} MINS</p>
+
+            <span className=" text-[22px] font-[400] uppercase bg-black absolute text-white rounded-l-[10px] w-[50px] bottom-6 right-0">
+              ${service.price}
+            </span>
           </button>
         ))}
       </div>
 
       {bookingData.services.length > 0 && (
-        <div className="mt-8 flex justify-end">
-          <button
-            onClick={() => navigate("/booking/datetime")}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
-            transition-colors font-medium"
-          >
-            Next → Choose Time
-          </button>
-        </div>
+        <button
+          onClick={() => navigate("/booking/datetime")}
+          className="w-[311px] h-[41px] cursor-pointer text-white bg-black rounded-[10px] text-center"
+        >
+          Choose Time
+        </button>
       )}
     </div>
   );

@@ -25,8 +25,8 @@ export default function LocationStep() {
             key={location.id}
             onClick={() => handleSelect(location)}
             className="w-[758px] h-[200px] cursor-pointer flex items-center 
-            justify-center bg-[#FFFFFF] rounded-3xl border border-[#718EBF]
-            hover:border-blue-500 transition-all"
+            justify-center bg-[#FFFFFF] rounded-3xl border specialBorder
+             transition-all"
           >
             <p className="text-[32px] font-[700]">{location.name}</p>
           </button>

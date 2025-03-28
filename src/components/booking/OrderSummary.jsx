@@ -5,12 +5,12 @@ export default function OrderSummary() {
   const { bookingData } = useBookingContext();
 
   return (
-    <div className="w-[400px] bg-black sticky top-5 rounded-3xl p-6">
-      <h2 className="text-[#FFFFFF] text-[32px] font-[500] text-center mb-8">
-        Order Summary
-      </h2>
-
+    <div className="w-[400px] bg-black flex flex-col justify-between sticky top-5 rounded-3xl p-6">
       <div className="space-y-5 text-sm">
+        <h2 className="text-[#FFFFFF] text-[32px] font-[500] text-center mb-8">
+          Order Summary
+        </h2>
+        {/* Location Section  */}
         {bookingData.location && (
           <div className="flex flex-col gap-[10px]">
             <p className="text-white uppercase text-[22px] font-[700]">
@@ -30,6 +30,7 @@ export default function OrderSummary() {
           </div>
         )}
 
+        {/* Professional Section  */}
         {bookingData.professional && (
           <div className="flex flex-col gap-[10px]">
             <p className="text-white uppercase text-[22px] font-[700]">
@@ -49,6 +50,7 @@ export default function OrderSummary() {
           </div>
         )}
 
+        {/* Services Section  */}
         {bookingData.services.length > 0 && (
           <div className="flex flex-col gap-[10px]">
             <p className="text-white uppercase text-[22px] font-[700]">
@@ -69,8 +71,9 @@ export default function OrderSummary() {
           </div>
         )}
 
+        {/* Total Service Time Section  */}
         {bookingData.services.length > 0 && (
-          <div className="pb-3 border-b border-gray-600">
+          <div className="">
             <p className="text-white uppercase text-[22px] font-[700]">
               TOTAL SERVICE TIME
             </p>
@@ -79,9 +82,9 @@ export default function OrderSummary() {
             </p>
           </div>
         )}
-
+        {/* Booking Date section  */}
         {bookingData.date && (
-          <div className="pb-3 border-b border-gray-600">
+          <div className="">
             <p className="text-white uppercase text-[22px] font-[700]">DATE</p>
             <p className="text-white text-[18px] font-[400]">
               {bookingData.date.toLocaleDateString("en-US", {
@@ -95,14 +98,16 @@ export default function OrderSummary() {
         )}
 
         {bookingData.time && (
-          <div className="pb-3 border-b border-gray-600">
+          <div className="">
             <p className="text-white uppercase text-[22px] font-[700]">TIME</p>
             <p className="text-white text-[18px] font-[400]">
               {bookingData.time}
             </p>
           </div>
         )}
-
+      </div>
+      {/* Subtotal and proceed button section  */}
+      <div className="justify-self-end">
         {bookingData.services.length > 0 && (
           <div className="pt-4">
             <div className="flex justify-between items-center">
