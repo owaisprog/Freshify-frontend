@@ -4,8 +4,8 @@ import OrderSummary from "./OrderSummary.jsx";
 
 export default function BookingLayout() {
   return (
-    <div className="flex justify-between gap-10 px-10 py-5  min-h-screen">
-      <div className="flex-1 text-black">
+    <div className="flex justify-between gap-10  px-10 py-5  min-h-screen">
+      <div className="flex-1 text-black max-w-[1207px] w-full  ">
         <Outlet />
       </div>
 

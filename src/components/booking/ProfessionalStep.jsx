@@ -1,5 +1,5 @@
 // components/steps/ProfessionalStep.jsx
-import { Image, Loader } from "@mantine/core";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
 import { useQueryHook } from "../../services/reactQuery";
@@ -36,31 +36,30 @@ export default function ProfessionalStep() {
   if (isLoading)
     return <Loader className="mx-auto " color="blue" type="bars" />;
   return (
-    <div className="h-full flex flex-col gap-[20px] items-center justify-center p-6 rounded-lg">
-      <h1 className="text-2xl font-bold mb-6">Choose Professional</h1>
-      <div className="space-y-4">
+    <div className="h-full flex flex-col gap-[20px]  justify-center p-6 rounded-lg">
+      <h1 className="text-[32px] font-[500]">Choose Professional</h1>
+      <div className="space-y-4 w-full">
         {professionals.map((pro) => (
           <button
             key={pro.id}
             onClick={() => handleSelect(pro)}
-            className="w-full p-4 text-left border rounded-lg hover:bg-gray-50 
-            transition-colors focus:ring-2 ring-blue-500"
+            className="min-w-full  justify-between gap-x-2 cursor-pointer  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] "
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-semibold text-lg">{pro.name}</p>
-                <p className="text-sm text-gray-500">
-                  Availability: {pro.availability}
+            <div className="flex items-center   gap-3">
+              <div className="min-h-[100px] flex items-center  justify-center min-w-[100px] bg-[#E7EDFF] rounded-[20px]">
+                <img
+                  className="w-[40.83px] h-[58.33px]"
+                  src="/usaLocationIcon.png"
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col items-start">
+                <p className="text-[22px] font-[700] uppercase ">{pro.name}</p>
+                <p className="text-[18px] font-[700]">
+                  Availability:{" "}
+                  <span className="font-normal">{pro.availability}</span>
                 </p>
               </div>
-              <Image
-                src={`/images/pro-${pro.id}.jpg`}
-                alt={pro.name}
-                width={40}
-                height={40}
-                className="rounded-full"
-                withPlaceholder
-              />
             </div>
           </button>
         ))}
