@@ -1,16 +1,33 @@
 // components/steps/LocationStep.jsx
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
+import { useEffect } from "react";
+import { useQueryHook } from "../../services/reactQuery";
 
-const locations = [
-  { name: "New York USA", id: 1 },
-  { name: "California USA", id: 2 },
-];
+// const locations = [
+//   { name: "New York USA", id: 1 },
+//   { name: "California USA", id: 2 },
+// ];
 
 export default function LocationStep() {
+  const id = "67e16777bde93a83b86c623f";
   const { updateBookingData } = useBookingContext(); // Removed unused bookingData
   const navigate = useNavigate();
+  useEffect(() => {
+    const savedBookingData = localStorage.getItem("bookingData");
+    if (savedBookingData) localStorage.removeItem("bookingData");
+  }, []);
 
+  const {
+    data: locations = [],
+    // isLoading,
+    // error,
+  } = useQueryHook({
+    queryKey: ["locations", id],
+    endpoint: `/api/get-locations-by-owner/${id}`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+  console.log(locations);
   const handleSelect = (location) => {
     updateBookingData({ location });
     navigate("/booking/professional");

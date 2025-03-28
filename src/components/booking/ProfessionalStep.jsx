@@ -13,9 +13,9 @@ export default function ProfessionalStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!bookingData.location) navigate("/booking");
-  }, []);
+  // useEffect(() => {
+  //   if (!bookingData.professional) navigate("/booking/professional");
+  // }, []);
 
   const handleSelect = (professional) => {
     updateBookingData({ professional });

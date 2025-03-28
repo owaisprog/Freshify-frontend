@@ -19,9 +19,9 @@ export default function DateTimeStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!bookingData.services.length) navigate("/booking/services");
-  }, []);
+  // useEffect(() => {
+  //   if (!bookingData.services.length) navigate("/booking/datetime");
+  // }, []);
 
   const renderCalendarHeader = () => (
     <div className="grid grid-cols-7 gap-1 mb-2">
