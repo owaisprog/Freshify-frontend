@@ -2,6 +2,7 @@
 import "@mantine/core/styles.css";
 import "@mantine/charts/styles.css";
 import "@mantine/carousel/styles.css";
+import "@mantine/dates/styles.css";
 
 import { MantineProvider } from "@mantine/core";
 
@@ -87,11 +88,32 @@ import MainVerifyEmail from "./components/auth/MainAuth/MainVerifyEmail.jsx";
 import MainResetPassword from "./components/auth/MainAuth/MainResetPassword.jsx";
 import MainResendOTP from "./components/auth/MainAuth/MainResendOTP.jsx";
 import MainNewPassword from "./components/auth/MainAuth/MainNewPassword.jsx";
+import BookingLayout from "./components/booking/BookingLayout.jsx";
+import LocationStep from "./components/booking/LocationStep.jsx";
+import ProfessionalStep from "./components/booking/ProfessionalStep.jsx";
+import ServicesStep from "./components/booking/ServicesStep.jsx";
+import { BookingProvider } from "./components/booking/BookingContext.jsx";
+import DateTimeStep from "./components/booking/DateTimeStep.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      {/* Customer Booking Routes Start   */}
+      <Route
+        path="booking"
+        element={
+          <BookingProvider>
+            <BookingLayout />
+          </BookingProvider>
+        }
+      >
+        <Route index element={<LocationStep />} />
+        <Route path="professional" element={<ProfessionalStep />} />
+        <Route path="services" element={<ServicesStep />} />
+        <Route path="datetime" element={<DateTimeStep />} />
+      </Route>
+      {/* Customer Booking Routes End   */}
       <Route
         index
         element={
