@@ -23,7 +23,7 @@ export const useQueryHook = ({
 export const usePostMutation = (queryKey) => {
   const queryClient = useQueryClient();
 
-  const { mutate, error, isPending, isSuccess } = useMutation({
+  const { mutate, error, data, isPending, isSuccess } = useMutation({
     mutationFn: async ({ endpoint, payload }) => apiPost(endpoint, payload),
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey]); // ✅ Auto-refetch after mutation
@@ -37,6 +37,7 @@ export const usePostMutation = (queryKey) => {
     error,
     isPending,
     isSuccess,
+    data,
   };
 };
 export const useUpdateMutation = (queryKey) => {

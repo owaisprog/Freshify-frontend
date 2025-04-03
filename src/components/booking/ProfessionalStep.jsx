@@ -1,8 +1,8 @@
 // components/steps/ProfessionalStep.jsx
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
 import { useQueryHook } from "../../services/reactQuery";
+import { Loader } from "@mantine/core";
 
 // const professionals = [
 //   { name: "Mirza Tayyab Khalid", availability: "TODAY", id: 1 },
@@ -11,8 +11,9 @@ import { useQueryHook } from "../../services/reactQuery";
 // ];
 
 export default function ProfessionalStep() {
-  const id = "67e6ccdb05463ea8912d9f98";
-  const { updateBookingData } = useBookingContext();
+  const { updateBookingData, bookingData } = useBookingContext();
+  const { _id } = bookingData.location || {};
+  console.log(_id, "id");
   const navigate = useNavigate();
 
   // useEffect(() => {
@@ -23,8 +24,8 @@ export default function ProfessionalStep() {
     isLoading,
     // error,
   } = useQueryHook({
-    queryKey: ["users", id], // ✅ Cache users by owner ID
-    endpoint: `/api/get-users-by-owner/${id}`,
+    queryKey: ["users", _id], // ✅ Cache users by owner ID
+    endpoint: `/api/get-barbers-by-location/${_id}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
   const professionals = allUsers.filter((val) => val.role == "barber");
@@ -41,7 +42,7 @@ export default function ProfessionalStep() {
       <div className="space-y-4 w-full">
         {professionals.map((pro) => (
           <button
-            key={pro.id}
+            key={pro._id}
             onClick={() => handleSelect(pro)}
             className="min-w-full  justify-between gap-x-2 cursor-pointer  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] "
           >

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
 
 * {
@@ -7,8 +7,7 @@
 
 html,
 body {
-  background-color: #F5F7FA;
-  
+  background-color: #f5f7fa;
 }
 
 .specialBorder {
@@ -16,14 +15,12 @@ body {
 }
 
 .specialBorderBottom {
-  border-bottom: 0.5px solid  #c6cfe1 !important;/* Horizontal offset, Vertical offset, Blur radius, and color */
+  border-bottom: 0.5px solid #c6cfe1 !important; /* Horizontal offset, Vertical offset, Blur radius, and color */
 }
 
 .custom-gap .mantine-Input-label {
   margin-bottom: 10px; /* Adjust the gap as needed */
 }
-
-
 
 :root {
   --toastify-toast-width: auto;
@@ -32,3 +29,4 @@ body {
 .Toastify__toast {
   min-width: 300px; /* Set your desired minimum width */
 }
+/*  */

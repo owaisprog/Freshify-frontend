@@ -12,14 +12,15 @@ import { Loader } from "@mantine/core";
 export default function ServicesStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   // const id = bookingData.professional?._id;
+  const { _id } = bookingData.professional || {};
   const navigate = useNavigate();
   const {
     data: services = [],
     isLoading,
     // error,
   } = useQueryHook({
-    queryKey: ["services"], // ✅ Cache users by owner ID
-    endpoint: `/api/get-services`,
+    queryKey: ["services", _id], // ✅ Cache users by owner ID
+    endpoint: `/api/get-services-by-barber/${_id}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
   console.log(services);

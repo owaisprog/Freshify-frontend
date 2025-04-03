@@ -33,6 +33,7 @@ export default function DateTimeStep() {
 
   const onClickDay = (date) => {
     setSelectedDay(date.toDateString());
+    //api date non-aviable
     const slots = generateTimeSlots({
       openingTime: "08:00",
       closingTime: "20:00",
