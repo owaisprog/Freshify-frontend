@@ -6,45 +6,6 @@ import { Link, useLocation } from "react-router-dom";
 // Reuse your existing icons and data
 import { MdOutlineSettings } from "react-icons/md";
 import { logoutUser } from "../../services/AuthServices";
-// Reuse your existing data array
-// const data = [
-//   {
-//     link: "",
-//     label: "Dashboard",
-//     activePath: "/OrganizationOwnerDashboard",
-//     icon: MdDashboard,
-//   },
-//   {
-//     link: "Services",
-//     label: "Services",
-//     activePath: "/OrganizationOwnerDashboard/Services",
-//     icon: HiWrenchScrewdriver,
-//   },
-//   {
-//     link: "locations",
-//     label: "Locations",
-//     activePath: "/OrganizationOwnerDashboard/Locations",
-//     icon: MdMyLocation,
-//   },
-//   {
-//     link: "Users",
-//     label: "Users",
-//     activePath: "/OrganizationOwnerDashboard/Users",
-//     icon: ImUsers,
-//   },
-//   {
-//     link: "Calendar",
-//     label: "Calendar",
-//     activePath: "/OrganizationOwnerDashboard/Calendar",
-//     icon: MdCalendarMonth,
-//   },
-//   {
-//     link: "Payout",
-//     label: "Payout",
-//     activePath: "/OrganizationOwnerDashboard/Payout",
-//     icon: MdOutlinePayment,
-//   },
-// ];
 
 export default function MobileNav({ data }) {
   const { role } = JSON.parse(localStorage.getItem("data"));
@@ -77,13 +38,14 @@ export default function MobileNav({ data }) {
   ));
 
   return (
-    <div className="lg:hidden bg-[#FFFFFF] fixed top-0 w-full z-50">
+    <div className="lg:hidden bg-black fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
       <nav className=" z-20  pr-4 flex justify-between items-center ">
         <div className=" h-[80px]  w-[85%]">
           <Image className="h-full" radius="md" src={freshifyLogoMobile} />
         </div>
         <Burger
+          color="white"
           opened={isMenuOpen}
           onClick={toggleMenu}
           aria-label="Toggle navigation"

@@ -7,45 +7,6 @@ import { useLocation } from "react-router-dom";
 // react icons import
 import { MdOutlineSettings } from "react-icons/md";
 
-// const data = [
-//   {
-//     link: "",
-//     label: "Dashboard",
-//     activePath: "/OrganizationOwnerDashboard",
-//     icon: MdDashboard,
-//   },
-//   {
-//     link: "Services",
-//     label: "Services",
-//     activePath: "/OrganizationOwnerDashboard/Services",
-//     icon: HiWrenchScrewdriver,
-//   },
-//   {
-//     link: "Users",
-//     label: "Users",
-//     activePath: "/OrganizationOwnerDashboard/Users",
-//     icon: ImUsers,
-//   },
-//   {
-//     link: "locations",
-//     label: "Locations",
-//     activePath: "/OrganizationOwnerDashboard/Locations",
-//     icon: MdMyLocation,
-//   },
-//   {
-//     link: "Calendar",
-//     label: "Calendar",
-//     activePath: "/OrganizationOwnerDashboard/Calendar",
-//     icon: MdCalendarMonth,
-//   },
-//   {
-//     link: "Payout",
-//     label: "Payout",
-//     activePath: "/OrganizationOwnerDashboard/Payout",
-//     icon: MdOutlinePayment,
-//   },
-// ];
-
 export default function Sidebar({ data }) {
   const location = useLocation();
   const currentPath = location.pathname;
@@ -72,9 +33,9 @@ export default function Sidebar({ data }) {
   ));
 
   return (
-    <nav className="  flex flex-col  h-screen bg-[#FFFFFF]">
+    <nav className="  flex flex-col  h-screen bg-[black]">
       <div className="flex-1">
-        <Image className="w-full h-[78px] " radius="md" src={freshifyLogo} />
+        <Image className="w-full h-[78px] " src={freshifyLogo} />
 
         {links}
       </div>

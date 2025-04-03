@@ -1,51 +1,73 @@
-import { Card } from "@mantine/core";
+import { Card, Text } from "@mantine/core";
 import { BarChart } from "@mantine/charts";
 
-export default function SalesChart() {
-  // Sample data
-  const data = [
-    { day: "Sat", Texas: 500, NewYork: 300 },
-    { day: "Sun", Texas: 350, NewYork: 250 },
-    { day: "Mon", Texas: 420, NewYork: 310 },
-    { day: "Tue", Texas: 480, NewYork: 400 },
-    { day: "Wed", Texas: 200, NewYork: 150 },
-    { day: "Thu", Texas: 300, NewYork: 380 },
-    { day: "Fri", Texas: 360, NewYork: 280 },
+export default function SalesChart({ WeeklyLocationSales }) {
+  // Extract location names from the first data entry (excluding 'day' and '123')
+  const locationKeys =
+    WeeklyLocationSales?.length > 0
+      ? Object.keys(WeeklyLocationSales[0]).filter(
+          (key) => !["day", "123"].includes(key)
+        )
+      : [];
+
+  // Color palette for different locations
+  const colorsPalette = [
+    "#71BF7D", // First location color
+    "#000000", // Second location color
+    "#FF5733", // Additional colors
+    "#33FF57",
+    "#3357FF",
+    "#F333FF",
   ];
 
+  if (!WeeklyLocationSales?.length || locationKeys.length === 0) {
+    return (
+      <Card
+        shadow="sm"
+        radius="25px"
+        className="flex items-center justify-center h-[322px] rounded-[25px] specialBorder"
+      >
+        <Text size="lg" color="dimmed">
+          No sales data available
+        </Text>
+      </Card>
+    );
+  }
   return (
     <Card
       shadow="sm"
       radius={"25px"}
-      className="flex  rounded-[25px] specialBorder"
+      className={`${WeeklyLocationSales?.length > 0 ? "flex" : "opacity-0"} lg:h-[325px]  rounded-[25px] specialBorder`}
     >
       <div className="flex w-full justify-end p-4 space-x-6">
-        {/* Texas Legend */}
-        <div className="flex items-center space-x-2">
-          <span className="w-3 h-3 bg-[#71BF7D] rounded-full"></span>
-          <span className="text-gray-800 font-medium">Texas</span>
-        </div>
-
-        {/* New York Legend */}
-        <div className="flex items-center space-x-2">
-          <span className="w-3 h-3 bg-[#000000] rounded-full"></span>
-          <span className="text-gray-600 font-medium">New York</span>
-        </div>
+        {/* Dynamic Legend */}
+        {locationKeys.map((location, index) => (
+          <div key={location} className="flex items-center space-x-2">
+            <span
+              className="w-3 h-3 rounded-full"
+              style={{
+                backgroundColor: colorsPalette[index % colorsPalette.length],
+              }}
+            ></span>
+            <span className="text-gray-800 font-medium">
+              {location.split(" ")[0]}
+            </span>
+          </div>
+        ))}
       </div>
 
-      {/* .. */}
       <BarChart
-        data={data}
+        data={WeeklyLocationSales}
         barProps={{ radius: 30 }}
         dataKey="day"
-        className="h-[235px] "
+        className="h-[215px]"
         strokeDasharray="0 0"
-        barChartProps={{ barCategoryGap: "10%" }}
+        barChartProps={{ barCategoryGap: "0%" }}
         maxBarWidth={12}
-        series={[
-          { name: "NewYork", color: "#000000" }, // Black
-          { name: "Texas", color: "#71BF7D" }, // Green
-        ]}
+        series={locationKeys.map((location, index) => ({
+          name: location,
+          color: colorsPalette[index % colorsPalette.length],
+        }))}
       />
     </Card>
   );
