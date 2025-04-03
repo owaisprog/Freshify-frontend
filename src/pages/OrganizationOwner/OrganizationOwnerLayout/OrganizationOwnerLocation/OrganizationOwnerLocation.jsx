@@ -303,7 +303,8 @@ export default function OrganizationOwnerLocations() {
                       c={"#718EBF"}
                       className="cursor-pointer !text-[18px] !font-[400]"
                     >
-                      {val.workingHours} Hours
+                      {/* {val.workingHours} Hours */}
+                      Working Hours
                     </Text>
                   </div>
                   <div>

@@ -1,4 +1,4 @@
-import { Button, Title, Modal, Text } from "@mantine/core";
+import { Button, Title, Modal, Text, Loader } from "@mantine/core";
 import { useState } from "react";
 import { FiUpload } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
@@ -43,6 +43,7 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
   ]);
   const { mutate: deleteUser } = useDeleteMutation(["users", ownerId]);
 
+  const [isDeleting, setIsDeleting] = useState(null); // Track deleting state
   // ✅ State for popup/modal
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -58,17 +59,23 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
 
   // ✅ Delete User
   const handleDeleteUser = (userId) => {
-    deleteUser(
-      { endpoint: `/api/delete-user/${userId}` },
-      {
-        onSuccess: () =>
-          toast.success("Admin Deleted Successfully", {
-            position: "top-center",
-          }),
-        onError: () =>
-          toast.error("Deletion Error", { position: "top-center" }),
-      }
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete?");
+    if (confirmDelete) {
+      setIsDeleting(userId);
+      deleteUser(
+        { endpoint: `/api/delete-user/${userId}` },
+        {
+          onSuccess: () =>
+            toast.success("Admin Deleted Successfully", {
+              position: "top-center",
+            }),
+          onError: () => {
+            setIsDeleting(null);
+            toast.error("Deletion Error", { position: "top-center" });
+          },
+        }
+      );
+    }
   };
 
   // ✅ Form Handling using Mantine
@@ -144,7 +151,7 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
         setOpened(false);
         setSelectedUser(null);
       }, 2000);
-    } catch (error) {
+    } catch {
       //console.error("Error creating/updating user:", error);
       toast("Something went wrong", { position: "top-right" });
     } finally {
@@ -193,12 +200,17 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
         </div>
 
         {/* ✅ Delete User */}
-        <BsTrash
-          size={18}
+
+        <button
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
-          style={{ cursor: "pointer", color: "#622929" }}
           onClick={() => handleDeleteUser(val._id)}
-        />
+        >
+          {isDeleting === val._id ? (
+            <Loader color="red" size="xs" type="dots" />
+          ) : (
+            <BsTrash size={18} style={{ color: "#622929" }} />
+          )}
+        </button>
       </div>
     ),
   }));

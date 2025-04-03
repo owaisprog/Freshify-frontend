@@ -28,7 +28,7 @@ export default function OrganizationOwnerLayout() {
     {
       link: "locations",
       label: "Locations",
-      activePath: "/OrganizationOwnerDashboard/Locations",
+      activePath: "/OrganizationOwnerDashboard/locations",
       icon: MdMyLocation,
     },
     {
@@ -50,13 +50,18 @@ export default function OrganizationOwnerLayout() {
       icon: MdOutlinePayment,
     },
   ];
+  const settingData = {
+    link: "settings",
+    label: "Settings",
+    activePath: "/OrganizationOwnerDashboard/settings",
+  };
   return (
     <section className="flex mx-auto min-h-screen">
       {/* Sidebar (Left side) */}
       <aside className="hidden lg:block sticky top-0 left-0  w-[300px] h-screen self-start">
         {" "}
         {/* Added h-screen and self-start */}
-        <Sidebar data={data} />
+        <Sidebar data={data} settingData={settingData} />
       </aside>
 
       <nav className="lg:hidden">

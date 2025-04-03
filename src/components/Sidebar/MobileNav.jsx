@@ -7,7 +7,10 @@ import { Link, useLocation } from "react-router-dom";
 import { MdOutlineSettings } from "react-icons/md";
 import { logoutUser } from "../../services/AuthServices";
 
-export default function MobileNav({ data }) {
+export default function MobileNav({
+  data,
+  settingData = { link: "", label: "", activePath: "" },
+}) {
   const { role } = JSON.parse(localStorage.getItem("data"));
   const location = useLocation();
   const currentPath = location.pathname;
@@ -61,7 +64,7 @@ export default function MobileNav({ data }) {
         zIndex={40}
         withCloseButton={false}
         classNames={{
-          body: "!px-0 !pt-24 h-full", // Force full height on drawer body
+          body: "!px-0 !pt-24 h-full !bg-black", // Force full height on drawer body
           content: " h-full", // Full height for drawer content
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
@@ -82,19 +85,19 @@ export default function MobileNav({ data }) {
             ) : (
               <div className="pt-4  ">
                 <Link
-                  to="settings"
+                  to={settingData.link}
                   className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
-                    "settings" === active
+                    settingData.activePath === active
                       ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
                       : ""
                   }`}
                   onClick={() => {
-                    setActive("settings");
+                    setActive(settingData.activePath);
                     setIsMenuOpen(false);
                   }}
                 >
                   <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
-                  <span>Settings</span>
+                  <span>{settingData.label}</span>
                 </Link>
               </div>
             )}

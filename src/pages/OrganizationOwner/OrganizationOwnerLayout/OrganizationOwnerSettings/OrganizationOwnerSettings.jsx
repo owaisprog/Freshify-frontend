@@ -42,6 +42,10 @@ export default function OrganizationOwnerSettings() {
                   path="/OrganizationOwnerDashboard/settings/delete"
                   text="Delete Account"
                 />
+                <Tab
+                  path="/OrganizationOwnerDashboard/settings/logout"
+                  text="Logout"
+                />
               </Tabs.List>
             </Tabs>
           </section>

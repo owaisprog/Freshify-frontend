@@ -20,12 +20,7 @@ export default function AdminsLayout() {
       activePath: "/AdminsDashboard/Services",
       icon: HiWrenchScrewdriver,
     },
-    // {
-    //   link: "locations",
-    //   label: "Locations",
-    //   activePath: "/AdminsDashboard/Locations",
-    //   icon: MdMyLocation,
-    // },
+
     {
       link: "Users",
       label: "Users",
@@ -33,18 +28,24 @@ export default function AdminsLayout() {
       icon: ImUsers,
     },
     {
-      link: "",
+      link: "Calendar",
       label: "Calendar",
       activePath: "/AdminsDashboard/Calendar",
       icon: MdCalendarMonth,
     },
     {
-      link: "",
+      link: "Payout",
       label: "Payout",
       activePath: "/AdminsDashboard/Payout",
       icon: MdOutlinePayment,
     },
   ];
+
+  const settingData = {
+    link: "settings",
+    label: "Settings",
+    activePath: "/AdminsDashboard/settings",
+  };
 
   return (
     <section className="flex mx-auto min-h-screen">
@@ -52,11 +53,11 @@ export default function AdminsLayout() {
       <aside className="hidden lg:block sticky top-0 left-0  w-[300px] h-screen self-start">
         {" "}
         {/* Added h-screen and self-start */}
-        <Sidebar data={data} />
+        <Sidebar data={data} settingData={settingData} />
       </aside>
 
       <nav className="lg:hidden">
-        <MobileNav data={data} />
+        <MobileNav data={data} settingData={settingData} />
       </nav>
 
       {/* Main Content (Right side) */}

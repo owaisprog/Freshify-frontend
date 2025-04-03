@@ -42,6 +42,10 @@ export default function ProfessionalSettings() {
                   path="/ProfessionalDashboard/settings/delete"
                   text="Delete Account"
                 />
+                <Tab
+                  path="/ProfessionalDashboard/settings/logout"
+                  text="Logout"
+                />
               </Tabs.List>
             </Tabs>
           </section>

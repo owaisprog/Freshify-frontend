@@ -41,6 +41,7 @@ export default function CustomerSettings() {
                   path="/CustomerDashboard/settings/delete"
                   text="Delete Account"
                 />
+                <Tab path="/CustomerDashboard/settings/logout" text="Logout" />
               </Tabs.List>
             </Tabs>
           </section>

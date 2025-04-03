@@ -14,17 +14,22 @@ export default function CustomerLayout() {
     },
   ];
 
+  const settingData = {
+    link: "settings",
+    label: "Settings",
+    activePath: "/CustomerDashboard/settings",
+  };
   return (
     <section className="flex mx-auto min-h-screen">
       {/* Sidebar (Left side) */}
       <aside className="hidden lg:block sticky top-0 left-0  w-[300px] h-screen self-start">
         {" "}
         {/* Added h-screen and self-start */}
-        <Sidebar data={data} />
+        <Sidebar data={data} settingData={settingData} />
       </aside>
 
       <nav className="lg:hidden">
-        <MobileNav data={data} />
+        <MobileNav data={data} settingData={settingData} />
       </nav>
 
       {/* Main Content (Right side) */}

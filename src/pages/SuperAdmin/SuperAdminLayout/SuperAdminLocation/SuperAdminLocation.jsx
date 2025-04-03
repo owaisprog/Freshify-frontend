@@ -31,6 +31,7 @@ export default function SuperAdminLocations() {
   const { mutate: createLocation } = usePostMutation(["locations", ownerId]);
   const { mutate: updateLocation } = useUpdateMutation(["locations", ownerId]);
 
+  const [isDeleting, setIsDeleting] = useState(null); // Track deleting state
   const [toggleTitle, setToggleTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [opened, setOpened] = useState(false);
@@ -51,20 +52,26 @@ export default function SuperAdminLocations() {
   };
 
   const DelLocation = (delId) => {
-    deleteLocation(
-      { endpoint: `/api/delete-location/${delId}` },
-      {
-        onSuccess: () => {
-          toast.success("Location Deleted Successfully", {
-            position: "top-center",
-          });
-        },
-        onError: () => {
-          //console.error("Error deleting location:", error);
-          toast.error("Error deleting location", { position: "top-center" });
-        },
-      }
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete?");
+    if (confirmDelete) {
+      setIsDeleting(delId);
+      deleteLocation(
+        { endpoint: `/api/delete-location/${delId}` },
+        {
+          onSuccess: () => {
+            setIsDeleting(null);
+            toast.success("Location Deleted Successfully", {
+              position: "top-center",
+            });
+          },
+          onError: () => {
+            setIsDeleting(null);
+            //console.error("Error deleting location:", error);
+            toast.error("Error deleting location", { position: "top-center" });
+          },
+        }
+      );
+    }
   };
 
   // Fetch locations
@@ -293,7 +300,8 @@ export default function SuperAdminLocations() {
                       c={"#718EBF"}
                       className="cursor-pointer !text-[18px] !font-[400]"
                     >
-                      {val.workingHours} Hours
+                      {/* {val.workingHours} Hours */}
+                      Working Hours
                     </Text>
                   </div>
                   <div>
@@ -341,7 +349,11 @@ export default function SuperAdminLocations() {
                       className="bg-[#622929] rounded p-2 cursor-pointer"
                       onClick={() => DelLocation(val._id)}
                     >
-                      <BsTrash size={18} style={{ color: "white" }} />
+                      {isDeleting === val._id ? (
+                        <Loader color="#FFFFFF" size="xs" type="dots" />
+                      ) : (
+                        <BsTrash size={18} style={{ color: "white" }} />
+                      )}
                     </button>
                   </div>
                 </section>

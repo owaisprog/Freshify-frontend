@@ -1,8 +1,8 @@
-import { Button, Select, Text, Title, Modal } from "@mantine/core";
+import { Button, Select, Text, Title, Modal, Loader } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
-import { use, useState } from "react";
+import { useState } from "react";
 import TableCom from "../../../../components/Table";
 import { useForm } from "@mantine/form";
 import Popup from "../../../../components/PopUp";
@@ -43,6 +43,7 @@ function SuperAdminServices() {
   const { mutate: deleteService, isPending: isLoadDelete } =
     useDeleteMutation("services");
 
+  const [isDeleting, setIsDeleting] = useState(null); // Track deleting state
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
@@ -62,24 +63,30 @@ function SuperAdminServices() {
 
   const queryClient = useQueryClient();
   const handleDeleteService = (id) => {
-    deleteService(
-      { endpoint: `/api/delete-service/${id}` },
-      {
-        onSuccess: () => {
-          toast("Service Deleted Successfully", { position: "top-center" });
-          const previousServices = queryClient.getQueryData(["services"]) || [];
-          const updatedServices = previousServices.filter(
-            (service) => service._id !== id
-          );
-          queryClient.setQueryData(["services"], updatedServices);
-          // //console.log("Service deleted successfully!");
-        },
-        onError: (error) => {
-          //console.error("Error deleting service:", error);
-          toast("Error deleting service", { position: "top-right" });
-        },
-      }
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete?");
+    if (confirmDelete) {
+      setIsDeleting(id);
+      deleteService(
+        { endpoint: `/api/delete-service/${id}` },
+        {
+          onSuccess: () => {
+            toast("Service Deleted Successfully", { position: "top-center" });
+            const previousServices =
+              queryClient.getQueryData(["services"]) || [];
+            const updatedServices = previousServices.filter(
+              (service) => service._id !== id
+            );
+            queryClient.setQueryData(["services"], updatedServices);
+            // //console.log("Service deleted successfully!");
+          },
+          onError: () => {
+            setIsDeleting(null);
+            //console.error("Error deleting service:", error);
+            toast("Error deleting service", { position: "top-right" });
+          },
+        }
+      );
+    }
   };
 
   const form = useForm({
@@ -162,7 +169,7 @@ function SuperAdminServices() {
         setLoading(false);
         setOpened(false);
       }, 2000);
-    } catch (error) {
+    } catch {
       toast("Error Creating/Updating service", { position: "top-right" });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
@@ -224,12 +231,17 @@ function SuperAdminServices() {
         </div>
 
         {/* ✅ Delete Service Button */}
-        <BsTrash
-          size={18}
+
+        <button
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
-          style={{ cursor: "pointer", color: "#622929" }}
           onClick={() => handleDeleteService(val._id)}
-        />
+        >
+          {isDeleting === val._id ? (
+            <Loader color="red" size="xs" type="dots" />
+          ) : (
+            <BsTrash size={18} style={{ color: "#622929" }} />
+          )}
+        </button>
       </div>
     ),
   }));

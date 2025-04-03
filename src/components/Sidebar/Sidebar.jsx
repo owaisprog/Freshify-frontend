@@ -7,10 +7,15 @@ import { useLocation } from "react-router-dom";
 // react icons import
 import { MdOutlineSettings } from "react-icons/md";
 
-export default function Sidebar({ data }) {
+export default function Sidebar({
+  data,
+  settingData = { link: "", label: "", activePath: "" }, // Set default value
+}) {
   const location = useLocation();
   const currentPath = location.pathname;
   const [active, setActive] = useState(currentPath);
+
+  console.log("active path", active);
 
   const links = data.map((item) => (
     <Link
@@ -42,20 +47,22 @@ export default function Sidebar({ data }) {
 
       <div className="pb-1  ">
         <Link
-          to={"settings"}
+          to={settingData.link || ""}
           className={`flex items-center no-underline text-[18px] px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black${
-            "settings" === active
+            settingData.activePath === active
               ? " border-l-4 border-black text-black bg-[#f5f7fa]"
               : ""
           }`}
-          onClick={() => setActive("settings")}
+          onClick={() => setActive(settingData.activePath)}
         >
           <MdOutlineSettings
             className={`${
-              active === "settings" ? "text-black" : "text-[#b1b1b1]"
+              settingData.activePath === active
+                ? "text-black"
+                : "text-[#b1b1b1]"
             } mr-4 w-[30px] h-[30px]`}
           />
-          <span>Settings</span>
+          <span>{settingData.label}</span>
         </Link>
       </div>
     </nav>

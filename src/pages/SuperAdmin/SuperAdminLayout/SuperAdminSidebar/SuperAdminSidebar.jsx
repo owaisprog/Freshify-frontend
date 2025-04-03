@@ -1,5 +1,5 @@
 import { useState } from "react";
-import freshifyLogo from "../.././../../assets/freshifyLogo.png";
+import freshifyLogo from "../.././../../assets/freshifyLogoMobile.png";
 import { Image } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -44,7 +44,7 @@ export default function SuperAdminSidebar() {
   ));
 
   return (
-    <nav className="  flex flex-col  h-screen bg-[#FFFFFF]">
+    <nav className="  flex flex-col  h-screen bg-black">
       <div className="flex-1">
         <Image className="w-full h-[78px] " radius="md" src={freshifyLogo} />
 
@@ -52,7 +52,7 @@ export default function SuperAdminSidebar() {
       </div>
 
       <button
-        className="!text-[18px] !px-[40px] bg-black !font-[400] !py-[10px] text-white rounded-tr-md cursor-pointer "
+        className="!text-[18px] !px-[40px] bg-[#FFFFFF] !font-[600] !py-[10px] text-black m-3 rounded-md cursor-pointer  "
         onClick={() => {
           logoutUser();
         }}
