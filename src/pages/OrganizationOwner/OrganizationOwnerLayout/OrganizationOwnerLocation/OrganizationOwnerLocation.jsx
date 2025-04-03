@@ -1,9 +1,12 @@
 import {
   Box,
   Button,
+  Flex,
+  Group,
   Loader,
   Modal,
   Paper,
+  Switch,
   Table,
   Text,
   Title,
@@ -21,6 +24,7 @@ import {
 } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
+import TimePicker from "../../../../components/DayTimePicker";
 
 export default function OrganizationOwnerLocations() {
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -37,6 +41,10 @@ export default function OrganizationOwnerLocations() {
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(null);
+
+  //workign hours
+
+  // const [workingHoursModalOpen, setWorkingHoursModalOpen] = useState(false);
 
   const copyToClipboard = (text) => {
     navigator.clipboard
@@ -57,7 +65,7 @@ export default function OrganizationOwnerLocations() {
     endpoint: `/api/get-locations-by-owner/${id}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
-
+  console.log(locations);
   const queryClient = useQueryClient();
 
   const DelLocation = (delId) => {
@@ -81,7 +89,41 @@ export default function OrganizationOwnerLocations() {
   };
 
   // Fetch locations
+  const [defaultWorkingHours] = useState([
+    { day: "monday", start: "08:00", end: "18:00", closed: false },
+    { day: "tuesday", start: "08:00", end: "18:00", closed: false },
+    { day: "wednesday", start: "08:00", end: "18:00", closed: false },
+    { day: "thursday", start: "08:00", end: "18:00", closed: false },
+    { day: "friday", start: "08:00", end: "18:00", closed: false },
+    { day: "saturday", start: "08:00", end: "18:00", closed: false },
+    { day: "sunday", start: "08:00", end: "18:00", closed: false },
+  ]);
 
+  const [workingHoursModalOpen, setWorkingHoursModalOpen] = useState(false);
+  const [workingHoursData, setWorkingHoursData] = useState([
+    ...defaultWorkingHours,
+  ]);
+  const handleTimeChange = (index, field, value) => {
+    const updatedHours = [...workingHoursData];
+    updatedHours[index][field] = value;
+    setWorkingHoursData(updatedHours);
+  };
+
+  const handleDayToggle = (index, closed) => {
+    const updatedHours = [...workingHoursData];
+    updatedHours[index].closed = closed;
+    setWorkingHoursData(updatedHours);
+  };
+
+  const openWorkingHoursModal = (location) => {
+    setSelectedLocation(location);
+    if (location.workingHours && Array.isArray(location.workingHours)) {
+      setWorkingHoursData(location.workingHours);
+    } else {
+      setWorkingHoursData([...defaultWorkingHours]);
+    }
+    setWorkingHoursModalOpen(true);
+  };
   // Form logic
   const form = useForm({
     mode: "uncontrolled",
@@ -90,27 +132,18 @@ export default function OrganizationOwnerLocations() {
       image: "",
       address: "",
       googleLink: "",
-      enableCashPayments: "false", // Default to string "false"
-      workingHours: "",
+      enableCashPayments: "false",
+      startTime: "08:00", // Default start time
+      endTime: "18:00", // Default end time
       description: "",
     },
-    validate: {
-      name: (value) => (value.length < 1 ? "Name is required" : null),
-      address: (value) => (value.length < 1 ? "Address is required" : null),
-      googleLink: (value) =>
-        value.length < 1 ? "Google Link is required" : null,
-      description: (value) =>
-        value.length < 1 ? "Description is required" : null,
-      workingHours: (value) =>
-        value < 1 ? "Working hours must be a valid number" : null,
-    },
   });
-
   const handleSubmit = (values) => {
     setLoading(true);
+    console.log(values);
 
     // Convert "enableCashPayments" from string to boolean
-    const payload = {
+    let payload = {
       ...values,
       enableCashPayments: values.enableCashPayments === "true", // Convert to boolean
     };
@@ -132,6 +165,14 @@ export default function OrganizationOwnerLocations() {
           }
         );
       } else {
+        //   startTime: "08:00", // Default start time
+        // endTime: "18:00",
+        const workingHoursCreate = defaultWorkingHours.map((val) => ({
+          ...val,
+          start: values.startTime,
+          end: values.endTime,
+        }));
+        payload = { ...payload, workingHours: workingHoursCreate };
         createLocation(
           {
             endpoint: "/api/create-location",
@@ -192,7 +233,6 @@ export default function OrganizationOwnerLocations() {
             Add Location
           </Button>
         </section>
-
         <Table.ScrollContainer minWidth={950}>
           <Box
             className="flex flex-col 
@@ -296,8 +336,9 @@ export default function OrganizationOwnerLocations() {
                     <Text
                       c={"#718EBF"}
                       className="cursor-pointer !text-[18px] !font-[400]"
+                      onClick={() => openWorkingHoursModal(val)}
                     >
-                      {val.workingHours} Hours
+                      Edit
                     </Text>
                   </div>
                   <div>
@@ -353,7 +394,6 @@ export default function OrganizationOwnerLocations() {
             )}
           </Box>
         </Table.ScrollContainer>
-
         {/* Popup for Adding/Editing Locations */}
         <Popup
           form={form}
@@ -377,18 +417,34 @@ export default function OrganizationOwnerLocations() {
             placeholder="Enter Google Link"
             id="googleLink"
           />
-          <Popup.Input
+          {/* <Popup.Input
             label="Working Hours"
             type="number"
             placeholder="Enter Working Hours"
             id="workingHours"
-          />
+          /> */}
           <Popup.FileInputField
             label="Upload Image"
             placeholder="Select an image"
             filetype="image/*"
             id="image"
           />
+          {selectedLocation ? (
+            ""
+          ) : (
+            <>
+              <TimePicker
+                label="Opening Time (All Days)"
+                value={form.values.startTime}
+                onChange={(value) => form.setFieldValue("startTime", value)}
+              />
+              <TimePicker
+                label="Closing Time (All Days)"
+                value={form.values.endTime}
+                onChange={(value) => form.setFieldValue("endTime", value)}
+              />
+            </>
+          )}
           <Popup.SingleSelector
             id="enableCashPayments"
             label="Enable Cash Payment"
@@ -405,7 +461,6 @@ export default function OrganizationOwnerLocations() {
           />
           <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
         </Popup>
-
         {/* Modal for Address & Description */}
         <Modal
           closeOnClickOutside={false}
@@ -416,6 +471,82 @@ export default function OrganizationOwnerLocations() {
         >
           <p>{modalContent}</p>
         </Modal>
+        <Modal
+          opened={workingHoursModalOpen}
+          onClose={() => setWorkingHoursModalOpen(false)}
+          title="Edit Working Hours"
+          centered
+          size="lg"
+        >
+          <div className="space-y-4">
+            {workingHoursData.map((dayData, index) => (
+              <div key={dayData.day} className="border-b pb-4">
+                <Flex justify="space-between" align="center" mb="sm">
+                  <Text tt="capitalize" fw={500}>
+                    {dayData.day}
+                  </Text>
+                  <Switch
+                    checked={!dayData.closed}
+                    onChange={(e) =>
+                      handleDayToggle(index, !e.currentTarget.checked)
+                    }
+                    label={dayData.closed ? "Closed" : "Open"}
+                  />
+                </Flex>
+
+                {!dayData.closed && (
+                  <Flex gap="md" align="center">
+                    <TimePicker
+                      label="Opening Time"
+                      value={dayData.start}
+                      onChange={(value) =>
+                        handleTimeChange(index, "start", value)
+                      }
+                    />
+                    <TimePicker
+                      label="Closing Time"
+                      value={dayData.end}
+                      onChange={(value) =>
+                        handleTimeChange(index, "end", value)
+                      }
+                    />
+                  </Flex>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <Group justify="flex-end" mt="md">
+            <Button
+              onClick={async () => {
+                if (selectedLocation) {
+                  setLoading(true);
+                  try {
+                    await updateLocation({
+                      endpoint: `/api/update-location/${selectedLocation._id}`,
+                      payload: {
+                        workingHours: workingHoursData,
+                      },
+                    });
+                    toast.success("Working Hours Updated Successfully", {
+                      position: "top-center",
+                    });
+                    setWorkingHoursModalOpen(false);
+                  } catch {
+                    toast.error("Error Updating Working Hours", {
+                      position: "top-center",
+                    });
+                  } finally {
+                    setLoading(false);
+                  }
+                }
+              }}
+              loading={loading}
+            >
+              Save Hours
+            </Button>
+          </Group>
+        </Modal>{" "}
       </section>
     </main>
   );
