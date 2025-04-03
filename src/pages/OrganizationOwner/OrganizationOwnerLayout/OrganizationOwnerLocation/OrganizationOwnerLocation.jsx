@@ -41,6 +41,7 @@ export default function OrganizationOwnerLocations() {
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(null);
 
   //workign hours
 
@@ -343,7 +344,7 @@ export default function OrganizationOwnerLocations() {
                       className="cursor-pointer !text-[18px] !font-[400]"
                       onClick={() => openWorkingHoursModal(val)}
                     >
-                      {val.workingHours} Hours
+                      Edit
                     </Text>
                   </div>
                   <div>
