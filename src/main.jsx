@@ -135,7 +135,7 @@ const router = createBrowserRouter(
       <Route path="Login" element={<MainLogin />} />
       <Route path="Register" element={<MainRegister />} />
       <Route path="VerifyEmail" element={<MainVerifyEmail />} />
-      <Route path="ResetPassword" element={<MainResetPassword />} />
+      <Route path="ResetPassword/:role" element={<MainResetPassword />} />
       <Route path="ResendOTP" element={<MainResendOTP />} />
       {/* user auth routes routes  */}
       <Route

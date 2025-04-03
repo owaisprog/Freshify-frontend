@@ -37,6 +37,7 @@ export default function OrganizationOwnerLocations() {
   const [modalContent, setModalContent] = useState("");
   const [modalTitle, setModalTitle] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(null); // Track deleting state
 
   const copyToClipboard = (text) => {
     navigator.clipboard
@@ -61,23 +62,28 @@ export default function OrganizationOwnerLocations() {
   const queryClient = useQueryClient();
 
   const DelLocation = (delId) => {
-    deleteLocation(
-      { endpoint: `/api/delete-location/${delId}` },
-      {
-        onSuccess: () => {
-          //console.log(responseData);
-          queryClient.invalidateQueries({ queryKey: ["locations", id] });
-          window.location.reload();
-          toast.success("Location Deleted Successfully", {
-            position: "top-center",
-          });
-        },
-        onError: () => {
-          //console.error("Error deleting location:", error);
-          toast.error("Error deleting location", { position: "top-center" });
-        },
-      }
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete?");
+
+    if (confirmDelete) {
+      setIsDeleting(delId);
+      deleteLocation(
+        { endpoint: `/api/delete-location/${delId}` },
+        {
+          onSuccess: () => {
+            //console.log(responseData);
+            queryClient.invalidateQueries({ queryKey: ["locations", id] });
+            window.location.reload();
+            toast.success("Location Deleted Successfully", {
+              position: "top-center",
+            });
+          },
+          onError: () => {
+            setIsDeleting(null);
+            toast.error("Error deleting location", { position: "top-center" });
+          },
+        }
+      );
+    }
   };
 
   // Fetch locations
@@ -345,7 +351,11 @@ export default function OrganizationOwnerLocations() {
                       className="bg-[#622929] rounded p-2 cursor-pointer"
                       onClick={() => DelLocation(val._id)}
                     >
-                      <BsTrash size={18} style={{ color: "white" }} />
+                      {isDeleting === val._id ? (
+                        <Loader color="#FFFFFF" size="xs" type="dots" />
+                      ) : (
+                        <BsTrash size={18} style={{ color: "white" }} />
+                      )}
                     </button>
                   </div>
                 </section>

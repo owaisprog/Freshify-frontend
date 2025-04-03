@@ -33,11 +33,11 @@ export default function Sidebar({ data }) {
   ));
 
   return (
-    <nav className="  flex flex-col  h-screen bg-[black]">
-      <div className="flex-1">
+    <nav className="  flex flex-col   h-screen bg-[black]">
+      <div className="flex-1 ">
         <Image className="w-full h-[78px] " src={freshifyLogo} />
 
-        {links}
+        <div className="flex flex-col gap-2">{links}</div>
       </div>
 
       <div className="pb-1  ">
