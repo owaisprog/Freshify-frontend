@@ -36,6 +36,10 @@ const Popup = ({
         onClose={() => setOpened(false)}
         title={title}
         centered
+        overlayProps={{
+          backgroundOpacity: 0.8,
+          blur: 3,
+        }}
         size="xl"
       >
         <form className="" onSubmit={form.onSubmit(handleSubmit)}>

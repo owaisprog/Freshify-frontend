@@ -6,47 +6,11 @@ import { Link, useLocation } from "react-router-dom";
 // Reuse your existing icons and data
 import { MdOutlineSettings } from "react-icons/md";
 import { logoutUser } from "../../services/AuthServices";
-// Reuse your existing data array
-// const data = [
-//   {
-//     link: "",
-//     label: "Dashboard",
-//     activePath: "/OrganizationOwnerDashboard",
-//     icon: MdDashboard,
-//   },
-//   {
-//     link: "Services",
-//     label: "Services",
-//     activePath: "/OrganizationOwnerDashboard/Services",
-//     icon: HiWrenchScrewdriver,
-//   },
-//   {
-//     link: "locations",
-//     label: "Locations",
-//     activePath: "/OrganizationOwnerDashboard/Locations",
-//     icon: MdMyLocation,
-//   },
-//   {
-//     link: "Users",
-//     label: "Users",
-//     activePath: "/OrganizationOwnerDashboard/Users",
-//     icon: ImUsers,
-//   },
-//   {
-//     link: "Calendar",
-//     label: "Calendar",
-//     activePath: "/OrganizationOwnerDashboard/Calendar",
-//     icon: MdCalendarMonth,
-//   },
-//   {
-//     link: "Payout",
-//     label: "Payout",
-//     activePath: "/OrganizationOwnerDashboard/Payout",
-//     icon: MdOutlinePayment,
-//   },
-// ];
 
-export default function MobileNav({ data }) {
+export default function MobileNav({
+  data,
+  settingData = { link: "", label: "", activePath: "" },
+}) {
   const { role } = JSON.parse(localStorage.getItem("data"));
   const location = useLocation();
   const currentPath = location.pathname;
@@ -77,13 +41,14 @@ export default function MobileNav({ data }) {
   ));
 
   return (
-    <div className="lg:hidden bg-[#FFFFFF] fixed top-0 w-full z-50">
+    <div className="lg:hidden bg-black fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
       <nav className=" z-20  pr-4 flex justify-between items-center ">
         <div className=" h-[80px]  w-[85%]">
           <Image className="h-full" radius="md" src={freshifyLogoMobile} />
         </div>
         <Burger
+          color="white"
           opened={isMenuOpen}
           onClick={toggleMenu}
           aria-label="Toggle navigation"
@@ -99,7 +64,7 @@ export default function MobileNav({ data }) {
         zIndex={40}
         withCloseButton={false}
         classNames={{
-          body: "!px-0 !pt-24 h-full", // Force full height on drawer body
+          body: "!px-0 !pt-24 h-full !bg-black", // Force full height on drawer body
           content: " h-full", // Full height for drawer content
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
@@ -120,19 +85,19 @@ export default function MobileNav({ data }) {
             ) : (
               <div className="pt-4  ">
                 <Link
-                  to="settings"
+                  to={settingData.link}
                   className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
-                    "settings" === active
+                    settingData.activePath === active
                       ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
                       : ""
                   }`}
                   onClick={() => {
-                    setActive("settings");
+                    setActive(settingData.activePath);
                     setIsMenuOpen(false);
                   }}
                 >
                   <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
-                  <span>Settings</span>
+                  <span>{settingData.label}</span>
                 </Link>
               </div>
             )}

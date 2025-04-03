@@ -94,6 +94,11 @@ import ProfessionalStep from "./components/booking/ProfessionalStep.jsx";
 import ServicesStep from "./components/booking/ServicesStep.jsx";
 import { BookingProvider } from "./components/booking/BookingContext.jsx";
 import DateTimeStep from "./components/booking/DateTimeStep.jsx";
+import ErrorPage from "./components/ErrorPage.jsx";
+import OrganizationLogout from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerSettings/components/OrganizationLogout.jsx";
+import ProfessionalLogout from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalLogout.jsx";
+import AdminLogout from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminLogout.jsx";
+import CustomerLogout from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerLogout.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -178,6 +183,7 @@ const router = createBrowserRouter(
           <Route path="email" element={<OrganizationNotification />} />
           <Route path="personal" element={<OrganizationProfile />} />
           <Route path="delete" element={<OrganizationDelete />} />
+          <Route path="logout" element={<OrganizationLogout />} />
         </Route>
       </Route>
       {/* super admin auth */}
@@ -221,6 +227,7 @@ const router = createBrowserRouter(
           <Route path="password" element={<CustomerUpdatePassword />} />
           <Route path="email" element={<CustomerNotification />} />
           <Route path="delete" element={<CustomerDelete />} />
+          <Route path="logout" element={<CustomerLogout />} />
         </Route>
       </Route>
       {/* Admins  */}
@@ -246,6 +253,7 @@ const router = createBrowserRouter(
           <Route path="email" element={<AdminNotification />} />
           <Route path="personal" element={<AdminProfile />} />
           <Route path="delete" element={<AdminDelete />} />
+          <Route path="logout" element={<AdminLogout />} />
         </Route>
       </Route>
       {/*Professionals  */}
@@ -268,8 +276,11 @@ const router = createBrowserRouter(
           <Route path="password" element={<ProfessionalUpdatePassword />} />
           <Route path="email" element={<ProfessionalNotification />} />
           <Route path="delete" element={<ProfessionalDelete />} />
+          <Route path="logout" element={<ProfessionalLogout />} />
         </Route>
       </Route>
+      {/* Error Page Route  */}
+      <Route path="*" element={<ErrorPage />} />
     </Route>
   )
 );

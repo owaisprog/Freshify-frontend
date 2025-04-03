@@ -1,10 +1,10 @@
 import { useState } from "react";
-import freshifyLogoMobile from "../.././../../assets/freshifyLogoMobile.png";
 import { Image, Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
+import freshifyLogo from "../.././../../assets/freshifyLogoMobile.png";
 
 // Reuse your existing icons and data
-import { MdDashboard, MdOutlineSettings } from "react-icons/md";
+import { MdDashboard } from "react-icons/md";
 import { logoutUser } from "../../../../services/AuthServices";
 // Reuse your existing data array
 const data = [
@@ -14,36 +14,6 @@ const data = [
     activePath: "/SuperAdminOrganization",
     icon: MdDashboard,
   },
-  // {
-  //   link: "Services",
-  //   label: "Services",
-  //   activePath: "/SuperAdminDashboard/Services",
-  //   icon: HiWrenchScrewdriver,
-  // },
-  // {
-  //   link: "locations",
-  //   label: "Locations",
-  //   activePath: "/SuperAdminDashboard/Locations",
-  //   icon: MdMyLocation,
-  // },
-  // {
-  //   link: "Users",
-  //   label: "Users",
-  //   activePath: "/SuperAdminDashboard/Users",
-  //   icon: ImUsers,
-  // },
-  // {
-  //   link: "Calendar",
-  //   label: "Calendar",
-  //   activePath: "/SuperAdminDashboard/Calendar",
-  //   icon: MdCalendarMonth,
-  // },
-  // {
-  //   link: "Payout",
-  //   label: "Payout",
-  //   activePath: "/SuperAdminDashboard/Payout",
-  //   icon: MdOutlinePayment,
-  // },
 ];
 
 export default function SuperAdminMobileNav() {
@@ -78,16 +48,17 @@ export default function SuperAdminMobileNav() {
   ));
 
   return (
-    <div className="lg:hidden bg-[#FFFFFF] fixed top-0 w-full z-50">
+    <div className="lg:hidden bg-black fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
       <nav className=" z-20  pr-4 flex justify-between items-center ">
         <div className=" h-[80px]  w-[85%]">
-          <Image className="h-full" radius="md" src={freshifyLogoMobile} />
+          <Image className="h-full" radius="md" src={freshifyLogo} />
         </div>
         <Burger
           opened={isMenuOpen}
           onClick={toggleMenu}
           aria-label="Toggle navigation"
+          color="#FFFFFF"
         />
       </nav>
 
@@ -100,8 +71,8 @@ export default function SuperAdminMobileNav() {
         zIndex={40}
         withCloseButton={false}
         classNames={{
-          body: "!px-0 !pt-24 h-full", // Force full height on drawer body
-          content: " h-full", // Full height for drawer content
+          body: "!px-0 !pt-24 h-full bg-black", // Force full height on drawer body
+          content: " h-full ", // Full height for drawer content
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
@@ -111,7 +82,7 @@ export default function SuperAdminMobileNav() {
             {/* Settings Link */}
           </div>
           <button
-            className="!text-[18px] !px-[40px] bg-black !font-[400] !py-[10px] text-white rounded-tr-md cursor-pointer "
+            className="!text-[18px] !px-[40px] bg-[#FFFFFF] !font-[600] !py-[10px] text-black mx-2 rounded-md cursor-pointer "
             onClick={() => {
               logoutUser();
             }}

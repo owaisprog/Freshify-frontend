@@ -38,6 +38,7 @@ export default function AdminSettings() {
                   path="/AdminsDashboard/settings/delete"
                   text="Delete Account"
                 />
+                <Tab path="/AdminsDashboard/settings/logout" text="Logout" />
               </Tabs.List>
             </Tabs>
           </section>

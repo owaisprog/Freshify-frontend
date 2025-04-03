@@ -1,4 +1,4 @@
-import { Button, Select, Text, Title, Modal } from "@mantine/core";
+import { Button, Select, Text, Title, Modal, Loader } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
 import { FiUpload } from "react-icons/fi";
 import { BsTrash } from "react-icons/bs";
@@ -44,6 +44,7 @@ function AdminsServices() {
   const [modalContent, setModalContent] = useState("");
 
   const [toggleTitle, setToggleTitle] = useState("Add Service");
+  const [isDeleting, setIsDeleting] = useState(null); // Track deleting state
 
   const columns = [
     "Services",
@@ -56,26 +57,34 @@ function AdminsServices() {
 
   const queryClient = useQueryClient();
   const handleDeleteService = (id) => {
-    deleteService(
-      { endpoint: `/api/delete-service/${id}` },
-      {
-        onSuccess: () => {
-          const previousServices = queryClient.getQueryData(["services"]) || [];
-          const updatedServices = previousServices.filter(
-            (service) => service._id !== id
-          );
-          queryClient.setQueryData(["services"], updatedServices);
-          // //console.log("Service deleted successfully!");
-          toast.success("Service Delete Successfully", {
-            position: "top-center",
-          });
-        },
-        onError: () => {
-          //console.error("Error deleting service:", error);
-          toast("Error deleting service", { position: "top-center" });
-        },
-      }
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete?");
+
+    if (confirmDelete) {
+      setIsDeleting(id);
+      deleteService(
+        { endpoint: `/api/delete-service/${id}` },
+        {
+          onSuccess: () => {
+            setIsDeleting(null);
+            const previousServices =
+              queryClient.getQueryData(["services"]) || [];
+            const updatedServices = previousServices.filter(
+              (service) => service._id !== id
+            );
+            queryClient.setQueryData(["services"], updatedServices);
+            // //console.log("Service deleted successfully!");
+            toast.success("Service Delete Successfully", {
+              position: "top-center",
+            });
+          },
+          onError: () => {
+            setIsDeleting(null);
+            //console.error("Error deleting service:", error);
+            toast("Error deleting service", { position: "top-center" });
+          },
+        }
+      );
+    }
   };
 
   const form = useForm({
@@ -217,12 +226,17 @@ function AdminsServices() {
         </div>
 
         {/* ✅ Delete Service Button */}
-        <BsTrash
-          size={18}
+
+        <button
           className="flex items-center justify-center p-[6px] rounded bg-[#FFE0EB] cursor-pointer w-[30px] h-[30px]"
-          style={{ cursor: "pointer", color: "#622929" }}
           onClick={() => handleDeleteService(val._id)}
-        />
+        >
+          {isDeleting === val._id ? (
+            <Loader color="red" size="xs" type="dots" />
+          ) : (
+            <BsTrash size={18} style={{ color: "#622929" }} />
+          )}
+        </button>
       </div>
     ),
   }));
