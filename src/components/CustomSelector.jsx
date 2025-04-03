@@ -3,7 +3,15 @@ import { Select } from "@mantine/core";
 import { FaChevronDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const CustomSelect = ({ data, routes, defaultValue, onChange, ...props }) => {
+const CustomSelect = ({
+  data,
+  routes,
+  defaultValue,
+  onChange,
+  backgroundColor = "white",
+  allowDeselect = false, // New prop
+  ...props
+}) => {
   const navigate = useNavigate();
   const [selectedValue, setSelectedValue] = useState(defaultValue);
 
@@ -11,9 +19,9 @@ const CustomSelect = ({ data, routes, defaultValue, onChange, ...props }) => {
     setSelectedValue(value);
 
     if (onChange) {
-      onChange(value); // ✅ Call external function if provided
+      onChange(value);
     } else if (routes && routes[value]) {
-      navigate(routes[value]); // ✅ Navigate if `routes` is given
+      navigate(routes[value]);
     }
   };
 
@@ -22,14 +30,16 @@ const CustomSelect = ({ data, routes, defaultValue, onChange, ...props }) => {
       data={data}
       value={selectedValue}
       onChange={handleChange}
+      allowDeselect={allowDeselect}
       checkIconPosition="right"
       rightSection={<FaChevronDown size={14} color="black" />}
       styles={{
         input: {
           border: "none",
-          borderBottom: "2px solid black", // ✅ Black bottom border only
-          borderRadius: 0, // ✅ No border radius
+          borderBottom: "2px solid black",
+          borderRadius: 0,
           paddingRight: "2rem",
+          backgroundColor: backgroundColor,
         },
       }}
       {...props}

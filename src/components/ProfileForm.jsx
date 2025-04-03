@@ -41,13 +41,13 @@ export default function ProfileForm() {
               JSON.stringify({ ...data, ...values })
             );
           },
-          onError: (error) => {
+          onError: () => {
             toast.error("Failed to update profile.");
             //console.error("Error updating profile:", error);
           },
         }
       );
-    } catch (error) {
+    } catch {
       toast.error("Failed to update profile.");
       //console.error("Error updating profile:", error);
     }
@@ -73,7 +73,7 @@ export default function ProfileForm() {
       const uploadedUrl = response.data.secure_url;
       form.setFieldValue("image", uploadedUrl); // Update form field with image URL
       toast.success("Image uploaded successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to upload image.");
       //console.error("Error uploading file to Cloudinary:", error);
     }

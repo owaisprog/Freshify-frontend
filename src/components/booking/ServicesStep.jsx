@@ -1,18 +1,29 @@
-// components/steps/ServicesStep.jsx
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
+import { useQueryHook } from "../../services/reactQuery";
+import { Loader } from "@mantine/core";
 
-const services = [
-  { name: "Haircut", time: 30, price: 40 },
-  { name: "Beard Trim", time: 15, price: 30 },
-  { name: "Shaving", time: 20, price: 20 },
-];
+// const services = [
+//   { name: "Haircut", time: 30, price: 40 },
+//   { name: "Beard Trim", time: 15, price: 30 },
+//   { name: "Shaving", time: 20, price: 20 },
+// ];
 
 export default function ServicesStep() {
   const { bookingData, updateBookingData } = useBookingContext();
+  // const id = bookingData.professional?._id;
+  const { _id } = bookingData.professional || {};
   const navigate = useNavigate();
-
+  const {
+    data: services = [],
+    isLoading,
+    // error,
+  } = useQueryHook({
+    queryKey: ["services", _id], // ✅ Cache users by owner ID
+    endpoint: `/api/get-services-by-barber/${_id}`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+  console.log(services);
   // useEffect(() => {
   //   if (!bookingData.professional) navigate("/booking/services");
   // }, []);
@@ -26,7 +37,8 @@ export default function ServicesStep() {
 
     updateBookingData({ services: newServices });
   };
-
+  if (isLoading)
+    return <Loader className="mx-auto " color="blue" type="bars" />;
   return (
     <div className=" h-full gap-[10px] flex flex-col justify-center p-6 rounded-lg shadow-sm">
       <h1 className="text-[32px] font-[500]">Select Services</h1>
@@ -44,7 +56,9 @@ export default function ServicesStep() {
           >
             <p className="text-[22px] font-[700] uppercase">{service.name}</p>
 
-            <p className="text-[22px] uppercase">TIME: {service.time} MINS</p>
+            <p className="text-[22px] uppercase">
+              TIME: {service.duration} MINS
+            </p>
 
             <span className=" text-[22px] font-[400] uppercase bg-black absolute text-white rounded-l-[10px] w-[50px] bottom-6 right-0">
               ${service.price}

@@ -1,109 +1,80 @@
 // components/steps/DateTimeStep.jsx
-import { useEffect } from "react";
-import { DatePicker } from "@mantine/dates";
+// import { useEffect } from "react";
+// import { DatePicker } from "@mantine/dates";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
+import CalendarComp from "../CustomerCalendar";
+import { useState } from "react";
+import generateTimeSlots from "./TimeSlotsGenerator";
 
-const timeSlots = [
-  "09:00",
-  "09:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-];
+// const timeSlots = [
+//   "09:00",
+//   "09:30",
+//   "10:00",
+//   "10:30",
+//   "11:00",
+//   "11:30",
+//   "12:00",
+//   "12:30",
+// ];
+// generateTimeSlots({
+//   openingTime: "09:00",
+//   closingTime: "18:00",
+//   slotInterval: 30, // optional (default: 30)
+//   serviceDuration: 60, // 60 minutes service
+//   blockedSlots: ["11:00-12:00", "14:30-15:30"], // Lunch break and another appointment
+// });
 
 export default function DateTimeStep() {
+  const [timeSlots, setTimeSlots] = useState([]);
+  const [selectedDay, setSelectedDay] = useState("");
   const { bookingData, updateBookingData } = useBookingContext();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!bookingData.services.length) navigate("/booking/datetime");
-  // }, []);
+  const onClickDay = (date) => {
+    setSelectedDay(date.toDateString());
+    //api date non-aviable
+    const slots = generateTimeSlots({
+      openingTime: "08:00",
+      closingTime: "20:00",
+      serviceDuration: 60,
+      blockedSlots: ["12:00-13:00", "15:00-16:30"], // Lunch break and meeting
+    });
 
-  const renderCalendarHeader = () => (
-    <div className="grid grid-cols-7 gap-1 mb-2">
-      {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map((day) => (
-        <div
-          key={day}
-          className="text-center text-sm text-gray-500 font-medium uppercase"
-        >
-          {day}
-        </div>
-      ))}
-    </div>
-  );
-
-  // Fixed dayRenderer with default modifiers
-  const dayRenderer = (date, modifiers = {}) => (
-    <div
-      className={`w-10 h-10 flex items-center justify-center rounded-full
-      ${modifiers.selected ? "bg-blue-600 text-white" : ""}
-      ${modifiers.outside ? "text-gray-400" : "hover:bg-blue-50"}`}
-    >
-      {date.getDate()}
-    </div>
-  );
-
+    // Automatically excludes blocked times
+    setTimeSlots(slots);
+    console.log("Selected Date:", selectedDay);
+  };
+  console.log(bookingData);
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h1 className="text-2xl font-bold mb-6">Select Date And Time</h1>
 
       <div className="mb-8">
-        <DatePicker
-          value={bookingData.date}
-          onChange={(date) => updateBookingData({ date })}
-          minDate={new Date()}
-          renderDay={dayRenderer}
-          hideOutsideDates
-          getDayProps={(date) => ({
-            selected: date.toDateString() === bookingData.date?.toDateString(),
-          })}
-          styles={{
-            day: {
-              padding: "20px",
-              fontSize: "24px",
-              border: "2px solid transparent",
-              "&[data-selected]": {
-                backgroundColor: "#2563eb",
-                color: "white",
-              },
-            },
-            calendarHeaderLevel: {
-              fontSize: "15px",
-              fontWeight: "bold",
-            },
-            month: {
-              width: "360px",
-            },
-            weekday: {
-              color: "black",
-              fontWeight: "500",
-              textTransform: "uppercase",
-            },
-          }}
-          headerComponent={renderCalendarHeader}
+        <CalendarComp
+          onClickDay={onClickDay}
+          selectedDay={selectedDay}
+          setSelectedDay={setSelectedDay}
         />
       </div>
 
       <h2 className="text-lg font-semibold mb-4">Available Time Slots</h2>
       <div className="grid grid-cols-4 gap-3">
-        {timeSlots.map((time) => (
-          <button
-            key={time}
-            onClick={() => updateBookingData({ time })}
-            className={`p-2 border rounded-lg text-center text-sm transition-colors
+        {timeSlots &&
+          timeSlots.map((time) => (
+            <button
+              key={time}
+              onClick={() => updateBookingData({ time })}
+              className={`p-2 border rounded-lg text-center text-sm transition-colors
               ${
                 bookingData.time === time
                   ? "bg-blue-600 text-white border-blue-700"
                   : "hover:bg-gray-50"
               }`}
-          >
-            {time}
-          </button>
-        ))}
+            >
+              {time}
+            </button>
+          ))}
       </div>
 
       {bookingData.date && bookingData.time && (

@@ -21,7 +21,7 @@ export default function MainLogin() {
         navigate("/OrganizationOwnerDashboard");
       } else if (userData.user.role === "superadmin") {
         navigate("/SuperAdminOrganization");
-      } else if (userData.user.role === "barber") {
+      } else if (userData.user.role === "customer") {
         navigate("/CustomerDashboard");
       } else {
         // Optional fallback if the role doesn't match any known value

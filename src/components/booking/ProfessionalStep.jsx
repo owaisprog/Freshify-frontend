@@ -1,34 +1,48 @@
 // components/steps/ProfessionalStep.jsx
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
+import { useQueryHook } from "../../services/reactQuery";
+import { Loader } from "@mantine/core";
 
-const professionals = [
-  { name: "Mirza Tayyab Khalid", availability: "TODAY", id: 1 },
-  { name: "Ali Ahmed", availability: "TOMORROW", id: 2 },
-  { name: "Sara Khan", availability: "FRIDAY, 7 MARCH", id: 3 },
-];
+// const professionals = [
+//   { name: "Mirza Tayyab Khalid", availability: "TODAY", id: 1 },
+//   { name: "Ali Ahmed", availability: "TOMORROW", id: 2 },
+//   { name: "Sara Khan", availability: "FRIDAY, 7 MARCH", id: 3 },
+// ];
 
 export default function ProfessionalStep() {
-  const { bookingData, updateBookingData } = useBookingContext();
+  const { updateBookingData, bookingData } = useBookingContext();
+  const { _id } = bookingData.location || {};
+  console.log(_id, "id");
   const navigate = useNavigate();
 
   // useEffect(() => {
   //   if (!bookingData.professional) navigate("/booking/professional");
   // }, []);
+  const {
+    data: allUsers = [],
+    isLoading,
+    // error,
+  } = useQueryHook({
+    queryKey: ["users", _id], // ✅ Cache users by owner ID
+    endpoint: `/api/get-barbers-by-location/${_id}`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+  const professionals = allUsers.filter((val) => val.role == "barber");
 
   const handleSelect = (professional) => {
     updateBookingData({ professional });
     navigate("/booking/services");
   };
-
+  if (isLoading)
+    return <Loader className="mx-auto " color="blue" type="bars" />;
   return (
     <div className="h-full flex flex-col gap-[20px]  justify-center p-6 rounded-lg">
       <h1 className="text-[32px] font-[500]">Choose Professional</h1>
       <div className="space-y-4 w-full">
         {professionals.map((pro) => (
           <button
-            key={pro.id}
+            key={pro._id}
             onClick={() => handleSelect(pro)}
             className="min-w-full  justify-between gap-x-2 cursor-pointer  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] "
           >
