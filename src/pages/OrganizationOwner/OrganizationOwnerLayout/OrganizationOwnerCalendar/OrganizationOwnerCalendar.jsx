@@ -3,49 +3,50 @@ import CustomerTable from "../../../../components/CustomerTable";
 import Calendar from "../../../../components/Calendar";
 import CustomSelect from "../../../../components/CustomSelector";
 import { useEffect, useState } from "react";
-import { addMonths, format, getMonth } from "date-fns";
+import { addMonths, format, getDate, getMonth } from "date-fns";
 import { usePostMutation } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
 
 export default function OrganizationOwnerCalendar() {
+  const [actualData, setActualData] = useState([]);
   const { role } = JSON.parse(localStorage.getItem("data")) || {};
   const [calendarState, setCalendarState] = useState({
     selectedDate: null,
-    currentMonth: new Date(),
-    nextMonth: addMonths(new Date(), 1),
+    currentMonth: format(new Date(), "yyyy-MMMM"),
+    nextMonth: format(addMonths(new Date(), 1), "yyyy-MMMM"),
     today: new Date(),
     monthsToShow: 1,
   });
   const [selectedOption, setSelectedOption] = useState(
-    String(getMonth(calendarState.currentMonth) + 1)
+    format(new Date(), "yyyy-MMMM")
   ); // Initial value
-
+  const [selectedOptionMonth, setSelectedOptionMonth] = useState(
+    getMonth(new Date()) + 1
+  ); // Initial value
   const currentMonth = format(calendarState.currentMonth, "MMMM");
   const nextMonth = format(calendarState.nextMonth, "MMMM");
 
-  // console.log(calendarState);
   const selectData = [
     {
-      value: String(getMonth(calendarState.currentMonth) + 1),
+      value: format(calendarState.currentMonth, "yyyy-MMMM"),
       label: currentMonth,
     },
-    { value: String(getMonth(calendarState.nextMonth) + 1), label: nextMonth },
+    { value: format(calendarState.nextMonth, "yyyy-MMMM"), label: nextMonth },
   ];
-  // console.log(getMonth(calendarState.currentMonth) + 1, nextMonth);
 
   const handleSelectChange = (value) => {
     console.log("Selected value:", value);
+    setSelectedOptionMonth(getMonth(value) + 1);
     setSelectedOption(value);
   };
   //.....................
-
   const {
     data: bookings = [],
     mutate: getMutateBookings,
     isPending: isLoading,
     error,
   } = usePostMutation("bookings");
-  console.log(bookings);
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -60,6 +61,23 @@ export default function OrganizationOwnerCalendar() {
 
     fetchBookings();
   }, [getMutateBookings, role]);
+
+  useEffect(() => {
+    if (!bookings.length) return;
+    const monthFiltered = bookings.filter(
+      (val) => format(val?.bookingDate, "yyyy-MMMM") === selectedOption
+    );
+    setActualData(monthFiltered);
+  }, [bookings, selectedOption]);
+
+  useEffect(() => {
+    if (!actualData || !calendarState.selectedDate) return;
+    const selectedDateData = actualData?.filter(
+      (val) => getDate(val.bookingDate) === getDate(calendarState.selectedDate)
+    );
+    setActualData(selectedDateData);
+  }, [actualData, calendarState]);
+
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
       <Title
@@ -76,8 +94,17 @@ export default function OrganizationOwnerCalendar() {
           onChange={handleSelectChange} // Get selected value
         />
       </div>
-      <Calendar monthToShow={selectedOption} />
-      <CustomerTable bookings={bookings} isLoading={isLoading} error={error} />
+      <Calendar
+        monthToShow={selectedOptionMonth}
+        // yearToShow={2026}
+        setCalendarState={setCalendarState}
+        calendarState={calendarState}
+      />
+      <CustomerTable
+        bookings={actualData}
+        isLoading={isLoading}
+        error={error}
+      />
       <h1>{selectedOption}</h1>
     </main>
   );

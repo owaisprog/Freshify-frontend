@@ -14,7 +14,6 @@ import {
 import { ScrollArea } from "@mantine/core";
 
 const Calendar = ({
-  calendarState,
   setCalendarState,
   initialDate = new Date(),
   monthsToShow = 1, // Changed to show one month at a time
@@ -64,8 +63,8 @@ const Calendar = ({
   }, [monthToShow, yearToShow]);
 
   // Use either external state or internal state
-  const state = calendarState || internalState;
-  const setState = setCalendarState || setInternalState;
+  const state = internalState;
+  const setState = setInternalState;
 
   // Memoize the dates to display
   const datesToDisplay = useMemo(() => {
@@ -96,6 +95,8 @@ const Calendar = ({
       selectedDay: date.getDate(),
       selectedDateString: format(date, "MMMM dd, yyyy"),
     };
+    setCalendarState(updatedState);
+    console.log(date);
     setState(updatedState);
   };
 
