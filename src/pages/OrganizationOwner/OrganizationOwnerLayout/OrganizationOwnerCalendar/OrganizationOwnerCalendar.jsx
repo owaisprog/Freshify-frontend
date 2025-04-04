@@ -3,27 +3,35 @@ import CustomerTable from "../../../../components/CustomerTable";
 import Calendar from "../../../../components/Calendar";
 import CustomSelect from "../../../../components/CustomSelector";
 import { useEffect, useState } from "react";
-import { addMonths, format } from "date-fns";
+import { addMonths, format, getMonth } from "date-fns";
 import { usePostMutation } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
 
 export default function OrganizationOwnerCalendar() {
-  const [selectedOption, setSelectedOption] = useState("option1"); // Initial value
+  const { role } = JSON.parse(localStorage.getItem("data")) || {};
   const [calendarState, setCalendarState] = useState({
     selectedDate: null,
     currentMonth: new Date(),
     nextMonth: addMonths(new Date(), 1),
     today: new Date(),
-    monthsToShow: 2,
+    monthsToShow: 1,
   });
-  console.log(
-    calendarState.selectedDate && format(calendarState.selectedDate, "M/d/yyyy")
-  );
+  const [selectedOption, setSelectedOption] = useState(
+    String(getMonth(calendarState.currentMonth) + 1)
+  ); // Initial value
+
+  const currentMonth = format(calendarState.currentMonth, "MMMM");
+  const nextMonth = format(calendarState.nextMonth, "MMMM");
+
+  // console.log(calendarState);
   const selectData = [
-    { value: "option1", label: "Option 1" },
-    { value: "option2", label: "Option 2" },
-    { value: "option3", label: "Option 3" },
+    {
+      value: String(getMonth(calendarState.currentMonth) + 1),
+      label: currentMonth,
+    },
+    { value: String(getMonth(calendarState.nextMonth) + 1), label: nextMonth },
   ];
+  // console.log(getMonth(calendarState.currentMonth) + 1, nextMonth);
 
   const handleSelectChange = (value) => {
     console.log("Selected value:", value);
@@ -31,15 +39,13 @@ export default function OrganizationOwnerCalendar() {
   };
   //.....................
 
-  const { role } = JSON.parse(localStorage.getItem("data")) || {};
-
   const {
     data: bookings = [],
     mutate: getMutateBookings,
     isPending: isLoading,
     error,
   } = usePostMutation("bookings");
-
+  console.log(bookings);
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -70,11 +76,9 @@ export default function OrganizationOwnerCalendar() {
           onChange={handleSelectChange} // Get selected value
         />
       </div>
-      <Calendar
-        calendarState={calendarState}
-        setCalendarState={setCalendarState}
-      />
+      <Calendar monthToShow={selectedOption} />
       <CustomerTable bookings={bookings} isLoading={isLoading} error={error} />
+      <h1>{selectedOption}</h1>
     </main>
   );
 }

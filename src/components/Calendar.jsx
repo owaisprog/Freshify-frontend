@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   format,
   isBefore,
@@ -8,6 +8,8 @@ import {
   addMonths,
   getMonth,
   getYear,
+  setMonth,
+  // getYear,
 } from "date-fns";
 import { ScrollArea } from "@mantine/core";
 
@@ -15,25 +17,60 @@ const Calendar = ({
   calendarState,
   setCalendarState,
   initialDate = new Date(),
-  monthsToShow = 2,
+  monthsToShow = 1, // Changed to show one month at a time
+  monthToShow = null, // New prop: month number (1-12)
+  yearToShow = null, // New prop: year number
 }) => {
-  // Initialize internal state if not using controlled state
-  const [internalState, setInternalState] = useState(() => ({
-    selectedDate: null,
-    currentMonth: startOfMonth(initialDate),
-    nextMonth: addMonths(startOfMonth(initialDate), 1),
-    today: new Date(),
-    monthsToShow,
-  }));
+  // Initialize internal state
+  const [internalState, setInternalState] = useState(() => {
+    // Calculate initial month based on props
+    const currentDate = new Date();
+    const initialMonth =
+      monthToShow !== null
+        ? setMonth(new Date(), monthToShow - 1)
+        : startOfMonth(initialDate);
+
+    const initialYear =
+      yearToShow !== null
+        ? new Date(yearToShow, monthToShow - 1, 1)
+        : initialMonth;
+
+    return {
+      selectedDate: null,
+      currentMonth: startOfMonth(initialYear),
+      nextMonth: addMonths(startOfMonth(initialYear), 1),
+      today: currentDate,
+      monthsToShow,
+    };
+  });
+
+  // Update month when prop changes
+  useEffect(() => {
+    if (monthToShow !== null || yearToShow !== null) {
+      const newDate = new Date(
+        yearToShow || getYear(internalState.currentMonth),
+        monthToShow !== null
+          ? monthToShow - 1
+          : getMonth(internalState.currentMonth),
+        1
+      );
+
+      setInternalState((prev) => ({
+        ...prev,
+        currentMonth: startOfMonth(newDate),
+        nextMonth: addMonths(startOfMonth(newDate), 1),
+      }));
+    }
+  }, [monthToShow, yearToShow]);
 
   // Use either external state or internal state
   const state = calendarState || internalState;
   const setState = setCalendarState || setInternalState;
 
-  // Memoize the dates to display to prevent unnecessary recalculations
+  // Memoize the dates to display
   const datesToDisplay = useMemo(() => {
     const start = startOfMonth(state.currentMonth);
-    const end = endOfMonth(addMonths(state.currentMonth, monthsToShow - 1));
+    const end = endOfMonth(state.currentMonth); // Only show one month
 
     const dates = [];
     let currentDate = new Date(start);
@@ -47,9 +84,9 @@ const Calendar = ({
     }
 
     return dates;
-  }, [state.currentMonth, monthsToShow]);
+  }, [state.currentMonth]);
 
-  // Handle date click - updates all relevant state at once
+  // Handle date click
   const handleDateClick = (date) => {
     const updatedState = {
       ...state,
