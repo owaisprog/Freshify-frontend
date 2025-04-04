@@ -487,6 +487,10 @@ export default function Locations({
           onClose={() => setModalOpen(false)}
           title={modalTitle}
           centered
+          overlayProps={{
+            backgroundOpacity: 0.8,
+            blur: 3,
+          }}
         >
           <p>{modalContent}</p>
         </Modal>
@@ -495,16 +499,23 @@ export default function Locations({
           onClose={() => setWorkingHoursModalOpen(false)}
           title="Edit Working Hours"
           centered
-          size="lg"
+          closeOnClickOutside={false}
+          overlayProps={{
+            backgroundOpacity: 0.8,
+            blur: 3,
+          }}
+          size="xl"
         >
           <div className="space-y-4">
             {workingHoursData.map((dayData, index) => (
               <div key={dayData.day} className="border-b pb-4">
                 <Flex justify="space-between" align="center" mb="sm">
-                  <Text tt="capitalize" fw={500}>
+                  <Text tt="capitalize " fw={500} fz={"h3"}>
                     {dayData.day}
                   </Text>
                   <Switch
+                    size="lg"
+                    color="#34C759"
                     checked={!dayData.closed}
                     onChange={(e) =>
                       handleDayToggle(index, !e.currentTarget.checked)
@@ -537,6 +548,9 @@ export default function Locations({
 
           <Group justify="flex-end" mt="md">
             <Button
+              variant="filled"
+              bg={"dark"}
+              radius={"md"}
               onClick={async () => {
                 if (selectedLocation) {
                   setLoading(true);

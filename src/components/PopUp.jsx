@@ -148,7 +148,7 @@ function FileInputField({ label, placeholder, filetype, id }) {
       const uploadedUrl = response.data.secure_url;
       form.setFieldValue(id, uploadedUrl); // ✅ Update form field with image URL
     } catch (error) {
-      //console.error("Error uploading file to Cloudinary:", error);
+      console.error("Error uploading file to Cloudinary:", error);
     } finally {
       setLoading(false);
     }
