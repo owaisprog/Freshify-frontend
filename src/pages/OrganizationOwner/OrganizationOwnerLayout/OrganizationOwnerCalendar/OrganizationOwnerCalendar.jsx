@@ -7,6 +7,7 @@ import {
   addMonths,
   format,
   getMonth,
+  getYear,
   startOfMonth,
   endOfMonth,
   startOfWeek,
@@ -18,38 +19,34 @@ import { toast } from "react-toastify";
 
 export default function OrganizationOwnerCalendar() {
   const [weekOptions, setWeekOptions] = useState([]);
-  const [selectedWeek, setSelectedWeek] = useState(null); // Track selected week
-  const [allBookings, setAllBookings] = useState([]);
+  const [selectedWeek, setSelectedWeek] = useState(null);
   const [filteredBookings, setFilteredBookings] = useState([]);
   const { role } = JSON.parse(localStorage.getItem("data")) || {};
 
   const currentDate = new Date();
   const [calendarState, setCalendarState] = useState({
-    selectedDate: currentDate, // Set to current date by default
-    currentMonth: format(currentDate, "yyyy-MMMM"),
-    nextMonth: format(addMonths(currentDate, 1), "yyyy-MMMM"),
+    selectedDate: currentDate,
     today: currentDate,
     monthsToShow: 1,
   });
 
-  const [selectedOption, setSelectedOption] = useState(
-    format(currentDate, "yyyy-MMMM")
-  );
+  // These will always show current and next month, regardless of selection
+  const currentMonth = format(currentDate, "yyyy-MMMM");
+  const nextMonth = format(addMonths(currentDate, 1), "yyyy-MMMM");
+
+  const [selectedOption, setSelectedOption] = useState(currentMonth);
   const [selectedOptionMonth, setSelectedOptionMonth] = useState(
     getMonth(currentDate) + 1
   );
 
-  const currentMonth = format(new Date(calendarState.currentMonth), "MMMM");
-  const nextMonth = format(new Date(calendarState.nextMonth), "MMMM");
-
   const selectData = [
     {
-      value: format(new Date(calendarState.currentMonth), "yyyy-MMMM"),
-      label: currentMonth,
+      value: currentMonth,
+      label: format(new Date(currentMonth), "MMMM"),
     },
     {
-      value: format(new Date(calendarState.nextMonth), "yyyy-MMMM"),
-      label: nextMonth,
+      value: nextMonth,
+      label: format(new Date(nextMonth), "MMMM"),
     },
   ];
 
@@ -61,13 +58,12 @@ export default function OrganizationOwnerCalendar() {
       ...prev,
       selectedDate: null, // Reset selected date when month changes
     }));
-    setSelectedWeek(null); // Reset the selected week when month changes
+    setSelectedWeek(null);
 
-    // Ensure current date is selected if we are back to the current month
     if (value === format(new Date(), "yyyy-MMMM")) {
       setCalendarState((prev) => ({
         ...prev,
-        selectedDate: new Date(), // Set today's date
+        selectedDate: new Date(),
       }));
     }
   };
@@ -96,7 +92,6 @@ export default function OrganizationOwnerCalendar() {
 
   useEffect(() => {
     if (!bookings.length) return;
-    setAllBookings(bookings);
 
     // Filter by month first
     const monthFiltered = bookings.filter((val) => {
@@ -121,18 +116,18 @@ export default function OrganizationOwnerCalendar() {
       // Start of the month
       const startDate = startOfMonth(
         new Date(new Date().getFullYear(), selectedOptionMonth - 1, 1)
-      ); // 0-based for months
+      );
       // End of the month
       const endDate = endOfMonth(startDate);
 
       // Get weeks in the selected month
       let weeks = [];
-      let currentWeekStart = startOfWeek(startDate); // Start of the first week
+      let currentWeekStart = startOfWeek(startDate);
 
       while (currentWeekStart <= endDate) {
-        const currentWeekEnd = endOfWeek(currentWeekStart); // End of the current week
+        const currentWeekEnd = endOfWeek(currentWeekStart);
         weeks.push({
-          value: `${weeks.length + 1}`, // For example: "Week 1"
+          value: `${weeks.length + 1}`,
           label: `Week ${weeks.length + 1}`,
         });
         // Move to the next week
@@ -146,8 +141,7 @@ export default function OrganizationOwnerCalendar() {
   }, [selectedOptionMonth]);
 
   const handleWeekSelect = (value) => {
-    console.log("Selected week:", value);
-    setSelectedWeek(value); // Update selected week when a new week is selected
+    setSelectedWeek(value);
   };
 
   return (
@@ -170,7 +164,7 @@ export default function OrganizationOwnerCalendar() {
             data={weekOptions}
             backgroundColor="#F5F7FA"
             placeholder="Select Week"
-            value={selectedWeek} // Bind selected week to the value
+            value={selectedWeek}
             onChange={handleWeekSelect}
           />
         </div>
@@ -186,9 +180,10 @@ export default function OrganizationOwnerCalendar() {
       </div>
       <Calendar
         monthToShow={selectedOptionMonth}
+        yearToShow={getYear(new Date(selectedOption))}
         setCalendarState={setCalendarState}
         calendarState={calendarState}
-        initialDate={currentDate} // Pass current date as initial
+        initialDate={currentDate}
       />
       <CustomerTable
         bookings={filteredBookings}

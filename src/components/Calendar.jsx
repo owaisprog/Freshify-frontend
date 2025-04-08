@@ -89,6 +89,7 @@ const Calendar = ({
   }, [internalState.currentMonth]);
 
   const handleDateClick = (date) => {
+    // console.log(getMonth(date) + 1);
     const updatedState = {
       ...internalState,
       selectedDate: date,
