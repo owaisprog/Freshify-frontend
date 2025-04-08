@@ -14,14 +14,18 @@ import {
   endOfWeek,
   isSameDay,
 } from "date-fns";
-import { usePostMutation } from "../../../../services/reactQuery";
+import { usePostMutation, useQueryHook } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
+import EditAvailabilityPopup from "../../../../components/EditAvailabilityPopup";
 
 export default function OrganizationOwnerCalendar() {
+  const { mutate: editAvalibility, isPending: isPendingAvailable } =
+    usePostMutation("avalibility");
   const [weekOptions, setWeekOptions] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [filteredBookings, setFilteredBookings] = useState([]);
-  const { role } = JSON.parse(localStorage.getItem("data")) || {};
+  const { role, id } = JSON.parse(localStorage.getItem("data")) || {};
+  const [availabilityModalOpen, setAvailabilityModalOpen] = useState(false);
 
   const currentDate = new Date();
   const [calendarState, setCalendarState] = useState({
@@ -49,6 +53,12 @@ export default function OrganizationOwnerCalendar() {
       label: format(new Date(nextMonth), "MMMM"),
     },
   ];
+
+  // Mock professionals data - replace with actual data fetching
+  // const [professionals, setProfessionals] = useState([
+  //   { _id: "1", name: "John Doe" },
+  //   { _id: "2", name: "Jane Smith" },
+  // ]);
 
   const handleSelectChange = (value) => {
     const date = new Date(value);
@@ -142,6 +152,49 @@ export default function OrganizationOwnerCalendar() {
 
   const handleWeekSelect = (value) => {
     setSelectedWeek(value);
+    setCalendarState((prev) => ({
+      ...prev,
+      selectedDate: null, // Clear date selection when week is selected
+    }));
+  };
+  // //edit avalaibility
+  const { data: allUsers = [] } = useQueryHook({
+    queryKey: ["users", id], // ✅ Cache users by owner ID
+    endpoint: `/api/get-users-by-owner/${id}`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+
+  const handleAvailabilitySubmit = (values) => {
+    console.log("Availability data:", {
+      professionalId: values.professionalId,
+      date: values.date,
+      startTime: values.startTime,
+      endTime: values.endTime,
+      organizationId: id,
+    });
+    editAvalibility(
+      {
+        endpoint: "/api/create-unavailability",
+        payload: {
+          professionalId: values.professionalId,
+          date: values.date,
+          startTime: values.startTime,
+          endTime: values.endTime,
+          organizationId: id,
+        },
+      },
+      {
+        onSuccess: () =>
+          toast.success("Submitted  Successfully", {
+            position: "top-center",
+          }),
+        onError: () =>
+          toast.error("Error  Submitting", {
+            position: "top-center",
+          }),
+      }
+    );
+    setAvailabilityModalOpen(false);
   };
 
   return (
@@ -174,8 +227,9 @@ export default function OrganizationOwnerCalendar() {
           fw={"normal"}
           loaderProps={{ type: "bars" }}
           className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
+          onClick={() => setAvailabilityModalOpen(true)}
         >
-          Add Service
+          Edit Availability
         </Button>
       </div>
       <Calendar
@@ -189,6 +243,14 @@ export default function OrganizationOwnerCalendar() {
         bookings={filteredBookings}
         isLoading={isLoading}
         error={error}
+      />
+
+      <EditAvailabilityPopup
+        opened={availabilityModalOpen}
+        onClose={() => setAvailabilityModalOpen(false)}
+        onSubmit={handleAvailabilitySubmit}
+        professionals={allUsers}
+        initialDate={calendarState.selectedDate} // Pass the currently selected date
       />
     </main>
   );
