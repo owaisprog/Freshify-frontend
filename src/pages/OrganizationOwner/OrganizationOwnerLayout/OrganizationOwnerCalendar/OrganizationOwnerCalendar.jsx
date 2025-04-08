@@ -6,15 +6,19 @@ import { useEffect, useState } from "react";
 import {
   addMonths,
   format,
-  getDate,
   getMonth,
-  getYear,
+  startOfMonth,
+  endOfMonth,
+  startOfWeek,
+  endOfWeek,
   isSameDay,
 } from "date-fns";
 import { usePostMutation } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
 
 export default function OrganizationOwnerCalendar() {
+  const [weekOptions, setWeekOptions] = useState([]);
+  const [selectedWeek, setSelectedWeek] = useState(null); // Track selected week
   const [allBookings, setAllBookings] = useState([]);
   const [filteredBookings, setFilteredBookings] = useState([]);
   const { role } = JSON.parse(localStorage.getItem("data")) || {};
@@ -57,6 +61,15 @@ export default function OrganizationOwnerCalendar() {
       ...prev,
       selectedDate: null, // Reset selected date when month changes
     }));
+    setSelectedWeek(null); // Reset the selected week when month changes
+
+    // Ensure current date is selected if we are back to the current month
+    if (value === format(new Date(), "yyyy-MMMM")) {
+      setCalendarState((prev) => ({
+        ...prev,
+        selectedDate: new Date(), // Set today's date
+      }));
+    }
   };
 
   const {
@@ -102,6 +115,41 @@ export default function OrganizationOwnerCalendar() {
     }
   }, [bookings, selectedOption, calendarState.selectedDate]);
 
+  // Generate week options whenever the selected month changes
+  useEffect(() => {
+    if (selectedOptionMonth) {
+      // Start of the month
+      const startDate = startOfMonth(
+        new Date(new Date().getFullYear(), selectedOptionMonth - 1, 1)
+      ); // 0-based for months
+      // End of the month
+      const endDate = endOfMonth(startDate);
+
+      // Get weeks in the selected month
+      let weeks = [];
+      let currentWeekStart = startOfWeek(startDate); // Start of the first week
+
+      while (currentWeekStart <= endDate) {
+        const currentWeekEnd = endOfWeek(currentWeekStart); // End of the current week
+        weeks.push({
+          value: `${weeks.length + 1}`, // For example: "Week 1"
+          label: `Week ${weeks.length + 1}`,
+        });
+        // Move to the next week
+        currentWeekStart = new Date(
+          currentWeekEnd.setDate(currentWeekEnd.getDate() + 1)
+        );
+      }
+
+      setWeekOptions(weeks);
+    }
+  }, [selectedOptionMonth]);
+
+  const handleWeekSelect = (value) => {
+    console.log("Selected week:", value);
+    setSelectedWeek(value); // Update selected week when a new week is selected
+  };
+
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen">
       <Title
@@ -111,12 +159,21 @@ export default function OrganizationOwnerCalendar() {
         Calendar
       </Title>
       <div className="py-10 flex justify-between">
-        <CustomSelect
-          data={selectData}
-          backgroundColor="#F5F7FA"
-          defaultValue={selectedOption}
-          onChange={handleSelectChange}
-        />
+        <div className="flex gap-2">
+          <CustomSelect
+            data={selectData}
+            backgroundColor="#F5F7FA"
+            defaultValue={selectedOption}
+            onChange={handleSelectChange}
+          />
+          <CustomSelect
+            data={weekOptions}
+            backgroundColor="#F5F7FA"
+            placeholder="Select Week"
+            value={selectedWeek} // Bind selected week to the value
+            onChange={handleWeekSelect}
+          />
+        </div>
         <Button
           bg="black"
           radius="md"
@@ -129,7 +186,6 @@ export default function OrganizationOwnerCalendar() {
       </div>
       <Calendar
         monthToShow={selectedOptionMonth}
-        // yearToShow={getYear(new Date(selectedOption))}
         setCalendarState={setCalendarState}
         calendarState={calendarState}
         initialDate={currentDate} // Pass current date as initial
