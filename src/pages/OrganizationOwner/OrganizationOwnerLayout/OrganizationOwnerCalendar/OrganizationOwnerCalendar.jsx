@@ -1,45 +1,64 @@
-import { Title } from "@mantine/core";
+import { Button, Title } from "@mantine/core";
 import CustomerTable from "../../../../components/CustomerTable";
 import Calendar from "../../../../components/Calendar";
 import CustomSelect from "../../../../components/CustomSelector";
 import { useEffect, useState } from "react";
-import { addMonths, format, getDate, getMonth } from "date-fns";
+import {
+  addMonths,
+  format,
+  getDate,
+  getMonth,
+  getYear,
+  isSameDay,
+} from "date-fns";
 import { usePostMutation } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
 
 export default function OrganizationOwnerCalendar() {
-  const [actualData, setActualData] = useState([]);
+  const [allBookings, setAllBookings] = useState([]);
+  const [filteredBookings, setFilteredBookings] = useState([]);
   const { role } = JSON.parse(localStorage.getItem("data")) || {};
+
+  const currentDate = new Date();
   const [calendarState, setCalendarState] = useState({
-    selectedDate: null,
-    currentMonth: format(new Date(), "yyyy-MMMM"),
-    nextMonth: format(addMonths(new Date(), 1), "yyyy-MMMM"),
-    today: new Date(),
+    selectedDate: currentDate, // Set to current date by default
+    currentMonth: format(currentDate, "yyyy-MMMM"),
+    nextMonth: format(addMonths(currentDate, 1), "yyyy-MMMM"),
+    today: currentDate,
     monthsToShow: 1,
   });
+
   const [selectedOption, setSelectedOption] = useState(
-    format(new Date(), "yyyy-MMMM")
-  ); // Initial value
+    format(currentDate, "yyyy-MMMM")
+  );
   const [selectedOptionMonth, setSelectedOptionMonth] = useState(
-    getMonth(new Date()) + 1
-  ); // Initial value
-  const currentMonth = format(calendarState.currentMonth, "MMMM");
-  const nextMonth = format(calendarState.nextMonth, "MMMM");
+    getMonth(currentDate) + 1
+  );
+
+  const currentMonth = format(new Date(calendarState.currentMonth), "MMMM");
+  const nextMonth = format(new Date(calendarState.nextMonth), "MMMM");
 
   const selectData = [
     {
-      value: format(calendarState.currentMonth, "yyyy-MMMM"),
+      value: format(new Date(calendarState.currentMonth), "yyyy-MMMM"),
       label: currentMonth,
     },
-    { value: format(calendarState.nextMonth, "yyyy-MMMM"), label: nextMonth },
+    {
+      value: format(new Date(calendarState.nextMonth), "yyyy-MMMM"),
+      label: nextMonth,
+    },
   ];
 
   const handleSelectChange = (value) => {
-    console.log("Selected value:", value);
-    setSelectedOptionMonth(getMonth(value) + 1);
+    const date = new Date(value);
+    setSelectedOptionMonth(getMonth(date) + 1);
     setSelectedOption(value);
+    setCalendarState((prev) => ({
+      ...prev,
+      selectedDate: null, // Reset selected date when month changes
+    }));
   };
-  //.....................
+
   const {
     data: bookings = [],
     mutate: getMutateBookings,
@@ -64,48 +83,62 @@ export default function OrganizationOwnerCalendar() {
 
   useEffect(() => {
     if (!bookings.length) return;
-    const monthFiltered = bookings.filter(
-      (val) => format(val?.bookingDate, "yyyy-MMMM") === selectedOption
-    );
-    setActualData(monthFiltered);
-  }, [bookings, selectedOption]);
+    setAllBookings(bookings);
 
-  useEffect(() => {
-    if (!actualData || !calendarState.selectedDate) return;
-    const selectedDateData = actualData?.filter(
-      (val) => getDate(val.bookingDate) === getDate(calendarState.selectedDate)
-    );
-    setActualData(selectedDateData);
-  }, [actualData, calendarState]);
+    // Filter by month first
+    const monthFiltered = bookings.filter((val) => {
+      return format(new Date(val?.bookingDate), "yyyy-MMMM") === selectedOption;
+    });
+
+    // Then filter by selected date if exists
+    if (calendarState.selectedDate) {
+      const dateFiltered = monthFiltered.filter((val) => {
+        return isSameDay(new Date(val.bookingDate), calendarState.selectedDate);
+      });
+      setFilteredBookings(dateFiltered);
+    } else {
+      // If no date selected, show all for the month
+      setFilteredBookings(monthFiltered);
+    }
+  }, [bookings, selectedOption, calendarState.selectedDate]);
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen">
       <Title
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
+        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px]"
       >
         Calendar
       </Title>
-      <div className="py-10 max-w-fit">
+      <div className="py-10 flex justify-between">
         <CustomSelect
           data={selectData}
           backgroundColor="#F5F7FA"
-          defaultValue={selectedOption} // Pass initial value
-          onChange={handleSelectChange} // Get selected value
+          defaultValue={selectedOption}
+          onChange={handleSelectChange}
         />
+        <Button
+          bg="black"
+          radius="md"
+          fw={"normal"}
+          loaderProps={{ type: "bars" }}
+          className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
+        >
+          Add Service
+        </Button>
       </div>
       <Calendar
         monthToShow={selectedOptionMonth}
-        // yearToShow={2026}
+        // yearToShow={getYear(new Date(selectedOption))}
         setCalendarState={setCalendarState}
         calendarState={calendarState}
+        initialDate={currentDate} // Pass current date as initial
       />
       <CustomerTable
-        bookings={actualData}
+        bookings={filteredBookings}
         isLoading={isLoading}
         error={error}
       />
-      <h1>{selectedOption}</h1>
     </main>
   );
 }
