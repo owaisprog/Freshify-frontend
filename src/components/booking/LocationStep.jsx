@@ -11,7 +11,7 @@ import { Loader } from "@mantine/core";
 // ];
 
 export default function LocationStep() {
-  const id = "67e6ccdb05463ea8912d9f98";
+  const id = "67e45bf2ddeafab8b200eb2b";
   const { updateBookingData } = useBookingContext(); // Removed unused bookingData
   const navigate = useNavigate();
   useEffect(() => {

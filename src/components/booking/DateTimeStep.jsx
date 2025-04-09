@@ -1,58 +1,57 @@
 // components/steps/DateTimeStep.jsx
-// import { useEffect } from "react";
-// import { DatePicker } from "@mantine/dates";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
-import { useState } from "react";
+import { format } from "date-fns";
+import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
-
-// const timeSlots = [
-//   "09:00",
-//   "09:30",
-//   "10:00",
-//   "10:30",
-//   "11:00",
-//   "11:30",
-//   "12:00",
-//   "12:30",
-// ];
-// generateTimeSlots({
-//   openingTime: "09:00",
-//   closingTime: "18:00",
-//   slotInterval: 30, // optional (default: 30)
-//   serviceDuration: 60, // 60 minutes service
-//   blockedSlots: ["11:00-12:00", "14:30-15:30"], // Lunch break and another appointment
-// });
 
 export default function DateTimeStep() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
   const { bookingData, updateBookingData } = useBookingContext();
   const navigate = useNavigate();
 
-  const onClickDay = (date) => {
-    setSelectedDay(date.toDateString());
-    //api date non-aviable
-    const slots = generateTimeSlots({
-      openingTime: "08:00",
-      closingTime: "20:00",
-      serviceDuration: 60,
-      blockedSlots: ["12:00-13:00", "15:00-16:30"], // Lunch break and meeting
-    });
+  // Move the query to the top level and make it dependent on selectedDate
+  const { data: unavailableSlots = [] } = useQueryHook({
+    queryKey: ["unavailable", selectedDate],
+    endpoint: selectedDate
+      ? `/api/unavailable-slots/67f6086e1fd3d0813d264706/${selectedDate.toISOString()}`
+      : null,
+    enabled: !!selectedDate, // Only run query when selectedDate exists
+    staleTime: 0 * 60 * 1000,
+  });
 
-    // Automatically excludes blocked times
-    setTimeSlots(slots);
-    console.log("Selected Date:", selectedDay);
+  const OnClickDay = (date) => {
+    const DateOBJ = new Date(date);
+    const dayName = format(DateOBJ, "EEEE").toLowerCase();
+    const filterData = bookingData?.location?.workingHours?.find(
+      (val) => val.day.toLowerCase() === dayName
+    );
+
+    setSelectedDate(DateOBJ);
+    setSelectedDay(date.toDateString());
+
+    if (filterData) {
+      const slots = generateTimeSlots({
+        openingTime: filterData.start,
+        closingTime: filterData.end,
+        serviceDuration: bookingData.services[0].duration,
+        blockedSlots: unavailableSlots,
+      });
+      setTimeSlots(slots);
+    }
   };
-  console.log(bookingData);
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h1 className="text-2xl font-bold mb-6">Select Date And Time</h1>
 
       <div className="mb-8">
         <CalendarComp
-          onClickDay={onClickDay}
+          onClickDay={OnClickDay}
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
         />
@@ -60,21 +59,20 @@ export default function DateTimeStep() {
 
       <h2 className="text-lg font-semibold mb-4">Available Time Slots</h2>
       <div className="grid grid-cols-4 gap-3">
-        {timeSlots &&
-          timeSlots.map((time) => (
-            <button
-              key={time}
-              onClick={() => updateBookingData({ time })}
-              className={`p-2 border rounded-lg text-center text-sm transition-colors
-              ${
-                bookingData.time === time
-                  ? "bg-blue-600 text-white border-blue-700"
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              {time}
-            </button>
-          ))}
+        {timeSlots.map((time) => (
+          <button
+            key={time}
+            onClick={() => updateBookingData({ time })}
+            className={`p-2 border rounded-lg text-center text-sm transition-colors
+            ${
+              bookingData.time === time
+                ? "bg-blue-600 text-white border-blue-700"
+                : "hover:bg-gray-50"
+            }`}
+          >
+            {time}
+          </button>
+        ))}
       </div>
 
       {bookingData.date && bookingData.time && (
