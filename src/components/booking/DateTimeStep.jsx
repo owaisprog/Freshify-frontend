@@ -6,6 +6,8 @@ import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
+import { Button } from "@mantine/core";
+import { apiGet } from "../../services/useApi";
 
 export default function DateTimeStep() {
   const [timeSlots, setTimeSlots] = useState([]);
@@ -41,6 +43,7 @@ export default function DateTimeStep() {
         serviceDuration: bookingData.services[0].duration,
         blockedSlots: unavailableSlots,
       });
+      updateBookingData({ date });
       setTimeSlots(slots);
     }
   };
@@ -50,7 +53,18 @@ export default function DateTimeStep() {
     setSelectedDay(""); // Reset selected day
     setSelectedDate(null); // Reset selected date
   };
+  //google calendar
 
+  const handleConnectGoogle = async () => {
+    try {
+      const { url } = await apiGet(`/api/auth/google`);
+      // 2. Redirect the user to Google's OAuth screen
+      window.location.href = url;
+    } catch (err) {
+      console.error("Error connecting to Google:", err);
+    }
+  };
+  console.log(bookingData);
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h1 className="text-2xl font-bold mb-6">Select Date And Time</h1>
@@ -62,6 +76,9 @@ export default function DateTimeStep() {
           setSelectedDay={setSelectedDay}
           handleMonthChange={handleMonthChange}
         />
+        <Button bg={"black"} className="flex " onClick={handleConnectGoogle}>
+          Connect with google
+        </Button>
       </div>
 
       <h2 className="text-lg font-semibold mb-4">Available Time Slots</h2>
@@ -81,23 +98,6 @@ export default function DateTimeStep() {
           </button>
         ))}
       </div>
-
-      {bookingData.date && bookingData.time && (
-        <div className="mt-8 flex justify-between">
-          <button
-            onClick={() => navigate("/booking/services")}
-            className="px-6 py-2 text-gray-600 hover:text-gray-800"
-          >
-            ← Back
-          </button>
-          <button
-            onClick={() => navigate("/checkout")}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Proceed to Checkout
-          </button>
-        </div>
-      )}
     </div>
   );
 }
