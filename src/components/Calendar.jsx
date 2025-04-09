@@ -14,7 +14,7 @@ import {
 import { ScrollArea } from "@mantine/core";
 
 const Calendar = ({
-  setCalendarState,
+  setCalendarState, // <== We'll call this whenever a user clicks a date
   initialDate = new Date(),
   monthsToShow = 1,
   monthToShow = null,
@@ -34,7 +34,7 @@ const Calendar = ({
         : initialMonth;
 
     return {
-      selectedDate: initialDate, // Use the initialDate prop
+      selectedDate: initialDate,
       currentMonth: startOfMonth(initialYear),
       nextMonth: addMonths(startOfMonth(initialYear), 1),
       today: currentDate,
@@ -42,6 +42,7 @@ const Calendar = ({
     };
   });
 
+  // If monthToShow or yearToShow changes from the parent, adjust our `currentMonth`
   useEffect(() => {
     if (monthToShow !== null || yearToShow !== null) {
       const newDate = new Date(
@@ -60,16 +61,23 @@ const Calendar = ({
     }
   }, [monthToShow, yearToShow]);
 
-  // Sync with external state when it changes
+  // If the parent's calendarState changes, sync with internal state
   useEffect(() => {
     if (calendarState?.selectedDate) {
       setInternalState((prev) => ({
         ...prev,
         selectedDate: new Date(calendarState.selectedDate),
       }));
+    } else {
+      // If parent passes null, clear local selectedDate
+      setInternalState((prev) => ({
+        ...prev,
+        selectedDate: null,
+      }));
     }
   }, [calendarState?.selectedDate]);
 
+  // Generate the dates for the currently visible month
   const datesToDisplay = useMemo(() => {
     const start = startOfMonth(internalState.currentMonth);
     const end = endOfMonth(internalState.currentMonth);
@@ -88,8 +96,8 @@ const Calendar = ({
     return dates;
   }, [internalState.currentMonth]);
 
+  // Handle date click => update both local and parent's state
   const handleDateClick = (date) => {
-    // console.log(getMonth(date) + 1);
     const updatedState = {
       ...internalState,
       selectedDate: date,
@@ -98,8 +106,10 @@ const Calendar = ({
       selectedDay: date.getDate(),
       selectedDateString: format(date, "MMMM dd, yyyy"),
     };
-    setCalendarState(updatedState);
+    // Update this component's local state
     setInternalState(updatedState);
+    // Notify parent
+    setCalendarState(updatedState);
   };
 
   return (
