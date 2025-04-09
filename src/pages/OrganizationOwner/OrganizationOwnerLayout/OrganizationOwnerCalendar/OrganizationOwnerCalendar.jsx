@@ -1,6 +1,6 @@
 import { Button, Title } from "@mantine/core";
 import CustomerTable from "../../../../components/CustomerTable";
-import Calendar from "../../../../components/Calendar";
+import Calendar from "../../../../components/Calendar"; // Assuming this is the file path
 import CustomSelect from "../../../../components/CustomSelector";
 import { useEffect, useState } from "react";
 import {
@@ -20,7 +20,7 @@ import { usePostMutation, useQueryHook } from "../../../../services/reactQuery";
 import { toast } from "react-toastify";
 import EditAvailabilityPopup from "../../../../components/EditAvailabilityPopup";
 
-export default function OrganizationOwnerCalendar() {
+export default function OrganizationOwnerCalendar({ numberOfMonths = 5 }) {
   const { mutate: editAvalibility } = usePostMutation("avalibility");
   const [weekOptions, setWeekOptions] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
@@ -36,25 +36,21 @@ export default function OrganizationOwnerCalendar() {
     monthsToShow: 1,
   });
 
-  // Always show current and next month in the Month dropdown
-  const currentMonth = format(currentDate, "yyyy-MMMM");
-  const nextMonth = format(addMonths(currentDate, 1), "yyyy-MMMM");
-
-  const [selectedOption, setSelectedOption] = useState(currentMonth);
+  // Generate month options dynamically based on numberOfMonths
+  const [selectedOption, setSelectedOption] = useState(
+    format(currentDate, "yyyy-MMMM")
+  );
   const [selectedOptionMonth, setSelectedOptionMonth] = useState(
     getMonth(currentDate) + 1
   );
 
-  const selectData = [
-    {
-      value: currentMonth,
-      label: format(new Date(currentMonth), "MMMM"),
-    },
-    {
-      value: nextMonth,
-      label: format(new Date(nextMonth), "MMMM"),
-    },
-  ];
+  const selectData = Array.from({ length: numberOfMonths }, (_, i) => {
+    const monthDate = addMonths(currentDate, i);
+    return {
+      value: format(monthDate, "yyyy-MMMM"),
+      label: format(monthDate, "MMMM"),
+    };
+  });
 
   const {
     data: bookings = [],
@@ -78,22 +74,16 @@ export default function OrganizationOwnerCalendar() {
     fetchBookings();
   }, [getMutateBookings, role]);
 
-  // 1) Recompute weeks whenever the selectedOptionMonth changes
-  //    Each week has a "value", "label" and also "range" with {start, end}.
+  // Recompute weeks whenever the selectedOptionMonth changes
   useEffect(() => {
     if (selectedOptionMonth) {
-      // Start of the chosen month
       const startDate = startOfMonth(
         new Date(new Date().getFullYear(), selectedOptionMonth - 1, 1)
       );
-      // End of the chosen month
       const endDate = endOfMonth(startDate);
 
       let weeks = [];
       let currentWeekStart = startOfWeek(startDate, { weekStartsOn: 1 });
-      // ^ If you want the week to start on Monday, pass { weekStartsOn: 1 }
-      //   If you want Sunday, remove the second argument or use { weekStartsOn: 0 }
-
       let weekIndex = 1;
 
       while (currentWeekStart <= endDate) {
@@ -107,8 +97,6 @@ export default function OrganizationOwnerCalendar() {
           },
         });
         weekIndex++;
-
-        // Move currentWeekStart to the next day after currentWeekEnd
         currentWeekStart = new Date(currentWeekEnd.getTime());
         currentWeekStart.setDate(currentWeekStart.getDate() + 1);
       }
@@ -117,19 +105,17 @@ export default function OrganizationOwnerCalendar() {
     }
   }, [selectedOptionMonth]);
 
-  // 2) On month dropdown change
+  // On month dropdown change
   const handleSelectChange = (value) => {
     const date = new Date(value);
     setSelectedOptionMonth(getMonth(date) + 1);
     setSelectedOption(value);
-    // Clear date and selected week
     setCalendarState((prev) => ({
       ...prev,
       selectedDate: null,
     }));
     setSelectedWeek(null);
 
-    // If user re-selects the current month, default the date to "today"
     if (value === format(new Date(), "yyyy-MMMM")) {
       setCalendarState((prev) => ({
         ...prev,
@@ -138,35 +124,30 @@ export default function OrganizationOwnerCalendar() {
     }
   };
 
-  // 3) When user selects a week => clear the date selection
+  // When user selects a week => clear the date selection
   const handleWeekSelect = (selectedWeekValue) => {
     setSelectedWeek(selectedWeekValue);
-    // Remove any selected date in the calendar
     setCalendarState((prev) => ({
       ...prev,
       selectedDate: null,
     }));
   };
 
-  // 4) Filter logic for bookings
+  // Filter logic for bookings
   useEffect(() => {
     if (!bookings.length) {
       setFilteredBookings([]);
       return;
     }
 
-    // Step A: Filter by the selected month
     const monthFiltered = bookings.filter((val) => {
       return format(new Date(val?.bookingDate), "yyyy-MMMM") === selectedOption;
     });
 
-    // Step B: If a week is selected, filter by that week's range
     if (selectedWeek) {
-      // Find the range for that week
       const weekObj = weekOptions.find((week) => week.value === selectedWeek);
       if (weekObj) {
         const { start, end } = weekObj.range;
-        // Filter bookings that lie between start and end (inclusive)
         const weekFiltered = monthFiltered.filter((val) => {
           const bookingDate = new Date(val.bookingDate);
           return (
@@ -179,7 +160,6 @@ export default function OrganizationOwnerCalendar() {
       }
     }
 
-    // Step C: Otherwise, if a date is selected in the calendar
     if (calendarState.selectedDate) {
       const dateFiltered = monthFiltered.filter((val) => {
         return isSameDay(new Date(val.bookingDate), calendarState.selectedDate);
@@ -188,7 +168,6 @@ export default function OrganizationOwnerCalendar() {
       return;
     }
 
-    // Step D: If no date or week is selected, show everything in the month
     setFilteredBookings(monthFiltered);
   }, [
     bookings,
@@ -198,9 +177,8 @@ export default function OrganizationOwnerCalendar() {
     weekOptions,
   ]);
 
-  // 5) If user selects a date on the calendar, we reset the week select
+  // If user selects a date on the calendar, reset the week select
   const handleCalendarDateChange = (updatedState) => {
-    // Whenever a date is chosen, clear the selected week
     setSelectedWeek(null);
     setCalendarState(updatedState);
   };
@@ -212,7 +190,7 @@ export default function OrganizationOwnerCalendar() {
     staleTime: 0,
   });
 
-  // 6) Edit availability
+  // Edit availability
   const handleAvailabilitySubmit = (values) => {
     editAvalibility(
       {
@@ -285,7 +263,7 @@ export default function OrganizationOwnerCalendar() {
       <Calendar
         monthToShow={selectedOptionMonth}
         yearToShow={getYear(new Date(selectedOption))}
-        setCalendarState={handleCalendarDateChange} // pass our custom handler
+        setCalendarState={handleCalendarDateChange}
         calendarState={calendarState}
         initialDate={currentDate}
       />

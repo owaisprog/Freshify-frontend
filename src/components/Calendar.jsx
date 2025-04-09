@@ -14,7 +14,7 @@ import {
 import { ScrollArea } from "@mantine/core";
 
 const Calendar = ({
-  setCalendarState, // <== We'll call this whenever a user clicks a date
+  setCalendarState,
   initialDate = new Date(),
   monthsToShow = 1,
   monthToShow = null,
@@ -42,7 +42,7 @@ const Calendar = ({
     };
   });
 
-  // If monthToShow or yearToShow changes from the parent, adjust our `currentMonth`
+  // Sync with parent’s monthToShow or yearToShow changes
   useEffect(() => {
     if (monthToShow !== null || yearToShow !== null) {
       const newDate = new Date(
@@ -61,7 +61,7 @@ const Calendar = ({
     }
   }, [monthToShow, yearToShow]);
 
-  // If the parent's calendarState changes, sync with internal state
+  // Sync with parent’s calendarState
   useEffect(() => {
     if (calendarState?.selectedDate) {
       setInternalState((prev) => ({
@@ -69,7 +69,6 @@ const Calendar = ({
         selectedDate: new Date(calendarState.selectedDate),
       }));
     } else {
-      // If parent passes null, clear local selectedDate
       setInternalState((prev) => ({
         ...prev,
         selectedDate: null,
@@ -77,7 +76,7 @@ const Calendar = ({
     }
   }, [calendarState?.selectedDate]);
 
-  // Generate the dates for the currently visible month
+  // Generate dates for the current month
   const datesToDisplay = useMemo(() => {
     const start = startOfMonth(internalState.currentMonth);
     const end = endOfMonth(internalState.currentMonth);
@@ -96,7 +95,7 @@ const Calendar = ({
     return dates;
   }, [internalState.currentMonth]);
 
-  // Handle date click => update both local and parent's state
+  // Handle date click
   const handleDateClick = (date) => {
     const updatedState = {
       ...internalState,
@@ -106,9 +105,7 @@ const Calendar = ({
       selectedDay: date.getDate(),
       selectedDateString: format(date, "MMMM dd, yyyy"),
     };
-    // Update this component's local state
     setInternalState(updatedState);
-    // Notify parent
     setCalendarState(updatedState);
   };
 
