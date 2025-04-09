@@ -13,7 +13,7 @@ import {
   getDate,
 } from "date-fns";
 
-const CalendarComp = ({ selectedDay, onClickDay }) => {
+const CalendarComp = ({ selectedDay, onClickDay, handleMonthChange }) => {
   const today = new Date();
   const [currentDate] = useState(today);
   const [selectedMonth, setSelectedMonth] = useState("current");
@@ -54,6 +54,10 @@ const CalendarComp = ({ selectedDay, onClickDay }) => {
     ].join(" ");
   };
 
+  function onMonthSelect(month) {
+    setSelectedMonth(month);
+    handleMonthChange();
+  }
   return (
     <div className="mx-auto bg-white rounded-lg p-6" style={{ width: "95%" }}>
       {/* Month selector buttons */}
@@ -61,7 +65,7 @@ const CalendarComp = ({ selectedDay, onClickDay }) => {
         {["current", "next"].map((month) => (
           <button
             key={month}
-            onClick={() => setSelectedMonth(month)}
+            onClick={() => onMonthSelect(month)}
             className={`p-2 sm:p-3 border-[0.5px] border-black min-w-32 sm:min-w-64 rounded-[20px] 
               transition duration-200 font-medium text-base sm:text-xl leading-normal
               ${selectedMonth === month ? "bg-black text-white" : "bg-white text-black"}`}

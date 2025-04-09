@@ -45,6 +45,12 @@ export default function DateTimeStep() {
     }
   };
 
+  const handleMonthChange = () => {
+    setTimeSlots([]); // Reset time slots
+    setSelectedDay(""); // Reset selected day
+    setSelectedDate(null); // Reset selected date
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h1 className="text-2xl font-bold mb-6">Select Date And Time</h1>
@@ -54,6 +60,7 @@ export default function DateTimeStep() {
           onClickDay={OnClickDay}
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
+          handleMonthChange={handleMonthChange}
         />
       </div>
 
