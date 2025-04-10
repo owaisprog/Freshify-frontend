@@ -17,7 +17,7 @@ export default function OrderSummary() {
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
 
   console.log({
-    userId: "67f39793571ab1adb536898f",
+    userId: id,
     organizationOwnerId: "67e45bf2ddeafab8b200eb2b",
     location: bookingData?.location?.name,
     professionalId: bookingData?.professional?._id,

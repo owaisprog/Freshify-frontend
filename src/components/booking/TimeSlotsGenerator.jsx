@@ -6,7 +6,6 @@ import {
   setHours,
   setMinutes,
 } from "date-fns";
-
 export default function generateTimeSlots({
   openingTime = "09:00",
   closingTime,
@@ -19,8 +18,16 @@ export default function generateTimeSlots({
   const openingDate = parseTimeToDate(date, openingTime);
   const closingDate = parseTimeToDate(date, closingTime);
 
-  // Parse blocked slots into Date intervals
-  const blockedIntervals = blockedSlots.map((slot) => {
+  // Check if the date is today
+  const today = new Date();
+  const isToday =
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear();
+
+  // Ensure blockedSlots is always an array before mapping
+  const safeBlockedSlots = Array.isArray(blockedSlots) ? blockedSlots : [];
+  const blockedIntervals = safeBlockedSlots.map((slot) => {
     const [start, end] = slot.split("-");
     return {
       start: parseTimeToDate(date, start),
@@ -30,6 +37,16 @@ export default function generateTimeSlots({
 
   const availableSlots = [];
   let currentSlot = openingDate;
+
+  // If it's today, adjust the starting time to current time
+  if (isToday) {
+    const now = new Date();
+    // Find the next slot after current time
+    while (currentSlot < now) {
+      currentSlot = addMinutes(currentSlot, slotInterval);
+    }
+  }
+
   const lastPossibleStart = addMinutes(closingDate, -serviceDuration);
 
   // Generate all possible slots

@@ -14,7 +14,7 @@ export default function DateTimeStep() {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const { bookingData, updateBookingData } = useBookingContext();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // Move the query to the top level and make it dependent on selectedDate
   const { data: unavailableSlots = [] } = useQueryHook({
@@ -25,7 +25,6 @@ export default function DateTimeStep() {
     enabled: !!selectedDate, // Only run query when selectedDate exists
     staleTime: 0 * 60 * 1000,
   });
-
   const OnClickDay = (date) => {
     const DateOBJ = new Date(date);
     const dayName = format(DateOBJ, "EEEE").toLowerCase();
@@ -36,18 +35,25 @@ export default function DateTimeStep() {
     setSelectedDate(DateOBJ);
     setSelectedDay(date.toDateString());
 
+    // Clear the previously selected time
+    updateBookingData({ date: DateOBJ, time: null });
+
     if (filterData) {
+      // Ensure blockedSlots is always an array
+      const safeBlockedSlots = Array.isArray(unavailableSlots)
+        ? unavailableSlots
+        : [];
+
       const slots = generateTimeSlots({
         openingTime: filterData.start,
         closingTime: filterData.end,
         serviceDuration: bookingData.services[0].duration,
-        blockedSlots: unavailableSlots,
+        blockedSlots: safeBlockedSlots,
+        date: DateOBJ,
       });
-      updateBookingData({ date });
       setTimeSlots(slots);
     }
   };
-
   const handleMonthChange = () => {
     setTimeSlots([]); // Reset time slots
     setSelectedDay(""); // Reset selected day
