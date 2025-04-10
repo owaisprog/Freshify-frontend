@@ -18,7 +18,7 @@ export default function OrderSummary() {
 
   console.log({
     userId: id,
-    organizationOwnerId: "67e45bf2ddeafab8b200eb2b",
+    organizationOwnerId: "67f7596971c7c802a785f2bd",
     location: bookingData?.location?.name,
     professionalId: bookingData?.professional?._id,
     services: bookingData?.services,
@@ -35,7 +35,7 @@ export default function OrderSummary() {
         endpoint: "/api/create-booking",
         payload: {
           userId: "67f39793571ab1adb536898f",
-          organizationOwnerId: "67e45bf2ddeafab8b200eb2b",
+          organizationOwnerId: "67f7596971c7c802a785f2bd",
           location: bookingData.location.name,
           professionalId: bookingData.professional._id,
           services: bookingData.services,
