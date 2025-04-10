@@ -41,7 +41,7 @@ export default function DateTimeStep() {
 
   console.log("Selected date (local):", selectedDate);
   console.log("Selected date (UTC midnight):", formattedUTC);
-
+  console.log(bookingData?.location?.workingHours);
   // When a day is clicked in CalendarComp
   const OnClickDay = (date) => {
     const DateOBJ = new Date(date);
@@ -103,6 +103,7 @@ export default function DateTimeStep() {
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
           handleMonthChange={handleMonthChange}
+          workingHours={bookingData?.location?.workingHours}
         />
         <Button bg={"black"} className="flex" onClick={handleConnectGoogle}>
           Connect with Google
