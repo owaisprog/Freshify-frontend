@@ -2,8 +2,6 @@ import { Button, Modal, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import DatePickerCalendar from "./DatePicker";
 import TimePicker from "./DayTimePicker";
-// import { usePostMutation } from "../services/reactQuery";
-// import { TimeInput } from "@mantine/dates";
 
 const EditAvailabilityPopup = ({
   opened,
@@ -33,7 +31,29 @@ const EditAvailabilityPopup = ({
   });
 
   const handleSubmit = (values) => {
-    onSubmit(values);
+    // 1) Convert the chosen date to a local Date object
+    const localDate = new Date(values.date);
+
+    // 2) Extract just the YYYY, MM, DD for UTC midnight
+    const utcDate = new Date(
+      Date.UTC(
+        localDate.getFullYear(),
+        localDate.getMonth(),
+        localDate.getDate()
+      )
+    );
+
+    // 3) Convert to ISO so your backend sees the correct calendar day in UTC
+    const dateIsoString = utcDate.toISOString();
+
+    // 4) Prepare final payload
+    const finalValues = {
+      ...values,
+      date: dateIsoString, // "2025-04-10T00:00:00.000Z" example
+    };
+
+    // Send it off
+    onSubmit(finalValues);
     onClose();
   };
 
@@ -58,32 +78,19 @@ const EditAvailabilityPopup = ({
           required
         />
 
+        {/* Make sure DatePickerCalendar is a fully controlled component! */}
         <DatePickerCalendar
           value={form.values.date}
           onChange={(date) => form.setFieldValue("date", date)}
           mb="md"
         />
 
-        {/* <TimeInput
-          label="Start Time"
-          value={form.values.startTime}
-          onChange={(time) => form.setFieldValue("startTime", time)}
-          mb="md"
-          required
-        />
-
-        <TimeInput
-          label="End Time"
-          value={form.values.endTime}
-          onChange={(time) => form.setFieldValue("endTime", time)}
-          mb="md"
-          required
-        /> */}
         <TimePicker
           label="Opening Time (All Days)"
           value={form.values.startTime}
           onChange={(value) => form.setFieldValue("startTime", value)}
         />
+
         <TimePicker
           label="Closing Time (All Days)"
           value={form.values.endTime}

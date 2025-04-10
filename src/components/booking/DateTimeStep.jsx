@@ -1,6 +1,7 @@
 // components/steps/DateTimeStep.jsx
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
@@ -16,24 +17,42 @@ export default function DateTimeStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   // const navigate = useNavigate();
 
-  // Move the query to the top level and make it dependent on selectedDate
+  // Create a UTC-midnight ISO string if we have a selectedDate.
+  // This ensures the date won't shift backwards due to time zones.
+  const formattedUTC = selectedDate
+    ? new Date(
+        Date.UTC(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate()
+        )
+      ).toISOString()
+    : null;
+
+  // Use the UTC-midnight string in our query
   const { data: unavailableSlots = [] } = useQueryHook({
-    queryKey: ["unavailable", selectedDate],
-    endpoint: selectedDate
-      ? `/api/unavailable-slots/67f6086e1fd3d0813d264706/${selectedDate.toISOString()}`
+    queryKey: ["unavailable", formattedUTC],
+    endpoint: formattedUTC
+      ? `/api/unavailable-slots/${bookingData.professional._id}/${formattedUTC}`
       : null,
-    enabled: !!selectedDate, // Only run query when selectedDate exists
-    staleTime: 0 * 60 * 1000,
+    enabled: !!formattedUTC,
+    staleTime: 0,
   });
+
+  console.log("Selected date (local):", selectedDate);
+  console.log("Selected date (UTC midnight):", formattedUTC);
+
+  // When a day is clicked in CalendarComp
   const OnClickDay = (date) => {
     const DateOBJ = new Date(date);
     const dayName = format(DateOBJ, "EEEE").toLowerCase();
+
     const filterData = bookingData?.location?.workingHours?.find(
       (val) => val.day.toLowerCase() === dayName
     );
 
     setSelectedDate(DateOBJ);
-    setSelectedDay(date.toDateString());
+    setSelectedDay(DateOBJ.toDateString());
 
     // Clear the previously selected time
     updateBookingData({ date: DateOBJ, time: null });
@@ -54,23 +73,26 @@ export default function DateTimeStep() {
       setTimeSlots(slots);
     }
   };
-  const handleMonthChange = () => {
-    setTimeSlots([]); // Reset time slots
-    setSelectedDay(""); // Reset selected day
-    setSelectedDate(null); // Reset selected date
-  };
-  //google calendar
 
+  // Reset date/time slots when month changes
+  const handleMonthChange = () => {
+    setTimeSlots([]);
+    setSelectedDay("");
+    setSelectedDate(null);
+  };
+
+  // Connect to Google (example)
   const handleConnectGoogle = async () => {
     try {
       const { url } = await apiGet(`/api/auth/google`);
-      // 2. Redirect the user to Google's OAuth screen
       window.location.href = url;
     } catch (err) {
       console.error("Error connecting to Google:", err);
     }
   };
-  console.log(bookingData);
+
+  console.log("Booking Data:", bookingData);
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <h1 className="text-2xl font-bold mb-6">Select Date And Time</h1>
@@ -82,8 +104,8 @@ export default function DateTimeStep() {
           setSelectedDay={setSelectedDay}
           handleMonthChange={handleMonthChange}
         />
-        <Button bg={"black"} className="flex " onClick={handleConnectGoogle}>
-          Connect with google
+        <Button bg={"black"} className="flex" onClick={handleConnectGoogle}>
+          Connect with Google
         </Button>
       </div>
 

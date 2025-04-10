@@ -1,10 +1,8 @@
 import { DatePicker } from "@mantine/dates";
-import { useState } from "react";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 
-function DatePickerCalendar() {
-  const [value, setValue] = useState(null);
+function DatePickerCalendar({ value, onChange }) {
   const today = new Date();
 
   // Calculate the last day of next month
@@ -14,7 +12,7 @@ function DatePickerCalendar() {
   return (
     <DatePicker
       value={value}
-      onChange={setValue}
+      onChange={onChange}
       minDate={today}
       maxDate={endOfNextMonth}
       defaultDate={today}
@@ -42,4 +40,3 @@ function DatePickerCalendar() {
 }
 
 export default DatePickerCalendar;
-// export default DatePickerCalendar;
