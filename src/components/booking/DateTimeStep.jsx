@@ -1,7 +1,6 @@
 // components/steps/DateTimeStep.jsx
 
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
@@ -17,31 +16,22 @@ export default function DateTimeStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   // const navigate = useNavigate();
 
-  // Create a UTC-midnight ISO string if we have a selectedDate.
-  // This ensures the date won't shift backwards due to time zones.
+  // Only compute the formattedUTC if selectedDate is valid
   const formattedUTC = selectedDate
-    ? new Date(
-        Date.UTC(
-          selectedDate.getFullYear(),
-          selectedDate.getMonth(),
-          selectedDate.getDate()
-        )
-      ).toISOString()
+    ? format(new Date(selectedDate), "yyyy-MM-dd")
     : null;
 
-  // Use the UTC-midnight string in our query
+  // Use the formatted date in our query
   const { data: unavailableSlots = [] } = useQueryHook({
     queryKey: ["unavailable", formattedUTC],
     endpoint: formattedUTC
-      ? `/api/unavailable-slots/${bookingData.professional._id}/${formattedUTC}`
+      ? `/api/unavailable-slots/${bookingData?.professional?._id}/${formattedUTC}`
       : null,
-    enabled: !!formattedUTC,
+    enabled: !!formattedUTC, // query runs only if formattedUTC has a valid value
     staleTime: 0,
   });
+  console.log(unavailableSlots);
 
-  console.log("Selected date (local):", selectedDate);
-  console.log("Selected date (UTC midnight):", formattedUTC);
-  console.log(bookingData?.location?.workingHours);
   // When a day is clicked in CalendarComp
   const OnClickDay = (date) => {
     const DateOBJ = new Date(date);
@@ -62,7 +52,6 @@ export default function DateTimeStep() {
       const safeBlockedSlots = Array.isArray(unavailableSlots)
         ? unavailableSlots
         : [];
-
       const slots = generateTimeSlots({
         openingTime: filterData.start,
         closingTime: filterData.end,
@@ -74,7 +63,7 @@ export default function DateTimeStep() {
     }
   };
 
-  // Reset date/time slots when month changes
+  // Reset date/time slots when the month changes
   const handleMonthChange = () => {
     setTimeSlots([]);
     setSelectedDay("");
@@ -90,8 +79,6 @@ export default function DateTimeStep() {
       console.error("Error connecting to Google:", err);
     }
   };
-
-  console.log("Booking Data:", bookingData);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -116,8 +103,7 @@ export default function DateTimeStep() {
           <button
             key={time}
             onClick={() => updateBookingData({ time })}
-            className={`p-2 border rounded-lg text-center text-sm transition-colors
-            ${
+            className={`p-2 border rounded-lg text-center text-sm transition-colors ${
               bookingData.time === time
                 ? "bg-blue-600 text-white border-blue-700"
                 : "hover:bg-gray-50"

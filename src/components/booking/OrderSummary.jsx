@@ -16,25 +16,25 @@ export default function OrderSummary() {
   const { mutate: createBookings } = usePostMutation("bookings");
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
 
-  console.log({
-    userId: id,
-    organizationOwnerId: "67f7596971c7c802a785f2bd",
-    location: bookingData?.location?.name,
-    professionalId: bookingData?.professional?._id,
-    services: bookingData?.services,
-    bookingDate: bookingData?.date,
-    bookingWeek: getWeekOfMonth(bookingData?.date),
-    bookingTime: bookingData?.time,
-    totalPrice: bookingData?.services.reduce((sum, s) => +sum + +s?.price, 0),
-    paymentMethod: "online",
-  });
+  // console.log({
+  //   userId: id,
+  //   organizationOwnerId: "67f7596971c7c802a785f2bd",
+  //   location: bookingData?.location?.name,
+  //   professionalId: bookingData?.professional?._id,
+  //   services: bookingData?.services,
+  //   bookingDate: bookingData?.date,
+  //   bookingWeek: getWeekOfMonth(bookingData?.date),
+  //   bookingTime: bookingData?.time,
+  //   totalPrice: bookingData?.services.reduce((sum, s) => +sum + +s?.price, 0),
+  //   paymentMethod: "online",
+  // });
 
   function handleBookings() {
     createBookings(
       {
         endpoint: "/api/create-booking",
         payload: {
-          userId: "67f39793571ab1adb536898f",
+          userId: id,
           organizationOwnerId: "67f7596971c7c802a785f2bd",
           location: bookingData.location.name,
           professionalId: bookingData.professional._id,
