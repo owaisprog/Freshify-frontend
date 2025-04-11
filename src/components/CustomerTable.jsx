@@ -51,8 +51,8 @@ export default function CustomerTable({ bookings, error, isLoading }) {
             : booking.status === "cancelled"
               ? "red"
               : booking.status === "pending"
-                ? "orange"
-                : "gray"
+                ? "white"
+                : "white"
         }
         weight={500}
       >

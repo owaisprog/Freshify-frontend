@@ -9,21 +9,19 @@ import {
   getMonth,
   getYear,
   setMonth,
-  // getYear,
+  isSameDay,
 } from "date-fns";
 import { ScrollArea } from "@mantine/core";
 
 const Calendar = ({
-  calendarState,
   setCalendarState,
   initialDate = new Date(),
-  monthsToShow = 1, // Changed to show one month at a time
-  monthToShow = null, // New prop: month number (1-12)
-  yearToShow = null, // New prop: year number
+  monthsToShow = 1,
+  monthToShow = null,
+  yearToShow = null,
+  calendarState,
 }) => {
-  // Initialize internal state
   const [internalState, setInternalState] = useState(() => {
-    // Calculate initial month based on props
     const currentDate = new Date();
     const initialMonth =
       monthToShow !== null
@@ -36,7 +34,7 @@ const Calendar = ({
         : initialMonth;
 
     return {
-      selectedDate: null,
+      selectedDate: initialDate,
       currentMonth: startOfMonth(initialYear),
       nextMonth: addMonths(startOfMonth(initialYear), 1),
       today: currentDate,
@@ -44,7 +42,7 @@ const Calendar = ({
     };
   });
 
-  // Update month when prop changes
+  // Sync with parent’s monthToShow or yearToShow changes
   useEffect(() => {
     if (monthToShow !== null || yearToShow !== null) {
       const newDate = new Date(
@@ -63,14 +61,25 @@ const Calendar = ({
     }
   }, [monthToShow, yearToShow]);
 
-  // Use either external state or internal state
-  const state = calendarState || internalState;
-  const setState = setCalendarState || setInternalState;
+  // Sync with parent’s calendarState
+  useEffect(() => {
+    if (calendarState?.selectedDate) {
+      setInternalState((prev) => ({
+        ...prev,
+        selectedDate: new Date(calendarState.selectedDate),
+      }));
+    } else {
+      setInternalState((prev) => ({
+        ...prev,
+        selectedDate: null,
+      }));
+    }
+  }, [calendarState?.selectedDate]);
 
-  // Memoize the dates to display
+  // Generate dates for the current month
   const datesToDisplay = useMemo(() => {
-    const start = startOfMonth(state.currentMonth);
-    const end = endOfMonth(state.currentMonth); // Only show one month
+    const start = startOfMonth(internalState.currentMonth);
+    const end = endOfMonth(internalState.currentMonth);
 
     const dates = [];
     let currentDate = new Date(start);
@@ -84,19 +93,20 @@ const Calendar = ({
     }
 
     return dates;
-  }, [state.currentMonth]);
+  }, [internalState.currentMonth]);
 
   // Handle date click
   const handleDateClick = (date) => {
     const updatedState = {
-      ...state,
+      ...internalState,
       selectedDate: date,
       selectedMonth: getMonth(date) + 1,
       selectedYear: getYear(date),
       selectedDay: date.getDate(),
       selectedDateString: format(date, "MMMM dd, yyyy"),
     };
-    setState(updatedState);
+    setInternalState(updatedState);
+    setCalendarState(updatedState);
   };
 
   return (
@@ -105,10 +115,11 @@ const Calendar = ({
         <ScrollArea style={{ width: "99%" }} offsetScrollbars>
           <div className="flex gap-2 py-2 px-4">
             {datesToDisplay.map((date) => {
-              const isPastDate = isBefore(date, state.today);
+              const isPastDate =
+                isBefore(date, internalState.today) && !isToday(date);
               const isSelected =
-                state.selectedDate &&
-                state.selectedDate.toDateString() === date.toDateString();
+                internalState.selectedDate &&
+                isSameDay(internalState.selectedDate, date);
               const isTodayDate = isToday(date);
 
               return (
@@ -124,7 +135,7 @@ const Calendar = ({
                           ? "bg-[#E9E9E9] text-gray-400 cursor-not-allowed"
                           : "bg-white text-black"
                   }`}
-                  disabled={isPastDate && !isTodayDate}
+                  disabled={isPastDate}
                 >
                   {format(date, "d")}
                 </button>

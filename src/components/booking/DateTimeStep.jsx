@@ -1,51 +1,85 @@
 // components/steps/DateTimeStep.jsx
-// import { useEffect } from "react";
-// import { DatePicker } from "@mantine/dates";
-import { useNavigate } from "react-router-dom";
+
+import { useState } from "react";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
-import { useState } from "react";
+import { format } from "date-fns";
+import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
-
-// const timeSlots = [
-//   "09:00",
-//   "09:30",
-//   "10:00",
-//   "10:30",
-//   "11:00",
-//   "11:30",
-//   "12:00",
-//   "12:30",
-// ];
-// generateTimeSlots({
-//   openingTime: "09:00",
-//   closingTime: "18:00",
-//   slotInterval: 30, // optional (default: 30)
-//   serviceDuration: 60, // 60 minutes service
-//   blockedSlots: ["11:00-12:00", "14:30-15:30"], // Lunch break and another appointment
-// });
+import { Button } from "@mantine/core";
+import { apiGet } from "../../services/useApi";
 
 export default function DateTimeStep() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
   const { bookingData, updateBookingData } = useBookingContext();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  const onClickDay = (date) => {
-    setSelectedDay(date.toDateString());
-    //api date non-aviable
-    const slots = generateTimeSlots({
-      openingTime: "08:00",
-      closingTime: "20:00",
-      serviceDuration: 60,
-      blockedSlots: ["12:00-13:00", "15:00-16:30"], // Lunch break and meeting
-    });
+  // Only compute the formattedUTC if selectedDate is valid
+  const formattedUTC = selectedDate
+    ? format(new Date(selectedDate), "yyyy-MM-dd")
+    : null;
 
-    // Automatically excludes blocked times
-    setTimeSlots(slots);
-    console.log("Selected Date:", selectedDay);
+  // Use the formatted date in our query
+  const { data: unavailableSlots = [] } = useQueryHook({
+    queryKey: ["unavailable", formattedUTC],
+    endpoint: formattedUTC
+      ? `/api/unavailable-slots/${bookingData?.professional?._id}/${formattedUTC}`
+      : null,
+    enabled: !!formattedUTC, // query runs only if formattedUTC has a valid value
+    staleTime: 0,
+  });
+  console.log(unavailableSlots);
+
+  // When a day is clicked in CalendarComp
+  const OnClickDay = (date) => {
+    const DateOBJ = new Date(date);
+    const dayName = format(DateOBJ, "EEEE").toLowerCase();
+
+    const filterData = bookingData?.location?.workingHours?.find(
+      (val) => val.day.toLowerCase() === dayName
+    );
+
+    setSelectedDate(DateOBJ);
+    setSelectedDay(DateOBJ.toDateString());
+
+    // Clear the previously selected time
+    updateBookingData({ date: DateOBJ, time: null });
+
+    if (filterData) {
+      // Ensure blockedSlots is always an array
+      const safeBlockedSlots = Array.isArray(unavailableSlots)
+        ? unavailableSlots
+        : [];
+      const slots = generateTimeSlots({
+        openingTime: filterData.start,
+        closingTime: filterData.end,
+        serviceDuration: bookingData.services[0].duration,
+        blockedSlots: safeBlockedSlots,
+        date: DateOBJ,
+      });
+      setTimeSlots(slots);
+    }
   };
-  console.log(bookingData);
+
+  // Reset date/time slots when the month changes
+  const handleMonthChange = () => {
+    setTimeSlots([]);
+    setSelectedDay("");
+    setSelectedDate(null);
+  };
+
+  // Connect to Google (example)
+  const handleConnectGoogle = async () => {
+    try {
+      const { url } = await apiGet(`/api/auth/google`);
+      window.location.href = url;
+    } catch (err) {
+      console.error("Error connecting to Google:", err);
+    }
+  };
+
   return (
     <div className=" px-3 lg:px-0">
       <h1 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
@@ -54,10 +88,15 @@ export default function DateTimeStep() {
 
       <div className="mb-8">
         <CalendarComp
-          onClickDay={onClickDay}
+          onClickDay={OnClickDay}
           selectedDay={selectedDay}
           setSelectedDay={setSelectedDay}
+          handleMonthChange={handleMonthChange}
+          workingHours={bookingData?.location?.workingHours}
         />
+        <Button bg={"black"} className="flex" onClick={handleConnectGoogle}>
+          Connect with Google
+        </Button>
       </div>
 
       <h2 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
@@ -76,23 +115,6 @@ export default function DateTimeStep() {
             </button>
           ))}
       </div>
-
-      {bookingData.date && bookingData.time && (
-        <div className="mt-8 flex justify-between">
-          <button
-            onClick={() => navigate("/booking/services")}
-            className="px-6 py-2 text-gray-600 hover:text-gray-800"
-          >
-            ← Back
-          </button>
-          <button
-            onClick={() => navigate("/checkout")}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Proceed to Checkout
-          </button>
-        </div>
-      )}
     </div>
   );
 }

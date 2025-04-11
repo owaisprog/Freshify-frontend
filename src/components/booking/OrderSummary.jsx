@@ -1,8 +1,66 @@
 // components/OrderSummary.jsx
+import { toast } from "react-toastify";
+import { usePostMutation } from "../../services/reactQuery";
 import { useBookingContext } from "./BookingContext";
 
 export default function OrderSummary() {
+  function getWeekOfMonth(dateInput) {
+    const date = new Date(dateInput);
+
+    const dayOfMonth = date.getDate();
+
+    return Math.ceil(dayOfMonth / 7);
+  }
+
   const { bookingData } = useBookingContext();
+  const { mutate: createBookings } = usePostMutation("bookings");
+  const { id } = JSON.parse(localStorage.getItem("data")) || {};
+
+  // console.log({
+  //   userId: id,
+  //   organizationOwnerId: "67f7596971c7c802a785f2bd",
+  //   location: bookingData?.location?.name,
+  //   professionalId: bookingData?.professional?._id,
+  //   services: bookingData?.services,
+  //   bookingDate: bookingData?.date,
+  //   bookingWeek: getWeekOfMonth(bookingData?.date),
+  //   bookingTime: bookingData?.time,
+  //   totalPrice: bookingData?.services.reduce((sum, s) => +sum + +s?.price, 0),
+  //   paymentMethod: "online",
+  // });
+
+  function handleBookings() {
+    createBookings(
+      {
+        endpoint: "/api/create-booking",
+        payload: {
+          userId: id,
+          organizationOwnerId: "67f7596971c7c802a785f2bd",
+          location: bookingData.location.name,
+          professionalId: bookingData.professional._id,
+          services: bookingData.services,
+          bookingDate: bookingData.date,
+          bookingWeek: getWeekOfMonth(bookingData?.date),
+          bookingTime: bookingData.time,
+          totalPrice: bookingData.services.reduce(
+            (sum, s) => +sum + +s.price,
+            0
+          ),
+          paymentMethod: "online",
+        },
+      },
+      {
+        onSuccess: () =>
+          toast.success("Booking Created Successfully", {
+            position: "top-center",
+          }),
+        onError: () =>
+          toast.error("Error Booking ", {
+            position: "top-center",
+          }),
+      }
+    );
+  }
 
   return (
     <div className="lg:w-[400px] bg-black flex flex-col lg:p-6 h-full justify-between sticky top-5 rounded-3xl ">
@@ -88,7 +146,7 @@ export default function OrderSummary() {
           <div className="">
             <p className="text-white uppercase text-[22px] font-[700]">DATE</p>
             <p className="text-white text-[18px] font-[400]">
-              {bookingData.date.toLocaleDateString("en-US", {
+              {new Date(bookingData.date).toLocaleDateString("en-US", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
@@ -128,6 +186,7 @@ export default function OrderSummary() {
           bookingData.date &&
           bookingData.time && (
             <button
+              onClick={handleBookings}
               className="w-full py-3 bg-white text-black text-[18px] 
             font-[400] rounded-lg mt-6 hover:bg-gray-100 transition-colors"
             >
