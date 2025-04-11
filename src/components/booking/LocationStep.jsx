@@ -11,7 +11,7 @@ import { Loader } from "@mantine/core";
 // ];
 
 export default function LocationStep() {
-  const id = "67e6ccdb05463ea8912d9f98";
+  const id = "67f7596971c7c802a785f2bd";
   const { updateBookingData } = useBookingContext(); // Removed unused bookingData
   const navigate = useNavigate();
   useEffect(() => {
@@ -34,20 +34,28 @@ export default function LocationStep() {
     navigate("/booking/professional");
   };
   if (isLoading)
-    return <Loader className="mx-auto " color="blue" type="bars" />;
+    return (
+      <div className="h-full flex flex-col gap-[20px] items-center  justify-center p-6 rounded-lg">
+        <Loader className="mx-auto " color="blue" type="bars" />
+      </div>
+    );
   return (
-    <div className="h-full flex flex-col gap-[20px] items-center justify-center p-6 rounded-lg">
-      <h1 className="text-[32px] font-[500]">Select a Location</h1>
-      <div className="flex flex-col gap-4">
+    <div className="h-full flex flex-col  px-3 lg:px-0 gap-[20px]  items-center justify-center lg:p-6 rounded-lg">
+      <h1 className="text-[28px]  lg:text-[32px] font-[500]">
+        Select a Location
+      </h1>
+      <div className="flex w-full  flex-col gap-4">
         {locations.map((location) => (
           <button
             key={location._id}
             onClick={() => handleSelect(location)}
-            className="w-[758px] h-[200px] cursor-pointer flex items-center 
-            justify-center bg-[#FFFFFF] rounded-3xl border specialBorder
-             transition-all"
+            className=" w-full max-w-[758px] h-[150px] lg:h-[200px] mx-auto hover:bg-black hover:text-white cursor-pointer flex items-center 
+            justify-center bg-[#FFFFFF] rounded-3xl border specialBorder hover:border-none
+             transition-all duration-500"
           >
-            <p className="text-[32px] font-[700]">{location.name}</p>
+            <p className="text-[24px] lg:text-[32px] font-[700]">
+              {location.name}
+            </p>
           </button>
         ))}
       </div>

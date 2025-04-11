@@ -33,7 +33,7 @@ export default function CustomerLayout() {
       </nav>
 
       {/* Main Content (Right side) */}
-      <main className="w-full flex-1 overflow-y-auto  ">
+      <main className="w-full flex-1  overflow-y-auto  ">
         {" "}
         {/* Added flex-1 and overflow-hidden */}
         <Outlet />

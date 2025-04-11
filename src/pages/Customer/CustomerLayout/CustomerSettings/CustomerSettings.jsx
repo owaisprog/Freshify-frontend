@@ -90,7 +90,7 @@ export default function CustomerSettings() {
           </section>
 
           {/* Render the active tab component */}
-          <div className="mt-6  lg:mt-0 !text-[18px] !font-normal ">
+          <div className="mt-6 lg:p-4  lg:mt-0 !text-[18px] !font-normal ">
             <Outlet />
           </div>
         </Paper>

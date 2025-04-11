@@ -35,28 +35,37 @@ export default function ProfessionalStep() {
     navigate("/booking/services");
   };
   if (isLoading)
-    return <Loader className="mx-auto " color="blue" type="bars" />;
+    return (
+      <div className="h-full flex flex-col gap-[20px] items-center justify-center p-6 rounded-lg">
+        <Loader className="mx-auto " color="blue" type="bars" />
+      </div>
+    );
   return (
-    <div className="h-full flex flex-col gap-[20px]  justify-center p-6 rounded-lg">
-      <h1 className="text-[32px] font-[500]">Choose Professional</h1>
+    <div className="h-full  flex flex-col gap-[20px]  justify-center  px-3 lg:px-0 rounded-lg">
+      <h1 className=" text-[28px] lg:text-[32px] text-center lg:text-left font-[500]">
+        Choose Professional
+      </h1>
       <div className="space-y-4 w-full">
         {professionals.map((pro) => (
           <button
             key={pro._id}
             onClick={() => handleSelect(pro)}
-            className="min-w-full  justify-between gap-x-2 cursor-pointer  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] "
+            className="   min-w-full  justify-between gap-x-2 cursor-pointer  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] border specialBorder hover:bg-black hover:text-white hover:border-none
+             transition-all duration-500 "
           >
-            <div className="flex items-center   gap-3">
-              <div className="min-h-[100px] flex items-center  justify-center min-w-[100px] bg-[#E7EDFF] rounded-[20px]">
+            <div className="flex    gap-3">
+              <div className="h-[100px] flex items-center  justify-center w-[100px]  bg-[#B1B1B1] rounded-[20px]">
                 <img
-                  className="w-[40.83px] h-[58.33px]"
-                  src="/usaLocationIcon.png"
+                  className="w-[40px] h-[40px]"
+                  src="/personIcon.png"
                   alt=""
                 />
               </div>
-              <div className="flex flex-col items-start">
-                <p className="text-[22px] font-[700] uppercase ">{pro.name}</p>
-                <p className="text-[18px] font-[700]">
+              <div className=" flex flex-col justify-center  ">
+                <p className="text-[16px]  text-left lg:text-[22px] font-[700] uppercase ">
+                  {pro.name}
+                </p>
+                <p className="text-[18px] text-left font-[700]">
                   Availability:{" "}
                   <span className="font-normal">{pro.availability}</span>
                 </p>

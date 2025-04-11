@@ -5,9 +5,9 @@ export default function OrderSummary() {
   const { bookingData } = useBookingContext();
 
   return (
-    <div className="w-[400px] bg-black flex flex-col justify-between sticky top-5 rounded-3xl p-6">
+    <div className="lg:w-[400px] bg-black flex flex-col lg:p-6 h-full justify-between sticky top-5 rounded-3xl ">
       <div className="space-y-5 text-sm">
-        <h2 className="text-[#FFFFFF] text-[32px] font-[500] text-center mb-8">
+        <h2 className="text-[#FFFFFF] hidden lg:block  text-[32px] font-[500] text-center mb-8">
           Order Summary
         </h2>
         {/* Location Section  */}

@@ -57,13 +57,12 @@ const CalendarComp = ({ selectedDay, onClickDay }) => {
   return (
     <div className="mx-auto bg-white rounded-lg p-6" style={{ width: "95%" }}>
       {/* Month selector buttons */}
-      <div className="flex flex-wrap justify-center gap-4 items-center mb-6">
+      <div className="flex flex-wrap  gap-4 items-center mb-6">
         {["current", "next"].map((month) => (
           <button
             key={month}
             onClick={() => setSelectedMonth(month)}
-            className={`p-2 sm:p-3 border-[0.5px] border-black min-w-32 sm:min-w-64 rounded-[20px] 
-              transition duration-200 font-medium text-base sm:text-xl leading-normal
+            className={`rounded-[10px] border border-black px-[40px] py-[10px] text-[18px]
               ${selectedMonth === month ? "bg-black text-white" : "bg-white text-black"}`}
           >
             {format(

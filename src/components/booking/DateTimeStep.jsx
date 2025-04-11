@@ -47,8 +47,10 @@ export default function DateTimeStep() {
   };
   console.log(bookingData);
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
-      <h1 className="text-2xl font-bold mb-6">Select Date And Time</h1>
+    <div className=" px-3 lg:px-0">
+      <h1 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
+        Select Date And Time
+      </h1>
 
       <div className="mb-8">
         <CalendarComp
@@ -58,19 +60,17 @@ export default function DateTimeStep() {
         />
       </div>
 
-      <h2 className="text-lg font-semibold mb-4">Available Time Slots</h2>
-      <div className="grid grid-cols-4 gap-3">
+      <h2 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
+        Available Time Slots
+      </h2>
+      <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:w-[85%] ">
         {timeSlots &&
           timeSlots.map((time) => (
             <button
               key={time}
               onClick={() => updateBookingData({ time })}
-              className={`p-2 border rounded-lg text-center text-sm transition-colors
-              ${
-                bookingData.time === time
-                  ? "bg-blue-600 text-white border-blue-700"
-                  : "hover:bg-gray-50"
-              }`}
+              className={` border rounded-[25px] px-[25px] py-[5px] text-center text-[22px] transition-all duration-500 hover:bg-black hover:text-white cursor-pointer
+              ${bookingData.time === time ? "bg-black text-white" : ""}`}
             >
               {time}
             </button>

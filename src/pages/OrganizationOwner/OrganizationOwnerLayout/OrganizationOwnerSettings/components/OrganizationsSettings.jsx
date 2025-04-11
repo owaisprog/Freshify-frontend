@@ -1,8 +1,18 @@
-import { Button } from "@mantine/core";
+import { Button, CopyButton } from "@mantine/core";
 
 import CustomSelect from "../../../../../components/CustomSelector";
+import { useEffect, useState } from "react";
 
 export default function OrganizationsSettings() {
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const data = localStorage.getItem("data");
+    if (data) {
+      const { id } = JSON.parse(data);
+      setUserId(id);
+    }
+  }, []);
   return (
     <section className="flex flex-col gap-2 ">
       <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF] px-2">
@@ -40,9 +50,18 @@ export default function OrganizationsSettings() {
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Copy Booking Widget Code
         </span>
-        <Button className="!w-[112px] lg:!w-[121px] " bg="black" radius="md">
-          Copy
-        </Button>
+        <CopyButton value={userId}>
+          {({ copied, copy }) => (
+            <Button
+              className="!w-[112px] lg:!w-[121px] "
+              radius={"md"}
+              bg="black"
+              onClick={copy}
+            >
+              {copied ? "Copied" : "Copy"}
+            </Button>
+          )}
+        </CopyButton>
       </div>
 
       <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">

@@ -38,29 +38,43 @@ export default function ServicesStep() {
     updateBookingData({ services: newServices });
   };
   if (isLoading)
-    return <Loader className="mx-auto " color="blue" type="bars" />;
+    return (
+      <div className="h-full flex flex-col gap-[20px] items-center justify-center p-6 rounded-lg">
+        <Loader className="mx-auto " color="blue" type="bars" />
+      </div>
+    );
   return (
-    <div className=" h-full gap-[10px] flex flex-col justify-center p-6 rounded-lg shadow-sm">
-      <h1 className="text-[32px] font-[500]">Select Services</h1>
-      <div className="grid lg:grid-cols-3 gap-3 ">
+    <div className=" h-full gap-[10px] flex flex-col  justify-center px-3 lg:px-0 rounded-lg ">
+      <h1 className="text-[32px] font-[500] text-center lg:text-left">
+        Select Services
+      </h1>
+      <div className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  place-items-center gap-6   w-full ">
         {services.map((service) => (
           <button
             key={service.name}
             onClick={() => toggleService(service)}
-            className={`relative flex cursor-pointer flex-col items-start max-w-[329px] h-[187px] p-[30px] rounded-[25px] bg-[#FFFFFF] specialBorder
+            className={`relative group hover:bg-slate-950  hover:text-white flex cursor-pointer flex-col items-start w-full h-[112px] lg:h-[187px] p-[30px] rounded-[25px] bg-[#FFFFFF] specialBorder transition-all duration-500
               ${
                 bookingData.services.some((s) => s.name === service.name)
-                  ? "bg-blue-50 border-blue-200 ring-2 ring-blue-500"
-                  : "hover:bg-gray-50"
+                  ? "bg-black text-white"
+                  : ""
               }`}
           >
-            <p className="text-[22px] font-[700] uppercase">{service.name}</p>
+            <p className="text-[18px] lg:text-[22px] font-[700] uppercase">
+              {service.name}
+            </p>
 
-            <p className="text-[22px] uppercase">
+            <p className="text-[18px] lg:text-[22px]  uppercase">
               TIME: {service.duration} MINS
             </p>
 
-            <span className=" text-[22px] font-[400] uppercase bg-black absolute text-white rounded-l-[10px] w-[50px] bottom-6 right-0">
+            <span
+              className={` group-hover:bg-white group-hover:text-black transition-all duration-500 text-[22px] font-[400] uppercase bg-black absolute text-white rounded-l-[10px] w-[50px] bottom-1/3 lg:bottom-6 right-0  ${
+                bookingData.services.some((s) => s.name === service.name)
+                  ? "bg-white !text-black"
+                  : ""
+              }`}
+            >
               ${service.price}
             </span>
           </button>
@@ -70,7 +84,7 @@ export default function ServicesStep() {
       {bookingData.services.length > 0 && (
         <button
           onClick={() => navigate("/booking/datetime")}
-          className="w-[311px] h-[41px] cursor-pointer text-white bg-black rounded-[10px] text-center"
+          className="self-end my-3 w-[311px] h-[41px] cursor-pointer text-white bg-black rounded-[10px] text-center"
         >
           Choose Time
         </button>

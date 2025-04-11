@@ -19,7 +19,7 @@ export default function Sidebar({
 
   const links = data.map((item) => (
     <Link
-      className={`flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
+      className={`group flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2 transition-all duration-300 text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
         item.activePath === active
           ? "bg-[#f5f7fa] border-l-4 border-black text-black"
           : ""
@@ -29,9 +29,11 @@ export default function Sidebar({
       onClick={() => setActive(item.activePath)}
     >
       <item.icon
-        className={`${
-          item.activePath === active ? "text-black" : "text-[#b1b1b1]"
-        } mr-4 w-[30px] h-[30px]`}
+        className={`mr-4 w-[30px] h-[30px] ${
+          item.activePath === active
+            ? "text-black"
+            : "text-[#b1b1b1] group-hover:text-black"
+        }`}
       />
       <span>{item.label}</span>
     </Link>
@@ -48,7 +50,7 @@ export default function Sidebar({
       <div className="pb-1  ">
         <Link
           to={settingData.link || ""}
-          className={`flex items-center no-underline text-[18px] px-4 py-2 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black${
+          className={`group flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa]  transition-all duration-300 dark:hover:text-black${
             settingData.activePath === active
               ? " border-l-4 border-black text-black bg-[#f5f7fa]"
               : ""
@@ -59,7 +61,7 @@ export default function Sidebar({
             className={`${
               settingData.activePath === active
                 ? "text-black"
-                : "text-[#b1b1b1]"
+                : "text-[#b1b1b1] group-hover:text-black"
             } mr-4 w-[30px] h-[30px]`}
           />
           <span>{settingData.label}</span>
