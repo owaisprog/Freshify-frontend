@@ -23,7 +23,7 @@ export default function MobileNav({
     <Link
       className={`flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black ${
         item.activePath === active
-          ? "bg-[#f5f7fa] border-l-4 border-black text-black"
+          ? "bg-[#f5f7fa] lg:border-l-4 border-black text-black"
           : ""
       }`}
       to={item.link}
@@ -86,9 +86,9 @@ export default function MobileNav({
               <div className="pt-4  ">
                 <Link
                   to={settingData.link}
-                  className={`flex items-center no-underline text-sm px-4  font-medium text-[#b1b1b1] hover:bg-gray-50 ${
+                  className={` group flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black ${
                     settingData.activePath === active
-                      ? "bg-[#f5f7fa] border-l-4 py-4 border-black text-black"
+                      ? "bg-[#f5f7fa] lg:border-l-4 border-black text-black"
                       : ""
                   }`}
                   onClick={() => {
@@ -96,7 +96,9 @@ export default function MobileNav({
                     setIsMenuOpen(false);
                   }}
                 >
-                  <MdOutlineSettings className="text-[#b1b1b1] mr-4 w-[25px] h-[25px]" />
+                  <MdOutlineSettings
+                    className={`${settingData.activePath === active ? "text-black" : "text-[#b1b1b1]"} mr-4 w-[30px] h-[30px]`}
+                  />
                   <span>{settingData.label}</span>
                 </Link>
               </div>

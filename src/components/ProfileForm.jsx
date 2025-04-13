@@ -80,7 +80,7 @@ export default function ProfileForm() {
   };
 
   return (
-    <div className="text-white lg:p-6 flex flex-col lg:flex-row items-start justify-center  lg:gap-8 w-full">
+    <div className="text-white   flex flex-col lg:flex-row items-start justify-center  lg:gap-8 w-full">
       {/* Profile Picture */}
       <div className="relative w-32 h-32">
         <Avatar

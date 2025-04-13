@@ -65,7 +65,7 @@ export default function OrganizationOwnerLayout() {
       </aside>
 
       <nav className="lg:hidden">
-        <MobileNav data={data} />
+        <MobileNav data={data} settingData={settingData} />
       </nav>
 
       {/* Main Content (Right side) */}

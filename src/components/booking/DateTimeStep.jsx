@@ -105,8 +105,10 @@ export default function DateTimeStep() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
-      <h1 className="text-2xl font-bold mb-6">Select Date And Time</h1>
+    <div className=" px-3 lg:px-0">
+      <h1 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
+        Select Date And Time
+      </h1>
 
       <div className="mb-8">
         <CalendarComp
