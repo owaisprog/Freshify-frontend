@@ -2,6 +2,7 @@
 import { toast } from "react-toastify";
 import { usePostMutation } from "../../services/reactQuery";
 import { useBookingContext } from "./BookingContext";
+import { format } from "date-fns";
 
 export default function OrderSummary() {
   function getWeekOfMonth(dateInput) {
@@ -28,7 +29,8 @@ export default function OrderSummary() {
   //   totalPrice: bookingData?.services.reduce((sum, s) => +sum + +s?.price, 0),
   //   paymentMethod: "online",
   // });
-
+  // console.log(format(new Date(bookingData.date), "yyyy-MM-dd"));
+  // console.log(bookingData.date);
   function handleBookings() {
     createBookings(
       {
@@ -38,8 +40,9 @@ export default function OrderSummary() {
           organizationOwnerId: "67f7596971c7c802a785f2bd",
           location: bookingData.location.name,
           professionalId: bookingData.professional._id,
-          services: bookingData.services,
-          bookingDate: bookingData.date,
+          services: bookingData?.services.map((val) => val?._id),
+          // services: "67f75b2871c7c802a785f32d",
+          bookingDate: format(new Date(bookingData.date), "yyyy-MM-dd"),
           bookingWeek: getWeekOfMonth(bookingData?.date),
           bookingTime: bookingData.time,
           totalPrice: bookingData.services.reduce(

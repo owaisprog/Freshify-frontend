@@ -1,76 +1,100 @@
-// components/steps/DateTimeStep.jsx
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
-import { Button } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { apiGet } from "../../services/useApi";
 
 export default function DateTimeStep() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isGeneratingSlots, setIsGeneratingSlots] = useState(false);
   const { bookingData, updateBookingData } = useBookingContext();
-  // const navigate = useNavigate();
 
-  // Only compute the formattedUTC if selectedDate is valid
   const formattedUTC = selectedDate
     ? format(new Date(selectedDate), "yyyy-MM-dd")
     : null;
 
-  // Use the formatted date in our query
-  const { data: unavailableSlots = [] } = useQueryHook({
+  const {
+    data: unavailableSlots = { bookedSlots: [], unavailablePeriods: [] },
+    isLoading: isLoadingSlots,
+    isFetching,
+    refetch,
+  } = useQueryHook({
     queryKey: ["unavailable", formattedUTC],
     endpoint: formattedUTC
       ? `/api/unavailable-slots/${bookingData?.professional?._id}/${formattedUTC}`
       : null,
-    enabled: !!formattedUTC, // query runs only if formattedUTC has a valid value
-    staleTime: 0,
+    enabled: !!formattedUTC,
+    staleTime: 5 * 60 * 1000, // 5 minutes cache
   });
-  console.log(unavailableSlots);
 
-  // When a day is clicked in CalendarComp
-  const OnClickDay = (date) => {
-    const DateOBJ = new Date(date);
-    const dayName = format(DateOBJ, "EEEE").toLowerCase();
+  useEffect(() => {
+    if (selectedDate && !isFetching) {
+      generateAvailableSlots();
+    }
+  }, [unavailableSlots, selectedDate, isFetching]);
 
-    const filterData = bookingData?.location?.workingHours?.find(
-      (val) => val.day.toLowerCase() === dayName
-    );
+  const generateAvailableSlots = async () => {
+    if (!selectedDate) return;
 
-    setSelectedDate(DateOBJ);
-    setSelectedDay(DateOBJ.toDateString());
+    setIsGeneratingSlots(true);
+    try {
+      const DateOBJ = new Date(selectedDate);
+      const dayName = format(DateOBJ, "EEEE").toLowerCase();
 
-    // Clear the previously selected time
-    updateBookingData({ date: DateOBJ, time: null });
+      const filterData = bookingData?.location?.workingHours?.find(
+        (val) => val.day.toLowerCase() === dayName
+      );
 
-    if (filterData) {
-      // Ensure blockedSlots is always an array
-      const safeBlockedSlots = Array.isArray(unavailableSlots)
-        ? unavailableSlots
-        : [];
+      if (!filterData) return;
+
+      const safeBlockedSlots = [
+        ...(unavailableSlots.bookedSlots ?? []),
+        ...(unavailableSlots.unavailablePeriods ?? []),
+      ]
+        .map((val) => {
+          if (!val?.startTime || !val?.endTime) return null;
+          return `${val.startTime}-${val.endTime}`;
+        })
+        .filter(Boolean);
+
       const slots = generateTimeSlots({
         openingTime: filterData.start,
         closingTime: filterData.end,
-        serviceDuration: bookingData.services[0].duration,
+        serviceDuration: bookingData.services.reduce(
+          (total, service) => total + service.duration,
+          0
+        ),
         blockedSlots: safeBlockedSlots,
         date: DateOBJ,
       });
+
       setTimeSlots(slots);
+    } catch (error) {
+      console.error("Error generating slots:", error);
+    } finally {
+      setIsGeneratingSlots(false);
     }
   };
 
-  // Reset date/time slots when the month changes
+  const OnClickDay = (date) => {
+    const DateOBJ = new Date(date);
+    setSelectedDate(DateOBJ);
+    setSelectedDay(DateOBJ.toDateString());
+    updateBookingData({ date: DateOBJ, time: null });
+    refetch(); // Trigger a fresh data fetch
+  };
+
   const handleMonthChange = () => {
     setTimeSlots([]);
     setSelectedDay("");
     setSelectedDate(null);
   };
 
-  // Connect to Google (example)
   const handleConnectGoogle = async () => {
     try {
       const { url } = await apiGet(`/api/auth/google`);
@@ -98,21 +122,34 @@ export default function DateTimeStep() {
       </div>
 
       <h2 className="text-lg font-semibold mb-4">Available Time Slots</h2>
-      <div className="grid grid-cols-4 gap-3">
-        {timeSlots.map((time) => (
-          <button
-            key={time}
-            onClick={() => updateBookingData({ time })}
-            className={`p-2 border rounded-lg text-center text-sm transition-colors ${
-              bookingData.time === time
-                ? "bg-blue-600 text-white border-blue-700"
-                : "hover:bg-gray-50"
-            }`}
-          >
-            {time}
-          </button>
-        ))}
-      </div>
+      {isLoadingSlots || isGeneratingSlots ? (
+        <div className="flex justify-center items-center h-20">
+          <Loader size="sm" />
+          <span className="ml-2">Loading available slots...</span>
+        </div>
+      ) : timeSlots.length > 0 ? (
+        <div className="grid grid-cols-4 gap-3">
+          {timeSlots.map((time) => (
+            <button
+              key={time}
+              onClick={() => updateBookingData({ time })}
+              className={`p-2 border rounded-lg text-center text-sm transition-colors ${
+                bookingData.time === time
+                  ? "bg-blue-600 text-white border-blue-700"
+                  : "hover:bg-gray-50"
+              }`}
+            >
+              {time}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-4 text-gray-500">
+          {selectedDate
+            ? "No available slots for this date"
+            : "Select a date to see available slots"}
+        </div>
+      )}
     </div>
   );
 }

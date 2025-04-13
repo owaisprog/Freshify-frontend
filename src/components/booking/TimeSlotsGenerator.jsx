@@ -1,11 +1,13 @@
 import {
   format,
-  // parse,
   addMinutes,
   isWithinInterval,
   setHours,
   setMinutes,
+  isAfter,
+  isBefore,
 } from "date-fns";
+
 export default function generateTimeSlots({
   openingTime = "09:00",
   closingTime,
@@ -14,7 +16,11 @@ export default function generateTimeSlots({
   blockedSlots = [],
   date = new Date(),
 }) {
-  // Parse opening and closing times
+  // Validate inputs
+  if (!closingTime || !serviceDuration) {
+    throw new Error("Missing required parameters");
+  }
+
   const openingDate = parseTimeToDate(date, openingTime);
   const closingDate = parseTimeToDate(date, closingTime);
 
@@ -25,15 +31,22 @@ export default function generateTimeSlots({
     date.getMonth() === today.getMonth() &&
     date.getFullYear() === today.getFullYear();
 
-  // Ensure blockedSlots is always an array before mapping
-  const safeBlockedSlots = Array.isArray(blockedSlots) ? blockedSlots : [];
-  const blockedIntervals = safeBlockedSlots.map((slot) => {
-    const [start, end] = slot.split("-");
-    return {
-      start: parseTimeToDate(date, start),
-      end: parseTimeToDate(date, end),
-    };
-  });
+  // Process blocked slots
+  const blockedIntervals = (Array.isArray(blockedSlots) ? blockedSlots : [])
+    .map((slot) => {
+      try {
+        const [start, end] = slot.split("-");
+        if (!start || !end) return null;
+        return {
+          start: parseTimeToDate(date, start),
+          end: parseTimeToDate(date, end),
+        };
+      } catch (error) {
+        console.warn("Invalid blocked slot format:", slot);
+        return null;
+      }
+    })
+    .filter(Boolean);
 
   const availableSlots = [];
   let currentSlot = openingDate;
@@ -41,8 +54,8 @@ export default function generateTimeSlots({
   // If it's today, adjust the starting time to current time
   if (isToday) {
     const now = new Date();
-    // Find the next slot after current time
-    while (currentSlot < now) {
+    // Find the next slot after current time with buffer
+    while (isBefore(currentSlot, now)) {
       currentSlot = addMinutes(currentSlot, slotInterval);
     }
   }
@@ -50,19 +63,20 @@ export default function generateTimeSlots({
   const lastPossibleStart = addMinutes(closingDate, -serviceDuration);
 
   // Generate all possible slots
-  while (currentSlot <= lastPossibleStart) {
+  while (
+    isBefore(currentSlot, lastPossibleStart) ||
+    currentSlot.getTime() === lastPossibleStart.getTime()
+  ) {
     const slotEnd = addMinutes(currentSlot, serviceDuration);
 
     // Check if this slot overlaps with any blocked time
-    const isBlocked = blockedIntervals.some(
-      (blocked) =>
-        isWithinInterval(currentSlot, {
-          start: blocked.start,
-          end: blocked.end,
-        }) ||
-        isWithinInterval(slotEnd, { start: blocked.start, end: blocked.end }) ||
-        (currentSlot <= blocked.start && slotEnd >= blocked.end)
-    );
+    const isBlocked = blockedIntervals.some((blocked) => {
+      return (
+        (isBefore(currentSlot, blocked.end) &&
+          isAfter(slotEnd, blocked.start)) ||
+        currentSlot.getTime() === blocked.start.getTime()
+      );
+    });
 
     if (!isBlocked) {
       availableSlots.push(format(currentSlot, "h:mm a"));
@@ -74,9 +88,12 @@ export default function generateTimeSlots({
   return availableSlots;
 }
 
-// Helper function to parse time string into Date object
 function parseTimeToDate(baseDate, timeString) {
   const [hours, minutes] = timeString.split(":").map(Number);
+  if (isNaN(hours) || isNaN(minutes)) {
+    throw new Error(`Invalid time format: ${timeString}`);
+  }
+
   let date = new Date(baseDate);
   date = setHours(date, hours);
   date = setMinutes(date, minutes);
