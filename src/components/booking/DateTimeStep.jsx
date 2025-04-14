@@ -81,7 +81,7 @@ export default function DateTimeStep() {
   };
 
   return (
-    <div className=" px-3 lg:px-0">
+    <div className=" px-3 lg:px-0 h-full flex flex-col justify-center ">
       <h1 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
         Select Date And Time
       </h1>
@@ -102,7 +102,7 @@ export default function DateTimeStep() {
       <h2 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
         Available Time Slots
       </h2>
-      <div className="grid grid-cols-3 md:grid-cols-4 gap-4 md:w-[85%] ">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7  gap-4  ">
         {timeSlots &&
           timeSlots.map((time) => (
             <button
