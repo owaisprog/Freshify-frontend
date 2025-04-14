@@ -105,11 +105,10 @@ export default function DateTimeStep() {
   };
 
   return (
-    <div className=" px-3 lg:px-0">
+    <div className=" px-3 lg:px-0 h-full flex flex-col justify-center ">
       <h1 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
         Select Date And Time
       </h1>
-
       <div className="mb-8">
         <CalendarComp
           onClickDay={OnClickDay}
@@ -122,16 +121,12 @@ export default function DateTimeStep() {
           Connect with Google
         </Button>
       </div>
-
-      <h2 className="text-lg font-semibold mb-4">Available Time Slots</h2>
-      {isLoadingSlots || isGeneratingSlots ? (
-        <div className="flex justify-center items-center h-20">
-          <Loader size="sm" />
-          <span className="ml-2">Loading available slots...</span>
-        </div>
-      ) : timeSlots.length > 0 ? (
-        <div className="grid grid-cols-4 gap-3">
-          {timeSlots.map((time) => (
+      <h2 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
+        Available Time Slots
+      </h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7  gap-4  ">
+        {timeSlots &&
+          timeSlots.map((time) => (
             <button
               key={time}
               onClick={() => updateBookingData({ time })}
@@ -144,13 +139,13 @@ export default function DateTimeStep() {
               {time}
             </button>
           ))}
-        </div>
+      </div>
       ) : (
-        <div className="text-center py-4 text-gray-500">
-          {selectedDate
-            ? "No available slots for this date"
-            : "Select a date to see available slots"}
-        </div>
+      <div className="text-center py-4 text-gray-500">
+        {selectedDate
+          ? "No available slots for this date"
+          : "Select a date to see available slots"}
+      </div>
       )}
     </div>
   );
