@@ -31,6 +31,7 @@ export default function OrderSummary() {
   // });
   // console.log(format(new Date(bookingData.date), "yyyy-MM-dd"));
   // console.log(bookingData.date);
+  console.log(bookingData.location?.enableCashPayments);
   function handleBookings() {
     createBookings(
       {
@@ -49,7 +50,9 @@ export default function OrderSummary() {
             (sum, s) => +sum + +s.price,
             0
           ),
-          paymentMethod: "online",
+          paymentMethod: bookingData.location?.enableCashPayments
+            ? "online"
+            : "offline",
         },
       },
       {
