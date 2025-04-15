@@ -14,7 +14,7 @@ import {
   isBefore,
 } from "date-fns";
 import { toast } from "react-toastify";
-import { usePostMutation, useQueryHook } from "../services/reactQuery";
+import { usePostMutation } from "../services/reactQuery";
 import CustomSelect from "./CustomSelector";
 import Calendar from "./Calendar";
 import CustomerTable from "./CustomerTable";
@@ -185,11 +185,6 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
   };
 
   // Query for professionals data
-  const { data: allUsers = [] } = useQueryHook({
-    queryKey: ["users", id],
-    endpoint: `/api/get-users-by-owner/${id}`,
-    staleTime: 0,
-  });
 
   // Edit availability
   const handleAvailabilitySubmit = (values) => {
@@ -281,7 +276,7 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
         opened={availabilityModalOpen}
         onClose={() => setAvailabilityModalOpen(false)}
         onSubmit={handleAvailabilitySubmit}
-        professionals={allUsers}
+        // professionals={allUsers}
         initialDate={calendarState.selectedDate}
       />
     </main>

@@ -1,23 +1,45 @@
-import { Button, Modal, Select } from "@mantine/core";
+import { Button, Modal, Select, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import DatePickerCalendar from "./DatePicker";
 import TimePicker from "./DayTimePicker";
+import { useEffect, useState } from "react";
+import { useQueryHook } from "../services/reactQuery";
 
-const EditAvailabilityPopup = ({
-  opened,
-  onClose,
-  onSubmit,
-  professionals,
-}) => {
+const EditAvailabilityPopup = ({ opened, onClose, onSubmit }) => {
+  const { id, role, location } = JSON.parse(localStorage.getItem("data")) || {};
+  const [currentApi, setCurrentApi] = useState("");
+  useEffect(() => {
+    if (!role) return;
+    else if (role === "admin")
+      setCurrentApi(`/api/get-barbers-by-location/${location?._id}`);
+    else if (role === "superadmin" || role === "organization_owner")
+      setCurrentApi(`/api/get-users-by-owner/${id}`);
+    else if (role === "barber") setCurrentApi("");
+  }, [role, location]);
+
+  // console.log(location?._id, currentApi);
+  const {
+    data: professionals = [],
+    isLoading,
+    isError,
+  } = useQueryHook({
+    queryKey: ["users", location?.id], // ✅ Cache users by owner ID
+    endpoint: currentApi,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+    enabled: opened && role !== "barber",
+  });
+  console.log(professionals);
+
   const form = useForm({
     initialValues: {
-      professionalId: "",
+      professionalId: role === "barber" ? id : "", // Set default to barber's own ID if role is barber
       date: new Date(),
       startTime: "",
       endTime: "",
     },
     validate: {
-      professionalId: (value) => (!value ? "Select a professional" : null),
+      professionalId: (value) =>
+        role !== "barber" && !value ? "Select a professional" : null,
       date: (value) => (!value ? "Select a date" : null),
       startTime: (value) => (!value ? "Enter start time" : null),
       endTime: (value) => {
@@ -31,10 +53,7 @@ const EditAvailabilityPopup = ({
   });
 
   const handleSubmit = (values) => {
-    // 1) Convert the chosen date to a local Date object
     const localDate = new Date(values.date);
-
-    // 2) Extract just the YYYY, MM, DD for UTC midnight
     const utcDate = new Date(
       Date.UTC(
         localDate.getFullYear(),
@@ -42,20 +61,28 @@ const EditAvailabilityPopup = ({
         localDate.getDate()
       )
     );
-
-    // 3) Convert to ISO so your backend sees the correct calendar day in UTC
     const dateIsoString = utcDate.toISOString();
 
-    // 4) Prepare final payload
     const finalValues = {
       ...values,
-      date: dateIsoString, // "2025-04-10T00:00:00.000Z" example
+      date: dateIsoString,
     };
 
-    // Send it off
     onSubmit(finalValues);
     onClose();
   };
+
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!opened) {
+      form.reset({
+        professionalId: role === "barber" ? id : "",
+        date: new Date(),
+        startTime: "",
+        endTime: "",
+      });
+    }
+  }, [opened, role, id]);
 
   return (
     <Modal
@@ -65,42 +92,51 @@ const EditAvailabilityPopup = ({
       size="lg"
       centered
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Select
-          label="Professional"
-          placeholder="Select professional"
-          data={professionals.map((pro) => ({
-            value: pro._id,
-            label: pro.name,
-          }))}
-          {...form.getInputProps("professionalId")}
-          mb="md"
-          required
-        />
+      {role !== "barber" && isLoading ? (
+        <div>Loading professionals...</div>
+      ) : role !== "barber" && isError ? (
+        <Text c="red">Failed to load professionals</Text>
+      ) : role !== "barber" && professionals.length === 0 ? (
+        <Text>No professionals available</Text>
+      ) : (
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          {role !== "barber" && (
+            <Select
+              label="Professional"
+              placeholder="Select professional"
+              data={professionals.map((pro) => ({
+                value: pro._id,
+                label: pro.name,
+              }))}
+              {...form.getInputProps("professionalId")}
+              mb="md"
+              required
+            />
+          )}
 
-        {/* Make sure DatePickerCalendar is a fully controlled component! */}
-        <DatePickerCalendar
-          value={form.values.date}
-          onChange={(date) => form.setFieldValue("date", date)}
-          mb="md"
-        />
+          <DatePickerCalendar
+            value={form.values.date}
+            onChange={(date) => form.setFieldValue("date", date)}
+            mb="md"
+          />
 
-        <TimePicker
-          label="Opening Time (All Days)"
-          value={form.values.startTime}
-          onChange={(value) => form.setFieldValue("startTime", value)}
-        />
+          <TimePicker
+            label="Opening Time (All Days)"
+            value={form.values.startTime}
+            onChange={(value) => form.setFieldValue("startTime", value)}
+          />
 
-        <TimePicker
-          label="Closing Time (All Days)"
-          value={form.values.endTime}
-          onChange={(value) => form.setFieldValue("endTime", value)}
-        />
+          <TimePicker
+            label="Closing Time (All Days)"
+            value={form.values.endTime}
+            onChange={(value) => form.setFieldValue("endTime", value)}
+          />
 
-        <Button type="submit" fullWidth>
-          Save Availability
-        </Button>
-      </form>
+          <Button type="submit" fullWidth>
+            Save Availability
+          </Button>
+        </form>
+      )}
     </Modal>
   );
 };
