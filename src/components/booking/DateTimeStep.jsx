@@ -4,7 +4,7 @@ import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
-import { Button, Loader } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { apiGet } from "../../services/useApi";
 
 export default function DateTimeStep() {
@@ -105,8 +105,8 @@ export default function DateTimeStep() {
   };
 
   return (
-    <div className=" px-3 lg:px-0 h-full flex flex-col justify-center ">
-      <h1 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
+    <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
+      <h1 className="text-[28px] lg:text-[32px] font-[500] text-center lg:text-left">
         Select Date And Time
       </h1>
       <div className="mb-8">
@@ -117,16 +117,21 @@ export default function DateTimeStep() {
           handleMonthChange={handleMonthChange}
           workingHours={bookingData?.location?.workingHours}
         />
-        <Button bg={"black"} className="flex" onClick={handleConnectGoogle}>
+        <Button
+          bg={"black"}
+          radius={"md"}
+          className="flex"
+          onClick={handleConnectGoogle}
+        >
           Connect with Google
         </Button>
       </div>
-      <h2 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
+      <h2 className="text-[28px] lg:text-[32px] font-[500] text-center lg:text-left">
         Available Time Slots
       </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7  gap-4  ">
-        {timeSlots &&
-          timeSlots.map((time) => (
+      {timeSlots.length > 0 ? (
+        <div className="grid grid-cols-2 pb-[100px] lg:pb-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-4">
+          {timeSlots.map((time) => (
             <button
               key={time}
               onClick={() => updateBookingData({ time })}
@@ -139,13 +144,13 @@ export default function DateTimeStep() {
               {time}
             </button>
           ))}
-      </div>
+        </div>
       ) : (
-      <div className="text-center py-4 text-gray-500">
-        {selectedDate
-          ? "No available slots for this date"
-          : "Select a date to see available slots"}
-      </div>
+        <div className="text-center py-4 text-gray-500">
+          {selectedDate
+            ? "No available slots for this date"
+            : "Select a date to see available slots"}
+        </div>
       )}
     </div>
   );

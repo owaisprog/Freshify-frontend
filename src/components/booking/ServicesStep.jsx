@@ -49,7 +49,9 @@ export default function ServicesStep() {
       <h1 className="text-[32px] font-[500] text-center lg:text-left">
         Select Services
       </h1>
-      <div className="  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  place-items-center gap-6   w-full ">
+      <div
+        className={`  grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3  place-items-center gap-6   w-full  ${bookingData.services.length > 0 ? "" : "pb-[100px] lg:pb-0"}`}
+      >
         {services.map((service) => (
           <button
             key={service.name}
@@ -85,7 +87,7 @@ export default function ServicesStep() {
       {bookingData.services.length > 0 && (
         <button
           onClick={() => navigate("/booking/datetime")}
-          className="self-end my-3 w-[311px] h-[41px] cursor-pointer text-white bg-black rounded-[10px] text-center"
+          className="self-start lg:self-end my-3 w-[311px] h-[41px] cursor-pointer text-white bg-black rounded-[10px] text-center"
         >
           Choose Time
         </button>

@@ -3,6 +3,9 @@ import { toast } from "react-toastify";
 import { usePostMutation } from "../../services/reactQuery";
 import { useBookingContext } from "./BookingContext";
 import { format } from "date-fns";
+import { Button } from "@mantine/core";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function OrderSummary() {
   function getWeekOfMonth(dateInput) {
@@ -13,9 +16,12 @@ export default function OrderSummary() {
     return Math.ceil(dayOfMonth / 7);
   }
 
-  const { bookingData } = useBookingContext();
+  const navigate = useNavigate();
+
+  const { bookingData, updateBookingData } = useBookingContext();
   const { mutate: createBookings } = usePostMutation("bookings");
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
+  const [loading, setLoading] = useState(false);
 
   // console.log({
   //   userId: id,
@@ -33,6 +39,7 @@ export default function OrderSummary() {
   // console.log(bookingData.date);
   console.log(bookingData.location?.enableCashPayments);
   function handleBookings() {
+    setLoading(true);
     createBookings(
       {
         endpoint: "/api/create-booking",
@@ -56,20 +63,33 @@ export default function OrderSummary() {
         },
       },
       {
-        onSuccess: () =>
+        onSuccess: () => {
+          setLoading(false);
           toast.success("Booking Created Successfully", {
             position: "top-center",
-          }),
-        onError: () =>
+          });
+          updateBookingData({
+            location: null,
+            professional: null,
+            services: [],
+            date: null,
+            time: null,
+            finalStep: false,
+          });
+          navigate("/booking");
+        },
+        onError: () => {
+          setLoading(false);
           toast.error("Error Booking ", {
             position: "top-center",
-          }),
+          });
+        },
       }
     );
   }
 
   return (
-    <div className="lg:w-[400px] bg-black flex flex-col lg:p-6 h-full justify-between sticky top-5 rounded-3xl ">
+    <div className="lg:w-[400px] bg-black p-3  flex flex-col lg:p-6 h-full justify-between sticky top-5 rounded-3xl ">
       <div className="space-y-5 text-sm">
         <h2 className="text-[#FFFFFF] hidden lg:block  text-[32px] font-[500] text-center mb-8">
           Order Summary
@@ -77,7 +97,7 @@ export default function OrderSummary() {
         {/* Location Section  */}
         {bookingData.location && (
           <div className="flex flex-col gap-[10px]">
-            <p className="text-white uppercase text-[22px] font-[700]">
+            <p className="text-white uppercase  text-[22px] font-[700]">
               LOCATION
             </p>
             <div className="flex gap-[10px] items-center">
@@ -191,13 +211,20 @@ export default function OrderSummary() {
           bookingData.services.length > 0 &&
           bookingData.date &&
           bookingData.time && (
-            <button
+            <Button
+              loading={loading}
+              loaderProps={{ type: "dots" }}
+              fullWidth
+              radius={"md"}
+              variant="white"
+              c={"dark"}
+              mt={"md"}
+              size="md"
               onClick={handleBookings}
-              className="w-full py-3 bg-white text-black text-[18px] 
-            font-[400] rounded-lg mt-6 hover:bg-gray-100 transition-colors"
+              className="  !text-[18px]  !font-[400]  "
             >
               Proceed To Checkout
-            </button>
+            </Button>
           )}
       </div>
     </div>

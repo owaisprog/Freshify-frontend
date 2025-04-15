@@ -10,7 +10,7 @@ export function BookingProvider({ children }) {
     services: [],
     date: null,
     time: null,
-    finalStep: false,
+    proceedToPay: true,
   });
 
   // Get data from localStorage when component mounts

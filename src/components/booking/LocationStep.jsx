@@ -40,7 +40,7 @@ export default function LocationStep() {
       </div>
     );
   return (
-    <div className="h-full flex flex-col  px-3 lg:px-0 gap-[20px]  items-center justify-center lg:p-6 rounded-lg">
+    <div className="h-full flex flex-col  px-3 lg:px-0 gap-[20px] pb-[100px] lg:pb-0  items-center justify-center lg:p-6 rounded-lg">
       <h1 className="text-[28px]  lg:text-[32px] font-[500]">
         Select a Location
       </h1>

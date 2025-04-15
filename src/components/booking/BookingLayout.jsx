@@ -31,7 +31,7 @@ export default function BookingLayout() {
       {/* Mobile Floating Button */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="fixed lg:hidden bottom-4 right-4 bg-white text-black py-3 px-6 rounded-full shadow-lg z-50 hover:bg-gray-100 transition-colors"
+        className="fixed lg:hidden bottom-4 right-4 bg-white text-black py-3 px-6 rounded-full shadow-lg z-50 hover:bg-gray-100 transition-colors "
       >
         Show Order Summary
       </button>
@@ -42,15 +42,14 @@ export default function BookingLayout() {
         onClose={() => setIsModalOpen(false)}
         title="Order Summary"
         size="95%"
-        radius="xl"
+        radius={"lg"}
         classNames={{
-          title: "!text-[22px] !text-white",
+          title: "!text-[22px] !text-white !rounded-lg",
           close: "!text-white",
           header: "!bg-black",
           body: "!p-0", // Remove default modal padding
-          content: "!bg-black !overflow-visible",
+          content: "!bg-black  ",
         }}
-        centered
         withCloseButton={true}
       >
         <div className="relative">
