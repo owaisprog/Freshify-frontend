@@ -45,7 +45,7 @@ export default function ProfessionalStep() {
       <h1 className=" text-[28px] lg:text-[32px] text-center lg:text-left font-[500]">
         Choose Professional
       </h1>
-      <div className="space-y-4 w-full">
+      <div className="space-y-4 w-full  pb-[100px] lg:pb-0 ">
         {professionals.map((pro) => (
           <button
             key={pro._id}

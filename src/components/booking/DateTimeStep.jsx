@@ -94,7 +94,12 @@ export default function DateTimeStep() {
           handleMonthChange={handleMonthChange}
           workingHours={bookingData?.location?.workingHours}
         />
-        <Button bg={"black"} className="flex" onClick={handleConnectGoogle}>
+        <Button
+          bg={"black"}
+          radius={"md"}
+          className="flex"
+          onClick={handleConnectGoogle}
+        >
           Connect with Google
         </Button>
       </div>
@@ -102,7 +107,7 @@ export default function DateTimeStep() {
       <h2 className="text-[28px] lg-text-[32px] font-[500] text-center lg:text-left">
         Available Time Slots
       </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7  gap-4  ">
+      <div className="grid grid-cols-2 pb-[100px] lg:pb-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7  gap-4  ">
         {timeSlots &&
           timeSlots.map((time) => (
             <button
