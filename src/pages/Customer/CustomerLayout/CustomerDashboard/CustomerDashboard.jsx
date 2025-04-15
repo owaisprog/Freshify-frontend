@@ -1,9 +1,32 @@
 import { Title } from "@mantine/core";
-import CalendarComp from "../../../../components/CustomerCalendar";
+import CustomerTable from "../../../../components/CustomerTable";
+import { usePostMutation } from "../../../../services/reactQuery";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default function CustomerDashboard() {
-  const data = JSON.parse(localStorage.getItem("data")) || {};
+  const { role } = JSON.parse(localStorage.getItem("data")) || {};
+  const {
+    data: bookings = [],
+    mutate: getMutateBookings,
+    isPending: isLoading,
+    error,
+  } = usePostMutation("bookings");
 
+  // Fetch all bookings
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        getMutateBookings({
+          endpoint: `/api/get-all-bookings`,
+          payload: { role },
+        });
+      } catch {
+        toast.error("Error fetching bookings");
+      }
+    };
+    fetchBookings();
+  }, [getMutateBookings, role]);
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
       <Title
@@ -12,17 +35,7 @@ export default function CustomerDashboard() {
       >
         Dashboard
       </Title>
-
-      {/* First Section  */}
-      <Title
-        px={"xl"}
-        py={"sm"}
-        c={"black"}
-        className="!grid !min-h-[80vh] items-center place-self-center"
-      >
-        Welcome {data.name}
-      </Title>
-      <CalendarComp />
+      <CustomerTable bookings={bookings} isLoading={isLoading} error={error} />
     </main>
   );
 }
