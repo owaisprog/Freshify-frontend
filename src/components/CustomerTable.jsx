@@ -34,7 +34,7 @@ export default function CustomerTable({ bookings, error, isLoading }) {
     ),
     "Customer Name": booking.name || "Guest",
     Professional: booking.professionalId?.name || "N/A",
-    Location: booking.location?.name || booking.location || "N/A",
+    Location: booking.locationDetails?.name || booking.location || "N/A",
     Price: `$${booking.totalPrice}`,
     Payment: booking.paymentMethod,
     Date: new Date(booking.bookingDate).toLocaleDateString(),

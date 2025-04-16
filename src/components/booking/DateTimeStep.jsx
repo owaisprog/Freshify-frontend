@@ -11,7 +11,7 @@ export default function DateTimeStep() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [isGeneratingSlots, setIsGeneratingSlots] = useState(false);
+  // const [isGeneratingSlots, setIsGeneratingSlots] = useState(false);
   const { bookingData, updateBookingData } = useBookingContext();
 
   const formattedUTC = selectedDate
@@ -20,7 +20,7 @@ export default function DateTimeStep() {
 
   const {
     data: unavailableSlots = { bookedSlots: [], unavailablePeriods: [] },
-    isLoading: isLoadingSlots,
+    // isLoading: isLoadingSlots,
     isFetching,
     refetch,
   } = useQueryHook({
@@ -41,7 +41,7 @@ export default function DateTimeStep() {
   const generateAvailableSlots = async () => {
     if (!selectedDate) return;
 
-    setIsGeneratingSlots(true);
+    // setIsGeneratingSlots(true);
     try {
       const DateOBJ = new Date(selectedDate);
       const dayName = format(DateOBJ, "EEEE").toLowerCase();
@@ -77,7 +77,7 @@ export default function DateTimeStep() {
     } catch (error) {
       console.error("Error generating slots:", error);
     } finally {
-      setIsGeneratingSlots(false);
+      // setIsGeneratingSlots(false);
     }
   };
 
