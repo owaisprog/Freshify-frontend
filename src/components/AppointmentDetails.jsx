@@ -17,9 +17,11 @@ export default function AppointmentDetails({ booking }) {
     bookingTime,
     status,
     email,
+    endTime,
     phone,
     _id,
   } = booking;
+  console.log(booking);
 
   const [selectedDate, setSelectedDate] = useState(new Date(bookingDate));
   const [opened, setOpened] = useState(false);
@@ -43,6 +45,7 @@ export default function AppointmentDetails({ booking }) {
           bookingTime: bookingTime,
           bookingDate: format(selectedDate, "yyyy-MM-dd"),
           bookingWeek: getWeekInMonth(selectedDate), // Using month-based week number
+          // endTime:
           // professionalId: professionalId._id || professionalId,
         },
       },
@@ -57,8 +60,7 @@ export default function AppointmentDetails({ booking }) {
     );
   }
 
-  function handleCancelBooking(data) {
-    console.log(data);
+  function handleCancelBooking() {
     cancelBooking(
       {
         endpoint: `/api/cancel-booking/${_id}`,
@@ -162,7 +164,9 @@ export default function AppointmentDetails({ booking }) {
 
       <div className="flex items-center justify-between">
         <Text weight={600}>Time:</Text>
-        <Text>{timeRange}</Text>
+        <Text>
+          {timeRange}-{endTime}
+        </Text>
       </div>
 
       <div className="flex items-center justify-between">
