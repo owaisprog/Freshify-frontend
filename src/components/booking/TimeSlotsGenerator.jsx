@@ -1,7 +1,6 @@
 import {
   format,
   addMinutes,
-  isWithinInterval,
   setHours,
   setMinutes,
   isAfter,
@@ -41,8 +40,7 @@ export default function generateTimeSlots({
           start: parseTimeToDate(date, start),
           end: parseTimeToDate(date, end),
         };
-      } catch (error) {
-        console.warn("Invalid blocked slot format:", slot);
+      } catch {
         return null;
       }
     })
@@ -79,7 +77,7 @@ export default function generateTimeSlots({
     });
 
     if (!isBlocked) {
-      availableSlots.push(format(currentSlot, "h:mm a"));
+      availableSlots.push(format(currentSlot, "HH:mm"));
     }
 
     currentSlot = addMinutes(currentSlot, slotInterval);

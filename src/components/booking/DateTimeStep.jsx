@@ -106,7 +106,7 @@ export default function DateTimeStep() {
 
   return (
     <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
-      <h1 className="text-[28px] lg:text-[32px] font-[500] text-center lg:text-left">
+      <h1 className="text-[28px] lg:text-[32px] font-[500]  text-center sm:text-left">
         Select Date And Time
       </h1>
       <div className="mb-8">
@@ -126,18 +126,18 @@ export default function DateTimeStep() {
           Connect with Google
         </Button>
       </div>
-      <h2 className="text-[28px] lg:text-[32px] font-[500] text-center lg:text-left">
+      <h2 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left mb-4">
         Available Time Slots
       </h2>
       {timeSlots.length > 0 ? (
-        <div className="grid grid-cols-2 pb-[100px] lg:pb-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 gap-4">
+        <div className="max-w-[458px] grid grid-cols-3 pb-[100px] lg:pb-0  md:grid-cols-4 lg:grid-cols-4 gap-[10px]">
           {timeSlots.map((time) => (
             <button
               key={time}
               onClick={() => updateBookingData({ time })}
-              className={`p-2 border rounded-lg text-center text-sm transition-colors ${
+              className={`!py-[5px] !px-[25px]  border rounded-full text-center !text-[22px] !font-bold transition-colors ${
                 bookingData.time === time
-                  ? "bg-blue-600 text-white border-blue-700"
+                  ? "bg-black text-white "
                   : "hover:bg-gray-50"
               }`}
             >

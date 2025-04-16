@@ -55,14 +55,14 @@ const CalendarComp = ({ selectedDay, onClickDay }) => {
   };
 
   return (
-    <div className="mx-auto   rounded-lg p-6">
+    <div className="mx-auto    rounded-lg p-6">
       {/* Month selector buttons */}
-      <div className="flex flex-wrap  gap-4 items-center mb-6">
+      <div className="flex flex-wrap   gap-4 items-center mb-6">
         {["current", "next"].map((month) => (
           <button
             key={month}
             onClick={() => setSelectedMonth(month)}
-            className={`rounded-[10px] border border-black px-[40px] py-[10px] text-[18px]
+            className={`rounded-[10px] border border-black px-[40px] w-[131px] py-[10px] text-[18px]
               ${selectedMonth === month ? "bg-black text-white" : "bg-white text-black"}`}
           >
             {format(
@@ -75,13 +75,13 @@ const CalendarComp = ({ selectedDay, onClickDay }) => {
 
       {/* Calendar grid */}
       <ScrollArea type="auto" scrollbarSize={6}>
-        <div className="min-w-[450px] max-w-[550px] w-full  pb-5 md:pb-0">
+        <div className="w-[500px]    pb-5 md:pb-0">
           {/* Weekday headers */}
           <div className="grid grid-cols-7 mb-4 ">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
               <div
                 key={day}
-                className="font-medium text-sm sm:text-base text-gray-700 text-center px-1"
+                className="font-medium text-sm uppercase sm:text-base text-gray-700 text-center px-1"
               >
                 {day}
               </div>
