@@ -1,14 +1,12 @@
-import { Button, Text } from "@mantine/core";
+import { Button, Text, Popover } from "@mantine/core";
 import StatusBadge from "./StatusBadge";
 import { format } from "date-fns";
-import {
-  useUpdateMutation,
-  useUpdateMutationPut,
-} from "../services/reactQuery";
+import { useUpdateMutationPut } from "../services/reactQuery";
 import { toast } from "react-toastify";
+import DatePickerCalendar from "./DatePicker";
+import { useState } from "react";
 
 export default function AppointmentDetails({ booking }) {
-  // Extract fields from the booking object:
   const {
     name,
     professionalId,
@@ -21,37 +19,60 @@ export default function AppointmentDetails({ booking }) {
     email,
     phone,
     _id,
-    // If you have additional fields like:
-    // userId?.email, userId?.phone, services, etc.
   } = booking;
-  console.log(name);
+
+  const [selectedDate, setSelectedDate] = useState(new Date(bookingDate));
+  const [opened, setOpened] = useState(false);
+
   const { mutate: updateBooking } = useUpdateMutationPut(["reschedule", _id]);
+  const { mutate: cancelBooking } = useUpdateMutationPut(["bookings", _id]);
 
-  // Format the date/time the way you like:
-  const formattedDate = format(new Date(bookingDate), "yyyy-MM-dd");
-  // Example: "4/15/2025" or "21-02-2025"
+  // const formattedDate = format(new Date(bookingDate), "yyyy-MM-dd");
   const timeRange = bookingTime;
-  // Or if you have start/end times, you can do: "09:00 - 10:00"
 
-  function handleUpdate(booking) {
-    console.log(booking);
+  function handleDateChange(date) {
+    setSelectedDate(date);
+    setOpened(false);
+  }
+
+  function handleUpdate() {
     updateBooking(
       {
-        endpoint: `/api/reschedule-booking/${booking._id}`,
+        endpoint: `/api/reschedule-booking/${_id}`,
         payload: {
-          bookingTime: "14:00",
-          bookingDate: "2025-04-20",
-          bookingWeek: 17,
-          professionalId: "608d1a2b3c4d5e6f7a8b9c0d",
+          bookingTime: bookingTime,
+          bookingDate: format(selectedDate, "yyyy-MM-dd"),
+          bookingWeek: getWeekInMonth(selectedDate), // Using month-based week number
+          // professionalId: professionalId._id || professionalId,
         },
       },
       {
         onSuccess: () =>
-          toast.success("Location Updated Successfully", {
+          toast.success("Booking Updated Successfully", {
             position: "top-center",
           }),
         onError: () =>
-          toast.error("Error Updated Location", { position: "top-center" }),
+          toast.error("Error Updating Booking", { position: "top-center" }),
+      }
+    );
+  }
+
+  function handleCancelBooking(data) {
+    console.log(data);
+    cancelBooking(
+      {
+        endpoint: `/api/cancel-booking/${_id}`,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Cancel Updated Successfully", {
+            position: "top-center",
+          });
+          setOpened(false);
+          window.location.reload();
+        },
+        onError: () =>
+          toast.error("Error Cancel Booking", { position: "top-center" }),
       }
     );
   }
@@ -73,7 +94,6 @@ export default function AppointmentDetails({ booking }) {
         <Text>{name}</Text>
       </div>
 
-      {/* If you have user email */}
       {email && (
         <div className="flex items-center justify-between">
           <Text weight={600}>Email:</Text>
@@ -81,7 +101,6 @@ export default function AppointmentDetails({ booking }) {
         </div>
       )}
 
-      {/* If you have user phone */}
       {phone && (
         <div className="flex items-center justify-between">
           <Text weight={600}>Phone:</Text>
@@ -89,32 +108,11 @@ export default function AppointmentDetails({ booking }) {
         </div>
       )}
 
-      {/* Location */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Location:</Text>
         <Text>{location?.name || location || "N/A"}</Text>
       </div>
 
-      {/* If you have services array */}
-      {/* Example: Haircut ($20), Beard Trim ($20) */}
-      {/* 
-          booking.services might be an array of objects like:
-          [{ title: "Haircut", price: 20 }, { title: "Beard Trim", price: 20 }]
-        */}
-      {/* {booking.services && booking.services.length > 0 && (
-          <div className="flex items-start justify-between">
-            <Text weight={600}>Services:</Text>
-            <div className="flex flex-col items-end">
-              {booking.services.map((srv) => (
-                <Text key={srv.title}>
-                  {srv.title} (${srv.price})
-                </Text>
-              ))}
-            </div>
-          </div>
-        )} */}
-
-      {/* Payment */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Payment:</Text>
         <Text>
@@ -122,41 +120,82 @@ export default function AppointmentDetails({ booking }) {
         </Text>
       </div>
 
-      {/* Price */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Price:</Text>
         <Text>${totalPrice || "0"}</Text>
       </div>
 
-      {/* Date */}
+      {/* Date with Popover */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Date:</Text>
-        <Text>{formattedDate}</Text>
+        <Popover
+          opened={opened}
+          onChange={setOpened}
+          position="bottom"
+          withArrow
+          shadow="md"
+          width={300}
+        >
+          <Popover.Target>
+            <Button
+              variant="outline"
+              onClick={() => setOpened((o) => !o)}
+              styles={{
+                root: {
+                  padding: "0 10px",
+                  height: 36,
+                },
+              }}
+            >
+              {format(selectedDate, "MMM dd, yyyy")}
+            </Button>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <DatePickerCalendar
+              value={selectedDate}
+              onChange={handleDateChange}
+              popoverMode={true}
+            />
+          </Popover.Dropdown>
+        </Popover>
       </div>
 
-      {/* Time */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Time:</Text>
         <Text>{timeRange}</Text>
       </div>
 
-      {/* Status */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Status:</Text>
         <StatusBadge status={status} />
       </div>
 
-      {/* Action buttons (optional) */}
       <div className="flex items-center justify-end gap-2 mt-4">
-        <Button
-          variant="outline"
-          color="gray"
-          onClick={() => handleUpdate(booking)}
-        >
+        <Button variant="outline" color="gray" onClick={handleUpdate}>
           Update
         </Button>
-        <Button color="red">Delete</Button>
+        <Button color="red" onClick={() => handleCancelBooking(booking)}>
+          Delete
+        </Button>
       </div>
     </div>
   );
+}
+
+// Returns week number within the month (1-5 or 6)
+function getWeekInMonth(date) {
+  const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+  const firstDayOfWeek = firstDayOfMonth.getDay(); // 0 (Sunday) to 6 (Saturday)
+
+  // This version considers Monday as the first day of the week
+  const offset = firstDayOfWeek < 1 ? 6 : firstDayOfWeek - 1;
+
+  const weekNumber = Math.ceil((date.getDate() + offset) / 7);
+
+  // For debugging:
+  console.log(
+    `Date: ${date.getDate()}, Month Start Day: ${firstDayOfWeek}, Offset: ${offset}, Week: ${weekNumber}`
+  );
+
+  return weekNumber;
 }

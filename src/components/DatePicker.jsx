@@ -2,10 +2,8 @@ import { DatePicker } from "@mantine/dates";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 
-function DatePickerCalendar({ value, onChange }) {
+function DatePickerCalendar({ value, onChange, popoverMode = false }) {
   const today = new Date();
-
-  // Calculate the last day of next month
   const endOfNextMonth = new Date();
   endOfNextMonth.setMonth(today.getMonth() + 2, 0);
 
@@ -15,9 +13,9 @@ function DatePickerCalendar({ value, onChange }) {
       onChange={onChange}
       minDate={today}
       maxDate={endOfNextMonth}
-      defaultDate={today}
-      numberOfMonths={2}
-      hideOutsideDates
+      defaultDate={value}
+      numberOfMonths={popoverMode ? 1 : 2}
+      hideOutsideDates={!popoverMode}
       getDayProps={(date) => ({
         disabled: date < new Date(new Date().setHours(0, 0, 0, 0)),
       })}
@@ -28,12 +26,14 @@ function DatePickerCalendar({ value, onChange }) {
             cursor: "not-allowed",
           },
         },
-        month: {
-          borderRight: "1px solid lightgray",
-          "&:last-of-type": {
-            borderRight: "none",
+        ...(!popoverMode && {
+          month: {
+            borderRight: "1px solid lightgray",
+            "&:last-of-type": {
+              borderRight: "none",
+            },
           },
-        },
+        }),
       }}
     />
   );
