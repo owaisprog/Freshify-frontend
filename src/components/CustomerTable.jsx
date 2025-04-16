@@ -1,8 +1,13 @@
-import { Text } from "@mantine/core";
+import { Text, Modal } from "@mantine/core";
 import { BsDot } from "react-icons/bs";
 import TableCom from "./Table";
+import { useState } from "react";
+import AppointmentDetails from "./AppointmentDetails";
 
 export default function CustomerTable({ bookings, error, isLoading }) {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState(null); // Re-enable this
+
   // Table columns
   const columns = [
     "",
@@ -15,10 +20,11 @@ export default function CustomerTable({ bookings, error, isLoading }) {
     "Time",
     "Status",
   ];
+  console.log(bookings);
 
   // Transform bookings data for the table
   const data = bookings?.map((booking) => ({
-    // Status dot (red if unseen, green if seen)
+    // Status dot
     "": (
       <BsDot
         size={24}
@@ -26,7 +32,7 @@ export default function CustomerTable({ bookings, error, isLoading }) {
         className="ml-[-10px]"
       />
     ),
-    "Customer Name": booking.userId?.name || "Guest",
+    "Customer Name": booking.name || "Guest",
     Professional: booking.professionalId?.name || "N/A",
     Location: booking.location?.name || booking.location || "N/A",
     Price: `$${booking.totalPrice}`,
@@ -35,7 +41,7 @@ export default function CustomerTable({ bookings, error, isLoading }) {
     Time: booking.bookingTime,
     Status: (
       <Text
-        className="rounded-[3px] !p-[4px]   "
+        className="rounded-[3px] !p-[4px]"
         bg={
           booking.status === "completed"
             ? "#A3E8AE"
@@ -59,7 +65,18 @@ export default function CustomerTable({ bookings, error, isLoading }) {
         {booking.status}
       </Text>
     ),
+    // Keep the raw booking data if you like, for easy access inside handleSubmit
+    __originalBooking: booking,
   }));
+
+  // When a row is clicked (or when user triggers "View details" action):
+  function handleSubmit(rowData) {
+    // rowData is the formatted row for your table,
+    // which includes the raw booking in rowData.__originalBooking
+    console.log(rowData);
+    setSelectedData(rowData.__originalBooking);
+    setIsPopupOpen(true);
+  }
 
   return (
     <div className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen p-6">
@@ -73,7 +90,23 @@ export default function CustomerTable({ bookings, error, isLoading }) {
         error={error}
         columns={columns}
         isLoading={isLoading}
+        handleFunction={handleSubmit}
       />
+
+      {/* Custom Popup */}
+      <Modal
+        opened={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        title="Booking Details"
+        size="lg"
+        centered
+      >
+        {selectedData ? (
+          <AppointmentDetails booking={selectedData} />
+        ) : (
+          <Text>No data available.</Text>
+        )}
+      </Modal>
     </div>
   );
 }

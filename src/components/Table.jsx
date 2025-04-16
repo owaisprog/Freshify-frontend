@@ -1,6 +1,10 @@
 import { Loader, Table } from "@mantine/core";
 
-const TableCom = ({ columns, data, isLoading, error }) => {
+const TableCom = ({ columns, data, isLoading, error, handleFunction }) => {
+  function handleSubmit(row, rowIndex) {
+    if (!handleFunction) return;
+    handleFunction(row, rowIndex);
+  }
   return (
     <>
       <Table.ScrollContainer className="rounded-[25px]" minWidth={920}>
@@ -28,8 +32,9 @@ const TableCom = ({ columns, data, isLoading, error }) => {
               {data && data?.length > 0 ? (
                 data.map((row, rowIndex) => (
                   <tr
+                    onClick={() => handleSubmit(row, rowIndex)}
                     key={rowIndex}
-                    className="border-b border-gray-200 hover:bg-gray-50 rounded-2xl transition"
+                    className="border-b cursor-pointer border-gray-200 hover:bg-gray-50 rounded-2xl transition"
                   >
                     {columns.map((col, colIndex) => (
                       <td

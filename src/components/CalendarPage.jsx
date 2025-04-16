@@ -58,7 +58,6 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
     isPending: isLoading,
     error,
   } = usePostMutation("bookings");
-
   // Fetch all bookings
   useEffect(() => {
     const fetchBookings = async () => {
@@ -73,7 +72,6 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
     };
     fetchBookings();
   }, [getMutateBookings, role]);
-  console.log(bookings);
 
   // Recompute weeks whenever the selectedOptionMonth changes
   useEffect(() => {
