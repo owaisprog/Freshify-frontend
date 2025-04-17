@@ -1,7 +1,6 @@
-import { Text, Modal } from "@mantine/core";
-import { BsDot } from "react-icons/bs";
+import { Text, Modal, Indicator } from "@mantine/core";
 import TableCom from "./Table";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import AppointmentDetails from "./AppointmentDetails";
 
 export default function CustomerTable({ bookings, error, isLoading }) {
@@ -34,50 +33,59 @@ export default function CustomerTable({ bookings, error, isLoading }) {
     []
   );
 
-  // Transform bookings data for the table
-  const data = bookings?.map((booking) => ({
-    // Status dot (red if unseen, green if seen)
-    "": (
-      <BsDot
-        size={24}
-        color={booking.isSeen ? "green" : "red"}
-        className="ml-[-10px]"
-      />
-    ),
-    "Customer Name": booking.userId?.name || "Guest",
-    Professional: booking.professionalId?.name || "N/A",
-    Location: booking.location?.name || booking.location || "N/A",
-    Price: `$${booking.totalPrice}`,
-    Payment: booking.paymentMethod,
-    Date: new Date(booking.bookingDate).toLocaleDateString(),
-    Time: booking.bookingTime,
-    Status: (
-      <Text
-        className="rounded-[3px] !p-[4px]   "
-        bg={
-          booking.status === "completed"
-            ? "#A3E8AE"
-            : booking.status === "cancelled"
-              ? "red"
-              : booking.status === "pending"
-                ? "orange"
-                : "gray"
-        }
-        c={
-          booking.status === "completed"
-            ? "#427B42"
-            : booking.status === "cancelled"
-              ? "red"
-              : booking.status === "pending"
-                ? "white"
-                : "white"
-        }
-        weight={500}
-      >
-        {booking.status}
-      </Text>
-    ),
-  }));
+  // Memoized data transformation
+  const data = useMemo(() => {
+    return bookings?.map((booking) => ({
+      "": (
+        <Indicator
+          radius={"xl"}
+          size={10}
+          color={booking.isSeen ? "green" : "red"}
+          className="ml-[-10px]"
+        />
+      ),
+      "Customer Name": booking.name || "Guest",
+      Professional: booking.professionalId?.name || "N/A",
+      Location: booking.locationDetails?.name || "N/A",
+      Price: `$${booking.totalPrice}`,
+      Payment: booking.paymentMethod,
+      Date: new Date(booking.bookingDate).toLocaleDateString(),
+      Time: booking.bookingTime,
+      Status: (
+        <Text
+          className="rounded-[3px] !p-[4px]"
+          bg={
+            booking.status === "completed"
+              ? "#A3E8AE"
+              : booking.status === "cancelled"
+                ? "red"
+                : booking.status === "pending"
+                  ? "orange"
+                  : "gray"
+          }
+          c={
+            booking.status === "completed"
+              ? "#427B42"
+              : booking.status === "cancelled"
+                ? "red"
+                : booking.status === "pending"
+                  ? "white"
+                  : "white"
+          }
+          weight={500}
+        >
+          {booking.status}
+        </Text>
+      ),
+      __originalBooking: booking,
+    }));
+  }, [bookings]);
+
+  const handleSubmit = useCallback((rowData) => {
+    console.log("Row clicked:", rowData.__originalBooking);
+    setSelectedData(rowData.__originalBooking);
+    setIsPopupOpen(true);
+  }, []);
 
   return (
     <div className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]  ">
