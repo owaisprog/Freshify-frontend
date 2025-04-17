@@ -2,12 +2,21 @@
 import { toast } from "react-toastify";
 import { usePostMutation } from "../../services/reactQuery";
 import { useBookingContext } from "./BookingContext";
-import { format } from "date-fns";
+import { addMinutes, format } from "date-fns";
 import { Button } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function OrderSummary() {
+  const calculateEndTime = (startTime, totalDuration, selectedDate) => {
+    if (!startTime || !totalDuration || !selectedDate) return;
+    const [hours, minutes] = startTime.split(":").map(Number);
+    const startDate = new Date(selectedDate);
+    startDate.setHours(hours, minutes, 0, 0);
+    const endDate = addMinutes(startDate, totalDuration);
+    return format(endDate, "HH:mm");
+  };
+
   function getWeekOfMonth(dateInput) {
     const date = new Date(dateInput);
 
@@ -23,21 +32,11 @@ export default function OrderSummary() {
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
   const [loading, setLoading] = useState(false);
 
-  // console.log({
-  //   userId: id,
-  //   organizationOwnerId: "67f7596971c7c802a785f2bd",
-  //   location: bookingData?.location?.name,
-  //   professionalId: bookingData?.professional?._id,
-  //   services: bookingData?.services,
-  //   bookingDate: bookingData?.date,
-  //   bookingWeek: getWeekOfMonth(bookingData?.date),
-  //   bookingTime: bookingData?.time,
-  //   totalPrice: bookingData?.services.reduce((sum, s) => +sum + +s?.price, 0),
-  //   paymentMethod: "online",
-  // });
-  // console.log(format(new Date(bookingData.date), "yyyy-MM-dd"));
-  // console.log(bookingData.date);
-  console.log(bookingData.location?.enableCashPayments);
+  let totalServices = bookingData.services.reduce(
+    (sum, s) => sum + s.duration,
+    0
+  );
+  // const formattedTime = format(new Date(bookingData?.time), "HH:mm");
   function handleBookings() {
     setLoading(true);
     createBookings(
@@ -45,8 +44,13 @@ export default function OrderSummary() {
         endpoint: "/api/create-booking",
         payload: {
           userId: id,
+          endTime: calculateEndTime(
+            bookingData?.time,
+            totalServices,
+            bookingData?.date
+          ),
           organizationOwnerId: "67f7596971c7c802a785f2bd",
-          location: bookingData.location.name,
+          location: bookingData.location?._id,
           professionalId: bookingData.professional._id,
           services: bookingData?.services.map((val) => val?._id),
           // services: "67f75b2871c7c802a785f32d",

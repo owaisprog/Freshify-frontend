@@ -3,7 +3,7 @@ import StatusBadge from "./StatusBadge";
 import { format, addMinutes } from "date-fns";
 import { useUpdateMutationPut, useQueryHook } from "../services/reactQuery";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import CalendarComp from "./CustomerCalendar";
 import generateTimeSlots from "./booking/TimeSlotsGenerator";
 
@@ -20,8 +20,9 @@ export default function AppointmentDetails({ booking }) {
     status,
     email,
     phone,
+    locationDetails,
+    totalDuration,
     _id,
-    services,
   } = booking;
 
   const [selectedDate, setSelectedDate] = useState(new Date(bookingDate));
@@ -34,11 +35,14 @@ export default function AppointmentDetails({ booking }) {
   const { mutate: cancelBooking } = useUpdateMutationPut(["bookings", _id]);
 
   // Fetch unavailable slots
+  // Inside AppointmentDetails component
+
+  // Fetch unavailable slots
   const formattedDate = selectedDate
     ? format(selectedDate, "yyyy-MM-dd")
     : null;
   const {
-    data: unavailableSlots = { bookedSlots: [], unavailablePeriods: [] },
+    data: unstableUnavailableSlots,
     isLoading: isLoadingSlots,
     refetch: refetchSlots,
   } = useQueryHook({
@@ -47,40 +51,47 @@ export default function AppointmentDetails({ booking }) {
       ? `/api/unavailable-slots/${professionalId?._id}/${formattedDate}`
       : null,
     enabled: !!formattedDate,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes to reduce refetches
   });
 
+  // Memoize unavailableSlots to stabilize the object
+  const unavailableSlots = useMemo(
+    () =>
+      unstableUnavailableSlots || { bookedSlots: [], unavailablePeriods: [] },
+    [unstableUnavailableSlots]
+  );
+
   // Calculate total duration from services
-  const calculateTotalDuration = () => {
-    return (
-      services?.reduce(
-        (total, service) => total + (service.duration || 0),
-        0
-      ) ||
-      (new Date(`1970-01-01T${endTime}`) -
-        new Date(`1970-01-01T${bookingTime}`)) /
-        (1000 * 60)
-    );
-  };
+  // const calculateTotalDuration = () => {
+  //   return (
+  //     services?.reduce(
+  //       (total, service) => total + (service.duration || 0),
+  //       0
+  //     ) ||
+  //     (new Date(`1970-01-01T${endTime}`) -
+  //       new Date(`1970-01-01T${bookingTime}`)) /
+  //       (1000 * 60)
+  //   );
+  // };
 
   // Calculate end time based on selected time and duration
   const calculateEndTime = (startTime) => {
     const [hours, minutes] = startTime.split(":").map(Number);
     const startDate = new Date(selectedDate);
     startDate.setHours(hours, minutes, 0, 0);
-    const endDate = addMinutes(startDate, calculateTotalDuration());
+    const endDate = addMinutes(startDate, totalDuration);
     return format(endDate, "HH:mm");
   };
 
   // Generate available slots when date or unavailable slots change
   useEffect(() => {
     const generateAvailableSlots = async () => {
-      console.log("check", booking);
-      if (!selectedDate || !location?.workingHours) return;
+      if (!selectedDate || !locationDetails?.workingHours) return;
 
       setIsGeneratingSlots(true);
       try {
         const dayName = format(selectedDate, "EEEE").toLowerCase();
-        const workingDay = location.workingHours.find(
+        const workingDay = locationDetails.workingHours.find(
           (val) => val.day.toLowerCase() === dayName
         );
 
@@ -99,20 +110,11 @@ export default function AppointmentDetails({ booking }) {
             return `${slot.startTime}-${slot.endTime}`;
           })
           .filter(Boolean);
-        console.log(
-          {
-            openingTime: workingDay.start,
-            closingTime: workingDay.end,
-            serviceDuration: calculateTotalDuration(),
-            blockedSlots,
-            date: selectedDate,
-          },
-          "what os the issue"
-        );
+
         const slots = generateTimeSlots({
           openingTime: workingDay.start,
           closingTime: workingDay.end,
-          serviceDuration: calculateTotalDuration(),
+          serviceDuration: totalDuration,
           blockedSlots,
           date: selectedDate,
         });
@@ -130,8 +132,8 @@ export default function AppointmentDetails({ booking }) {
   }, [
     selectedDate,
     unavailableSlots,
-    location?.workingHours,
-    // calculateTotalDuration
+    locationDetails.workingHours,
+    totalDuration,
   ]);
 
   const handleDateSelect = (date) => {

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiDelete, apiGet, apiPost, apiUpdate } from "./useApi";
+import { apiDelete, apiGet, apiPost, apiUpdate, apiUpdatePut } from "./useApi";
 
 export const useQueryHook = ({
   queryKey,
@@ -45,6 +45,18 @@ export const useUpdateMutation = (queryKey) => {
 
   const { mutate, error, isPending, isSuccess } = useMutation({
     mutationFn: async ({ endpoint, payload }) => apiUpdate(endpoint, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKey]); // ✅ Auto-refetch after mutation
+    },
+  });
+  return { mutate, error, isPending, isSuccess };
+};
+export const useUpdateMutationPut = (queryKey) => {
+  const queryClient = useQueryClient();
+
+  const { mutate, error, isPending, isSuccess } = useMutation({
+    mutationFn: async ({ endpoint, payload }) =>
+      apiUpdatePut(endpoint, payload),
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey]); // ✅ Auto-refetch after mutation
     },

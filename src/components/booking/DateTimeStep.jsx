@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
@@ -11,7 +11,7 @@ export default function DateTimeStep() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [isGeneratingSlots, setIsGeneratingSlots] = useState(false);
+  // const [isGeneratingSlots, setIsGeneratingSlots] = useState(false);
   const { bookingData, updateBookingData } = useBookingContext();
 
   const formattedUTC = selectedDate
@@ -20,7 +20,7 @@ export default function DateTimeStep() {
 
   const {
     data: unavailableSlots = { bookedSlots: [], unavailablePeriods: [] },
-    isLoading: isLoadingSlots,
+    // isLoading: isLoadingSlots,
     isFetching,
     refetch,
   } = useQueryHook({
@@ -32,16 +32,9 @@ export default function DateTimeStep() {
     staleTime: 5 * 60 * 1000, // 5 minutes cache
   });
 
-  useEffect(() => {
-    if (selectedDate && !isFetching) {
-      generateAvailableSlots();
-    }
-  }, [unavailableSlots, selectedDate, isFetching]);
-
-  const generateAvailableSlots = async () => {
+  const generateAvailableSlots = useCallback(async () => {
     if (!selectedDate) return;
 
-    setIsGeneratingSlots(true);
     try {
       const DateOBJ = new Date(selectedDate);
       const dayName = format(DateOBJ, "EEEE").toLowerCase();
@@ -76,10 +69,20 @@ export default function DateTimeStep() {
       setTimeSlots(slots);
     } catch (error) {
       console.error("Error generating slots:", error);
-    } finally {
-      setIsGeneratingSlots(false);
     }
-  };
+  }, [
+    selectedDate,
+    bookingData?.location?.workingHours,
+    bookingData?.services,
+    unavailableSlots.bookedSlots,
+    unavailableSlots.unavailablePeriods,
+  ]);
+
+  useEffect(() => {
+    if (selectedDate && !isFetching) {
+      generateAvailableSlots();
+    }
+  }, [unavailableSlots, generateAvailableSlots, selectedDate, isFetching]);
 
   const OnClickDay = (date) => {
     const DateOBJ = new Date(date);

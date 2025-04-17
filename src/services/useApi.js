@@ -40,3 +40,12 @@ export const apiUpdate = async (url, data) => {
     throw error.response?.data?.message || error.message;
   }
 };
+export const apiUpdatePut = async (url, data) => {
+  try {
+    const response = await axiosInstance.put(url, data);
+    return response.data;
+  } catch (error) {
+    //console.error("UPDATE Error:", url, error.response || error);
+    throw error.response?.data?.message || error.message;
+  }
+};

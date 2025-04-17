@@ -1,27 +1,45 @@
-import { Indicator, Text } from "@mantine/core";
+import { Text, Modal } from "@mantine/core";
+import { BsDot } from "react-icons/bs";
 import TableCom from "./Table";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import AppointmentDetails from "./AppointmentDetails";
 
 export default function CustomerTable({ bookings, error, isLoading }) {
-  // Table columns
-  const columns = [
-    "",
-    "Customer Name",
-    "Professional",
-    "Location",
-    "Price",
-    "Payment",
-    "Date",
-    "Time",
-    "Status",
-  ];
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [selectedData, setSelectedData] = useState(null);
+
+  // // Debugging: Only log when bookings actually changes
+  // useEffect(() => {
+  //   if (bookings && bookings.length > 0) {
+  //     console.log("Bookings data updated:", {
+  //       count: bookings.length,
+  //       firstItem: bookings[0],
+  //     });
+  //   }
+  // }, [bookings]);
+
+  // Memoized table columns
+  const columns = useMemo(
+    () => [
+      "",
+      "Customer Name",
+      "Professional",
+      "Location",
+      "Price",
+      "Payment",
+      "Date",
+      "Time",
+      "Status",
+    ],
+    []
+  );
 
   // Transform bookings data for the table
   const data = bookings?.map((booking) => ({
     // Status dot (red if unseen, green if seen)
     "": (
-      <Indicator
-        radius="xl"
-        size={10}
+      <BsDot
+        size={24}
         color={booking.isSeen ? "green" : "red"}
         className="ml-[-10px]"
       />
@@ -67,13 +85,27 @@ export default function CustomerTable({ bookings, error, isLoading }) {
         All Bookings
       </Text>
 
-      {/* Table */}
       <TableCom
         data={data}
         error={error}
         columns={columns}
         isLoading={isLoading}
+        handleFunction={handleSubmit}
       />
+
+      <Modal
+        opened={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        title="Booking Details"
+        size="lg"
+        centered
+      >
+        {selectedData ? (
+          <AppointmentDetails booking={selectedData} />
+        ) : (
+          <Text>No data available.</Text>
+        )}
+      </Modal>
     </div>
   );
 }
