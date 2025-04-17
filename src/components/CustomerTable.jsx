@@ -8,15 +8,15 @@ export default function CustomerTable({ bookings, error, isLoading }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
-  // Debugging: Only log when bookings actually changes
-  useEffect(() => {
-    if (bookings && bookings.length > 0) {
-      console.log("Bookings data updated:", {
-        count: bookings.length,
-        firstItem: bookings[0],
-      });
-    }
-  }, [bookings]);
+  // // Debugging: Only log when bookings actually changes
+  // useEffect(() => {
+  //   if (bookings && bookings.length > 0) {
+  //     console.log("Bookings data updated:", {
+  //       count: bookings.length,
+  //       firstItem: bookings[0],
+  //     });
+  //   }
+  // }, [bookings]);
 
   // Memoized table columns
   const columns = useMemo(

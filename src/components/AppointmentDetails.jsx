@@ -119,13 +119,6 @@ export default function AppointmentDetails({ booking }) {
           date: selectedDate,
         });
 
-        console.log("check", {
-          openingTime: workingDay.start,
-          closingTime: workingDay.end,
-          serviceDuration: totalDuration,
-          blockedSlots,
-          date: selectedDate,
-        });
         setTimeSlots(slots);
       } catch (error) {
         console.error("Error generating slots:", error);

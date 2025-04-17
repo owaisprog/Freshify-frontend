@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 export default function OrderSummary() {
   const calculateEndTime = (startTime, totalDuration, selectedDate) => {
-    console.log(startTime, totalDuration, selectedDate);
     if (!startTime || !totalDuration || !selectedDate) return;
     const [hours, minutes] = startTime.split(":").map(Number);
     const startDate = new Date(selectedDate);
@@ -33,26 +32,11 @@ export default function OrderSummary() {
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
   const [loading, setLoading] = useState(false);
 
-  // console.log({
-  //   userId: id,
-  //   organizationOwnerId: "67f7596971c7c802a785f2bd",
-  //   location: bookingData?.location?.name,
-  //   professionalId: bookingData?.professional?._id,
-  //   services: bookingData?.services,
-  //   bookingDate: bookingData?.date,
-  //   bookingWeek: getWeekOfMonth(bookingData?.date),
-  //   bookingTime: bookingData?.time,
-  //   totalPrice: bookingData?.services.reduce((sum, s) => +sum + +s?.price, 0),
-  //   paymentMethod: "online",
-  // });
-  // console.log(format(new Date(bookingData.date), "yyyy-MM-dd"));
-  // console.log(bookingData.date);
   let totalServices = bookingData.services.reduce(
     (sum, s) => sum + s.duration,
     0
   );
   // const formattedTime = format(new Date(bookingData?.time), "HH:mm");
-  console.log(bookingData?.time, bookingData?.date, totalServices);
   function handleBookings() {
     setLoading(true);
     createBookings(

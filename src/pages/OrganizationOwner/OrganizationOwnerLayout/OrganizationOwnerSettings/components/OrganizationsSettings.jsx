@@ -17,7 +17,6 @@ export default function OrganizationsSettings() {
   });
 
   // Log to inspect the fetched data
-  console.log(bookingTime);
 
   // Retrieve user data from localStorage on component mount
   useEffect(() => {
