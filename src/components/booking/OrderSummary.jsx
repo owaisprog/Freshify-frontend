@@ -63,7 +63,7 @@ export default function OrderSummary() {
           ),
           paymentMethod: bookingData.location?.enableCashPayments
             ? "online"
-            : "offline",
+            : "cash",
         },
       },
       {
