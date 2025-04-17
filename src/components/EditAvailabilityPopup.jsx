@@ -189,7 +189,7 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
       if (!isBarber) setSelectedProfessionalId(null);
       setDeletingSlotId(null);
     }
-  }, [opened, isBarber, form]);
+  }, [opened, isBarber]);
 
   // Render loading state for professionals
   const renderProfessionalSelect = () => {
