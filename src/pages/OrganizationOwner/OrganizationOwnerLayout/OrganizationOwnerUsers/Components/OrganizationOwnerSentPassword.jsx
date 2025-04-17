@@ -60,7 +60,7 @@ export default function OrganizationOwnerSentPassword() {
     <main className="flex flex-col lg:grid h-screen mx-auto lg:grid-cols-2 lg:gap-x-4 lg:gap-y-0 px-3 lg:px-0">
       {/* Left Side - Image */}
       {/* This image will be visible on large devices */}
-      <section className="hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
+      <section className="hidden rounded-tr-xl rounded-br-xl bg-[#040707] lg:flex items-center justify-center">
         <Image
           radius="md"
           height={"full"}

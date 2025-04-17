@@ -32,14 +32,15 @@ const CustomSelect = ({
       onChange={handleChange}
       allowDeselect={allowDeselect}
       checkIconPosition="right"
-      rightSection={<FaChevronDown size={14} color="black" />}
+      rightSection={<FaChevronDown size={14} color="#718EBF" />}
       styles={{
         input: {
           border: "none",
-          borderBottom: "2px solid black",
+          borderBottom: "1px solid #718EBF",
           borderRadius: 0,
           paddingRight: "2rem",
           backgroundColor: backgroundColor,
+          color: "#718EBF",
         },
       }}
       {...props}

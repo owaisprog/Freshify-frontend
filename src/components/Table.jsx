@@ -15,7 +15,7 @@ const TableCom = ({ columns, data, isLoading, error }) => {
                 {columns.map((col, index) => (
                   <th
                     key={index}
-                    className="text-left text-[18px] font-[400]  text-[#718EBF] p-4  specialBorderBottom pb-3 px-4"
+                    className="text-left text-[18px] font-[400]   text-[#718EBF] p-4  specialBorderBottom pb-3 px-4"
                   >
                     {col}
                   </th>
@@ -29,12 +29,12 @@ const TableCom = ({ columns, data, isLoading, error }) => {
                 data.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className="border-b border-gray-200 hover:bg-gray-50 rounded-2xl transition"
+                    className="border-b  border-gray-200 hover:bg-gray-50 rounded-2xl transition"
                   >
                     {columns.map((col, colIndex) => (
                       <td
                         key={colIndex}
-                        className=" px-4 py-3 text-[#000000] text-[18px] font-[400]"
+                        className=" px-4 py-3  text-[#000000] text-[18px] font-[400]"
                       >
                         {row[col] || "—"}
                       </td>

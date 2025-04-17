@@ -239,9 +239,9 @@ function OrganizationOwnerServices() {
     ),
     Price: <div>${val.price}</div>,
     Actions: (
-      <div className="flex gap-2.5">
+      <div className="flex gap-2.5   ">
         <div
-          className="flex items-center justify-center p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
+          className="flex items-center justify-end p-[6px] rounded bg-[#E7FFEB] cursor-pointer w-[30px] h-[30px]"
           onClick={() => {
             setToggleTitle("Update Service");
             setSelectedService(val);
@@ -274,142 +274,140 @@ function OrganizationOwnerServices() {
   }));
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen">
+    <main className="grid grid-cols-1 gap-y-5 max-w-[1440px] mx-auto w-full pt-20 lg:pt-0  p-6  ">
       {/* Services title added  On top */}
       <Title
-        py={"sm"}
+        mb={"lg"}
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] !py-[18px]"
+        className="lg:!px-6 !px-2   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Services
       </Title>
 
-      <section className=" max-w-[1440px] mx-auto w-full  p-6 flex flex-col h-full  gap-8  ">
-        <section className="    grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
-          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
-            <div className="flex items-center gap-2">
-              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
-                <img src="/mostSoldServiceIcons.png" alt="" />
-              </div>
-              <div>
-                <Text className="!text-[#000000] !text-[14px] !font-[400]">
-                  Most Sold Service
-                </Text>
-                <Text className="!text-[14px] !text-[#333B69] !font-[400]">
-                  Haircut
-                </Text>
-              </div>
+      <section className=" -mt-10 lg:mt-0   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
+        <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
+          <div className="flex items-center gap-2">
+            <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
+              <img src="/mostSoldServiceIcons.png" alt="" />
             </div>
-            <Text className="!text-[30px] !font-[600]">$4,790</Text>
-          </div>
-
-          <div className="bg-[#FFFFFF] rounded-[25px] h-[86px] flex px-[11px] items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#E7EDFF] rounded-3xl">
-                <img src="/haircutTotalOrdersIcon.png" alt="" />
-              </div>
+            <div>
               <Text className="!text-[#000000] !text-[14px] !font-[400]">
-                Haircut Total Orders
+                Most Sold Service
+              </Text>
+              <Text className="!text-[14px] !text-[#333B69] !font-[400]">
+                Haircut
               </Text>
             </div>
-            <Text className="!text-[30px] !font-[600]">1,360</Text>
           </div>
-        </section>
+          <Text className="!text-[30px] !font-[600]">$4,790</Text>
+        </div>
 
-        <section className="flex  justify-between items-center">
-          <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
-            All Services
-          </Text>
-          <Button
-            bg="black"
-            radius="md"
-            fw={"normal"}
-            loading={loading}
-            loaderProps={{ type: "bars" }}
-            className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
-            onClick={handleAddServiceClick}
-          >
-            Add Service
-          </Button>
-        </section>
-
-        {/* Table */}
-        <TableCom
-          data={data}
-          error={servicesError}
-          columns={columns}
-          isLoading={
-            isServicesLoading || isLoadCreate || isLoadUpdate || isLoadDelete
-          }
-        />
-
-        {/* Add/Edit Service Popup */}
-        <Popup
-          form={form}
-          opened={opened}
-          setOpened={setOpened}
-          handleSubmit={handleSubmit}
-          title={toggleTitle}
-        >
-          {isLocationsLoading ? (
-            <Loader className="mx-auto" color="blue" type="bars" />
-          ) : !selectedService && locationNames.length === 0 ? (
-            <Text className="!text-[16px] !font-[400]">
-              Please create at least one location.
+        <div className="bg-[#FFFFFF] rounded-[25px] h-[86px] flex px-[11px] items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#E7EDFF] rounded-3xl">
+              <img src="/haircutTotalOrdersIcon.png" alt="" />
+            </div>
+            <Text className="!text-[#000000] !text-[14px] !font-[400]">
+              Haircut Total Orders
             </Text>
-          ) : (
-            <>
-              <Popup.TextInputField
-                label="Service Name"
-                placeholder="Enter Service name"
-                id="name"
-              />
-              <Popup.TextInputField
-                label="Category"
-                placeholder="Enter Category"
-                id="category"
-              />
-              <Popup.Input
-                label="Duration"
-                description={"Duration will be in minutes"}
-                placeholder="Enter Service Duration in minutes"
-                id="duration"
-                type="number"
-              />
-              <Popup.Input
-                label="Price"
-                placeholder="Enter Service Price in Dollars"
-                id="price"
-                type="number"
-              />
-              <Popup.MutltiSelector
-                data={locationNames}
-                label="Select the location"
-                placeholder="Select at least one location"
-                id="locations"
-                error={locationsError}
-              />
-              <Popup.TextArea
-                label="Description"
-                placeholder="Enter Description"
-                id="description"
-              />
-              <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
-            </>
-          )}
-        </Popup>
-
-        {/* Description Modal */}
-        <Modal
-          closeOnClickOutside={false}
-          opened={modalOpen}
-          onClose={() => setModalOpen(false)}
-          title="Description"
-          centered
-        >
-          <p>{modalContent}</p>
-        </Modal>
+          </div>
+          <Text className="!text-[30px] !font-[600]">1,360</Text>
+        </div>
       </section>
+
+      <section className="flex  justify-between items-center">
+        <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+          All Services
+        </Text>
+        <Button
+          bg="black"
+          radius="md"
+          fw={"normal"}
+          loading={loading}
+          loaderProps={{ type: "bars" }}
+          className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
+          onClick={handleAddServiceClick}
+        >
+          Add Service
+        </Button>
+      </section>
+
+      {/* Table */}
+      <TableCom
+        data={data}
+        error={servicesError}
+        columns={columns}
+        isLoading={
+          isServicesLoading || isLoadCreate || isLoadUpdate || isLoadDelete
+        }
+      />
+
+      {/* Add/Edit Service Popup */}
+      <Popup
+        form={form}
+        opened={opened}
+        setOpened={setOpened}
+        handleSubmit={handleSubmit}
+        title={toggleTitle}
+      >
+        {isLocationsLoading ? (
+          <Loader className="mx-auto" color="blue" type="bars" />
+        ) : !selectedService && locationNames.length === 0 ? (
+          <Text className="!text-[16px] !font-[400]">
+            Please create at least one location.
+          </Text>
+        ) : (
+          <>
+            <Popup.TextInputField
+              label="Service Name"
+              placeholder="Enter Service name"
+              id="name"
+            />
+            <Popup.TextInputField
+              label="Category"
+              placeholder="Enter Category"
+              id="category"
+            />
+            <Popup.Input
+              label="Duration"
+              description={"Duration will be in minutes"}
+              placeholder="Enter Service Duration in minutes"
+              id="duration"
+              type="number"
+            />
+            <Popup.Input
+              label="Price"
+              placeholder="Enter Service Price in Dollars"
+              id="price"
+              type="number"
+            />
+            <Popup.MutltiSelector
+              data={locationNames}
+              label="Select the location"
+              placeholder="Select at least one location"
+              id="locations"
+              error={locationsError}
+            />
+            <Popup.TextArea
+              label="Description"
+              placeholder="Enter Description"
+              id="description"
+            />
+            <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
+          </>
+        )}
+      </Popup>
+
+      {/* Description Modal */}
+      <Modal
+        closeOnClickOutside={false}
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title="Description"
+        centered
+      >
+        <p>{modalContent}</p>
+      </Modal>
     </main>
   );
 }

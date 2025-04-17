@@ -214,16 +214,16 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
   };
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen">
+    <main className="grid grid-cols-1 gap-y-5 max-w-[1440px]  mx-auto w-full pt-20 lg:pt-0  p-6 ">
       <Title
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px]"
+        className="lg:!px-6 !px-2   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Calendar
       </Title>
 
-      <div className="py-10 flex justify-between">
-        <div className="flex gap-2">
+      <div className="  flex flex-col-reverse  sm:flex-row gap-4 justify-between">
+        <div className="flex gap-2 ">
           {/* Select Month */}
           <CustomSelect
             data={selectData}
@@ -248,7 +248,7 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
           radius="md"
           fw={"normal"}
           loaderProps={{ type: "bars" }}
-          className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
+          className="!text-[18px] !px-[40px]  !font-[400] !py-[10px]"
           onClick={() => setAvailabilityModalOpen(true)}
         >
           Edit Availability

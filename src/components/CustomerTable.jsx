@@ -1,5 +1,4 @@
-import { Text } from "@mantine/core";
-import { BsDot } from "react-icons/bs";
+import { Indicator, Text } from "@mantine/core";
 import TableCom from "./Table";
 
 export default function CustomerTable({ bookings, error, isLoading }) {
@@ -20,8 +19,9 @@ export default function CustomerTable({ bookings, error, isLoading }) {
   const data = bookings?.map((booking) => ({
     // Status dot (red if unseen, green if seen)
     "": (
-      <BsDot
-        size={24}
+      <Indicator
+        radius="xl"
+        size={10}
         color={booking.isSeen ? "green" : "red"}
         className="ml-[-10px]"
       />
@@ -62,7 +62,7 @@ export default function CustomerTable({ bookings, error, isLoading }) {
   }));
 
   return (
-    <div className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen p-6">
+    <div className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]  ">
       <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
         All Bookings
       </Text>

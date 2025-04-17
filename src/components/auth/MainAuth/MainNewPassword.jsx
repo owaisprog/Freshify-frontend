@@ -57,7 +57,7 @@ export default function MainNewPassword() {
   return (
     <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0    px-2 lg:px-0">
       {/* This image will be visible on large devices  */}
-      <section className=" hidden rounded-tr-xl rounded-br-xl bg-black lg:flex items-center justify-center">
+      <section className=" hidden rounded-tr-xl rounded-br-xl bg-[#040707] lg:flex items-center justify-center">
         <Image
           radius="md"
           height={"full"}
