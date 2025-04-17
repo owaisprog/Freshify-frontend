@@ -49,7 +49,7 @@ export default function OrderSummary() {
             totalServices,
             bookingData?.date
           ),
-          organizationOwnerId: "67f7596971c7c802a785f2bd",
+          organizationOwnerId: "6800ab465a4954de1a6aa5e2",
           location: bookingData.location?._id,
           professionalId: bookingData.professional._id,
           services: bookingData?.services.map((val) => val?._id),
