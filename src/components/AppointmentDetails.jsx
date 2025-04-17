@@ -3,7 +3,7 @@ import StatusBadge from "./StatusBadge";
 import { format, addMinutes } from "date-fns";
 import { useUpdateMutationPut, useQueryHook } from "../services/reactQuery";
 import { toast } from "react-toastify";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import CalendarComp from "./CustomerCalendar";
 import generateTimeSlots from "./booking/TimeSlotsGenerator";
 
@@ -35,11 +35,14 @@ export default function AppointmentDetails({ booking }) {
   const { mutate: cancelBooking } = useUpdateMutationPut(["bookings", _id]);
 
   // Fetch unavailable slots
+  // Inside AppointmentDetails component
+
+  // Fetch unavailable slots
   const formattedDate = selectedDate
     ? format(selectedDate, "yyyy-MM-dd")
     : null;
   const {
-    data: unavailableSlots = { bookedSlots: [], unavailablePeriods: [] },
+    data: unstableUnavailableSlots,
     isLoading: isLoadingSlots,
     refetch: refetchSlots,
   } = useQueryHook({
@@ -48,7 +51,15 @@ export default function AppointmentDetails({ booking }) {
       ? `/api/unavailable-slots/${professionalId?._id}/${formattedDate}`
       : null,
     enabled: !!formattedDate,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes to reduce refetches
   });
+
+  // Memoize unavailableSlots to stabilize the object
+  const unavailableSlots = useMemo(
+    () =>
+      unstableUnavailableSlots || { bookedSlots: [], unavailablePeriods: [] },
+    [unstableUnavailableSlots]
+  );
 
   // Calculate total duration from services
   // const calculateTotalDuration = () => {
@@ -128,8 +139,8 @@ export default function AppointmentDetails({ booking }) {
   }, [
     selectedDate,
     unavailableSlots,
-    location?.workingHours,
-    // calculateTotalDuration
+    locationDetails.workingHours,
+    totalDuration,
   ]);
 
   const handleDateSelect = (date) => {
