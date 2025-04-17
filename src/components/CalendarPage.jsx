@@ -265,6 +265,7 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
         bookings={filteredBookings}
         isLoading={isLoading}
         error={error}
+        role={role}
       />
 
       <EditAvailabilityPopup

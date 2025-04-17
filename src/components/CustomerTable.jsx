@@ -3,7 +3,7 @@ import TableCom from "./Table";
 import { useState, useMemo, useCallback } from "react";
 import AppointmentDetails from "./AppointmentDetails";
 
-export default function CustomerTable({ bookings, error, isLoading }) {
+export default function CustomerTable({ bookings, error, isLoading, role }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
@@ -81,11 +81,15 @@ export default function CustomerTable({ bookings, error, isLoading }) {
     }));
   }, [bookings]);
 
-  const handleSubmit = useCallback((rowData) => {
-    console.log("Row clicked:", rowData.__originalBooking);
-    setSelectedData(rowData.__originalBooking);
-    setIsPopupOpen(true);
-  }, []);
+  const handleSubmit = useCallback(
+    (rowData) => {
+      if (!role || role === "customer") return;
+      console.log("Row clicked:", rowData.__originalBooking);
+      setSelectedData(rowData.__originalBooking);
+      setIsPopupOpen(true);
+    },
+    [role]
+  );
 
   return (
     <div className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]  ">
