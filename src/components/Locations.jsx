@@ -149,6 +149,27 @@ export default function Locations({
       endTime: "18:00", // Default end time
       description: "",
     },
+    validate: {
+      name: (value) =>
+        value.trim() === "" ? "Location name is required" : null, // Validate location name
+      address: (value) => (value.trim() === "" ? "Address is required" : null), // Validate address
+      googleLink: (value) =>
+        value && !/^https?:\/\/[^\s$.?#].[^\s]*$/i.test(value)
+          ? "Invalid Google link"
+          : null, // Validate Google link URL
+      enableCashPayments: (value) =>
+        value !== "true" && value !== "false"
+          ? "Must be 'true' or 'false'"
+          : null, // Validation for boolean values
+      startTime: (value) =>
+        !value || value === "" ? "Start time is required" : null, // Validate start time
+      endTime: (value, values) =>
+        !value || value === ""
+          ? "End time is required"
+          : value <= values.startTime
+            ? "End time must be after start time"
+            : null, // Validate end time and ensure it is after start time
+    },
   });
   const handleSubmit = (values) => {
     setLoading(true);
