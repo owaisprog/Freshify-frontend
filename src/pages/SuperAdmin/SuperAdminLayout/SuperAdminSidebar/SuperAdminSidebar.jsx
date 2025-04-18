@@ -25,7 +25,7 @@ export default function SuperAdminSidebar() {
 
   const links = data.map((item) => (
     <Link
-      className={`flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2  text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
+      className={`group rounded-[8px] flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2 transition-all duration-300 text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black ${
         item.activePath === active
           ? "bg-[#f5f7fa] border-l-4 border-black text-black"
           : ""
@@ -36,7 +36,9 @@ export default function SuperAdminSidebar() {
     >
       <item.icon
         className={`${
-          item.activePath === active ? "text-black" : "text-[#b1b1b1]"
+          item.activePath === active
+            ? "text-black"
+            : "text-[#b1b1b1] group-hover:text-black"
         } mr-4 w-[30px] h-[30px]`}
       />
       <span>{item.label}</span>
@@ -44,15 +46,20 @@ export default function SuperAdminSidebar() {
   ));
 
   return (
-    <nav className="  flex flex-col  h-screen bg-black">
-      <div className="flex-1">
-        <Image className="w-full h-[78px] " radius="md" src={freshifyLogo} />
+    <nav className=" flex flex-col rounded-2xl lg:h-[96vh] bg-[#040707]">
+      <div className="flex-1 rounded-2xl">
+        <div className=" h-[78px]  rounded-2xl">
+          <Image
+            className="object-center h-full w-full !rounded-2xl"
+            src={freshifyLogo}
+          />
+        </div>
 
-        {links}
+        <div className="flex flex-col gap-2 mx-4">{links}</div>
       </div>
 
       <button
-        className="!text-[18px] !px-[40px] bg-[#FFFFFF] !font-[600] !py-[10px] text-black m-3 rounded-md cursor-pointer  "
+        className="!text-[18px] !px-[40px] border border-white text-white hover:bg-white hover:text-black transition-all duration-500 !font-[600] !py-[10px]  m-4 rounded-[8px] cursor-pointer  "
         onClick={() => {
           logoutUser();
         }}

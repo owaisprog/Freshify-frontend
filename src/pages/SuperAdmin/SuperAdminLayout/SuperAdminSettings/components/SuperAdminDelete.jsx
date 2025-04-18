@@ -25,7 +25,7 @@ function SuperAdminDelete() {
             // Redirect to home page
             navigate("/SuperAdminOrganization");
           },
-          onError: (error) => {
+          onError: () => {
             toast.error("Failed to delete SuperAdmin.");
             //console.error("Error deleting SuperAdmin:", error);
           },
@@ -35,7 +35,7 @@ function SuperAdminDelete() {
   };
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between px-3 lg:px-0">
       <span>Delete Account</span>
       <Button
         color="black"

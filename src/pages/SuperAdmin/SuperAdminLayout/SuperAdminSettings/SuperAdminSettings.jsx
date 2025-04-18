@@ -9,29 +9,28 @@ export default function SuperAdminSettings() {
   const { ownerId } = useParams();
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
+    <main className="pt-20 max-w-[1440px]  grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-6">
       <Title
-        px={"lg"}
-        py={"sm"}
+        mb={"lg"}
         c={"black"}
-        className="!hidden lg:!block lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="lg:!px-6 !hidden lg:!block    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Settings
       </Title>
-      <section className="lg:p-6 flex  mx-auto max-w-[1440px] w-full   flex-col h-full gap-8">
+      <section className="flex   flex-col h-full gap-8s">
         <Paper
-          p={"xs"}
+          p={"lg"}
           radius="25px"
           // bg={"#F5F7FA"}
           className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white "
         >
           {/* Desktop Tabs */}
-          <section className="max-w-fit mt-3 mb-8 hidden lg:flex">
+          <section className="max-w-fit mt-3 mb-8 hidden  lg:flex">
             <Tabs value={location.pathname} onChange={() => {}}>
               <Tabs.List>
                 <Tab
                   path={`/SuperAdminOrganization/settings/${ownerId}`} // Include `ownerId`
-                  text="SuperAdmins Settings"
+                  text="Organization Settings"
                 />
                 <Tab
                   path={`/SuperAdminOrganization/settings/${ownerId}/email`} // Include `ownerId`
@@ -57,7 +56,7 @@ export default function SuperAdminSettings() {
             <Select
               data={[
                 {
-                  label: "SuperAdmins Settings",
+                  label: "Organization Settings",
                   value: `/SuperAdminOrganization/settings/${ownerId}`, // Include `ownerId`
                 },
                 {

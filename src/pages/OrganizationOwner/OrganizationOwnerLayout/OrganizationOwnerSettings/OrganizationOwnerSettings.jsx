@@ -8,14 +8,15 @@ export default function OrganizationOwnerSettings() {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
+    <main className="pt-20 max-w-[1440px]  grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-6">
       <Title
+        mb={"lg"}
         c={"black"}
-        className="lg:!px-6 !hidden lg:!block !px-2 lg:!bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
+        className="lg:!px-6 !hidden lg:!block    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Settings
       </Title>
-      <section className="lg:p-6 flex max-w-[1720px]  flex-col h-full gap-8">
+      <section className="  flex   flex-col h-full gap-8">
         <Paper
           p={"xs"}
           radius="25px"
@@ -73,6 +74,10 @@ export default function OrganizationOwnerSettings() {
                   label: "Delete Account",
                   value: "/OrganizationOwnerDashboard/settings/delete",
                 },
+                {
+                  label: "Logout",
+                  value: "/OrganizationOwnerDashboard/settings/logout",
+                },
               ]}
               value={location.pathname} // ✅ Keep the selected value persistent
               onChange={(value) => value && navigate(value)} // ✅ Prevent clearing when clicking again
@@ -82,6 +87,7 @@ export default function OrganizationOwnerSettings() {
               styles={{
                 input: {
                   width: "232px",
+                  textAlign: "center",
                   border: "none",
                   borderBottom: "1px solid #000000",
                   borderRadius: 0,

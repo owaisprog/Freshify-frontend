@@ -17,7 +17,7 @@ export default function ProfessionalSettings() {
       </Title>
       <section className="lg:p-6 flex max-w-[1440px] w-full mx-auto  flex-col h-full gap-8 ">
         <Paper
-          p={"xs"}
+          p={"lg"}
           radius="25px"
           // bg={"#F5F7FA"}
           className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white "
@@ -72,6 +72,10 @@ export default function ProfessionalSettings() {
                 {
                   label: "Delete Account",
                   value: "/ProfessionalDashboard/settings/delete",
+                },
+                {
+                  label: "Logout",
+                  value: "/ProfessionalDashboard/settings/logout",
                 },
               ]}
               value={location.pathname} // ✅ Keep the selected value persistent

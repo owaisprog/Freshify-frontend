@@ -8,16 +8,17 @@ export default function AdminSettings() {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
+    <main className="pt-20 max-w-[1440px] grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-6   ">
       <Title
+        mb={"lg"}
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
+        className="lg:!px-6 !hidden lg:!block    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Settings
       </Title>
-      <section className=" max-w-[1440px] w-full mx-auto lg:p-6 flex flex-col h-full gap-8">
+      <section className="  max-w-[1440px] w-full mx-auto lg:p-6 flex flex-col h-full gap-8">
         <Paper
-          p="xl"
+          p="xs"
           radius="25px"
           className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white"
         >
@@ -44,7 +45,7 @@ export default function AdminSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden">
+          <section className="flex items-center  shadow-sm rounded-[10px] mt-2 py-4 min-w-[#333B69] bg-[#FFFFFF] px-2 justify-between lg:hidden">
             <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>
@@ -66,6 +67,10 @@ export default function AdminSettings() {
                   label: "Delete Account",
                   value: "/AdminsDashboard/settings/delete",
                 },
+                {
+                  label: "Logout",
+                  value: "/AdminsDashboard/settings/logout",
+                },
               ]}
               value={location.pathname} // ✅ Keep the selected value persistent
               onChange={(value) => value && navigate(value)} // ✅ Prevent clearing when clicking again
@@ -74,7 +79,8 @@ export default function AdminSettings() {
               clearable={false} // ✅ Prevent unchecking selected value
               styles={{
                 input: {
-                  width: "232px",
+                  width: "200px",
+                  textAlign: "center",
                   border: "none",
                   borderBottom: "1px solid #000000",
                   borderRadius: 0,

@@ -31,7 +31,7 @@ function CustomerDelete() {
             // Redirect to home page
             navigate("/");
           },
-          onError: (error) => {
+          onError: () => {
             toast.error("Failed to delete Customer.");
             //console.error("Error deleting Customer:", error);
           },
@@ -41,7 +41,7 @@ function CustomerDelete() {
   };
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between px-3 lg:px-0">
       <span>Delete Account</span>
       <Button
         color="black"

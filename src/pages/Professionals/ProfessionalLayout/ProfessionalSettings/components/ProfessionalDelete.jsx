@@ -42,11 +42,12 @@ function ProfessionalDelete() {
   };
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between px-3 lg:px-0">
       <span>Delete Account</span>
       <Button
-        color="dark"
+        color="black"
         loaderProps={{ type: "dots" }}
+        className="!w-[131px] !text-[18px] !font-[400]"
         radius="md"
         onClick={handleDelete}
         loading={isPending}

@@ -47,7 +47,7 @@ export default function CustomerSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
+          <section className="flex items-center  shadow-sm rounded-[10px] mt-2 py-4 min-w-[#333B69] bg-[#FFFFFF] px-2 justify-between lg:hidden  ">
             <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>
@@ -69,6 +69,10 @@ export default function CustomerSettings() {
                   label: "Delete Account",
                   value: "/CustomerDashboard/settings/delete",
                 },
+                {
+                  label: "Logout",
+                  value: "/CustomerDashboard/settings/logout",
+                },
               ]}
               value={location.pathname} // ✅ Keep the selected value persistent
               onChange={(value) => value && navigate(value)} // ✅ Prevent clearing when clicking again
@@ -77,7 +81,7 @@ export default function CustomerSettings() {
               clearable={false} // ✅ Prevent unchecking selected value
               styles={{
                 input: {
-                  width: "232px",
+                  width: "200px",
                   border: "none",
                   borderBottom: "1px solid #000000",
                   borderRadius: 0,
