@@ -20,7 +20,7 @@ import Calendar from "./Calendar";
 import CustomerTable from "./CustomerTable";
 import EditAvailabilityPopup from "./EditAvailabilityPopup";
 
-export default function CalendarPage({ numberOfMonths = 5 }) {
+export default function CalendarPage({ numberOfMonths = 2 }) {
   const { mutate: editAvalibility } = usePostMutation("avalibility");
   const { mutate: updateSeen } = useUpdateMutationPut("seen");
 
