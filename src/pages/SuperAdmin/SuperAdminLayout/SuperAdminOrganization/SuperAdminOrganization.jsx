@@ -26,6 +26,7 @@ export default function SuperAdminOrganization() {
     "Owner Details",
     "Locations",
     "Users",
+    "Calendar",
     "Services",
     "Settings",
   ];
@@ -67,6 +68,17 @@ export default function SuperAdminOrganization() {
         onClick={() => navigate(`Users/${val._id}`)}
       >
         View Users
+      </Text>
+    ),
+    Calendar: (
+      <Text
+        fz={"md"}
+        td={"underline"}
+        c={"black"} // Set color to black
+        className="cursor-pointer"
+        onClick={() => navigate(`calendar/${val._id}`)}
+      >
+        View Calendar
       </Text>
     ),
     Services: (

@@ -173,7 +173,7 @@ function AdminsServices() {
 
   const data = services?.map((val) => ({
     Services: val.name,
-    Duration: val.duration,
+    Duration: `${val.duration} min`,
     Description: (
       <Text
         fz={"lg"}

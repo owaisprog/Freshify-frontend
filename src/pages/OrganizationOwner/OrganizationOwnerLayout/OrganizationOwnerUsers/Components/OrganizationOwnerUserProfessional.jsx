@@ -141,10 +141,22 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
         );
       } else {
         // ✅ Create new user
-        createUser({
-          endpoint: "/api/invite-user",
-          payload: { ...values, location: locationId, services: servicesId },
-        });
+        createUser(
+          {
+            endpoint: "/api/invite-user",
+            payload: { ...values, location: locationId, services: servicesId },
+          },
+          {
+            onSuccess: () =>
+              toast.success("Professional Created Successfully", {
+                position: "top-center",
+              }),
+            onError: () =>
+              toast.error("Creation Error Try Again", {
+                position: "top-right",
+              }),
+          }
+        );
       }
 
       setTimeout(() => {

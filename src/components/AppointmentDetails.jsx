@@ -7,7 +7,7 @@ import { useState, useEffect, useMemo } from "react";
 import CalendarComp from "./CustomerCalendar";
 import generateTimeSlots from "./booking/TimeSlotsGenerator";
 
-export default function AppointmentDetails({ booking }) {
+export default function AppointmentDetails({ booking, setIsPopupOpen }) {
   const {
     name,
     professionalId,
@@ -164,7 +164,8 @@ export default function AppointmentDetails({ booking }) {
       {
         onSuccess: () => {
           toast.success("Booking rescheduled successfully");
-          window.location.reload();
+          // window.location.reload();
+          setIsPopupOpen(false);
         },
         onError: () => {
           toast.error("Failed to reschedule booking");

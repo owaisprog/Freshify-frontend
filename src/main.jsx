@@ -99,6 +99,7 @@ import OrganizationLogout from "./pages/OrganizationOwner/OrganizationOwnerLayou
 import ProfessionalLogout from "./pages/Professionals/ProfessionalLayout/ProfessionalSettings/components/ProfessionalLogout.jsx";
 import AdminLogout from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminLogout.jsx";
 import CustomerLogout from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerLogout.jsx";
+import SuperAdminCalendar from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminCalendar/SuperAdminCalendar.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -201,7 +202,7 @@ const router = createBrowserRouter(
         <Route index element={<SuperAdminOrganization />} />
         <Route path="Services/:ownerId" element={<SuperAdminServices />} />
         <Route path="Users/:ownerId" element={<SuperAdminUsers />} />
-        {/* <Route path="Calendar" element={<SuperAdminCalendar />} /> */}
+        <Route path="calendar/:ownerId" element={<SuperAdminCalendar />} />
         <Route path="Payout/:ownerId" element={<SuperAdminPayout />} />
         <Route path="locations/:ownerId" element={<SuperAdminLocations />} />
         <Route path="settings/:ownerId" element={<SuperAdminSettings />}>

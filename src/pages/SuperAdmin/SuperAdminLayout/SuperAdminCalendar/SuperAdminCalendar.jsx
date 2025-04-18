@@ -1,18 +1,12 @@
-import { Title } from "@mantine/core";
+import CalendarPage from "../../../../components/CalendarPage";
+import { useQueryHook } from "../../../../services/reactQuery";
 
 export default function SuperAdminCalendar() {
-  return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
-      <Title
-        c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
-      >
-        Calendar
-      </Title>
+  const { data: bookingTime = {} } = useQueryHook({
+    queryKey: ["bookingTime"],
+    endpoint: `/api/get-months`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
 
-      <section className="h-full flex items-center justify-center">
-        <Title fz={"h1"}>Calendar</Title>
-      </section>
-    </main>
-  );
+  return <CalendarPage numberOfMonths={bookingTime.bookingWindowMonths} />;
 }

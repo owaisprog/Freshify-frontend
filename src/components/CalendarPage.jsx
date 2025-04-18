@@ -26,6 +26,7 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
   const [selectedWeek, setSelectedWeek] = useState(null);
   const { role, id } = JSON.parse(localStorage.getItem("data")) || {};
   const [availabilityModalOpen, setAvailabilityModalOpen] = useState(false);
+  const [isloader, setIsLoader] = useState(false);
 
   const currentDate = useMemo(() => new Date(), []);
   // const currentDate = useMemo(() => currentDateUstable, [currentDateUstable]);
@@ -208,7 +209,9 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
     },
     [editAvalibility, id]
   );
-
+  function handleAvailabilityLoader() {
+    setAvailabilityModalOpen(true);
+  }
   return (
     <main className="grid  grid-cols-1  gap-y-5 max-w-[1440px]  mx-auto w-full pt-20 lg:pt-0  p-6 ">
       <Title
@@ -239,11 +242,12 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
 
         <Button
           bg="black"
+          loading={isloader}
           radius="md"
           fw={"normal"}
           loaderProps={{ type: "bars" }}
           className="!text-[18px] !px-[40px]  !font-[400] !py-[10px]"
-          onClick={() => setAvailabilityModalOpen(true)}
+          onClick={() => handleAvailabilityLoader()}
         >
           Edit Availability
         </Button>
@@ -261,6 +265,7 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
         bookings={filteredBookings}
         isLoading={isLoading}
         error={error}
+        role={role}
       />
 
       <EditAvailabilityPopup
@@ -268,6 +273,7 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
         onClose={() => setAvailabilityModalOpen(false)}
         onSubmit={handleAvailabilitySubmit}
         initialDate={calendarState.selectedDate}
+        setIsLoader={setIsLoader}
       />
     </main>
   );
