@@ -8,7 +8,7 @@ export default function CustomerLayout() {
   const data = [
     {
       link: "",
-      label: "Calendar",
+      label: "Appointments",
       activePath: "/CustomerDashboard",
       icon: MdCalendarMonth,
     },
@@ -20,9 +20,9 @@ export default function CustomerLayout() {
     activePath: "/CustomerDashboard/settings",
   };
   return (
-    <section className="flex mx-auto min-h-screen">
+    <section className="flex mx-auto min-h-screen    lg:p-5">
       {/* Sidebar (Left side) */}
-      <aside className="hidden lg:block sticky top-0 left-0  w-[300px] h-screen self-start">
+      <aside className="hidden lg:block sticky top-5 left-0  w-[300px]  self-start">
         {" "}
         {/* Added h-screen and self-start */}
         <Sidebar data={data} settingData={settingData} />

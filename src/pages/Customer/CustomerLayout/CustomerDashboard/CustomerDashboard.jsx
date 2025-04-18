@@ -28,12 +28,12 @@ export default function CustomerDashboard() {
     fetchBookings();
   }, [getMutateBookings, role]);
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
+    <main className="pt-20 grid grid-cols-1 gap-y-5 max-w-[1440px] mx-auto lg:pt-0 lg:gap-6  p-6  ">
       <Title
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
+        className="lg:!px-6  hidden lg:!block  lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
-        Dashboard
+        Appointments
       </Title>
       <CustomerTable bookings={bookings} isLoading={isLoading} error={error} />
     </main>

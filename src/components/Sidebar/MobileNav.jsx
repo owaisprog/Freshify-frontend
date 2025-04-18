@@ -23,7 +23,7 @@ export default function MobileNav({
     <Link
       className={`flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black ${
         item.activePath === active
-          ? "bg-[#f5f7fa] lg:border-l-4 border-black text-black"
+          ? "bg-[#f5f7fa] rounded-[8px] lg:border-l-4 border-black text-black"
           : ""
       }`}
       to={item.link}
@@ -43,7 +43,7 @@ export default function MobileNav({
   return (
     <div className="lg:hidden bg-black fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
-      <nav className=" z-20  pr-4 flex justify-between items-center ">
+      <nav className=" z-20  pr-4  flex justify-between items-center ">
         <div className=" h-[80px]  w-[85%]">
           <Image className="h-full" radius="md" src={freshifyLogoMobile} />
         </div>
@@ -69,8 +69,8 @@ export default function MobileNav({
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
-        <div className="flex flex-col h-full    ">
-          <div className="flex-1 overflow-y-auto">
+        <div className="flex flex-col h-full  px-4    ">
+          <div className="flex-1 overflow-y-auto ">
             <div className="mt-2">{links}</div>
             {/* Settings Link */}
             {role === "superadmin" ? (
@@ -83,10 +83,10 @@ export default function MobileNav({
                 Logout
               </button>
             ) : (
-              <div className="pt-4  ">
+              <div className="  ">
                 <Link
                   to={settingData.link}
-                  className={` group flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black ${
+                  className={` group rounded-[8px] flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black ${
                     settingData.activePath === active
                       ? "bg-[#f5f7fa] lg:border-l-4 border-black text-black"
                       : ""

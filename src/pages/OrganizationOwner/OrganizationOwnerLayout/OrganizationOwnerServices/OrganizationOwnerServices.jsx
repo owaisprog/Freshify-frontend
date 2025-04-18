@@ -299,7 +299,9 @@ function OrganizationOwnerServices() {
               </Text>
             </div>
           </div>
-          <Text className="!text-[30px] !font-[600]">$4,790</Text>
+          <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
+            $4,790
+          </Text>
         </div>
 
         <div className="bg-[#FFFFFF] rounded-[25px] h-[86px] flex px-[11px] items-center justify-between">
@@ -311,7 +313,9 @@ function OrganizationOwnerServices() {
               Haircut Total Orders
             </Text>
           </div>
-          <Text className="!text-[30px] !font-[600]">1,360</Text>
+          <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
+            1,360
+          </Text>
         </div>
       </section>
 

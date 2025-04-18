@@ -60,13 +60,13 @@ function SuperAdminProfile() {
             // Update localStorage with new data
             query.invalidateQueries("profile");
           },
-          onError: (error) => {
+          onError: () => {
             toast.error("Failed to update profile.");
             //console.error("Error updating profile:", error);
           },
         }
       );
-    } catch (error) {
+    } catch {
       toast.error("Failed to update profile.");
       //console.error("Error updating profile:", error);
     }
@@ -92,7 +92,7 @@ function SuperAdminProfile() {
       const uploadedUrl = response.data.secure_url;
       form.setFieldValue("image", uploadedUrl); // Update form field with image URL
       toast.success("Image uploaded successfully!");
-    } catch (error) {
+    } catch {
       toast.error("Failed to upload image.");
       //console.error("Error uploading file to Cloudinary:", error);
     }
@@ -108,7 +108,7 @@ function SuperAdminProfile() {
   }
 
   return (
-    <div className="text-white lg:p-6 flex flex-col lg:flex-row items-start justify-center lg:gap-8 w-full">
+    <div className="text-white  flex flex-col lg:flex-row items-start justify-center lg:gap-8 w-full">
       {/* Profile Picture */}
       <div className="relative w-32 h-32">
         <Avatar

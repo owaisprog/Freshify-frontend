@@ -106,15 +106,15 @@ export default function SuperAdminOrganization() {
   }));
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] min-h-screen">
+    <main className="pt-20 grid grid-cols-1  max-w-[1440px] mx-auto lg:pt-0 lg:gap-6  p-6">
       <Title
+        mb={"lg"}
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px]"
+        className="lg:!px-6 !hidden lg:!block   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Organizations
       </Title>
-
-      <section className="max-w-[1440px] w-full mx-auto  p-6 flex flex-col h-full gap-8">
+      <section className="grid grid-cols-1 gap-y-5 mt-6 lg:mt-0">
         {/* Most Organization Section */}
         <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6">
           {/* Most Sales Professional Section */}
@@ -130,7 +130,7 @@ export default function SuperAdminOrganization() {
                 <Text className="!text-[14px] !font-[400]">Freshify</Text>
               </div>
             </div>
-            <Text className="!text-[30px] !font-[600]">9</Text>
+            <Text className="!text-[22px] lg:!text-[30px] !font-[600]">9</Text>
           </div>
 
           {/* Haircut Total Orders Section */}
@@ -143,7 +143,9 @@ export default function SuperAdminOrganization() {
                 Freshify Total Orders
               </Text>
             </div>
-            <Text className="!text-[30px] !font-[600]">3,360</Text>
+            <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
+              3,360
+            </Text>
           </div>
         </section>
 

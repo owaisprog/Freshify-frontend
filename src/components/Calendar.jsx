@@ -110,7 +110,7 @@ const Calendar = ({
   };
 
   return (
-    <div className="flex !bg-[#FFFFFF] px-2 !rounded-[16px] justify-center  items-center  w-full">
+    <div className="flex !bg-[#FFFFFF]  px-2 !rounded-[16px] justify-center  items-center  w-full">
       <div className=" rounded-full w-full">
         <ScrollArea style={{ width: "99%" }} offsetScrollbars>
           <div className="flex gap-2 py-2 px-4">
@@ -128,9 +128,9 @@ const Calendar = ({
                   onClick={() => handleDateClick(date)}
                   className={`w-12 h-12 flex items-center justify-center rounded-full transition-all ${
                     isSelected
-                      ? "bg-black text-white"
+                      ? " border border-black text-black"
                       : isTodayDate
-                        ? "bg-white border-1 border-black text-black"
+                        ? "bg-white  text-black"
                         : isPastDate
                           ? "bg-[#E9E9E9] text-gray-400 cursor-not-allowed"
                           : "bg-white text-black"

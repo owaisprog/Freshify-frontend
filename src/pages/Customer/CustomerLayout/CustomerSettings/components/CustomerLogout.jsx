@@ -12,7 +12,7 @@ function CustomerLogout() {
   };
 
   return (
-    <div className="flex justify-between ">
+    <div className="flex justify-between px-3 lg:px-0 ">
       <span>Logout Account</span>
       <Button
         color="black"

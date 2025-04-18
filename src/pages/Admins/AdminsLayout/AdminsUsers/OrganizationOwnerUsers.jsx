@@ -49,7 +49,9 @@ function AdminsUsers() {
                 </Text>
               </div>
             </div>
-            <Text className="!text-[30px] !font-[600]">$4,790</Text>
+            <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
+              $4,790
+            </Text>
           </div>
 
           {/* Haircut Total Orders Section  */}
@@ -60,9 +62,13 @@ function AdminsUsers() {
                 <img src="/yelloArrowIcon.png" alt="" />
               </div>
 
-              <Text className=" !text-[14px] !font-[400]">Orders By Mirza</Text>
+              <Text className=" !text-[#000000] !text-[14px] !font-[400]">
+                Orders By Mirza
+              </Text>
             </div>
-            <Text className="!text-[30px] !font-[600]">1,360</Text>
+            <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
+              1,360
+            </Text>
           </div>
         </section>
 

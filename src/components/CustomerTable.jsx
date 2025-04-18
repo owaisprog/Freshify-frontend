@@ -1,5 +1,6 @@
-import { Text, Modal, Indicator } from "@mantine/core";
+import { Text, Modal } from "@mantine/core";
 import TableCom from "./Table";
+import { GoDotFill } from "react-icons/go";
 import { useState, useMemo, useCallback } from "react";
 import AppointmentDetails from "./AppointmentDetails";
 
@@ -21,7 +22,7 @@ export default function CustomerTable({ bookings, error, isLoading, role }) {
   const columns = useMemo(
     () => [
       "",
-      "Customer Name",
+      "Customer",
       "Professional",
       "Location",
       "Price",
@@ -37,14 +38,13 @@ export default function CustomerTable({ bookings, error, isLoading, role }) {
   const data = useMemo(() => {
     return bookings?.map((booking) => ({
       "": (
-        <Indicator
-          radius={"xl"}
-          size={10}
+        <GoDotFill
+          size={30}
           color={booking.isSeen ? "green" : "red"}
           className="ml-[-10px]"
         />
       ),
-      "Customer Name": booking.name || "Guest",
+      Customer: booking.name || "Guest",
       Professional: booking.professionalId?.name || "N/A",
       Location: booking.locationDetails?.name || "N/A",
       Price: `$${booking.totalPrice}`,
@@ -53,7 +53,7 @@ export default function CustomerTable({ bookings, error, isLoading, role }) {
       Time: booking.bookingTime,
       Status: (
         <Text
-          className="rounded-[3px] !p-[4px]"
+          className="!rounded-[3px] !p-[4px] !text-white !text-center"
           bg={
             booking.status === "completed"
               ? "#A3E8AE"
@@ -92,9 +92,9 @@ export default function CustomerTable({ bookings, error, isLoading, role }) {
   );
 
   return (
-    <div className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]  ">
-      <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
-        All Bookings
+    <div className="flex flex-col    ">
+      <Text className="!text-[18px] !py-6 !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
+        My Appointments
       </Text>
 
       <TableCom

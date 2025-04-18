@@ -12,7 +12,7 @@ function ProfessionalLogout() {
   };
 
   return (
-    <div className="flex justify-between max-w-[90%] mx-auto">
+    <div className="flex justify-between px-3 lg:px-0  mx-auto">
       <span>Logout Account</span>
       <Button
         color="black"

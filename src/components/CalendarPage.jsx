@@ -213,15 +213,15 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
     setAvailabilityModalOpen(true);
   }
   return (
-    <main className="grid grid-cols-1 gap-y-5 max-w-[1440px]  mx-auto w-full pt-20 lg:pt-0  p-6 ">
+    <main className="grid  grid-cols-1  gap-y-5 max-w-[1440px]  mx-auto w-full pt-20 lg:pt-0  p-6 ">
       <Title
         c={"black"}
-        className="lg:!px-6 !px-2   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+        className="lg:!px-6   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Calendar
       </Title>
 
-      <div className="  flex flex-col-reverse  sm:flex-row gap-4 justify-between">
+      <div className="  px-2   lg:px-0 -mt-4 lg:mt-0 flex flex-col-reverse  sm:flex-row gap-4 justify-between">
         <div className="flex gap-2 ">
           {/* Select Month */}
           <CustomSelect
