@@ -118,8 +118,13 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
           blockedSlots,
           date: selectedDate,
         });
+        const correctedSlots = slots?.map((val) => {
+          if (val === "00:00") return "12:00";
+          else if (val === "00:30") return "12:30";
+          else return val;
+        });
 
-        setTimeSlots(slots);
+        setTimeSlots(correctedSlots);
       } catch (error) {
         console.error("Error generating slots:", error);
         setTimeSlots([]);
