@@ -4,14 +4,21 @@ import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
-import { Button } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { apiGet } from "../../services/useApi";
+
+const formatMidnightHours = (time24) => {
+  if (!time24) return "";
+  if (time24 === "00:00") return "12:00";
+  if (time24 === "00:30") return "12:30";
+  return time24; // Return original for all other times
+};
 
 export default function DateTimeStep() {
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
-  // const [isGeneratingSlots, setIsGeneratingSlots] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const { bookingData, updateBookingData } = useBookingContext();
 
   const formattedUTC = selectedDate
@@ -20,8 +27,7 @@ export default function DateTimeStep() {
 
   const {
     data: unavailableSlots = { bookedSlots: [], unavailablePeriods: [] },
-    // isLoading: isLoadingSlots,
-    isFetching,
+    isLoading: isLoadingSlots,
     refetch,
   } = useQueryHook({
     queryKey: ["unavailable", formattedUTC],
@@ -29,11 +35,14 @@ export default function DateTimeStep() {
       ? `/api/unavailable-slots/${bookingData?.professional?._id}/${formattedUTC}`
       : null,
     enabled: !!formattedUTC,
-    staleTime: 5 * 60 * 1000, // 5 minutes cache
+    staleTime: 5 * 60 * 1000,
   });
 
-  const generateAvailableSlots = useCallback(async () => {
-    if (!selectedDate) return;
+  const generateAvailableSlots = useCallback(() => {
+    if (!selectedDate) {
+      setTimeSlots([]);
+      return;
+    }
 
     try {
       const DateOBJ = new Date(selectedDate);
@@ -43,7 +52,10 @@ export default function DateTimeStep() {
         (val) => val.day.toLowerCase() === dayName
       );
 
-      if (!filterData) return;
+      if (!filterData) {
+        setTimeSlots([]);
+        return;
+      }
 
       const safeBlockedSlots = [
         ...(unavailableSlots.bookedSlots ?? []),
@@ -69,27 +81,32 @@ export default function DateTimeStep() {
       setTimeSlots(slots);
     } catch (error) {
       console.error("Error generating slots:", error);
+      setTimeSlots([]);
     }
   }, [
     selectedDate,
     bookingData?.location?.workingHours,
     bookingData?.services,
-    unavailableSlots.bookedSlots,
-    unavailableSlots.unavailablePeriods,
+    unavailableSlots,
   ]);
 
   useEffect(() => {
-    if (selectedDate && !isFetching) {
-      generateAvailableSlots();
-    }
-  }, [unavailableSlots, generateAvailableSlots, selectedDate, isFetching]);
+    generateAvailableSlots();
+  }, [generateAvailableSlots]);
 
-  const OnClickDay = (date) => {
+  const OnClickDay = async (date) => {
     const DateOBJ = new Date(date);
     setSelectedDate(DateOBJ);
     setSelectedDay(DateOBJ.toDateString());
     updateBookingData({ date: DateOBJ, time: null });
-    refetch(); // Trigger a fresh data fetch
+    setIsFetching(true);
+    try {
+      await refetch();
+    } catch (error) {
+      console.error("Error fetching unavailable slots:", error);
+    } finally {
+      setIsFetching(false);
+    }
   };
 
   const handleMonthChange = () => {
@@ -107,9 +124,11 @@ export default function DateTimeStep() {
     }
   };
 
+  const isLoading = isLoadingSlots || isFetching;
+
   return (
     <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
-      <h1 className="text-[28px] lg:text-[32px] font-[500]  text-center sm:text-left">
+      <h1 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left">
         Select Date And Time
       </h1>
       <div className="mb-8">
@@ -132,21 +151,29 @@ export default function DateTimeStep() {
       <h2 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left mb-4">
         Available Time Slots
       </h2>
-      {timeSlots.length > 0 ? (
-        <div className="max-w-[458px] grid grid-cols-3 pb-[100px] lg:pb-0  md:grid-cols-4 lg:grid-cols-4 gap-[10px]">
-          {timeSlots.map((time) => (
-            <button
-              key={time}
-              onClick={() => updateBookingData({ time })}
-              className={`!py-[5px] !px-[25px]  border rounded-full text-center !text-[22px] !font-bold transition-colors ${
-                bookingData.time === time
-                  ? "bg-black text-white "
-                  : "hover:bg-gray-50"
-              }`}
-            >
-              {time}
-            </button>
-          ))}
+
+      {isLoading ? (
+        <div className="flex justify-center py-4">
+          <Loader />
+        </div>
+      ) : timeSlots.length > 0 ? (
+        <div className="max-w-[458px] grid grid-cols-3 pb-[100px] lg:pb-0 md:grid-cols-4 lg:grid-cols-4 gap-[10px]">
+          {timeSlots.map((time) => {
+            const displayTime = formatMidnightHours(time);
+            return (
+              <button
+                key={time}
+                onClick={() => updateBookingData({ time })}
+                className={`!py-[5px] !px-[25px] border rounded-full text-center !text-[22px] !font-bold transition-colors ${
+                  bookingData.time === time
+                    ? "bg-black text-white"
+                    : "hover:bg-gray-50"
+                }`}
+              >
+                {displayTime}
+              </button>
+            );
+          })}
         </div>
       ) : (
         <div className="text-center py-4 text-gray-500">
