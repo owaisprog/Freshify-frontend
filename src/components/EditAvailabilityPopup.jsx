@@ -15,12 +15,14 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { useQueryHook, useDeleteMutation } from "../services/reactQuery";
 import { IoTrash } from "react-icons/io5";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
   const { id, role, location } = JSON.parse(localStorage.getItem("data")) || {};
   const [currentApi, setCurrentApi] = useState("");
   const [selectedProfessionalId, setSelectedProfessionalId] = useState(null);
   const [deletingSlotId, setDeletingSlotId] = useState(null);
+  const { ownerId } = useParams() || {};
 
   // Memoized role check
   const isBarber = useMemo(() => role === "barber", [role]);
@@ -30,12 +32,15 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
     if (!role) return;
     if (role === "admin") {
       setCurrentApi(`/api/get-barbers-by-location/${location?._id}`);
-    } else if (role === "superadmin" || role === "organization_owner") {
+    } else if (role === "organization_owner") {
       setCurrentApi(`/api/get-users-by-owner/${id}`);
     } else if (isBarber) {
       setSelectedProfessionalId(id);
+    } else if (role === "superadmin") {
+      setCurrentApi(`/api/get-users-by-owner/${ownerId}`);
     }
-  }, [role, location, id, isBarber]);
+    // role === "superadmin"
+  }, [role, location, id, isBarber, ownerId]);
 
   useEffect(() => {
     setApiEndpoint();
