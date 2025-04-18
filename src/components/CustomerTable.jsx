@@ -113,7 +113,10 @@ export default function CustomerTable({ bookings, error, isLoading, role }) {
         centered
       >
         {selectedData ? (
-          <AppointmentDetails booking={selectedData} />
+          <AppointmentDetails
+            booking={selectedData}
+            setIsPopupOpen={setIsPopupOpen}
+          />
         ) : (
           <Text>No data available.</Text>
         )}
