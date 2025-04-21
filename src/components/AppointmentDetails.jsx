@@ -1,13 +1,17 @@
 import { Button, Text } from "@mantine/core";
 import StatusBadge from "./StatusBadge";
-import { format, addMinutes } from "date-fns";
+import { format, addMinutes, isAfter, addHours } from "date-fns";
 import { useUpdateMutationPut, useQueryHook } from "../services/reactQuery";
 import { toast } from "react-toastify";
 import { useState, useEffect, useMemo } from "react";
 import CalendarComp from "./CustomerCalendar";
 import generateTimeSlots from "./booking/TimeSlotsGenerator";
 
-export default function AppointmentDetails({ booking, setIsPopupOpen }) {
+export default function AppointmentDetails({
+  booking,
+  setIsPopupOpen,
+  resecduleTimeLimit,
+}) {
   const {
     name,
     professionalId,
@@ -22,6 +26,7 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
     phone,
     locationDetails,
     totalDuration,
+    createdAt,
     _id,
   } = booking;
 
@@ -34,8 +39,21 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
   const { mutate: updateBooking } = useUpdateMutationPut(["reschedule", _id]);
   const { mutate: cancelBooking } = useUpdateMutationPut(["bookings", _id]);
 
-  // Fetch unavailable slots
-  // Inside AppointmentDetails component
+  // Check if 2 hours have passed from the booking time
+  const isPastRescheduleWindow = useMemo(() => {
+    if (!bookingDate || !bookingTime) return false;
+
+    try {
+      const bookingDateTime = new Date(createdAt);
+      const currentDateTime = new Date();
+      const rescheduleCutoff = addHours(bookingDateTime, resecduleTimeLimit);
+      console.log(rescheduleCutoff);
+      return isAfter(currentDateTime, rescheduleCutoff);
+    } catch (error) {
+      console.error("Error calculating reschedule window:", error);
+      return false;
+    }
+  }, [bookingDate, createdAt, resecduleTimeLimit, bookingTime]);
 
   // Fetch unavailable slots
   const formattedDate = selectedDate
@@ -51,30 +69,15 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
       ? `/api/unavailable-slots/${professionalId?._id}/${formattedDate}`
       : null,
     enabled: !!formattedDate,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes to reduce refetches
+    staleTime: 5 * 60 * 1000,
   });
 
-  // Memoize unavailableSlots to stabilize the object
   const unavailableSlots = useMemo(
     () =>
       unstableUnavailableSlots || { bookedSlots: [], unavailablePeriods: [] },
     [unstableUnavailableSlots]
   );
 
-  // Calculate total duration from services
-  // const calculateTotalDuration = () => {
-  //   return (
-  //     services?.reduce(
-  //       (total, service) => total + (service.duration || 0),
-  //       0
-  //     ) ||
-  //     (new Date(`1970-01-01T${endTime}`) -
-  //       new Date(`1970-01-01T${bookingTime}`)) /
-  //       (1000 * 60)
-  //   );
-  // };
-
-  // Calculate end time based on selected time and duration
   const calculateEndTime = (startTime) => {
     const [hours, minutes] = startTime.split(":").map(Number);
     const startDate = new Date(selectedDate);
@@ -83,7 +86,6 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
     return format(endDate, "HH:mm");
   };
 
-  // Generate available slots when date or unavailable slots change
   useEffect(() => {
     const generateAvailableSlots = async () => {
       if (!selectedDate || !locationDetails?.workingHours) return;
@@ -100,7 +102,6 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
           return;
         }
 
-        // Combine booked slots and unavailable periods
         const blockedSlots = [
           ...(unavailableSlots.bookedSlots || []),
           ...(unavailableSlots.unavailablePeriods || []),
@@ -137,7 +138,7 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
   }, [
     selectedDate,
     unavailableSlots,
-    locationDetails.workingHours,
+    locationDetails?.workingHours,
     totalDuration,
   ]);
 
@@ -200,13 +201,11 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
     <div className="flex flex-col space-y-4">
       <Text className="text-lg font-bold mb-2">Appointment Details</Text>
 
-      {/* Professional */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Professional:</Text>
         <Text>{professionalId?.name || "N/A"}</Text>
       </div>
 
-      {/* Customer */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Customer:</Text>
         <Text>{name}</Text>
@@ -243,7 +242,6 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
         <Text>${totalPrice || "0"}</Text>
       </div>
 
-      {/* Current Booking Info */}
       <div className="flex items-center justify-between">
         <Text weight={600}>Current Date:</Text>
         <Text>{format(new Date(bookingDate), "MMM dd, yyyy")}</Text>
@@ -256,87 +254,89 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
         </Text>
       </div>
 
-      {/* Rescheduling Section */}
-      <div className="pt-4 border-t mt-4">
-        <Text weight={600} className="mb-2">
-          Reschedule Appointment:
-        </Text>
+      {/* Only show rescheduling section if within the 2-hour window */}
+      {!isPastRescheduleWindow && (
+        <div className="pt-4 border-t mt-4">
+          <Text weight={600} className="mb-2">
+            Reschedule Appointment:
+          </Text>
 
-        {/* Calendar */}
-        <div className="mb-4">
-          <Button
-            color="dark"
-            variant="outline"
-            onClick={() => setIsCalendarOpen(!isCalendarOpen)}
-            className="mb-2"
-          >
-            {selectedDate
-              ? format(selectedDate, "MMM dd, yyyy")
-              : "Select Date"}
-          </Button>
+          <div className="mb-4">
+            <Button
+              color="dark"
+              variant="outline"
+              onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+              className="mb-2"
+            >
+              {selectedDate
+                ? format(selectedDate, "MMM dd, yyyy")
+                : "Select Date"}
+            </Button>
 
-          {isCalendarOpen && (
-            <div className="border rounded-lg p-4">
-              <CalendarComp
-                onClickDay={handleDateSelect}
-                selectedDay={selectedDate?.toDateString()}
-                workingHours={location?.workingHours}
-              />
+            {isCalendarOpen && (
+              <div className="border rounded-lg p-4">
+                <CalendarComp
+                  onClickDay={handleDateSelect}
+                  selectedDay={selectedDate?.toDateString()}
+                  workingHours={location?.workingHours}
+                />
+              </div>
+            )}
+          </div>
+
+          {selectedDate && (
+            <div className="mb-4">
+              <Text weight={600} className="mb-2">
+                Available Time Slots:
+              </Text>
+
+              {isGeneratingSlots || isLoadingSlots ? (
+                <Text>Loading available slots...</Text>
+              ) : timeSlots.length > 0 ? (
+                <div className="grid grid-cols-3 gap-2">
+                  {timeSlots.map((time) => (
+                    <Button
+                      key={time}
+                      color="dark"
+                      variant={selectedTime === time ? "filled" : "outline"}
+                      onClick={() => handleTimeSelect(time)}
+                      className="!p-1 !text-sm"
+                    >
+                      {time}
+                    </Button>
+                  ))}
+                </div>
+              ) : (
+                <Text>No available slots for this date</Text>
+              )}
             </div>
           )}
         </div>
-
-        {/* Time Slots */}
-        {selectedDate && (
-          <div className="mb-4">
-            <Text weight={600} className="mb-2">
-              Available Time Slots:
-            </Text>
-
-            {isGeneratingSlots || isLoadingSlots ? (
-              <Text>Loading available slots...</Text>
-            ) : timeSlots.length > 0 ? (
-              <div className="grid grid-cols-3 gap-2">
-                {timeSlots.map((time) => (
-                  <Button
-                    key={time}
-                    color="dark"
-                    variant={selectedTime === time ? "filled" : "outline"}
-                    onClick={() => handleTimeSelect(time)}
-                    className="!p-1 !text-sm"
-                  >
-                    {time}
-                  </Button>
-                ))}
-              </div>
-            ) : (
-              <Text>No available slots for this date</Text>
-            )}
-          </div>
-        )}
-      </div>
+      )}
 
       <div className="flex items-center justify-between">
         <Text weight={600}>Status:</Text>
         <StatusBadge status={status} />
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center  gap-2 mt-6">
+      <div className="flex items-center gap-2 mt-6">
         <Button
           color="#427B42"
           fullWidth
           radius={"md"}
           onClick={handleUpdate}
-          disabled={!selectedDate || !selectedTime}
+          disabled={!selectedDate || !selectedTime || isPastRescheduleWindow}
         >
-          Update Booking
+          {isPastRescheduleWindow
+            ? "Reschedule Window Expired"
+            : "Update Booking"}
         </Button>
         <Button
           fullWidth
           radius={"md"}
           color="#622929"
           onClick={handleCancelBooking}
+          disabled={isPastRescheduleWindow && status === "completed"}
         >
           Cancel Booking
         </Button>
@@ -345,13 +345,9 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
   );
 }
 
-// Returns week number within the month (1-6)
 function getWeekInMonth(date) {
   const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-  const firstDayOfWeek = firstDayOfMonth.getDay(); // 0 (Sunday) to 6 (Saturday)
-
-  // This version considers Monday as the first day of the week
+  const firstDayOfWeek = firstDayOfMonth.getDay();
   const offset = firstDayOfWeek < 1 ? 6 : firstDayOfWeek - 1;
-
   return Math.ceil((date.getDate() + offset) / 7);
 }

@@ -20,7 +20,10 @@ import Calendar from "./Calendar";
 import CustomerTable from "./CustomerTable";
 import EditAvailabilityPopup from "./EditAvailabilityPopup";
 
-export default function CalendarPage({ numberOfMonths = 2 }) {
+export default function CalendarPage({
+  numberOfMonths = 2,
+  resecduleTimeLimit = 2,
+}) {
   const { mutate: editAvalibility } = usePostMutation("avalibility");
   const { mutate: updateSeen } = useUpdateMutationPut("seen");
 
@@ -279,6 +282,7 @@ export default function CalendarPage({ numberOfMonths = 2 }) {
         isLoading={isLoading}
         error={error}
         role={role}
+        resecduleTimeLimit={resecduleTimeLimit}
       />
 
       <EditAvailabilityPopup
