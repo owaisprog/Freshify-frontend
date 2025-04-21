@@ -169,7 +169,7 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
       {
         onSuccess: () => {
           toast.success("Booking rescheduled successfully");
-          // window.location.reload();
+          window.location.reload();
           setIsPopupOpen(false);
         },
         onError: () => {
