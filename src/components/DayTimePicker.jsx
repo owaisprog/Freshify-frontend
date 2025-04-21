@@ -82,23 +82,26 @@ export default function TimePicker({
   );
 
   return (
-    <TimeInput
-      label={label}
-      ref={ref}
-      value={timeValue}
-      onChange={(e) => handleTimeChange(e.target.value)}
-      rightSection={pickerControl}
-      disabled={disabled}
-      required={required}
-      minutesStep={30}
-      format="12h" // This affects the input display format
-      error={error}
-      styles={{
-        input: {
-          textAlign: "center",
-          paddingRight: "36px",
-        },
-      }}
-    />
+    <>
+      <TimeInput
+        label={label}
+        ref={ref}
+        value={timeValue}
+        onChange={(e) => handleTimeChange(e.target.value)}
+        rightSection={pickerControl}
+        disabled={disabled}
+        required={required}
+        // minutesStep={30}
+        step={30}
+        format="12h" // This affects the input display format
+        error={error}
+        styles={{
+          input: {
+            textAlign: "center",
+            paddingRight: "36px",
+          },
+        }}
+      />
+    </>
   );
 }

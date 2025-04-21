@@ -14,14 +14,16 @@ import {
   isBefore,
 } from "date-fns";
 import { toast } from "react-toastify";
-import { usePostMutation } from "../services/reactQuery";
+import { usePostMutation, useUpdateMutationPut } from "../services/reactQuery";
 import CustomSelect from "./CustomSelector";
 import Calendar from "./Calendar";
 import CustomerTable from "./CustomerTable";
 import EditAvailabilityPopup from "./EditAvailabilityPopup";
 
-export default function CalendarPage({ numberOfMonths = 5 }) {
+export default function CalendarPage({ numberOfMonths = 2 }) {
   const { mutate: editAvalibility } = usePostMutation("avalibility");
+  const { mutate: updateSeen } = useUpdateMutationPut("seen");
+
   const [weekOptions, setWeekOptions] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const { role, id } = JSON.parse(localStorage.getItem("data")) || {};
@@ -74,6 +76,17 @@ export default function CalendarPage({ numberOfMonths = 5 }) {
     };
     fetchBookings();
   }, [getMutateBookings, role]);
+
+  useEffect(() => {
+    if (!bookings || role !== "barber") return;
+    bookings?.map((val) => {
+      if (val?.isSeen === true || val?.status !== "pending") return;
+      updateSeen({
+        endpoint: `/api/is-seen/${val?._id}`,
+      });
+      console.log(val);
+    });
+  }, [updateSeen, role, bookings]);
 
   // Memoized week options calculation
   const calculateWeekOptions = useCallback((month) => {
