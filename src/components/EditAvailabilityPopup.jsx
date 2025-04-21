@@ -318,6 +318,7 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
             type="submit"
             fullWidth
             mt="md"
+            color="#000000"
             onClick={form.onSubmit(handleSubmit)}
             loading={form.isSubmitting}
           >

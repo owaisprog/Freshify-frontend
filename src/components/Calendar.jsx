@@ -112,7 +112,16 @@ const Calendar = ({
   return (
     <div className="flex !bg-[#FFFFFF]  px-2 !rounded-[16px] justify-center  items-center  w-full">
       <div className=" rounded-full w-full">
-        <ScrollArea style={{ width: "99%" }} offsetScrollbars>
+        <ScrollArea
+          style={{ width: "99%" }}
+          offsetScrollbars
+          type="always"
+          styles={{
+            thumb: {
+              backgroundColor: "#000000",
+            },
+          }}
+        >
           <div className="flex gap-2 py-2 px-4">
             {datesToDisplay.map((date) => {
               const isPastDate =

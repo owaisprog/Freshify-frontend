@@ -260,6 +260,7 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
         {/* Calendar */}
         <div className="mb-4">
           <Button
+            color="dark"
             variant="outline"
             onClick={() => setIsCalendarOpen(!isCalendarOpen)}
             className="mb-2"
@@ -294,6 +295,7 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
                 {timeSlots.map((time) => (
                   <Button
                     key={time}
+                    color="dark"
                     variant={selectedTime === time ? "filled" : "outline"}
                     onClick={() => handleTimeSelect(time)}
                     className="!p-1 !text-sm"
@@ -315,16 +317,22 @@ export default function AppointmentDetails({ booking, setIsPopupOpen }) {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-end gap-2 mt-6">
+      <div className="flex items-center  gap-2 mt-6">
         <Button
-          variant="outline"
-          color="gray"
+          color="#427B42"
+          fullWidth
+          radius={"md"}
           onClick={handleUpdate}
           disabled={!selectedDate || !selectedTime}
         >
           Update Booking
         </Button>
-        <Button color="red" onClick={handleCancelBooking}>
+        <Button
+          fullWidth
+          radius={"md"}
+          color="#622929"
+          onClick={handleCancelBooking}
+        >
           Cancel Booking
         </Button>
       </div>

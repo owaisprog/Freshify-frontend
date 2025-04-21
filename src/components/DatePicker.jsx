@@ -9,6 +9,7 @@ function DatePickerCalendar({ value, onChange, popoverMode = false }) {
 
   return (
     <DatePicker
+      classNames={{ today: "bg-red-500" }}
       value={value}
       onChange={onChange}
       minDate={today}
