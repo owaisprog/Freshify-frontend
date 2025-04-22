@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
 import { Button, Loader } from "@mantine/core";
-import { apiGet } from "../../services/useApi";
+import { handleConnectGoogle } from "../../Hooks/GoogleCalendar";
 
 const formatMidnightHours = (time24) => {
   if (!time24) return "";
@@ -115,14 +115,14 @@ export default function DateTimeStep() {
     setSelectedDate(null);
   };
 
-  const handleConnectGoogle = async () => {
-    try {
-      const { url } = await apiGet(`/api/auth/google`);
-      window.location.href = url;
-    } catch (err) {
-      console.error("Error connecting to Google:", err);
-    }
-  };
+  // const handleConnectGoogle = async () => {
+  //   try {
+  //     const { url } = await apiGet(`/api/auth/google`);
+  //     window.location.href = url;
+  //   } catch (err) {
+  //     console.error("Error connecting to Google:", err);
+  //   }
+  // };
 
   const isLoading = isLoadingSlots || isFetching;
 
