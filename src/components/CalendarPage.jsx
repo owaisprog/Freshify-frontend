@@ -19,8 +19,14 @@ import CustomSelect from "./CustomSelector";
 import Calendar from "./Calendar";
 import CustomerTable from "./CustomerTable";
 import EditAvailabilityPopup from "./EditAvailabilityPopup";
+import { IoArrowBackCircle } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
-export default function CalendarPage({ numberOfMonths = 2 }) {
+export default function CalendarPage({
+  numberOfMonths = 2,
+  mode = "superadmin",
+}) {
+  const navigate = useNavigate();
   const { mutate: editAvalibility } = usePostMutation("avalibility");
   const { mutate: updateSeen } = useUpdateMutationPut("seen");
 
@@ -226,15 +232,24 @@ export default function CalendarPage({ numberOfMonths = 2 }) {
     setAvailabilityModalOpen(true);
   }
   return (
-    <main className="grid  grid-cols-1  gap-y-5 max-w-[1440px]  mx-auto w-full pt-20 lg:pt-0  p-6 ">
+    <main className="grid  grid-cols-1  gap-y-5  w-full pt-20 lg:pt-0  p-6 lg:p-0 ">
       <Title
         c={"black"}
-        className="lg:!px-6   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+        className="lg:!px-6  !flex !items-center gap-4 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
+        {mode === "superadmin" ? (
+          <IoArrowBackCircle
+            className="cursor-pointer"
+            onClick={(event) => {
+              event.preventDefault();
+              navigate("/SuperAdminOrganization");
+            }}
+          />
+        ) : null}
         Calendar
       </Title>
 
-      <div className="  px-2   lg:px-0 -mt-4 lg:mt-0 flex flex-col-reverse  sm:flex-row gap-4 justify-between">
+      <div className="  px-2  max-w-[1440px] mx-auto w-full   lg:px-0 -mt-4 lg:mt-0 flex flex-col-reverse  sm:flex-row gap-4 justify-between">
         <div className="flex gap-2 ">
           {/* Select Month */}
           <CustomSelect
@@ -266,20 +281,22 @@ export default function CalendarPage({ numberOfMonths = 2 }) {
         </Button>
       </div>
 
-      <Calendar
-        monthToShow={selectedOptionMonth}
-        yearToShow={getYear(new Date(selectedOption))}
-        setCalendarState={handleCalendarDateChange}
-        calendarState={calendarState}
-        initialDate={currentDate}
-      />
+      <section className=" max-w-[1440px] mx-auto w-full">
+        <Calendar
+          monthToShow={selectedOptionMonth}
+          yearToShow={getYear(new Date(selectedOption))}
+          setCalendarState={handleCalendarDateChange}
+          calendarState={calendarState}
+          initialDate={currentDate}
+        />
 
-      <CustomerTable
-        bookings={filteredBookings}
-        isLoading={isLoading}
-        error={error}
-        role={role}
-      />
+        <CustomerTable
+          bookings={filteredBookings}
+          isLoading={isLoading}
+          error={error}
+          role={role}
+        />
+      </section>
 
       <EditAvailabilityPopup
         opened={availabilityModalOpen}

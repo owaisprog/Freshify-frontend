@@ -274,7 +274,7 @@ function OrganizationOwnerServices() {
   }));
 
   return (
-    <main className="grid grid-cols-1 gap-y-5 max-w-[1440px] mx-auto w-full pt-20 lg:pt-0  p-6  ">
+    <main className="grid grid-cols-1 gap-y-5  mx-auto w-full pt-20 lg:pt-0  p-6 lg:p-0  ">
       {/* Services title added  On top */}
       <Title
         mb={"lg"}
@@ -284,7 +284,7 @@ function OrganizationOwnerServices() {
         Services
       </Title>
 
-      <section className=" -mt-10 lg:mt-0   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
+      <section className=" -mt-10 lg:mt-0 max-w-[1440px] w-full mx-auto   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
         <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
           <div className="flex items-center gap-2">
             <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
@@ -319,7 +319,7 @@ function OrganizationOwnerServices() {
         </div>
       </section>
 
-      <section className="flex  justify-between items-center">
+      <section className="flex max-w-[1440px] w-full mx-auto justify-between items-center">
         <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
           All Services
         </Text>
@@ -336,15 +336,17 @@ function OrganizationOwnerServices() {
         </Button>
       </section>
 
-      {/* Table */}
-      <TableCom
-        data={data}
-        error={servicesError}
-        columns={columns}
-        isLoading={
-          isServicesLoading || isLoadCreate || isLoadUpdate || isLoadDelete
-        }
-      />
+      <section className="max-w-[1440px] w-full mx-auto">
+        {/* Table */}
+        <TableCom
+          data={data}
+          error={servicesError}
+          columns={columns}
+          isLoading={
+            isServicesLoading || isLoadCreate || isLoadUpdate || isLoadDelete
+          }
+        />
+      </section>
 
       {/* Add/Edit Service Popup */}
       <Popup

@@ -242,7 +242,7 @@ function AdminsServices() {
   }));
 
   return (
-    <main className="grid grid-cols-1 gap-y-5 max-w-[1440px] mx-auto w-full pt-20 lg:pt-0  p-6  ">
+    <main className="grid grid-cols-1 gap-y-5  pt-20 lg:pt-0  p-6 lg:p-0  ">
       <Title
         mb={"lg"}
         c={"black"}
@@ -251,7 +251,7 @@ function AdminsServices() {
         Services
       </Title>
 
-      <section className=" -mt-10 lg:mt-0   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
+      <section className=" -mt-10 lg:mt-0 max-w-[1440px] mx-auto w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
         <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
           <div className="flex items-center gap-2">
             <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
@@ -288,7 +288,7 @@ function AdminsServices() {
         </div>
       </section>
 
-      <section className="flex justify-between items-center">
+      <section className="max-w-[1440px] mx-auto w-full  flex justify-between items-center">
         <Text className="!text-[22px] !font-[700]">All Services</Text>
         <Button
           bg="black"
@@ -306,14 +306,16 @@ function AdminsServices() {
         </Button>
       </section>
 
-      <TableCom
-        data={data}
-        error={servicesError}
-        columns={columns}
-        isLoading={
-          isServicesLoading || isLoadCreate || isLoadUpdate || isLoadDelete
-        }
-      />
+      <section className="max-w-[1440px] mx-auto w-full">
+        <TableCom
+          data={data}
+          error={servicesError}
+          columns={columns}
+          isLoading={
+            isServicesLoading || isLoadCreate || isLoadUpdate || isLoadDelete
+          }
+        />
+      </section>
 
       <Popup
         form={form}

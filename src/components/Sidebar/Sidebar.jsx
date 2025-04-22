@@ -27,7 +27,7 @@ export default function Sidebar({
       onClick={() => setActive(item.activePath)}
     >
       <item.icon
-        className={`mr-4 w-[30px] h-[30px] ${
+        className={`mr-2 w-[30px] h-[30px] ${
           item.activePath === active
             ? "text-black"
             : "text-[#b1b1b1] group-hover:text-black"
@@ -38,7 +38,7 @@ export default function Sidebar({
   ));
 
   return (
-    <nav className="  flex flex-col rounded-2xl lg:h-[96vh] bg-[#040707]">
+    <nav className="  flex h-full flex-col rounded-2xl  bg-[#040707]">
       <div className="flex-1 rounded-2xl ">
         <div className=" h-[78px]  rounded-2xl">
           <Image
@@ -64,7 +64,7 @@ export default function Sidebar({
               settingData.activePath === active
                 ? "text-black"
                 : "text-[#b1b1b1] group-hover:text-black"
-            } mr-4 w-[30px] h-[30px]`}
+            } mr-2 w-[30px] h-[30px]`}
           />
           <span>{settingData.label}</span>
         </Link>

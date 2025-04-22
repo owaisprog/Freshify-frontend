@@ -8,5 +8,10 @@ export default function SuperAdminCalendar() {
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
-  return <CalendarPage numberOfMonths={bookingTime.bookingWindowMonths} />;
+  return (
+    <CalendarPage
+      numberOfMonths={bookingTime.bookingWindowMonths}
+      mode="superadmin"
+    />
+  );
 }

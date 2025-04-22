@@ -92,7 +92,7 @@ export default function CustomerTable({ bookings, error, isLoading, role }) {
   );
 
   return (
-    <div className="flex flex-col    ">
+    <div className="flex flex-col max-w-[1440px] mx-auto w-full   ">
       <Text className="!text-[18px] !py-6 !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
         My Appointments
       </Text>

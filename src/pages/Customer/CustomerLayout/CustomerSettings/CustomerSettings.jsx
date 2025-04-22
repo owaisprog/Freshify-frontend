@@ -8,12 +8,11 @@ export default function CustomerSettings() {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA] max-w-[1720px]  min-h-screen">
+    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]  min-h-screen p-6 lg:p-0">
       <Title
         px={"lg"}
-        py={"sm"}
         c={"black"}
-        className="!hidden lg:!block lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500]  "
+        className="lg:!px-6    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Settings
       </Title>

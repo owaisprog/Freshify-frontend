@@ -36,7 +36,7 @@ export default function OrganizationOwnerDashboard() {
   // Loading and error states
   if (isServicesLoading) {
     return (
-      <main className="pt-20 max-w-[1440px] mx-auto lg:pt-0 lg:gap-6  p-6 ">
+      <main className="pt-20  lg:pt-0 lg:gap-6  p-6 lg:p-0 ">
         <Title
           mb={"lg"}
           c={"black"}
@@ -60,7 +60,7 @@ export default function OrganizationOwnerDashboard() {
   const hasData = Object.keys(response).length > 0;
 
   return (
-    <main className="pt-20 max-w-[1440px] mx-auto lg:pt-0 lg:gap-6  p-6">
+    <main className="pt-20   mx-auto lg:pt-0 lg:gap-6  p-6 lg:p-0">
       {!hasData && !isServicesLoading && !servicesError && (
         <h1>No data available</h1>
       )}
@@ -75,7 +75,7 @@ export default function OrganizationOwnerDashboard() {
             Dashboard
           </Title>
           {/* First Section  */}
-          <section className=" -mt-10 lg:mt-0  px-2 lg:px-0 flex flex-col justify-between w-full lg:flex-row gap-8 ">
+          <section className=" max-w-[1440px]  mx-auto -mt-10 lg:mt-0  px-2 lg:px-0 flex flex-col justify-between w-full lg:flex-row gap-8 ">
             {/* Sales and Top performer section  */}
             <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
               {/* Sales Section  */}
@@ -151,7 +151,7 @@ export default function OrganizationOwnerDashboard() {
 
           {/* Second Section  */}
 
-          <section className=" lg:mt-3 px-2 lg:px-0 flex flex-col  justify-between lg:flex-row gap-8  ">
+          <section className="  max-w-[1440px] w-full mx-auto lg:mt-3 px-2 lg:px-0 flex flex-col  justify-between lg:flex-row gap-8  ">
             {/* Weekly Sales Section   */}
             <section className="    flex flex-col gap-[10px] lg:w-[749px] lg:h-[378px] overflow-x-hidden">
               {/* Sales Section  */}
@@ -213,7 +213,7 @@ export default function OrganizationOwnerDashboard() {
           </section>
 
           {/* Third Section  */}
-          <section className="  px-2 lg:px-0 flex justify-between flex-col w-full  lg:flex-row gap-8">
+          <section className="  max-w-[1440px] mx-auto px-2 lg:px-0 flex justify-between flex-col w-full  lg:flex-row gap-8">
             {/* Sales and Top performer section  */}
             <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
               {/* Sales Section  */}

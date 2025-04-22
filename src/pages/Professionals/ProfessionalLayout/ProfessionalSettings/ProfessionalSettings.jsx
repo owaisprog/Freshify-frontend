@@ -8,10 +8,10 @@ export default function ProfessionalSettings() {
   const navigate = useNavigate();
 
   return (
-    <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen  ">
+    <main className="pt-20  grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  px-4 lg:p-0  ">
       <Title
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] py-[18px] "
+        className="lg:!px-6    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         Settings
       </Title>
@@ -51,7 +51,7 @@ export default function ProfessionalSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
+          <section className="flex items-center bg-white  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
             <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>
@@ -85,7 +85,7 @@ export default function ProfessionalSettings() {
               clearable={false} // ✅ Prevent unchecking selected value
               styles={{
                 input: {
-                  width: "232px",
+                  width: "200px",
                   border: "none",
                   borderBottom: "1px solid #000000",
                   borderRadius: 0,

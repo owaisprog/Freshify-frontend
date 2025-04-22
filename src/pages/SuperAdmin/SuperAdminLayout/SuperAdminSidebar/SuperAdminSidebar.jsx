@@ -3,6 +3,7 @@ import freshifyLogo from "../.././../../assets/freshifyLogoMobile.png";
 import { Image } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { CiLogout } from "react-icons/ci";
 
 // react icons import
 
@@ -39,14 +40,14 @@ export default function SuperAdminSidebar() {
           item.activePath === active
             ? "text-black"
             : "text-[#b1b1b1] group-hover:text-black"
-        } mr-4 w-[30px] h-[30px]`}
+        } mr-2 w-[30px] h-[30px]`}
       />
       <span>{item.label}</span>
     </Link>
   ));
 
   return (
-    <nav className=" flex flex-col rounded-2xl lg:h-[96vh] bg-[#040707]">
+    <nav className=" flex flex-col rounded-2xl h-full bg-[#040707]">
       <div className="flex-1 rounded-2xl">
         <div className=" h-[78px]  rounded-2xl">
           <Image
@@ -59,11 +60,13 @@ export default function SuperAdminSidebar() {
       </div>
 
       <button
-        className="!text-[18px] !px-[40px] border border-white text-white hover:bg-white hover:text-black transition-all duration-500 !font-[600] !py-[10px]  m-4 rounded-[8px] cursor-pointer  "
-        onClick={() => {
-          logoutUser();
-        }}
+        className={`group rounded-[8px] border cursor-pointer border-white m-4 flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2 transition-all duration-300 text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black `}
+        onClick={() => logoutUser()}
       >
+        <CiLogout
+          className={`text-[#b1b1b1] group-hover:text-black
+           mr-2 w-[30px] h-[30px]`}
+        />
         Logout
       </button>
     </nav>

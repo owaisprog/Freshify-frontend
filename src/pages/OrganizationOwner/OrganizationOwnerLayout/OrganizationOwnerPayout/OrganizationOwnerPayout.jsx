@@ -2,7 +2,7 @@ import { Title } from "@mantine/core";
 
 export default function OrganizationOwnerPayout() {
   return (
-    <main className="pt-20 max-w-[1440px] mx-auto lg:pt-0 lg:gap-6  p-6  ">
+    <main className="pt-20  lg:pt-0 lg:gap-6  p-6 lg:p-0 ">
       <section className="   grid grid-cols-1 gap-y-5  ">
         <Title
           mb={"lg"}

@@ -36,7 +36,7 @@ function OrganizationOwnerUsers() {
   };
 
   return (
-    <main className="grid grid-cols-1 gap-y-5 max-w-[1440px] mx-auto w-full pt-20 lg:pt-0  p-6">
+    <main className="grid grid-cols-1 gap-y-5  mx-auto w-full pt-20 lg:pt-0  p-6 lg:p-0">
       <Title
         mb={"lg"}
         c={"black"}
@@ -44,7 +44,7 @@ function OrganizationOwnerUsers() {
       >
         Users
       </Title>
-      <section className="-mt-10 lg:mt-0  flex flex-col h-full  gap-8">
+      <section className="-mt-10 lg:mt-0 max-w-[1440px] mx-auto w-full  flex flex-col h-full  gap-8">
         {/* First Section  */}
         <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
           {/*Most Sales Professional Section */}

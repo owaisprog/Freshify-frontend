@@ -6,6 +6,7 @@ import freshifyLogo from "../.././../../assets/freshifyLogoMobile.png";
 // Reuse your existing icons and data
 import { MdDashboard } from "react-icons/md";
 import { logoutUser } from "../../../../services/AuthServices";
+import { CiLogout } from "react-icons/ci";
 // Reuse your existing data array
 const data = [
   {
@@ -48,12 +49,17 @@ export default function SuperAdminMobileNav() {
   ));
 
   return (
-    <div className="lg:hidden bg-black fixed top-0 w-full z-50">
+    <div className="lg:hidden bg-[#040707] fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
       <nav className=" z-20  pr-4 flex justify-between items-center ">
-        <div className=" h-[80px]  w-[85%]">
-          <Image className="h-full" radius="md" src={freshifyLogo} />
+        <div className="h-[80px] w-[75%] sm:w-[60%] overflow-hidden ">
+          <Image
+            className="h-full w-full object-contain"
+            src={freshifyLogo}
+            alt="Freshify Logo"
+          />
         </div>
+
         <Burger
           opened={isMenuOpen}
           onClick={toggleMenu}
@@ -71,7 +77,7 @@ export default function SuperAdminMobileNav() {
         zIndex={40}
         withCloseButton={false}
         classNames={{
-          body: "!px-0 !pt-24 h-full bg-black", // Force full height on drawer body
+          body: "!px-0 !pt-24 h-full bg-[#040707]", // Force full height on drawer body
           content: " h-full ", // Full height for drawer content
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}
@@ -82,11 +88,13 @@ export default function SuperAdminMobileNav() {
             {/* Settings Link */}
           </div>
           <button
-            className="!text-[18px] !px-[40px] text-white border border-white hover:bg-[#FFFFFF] hover:text-black !font-[600] !py-[10px]    rounded-md cursor-pointer "
-            onClick={() => {
-              logoutUser();
-            }}
+            className={`group rounded-[8px] border cursor-pointer border-white m-4 flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2 transition-all duration-300 text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black `}
+            onClick={() => logoutUser()}
           >
+            <CiLogout
+              className={`text-[#b1b1b1] group-hover:text-black
+                     mr-2 w-[30px] h-[30px]`}
+            />
             Logout
           </button>
         </div>
