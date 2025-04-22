@@ -101,7 +101,7 @@ import AdminLogout from "./pages/Admins/AdminsLayout/AdminsSettings/components/A
 import CustomerLogout from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerLogout.jsx";
 import SuperAdminCalendar from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminCalendar/SuperAdminCalendar.jsx";
 import SuccessPage from "./components/SuccessPage.jsx";
-import Failure from "./components/failurePage.jsx";
+import Failure from "./components/FailurePage.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
