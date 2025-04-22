@@ -17,11 +17,14 @@ export default function MainLogin() {
       setLoading(true);
       const userData = await loginUser(values.email, values.password, role);
       toast(userData.message, { position: "top-right" });
-      if (userData.user.role === "organization_owner") {
+      if (
+        userData.user.role === "organization_owner" &&
+        role === "organization_owner"
+      ) {
         navigate("/OrganizationOwnerDashboard");
-      } else if (userData.user.role === "superadmin") {
+      } else if (userData.user.role === "superadmin" && role === "superadmin") {
         navigate("/SuperAdminOrganization");
-      } else if (userData.user.role === "customer") {
+      } else if (userData.user.role === "customer" && role === "customer") {
         navigate("/CustomerDashboard");
       } else {
         // Optional fallback if the role doesn't match any known value

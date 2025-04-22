@@ -86,7 +86,9 @@ function OrganizationOwnerServices() {
         { endpoint: `/api/delete-service/${id}` },
         {
           onSuccess: () => {
-            toast("Service Deleted Successfully", { position: "top-center" });
+            toast.success("Service Deleted Successfully", {
+              position: "top-center",
+            });
             const previousServices =
               queryClient.getQueryData(["services"]) || [];
             const updatedServices = previousServices.filter(

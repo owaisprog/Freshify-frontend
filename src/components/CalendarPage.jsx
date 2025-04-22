@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function CalendarPage({
   numberOfMonths = 2,
+  resecduleTimeLimit = 2,
   mode = "superadmin",
 }) {
   const navigate = useNavigate();
@@ -289,14 +290,14 @@ export default function CalendarPage({
           calendarState={calendarState}
           initialDate={currentDate}
         />
-
-        <CustomerTable
-          bookings={filteredBookings}
-          isLoading={isLoading}
-          error={error}
-          role={role}
-        />
       </section>
+      <CustomerTable
+        bookings={filteredBookings}
+        isLoading={isLoading}
+        error={error}
+        role={role}
+        resecduleTimeLimit={resecduleTimeLimit}
+      />
 
       <EditAvailabilityPopup
         opened={availabilityModalOpen}

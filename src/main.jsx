@@ -100,11 +100,16 @@ import ProfessionalLogout from "./pages/Professionals/ProfessionalLayout/Profess
 import AdminLogout from "./pages/Admins/AdminsLayout/AdminsSettings/components/AdminLogout.jsx";
 import CustomerLogout from "./pages/Customer/CustomerLayout/CustomerSettings/components/CustomerLogout.jsx";
 import SuperAdminCalendar from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminCalendar/SuperAdminCalendar.jsx";
+import SuccessPage from "./components/SuccessPage.jsx";
+import Failure from "./components/failurePage.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      {/* strip pages */}
+      <Route path="success/:id" element={<SuccessPage />} />
+      <Route path="failure/:id" element={<Failure />} />
       {/* Customer Booking Routes Start   */}
       <Route
         path="booking"

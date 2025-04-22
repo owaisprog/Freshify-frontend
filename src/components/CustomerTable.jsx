@@ -1,10 +1,17 @@
-import { Text, Modal } from "@mantine/core";
+import { Text, Modal, Button } from "@mantine/core";
 import TableCom from "./Table";
 import { GoDotFill } from "react-icons/go";
 import { useState, useMemo, useCallback } from "react";
 import AppointmentDetails from "./AppointmentDetails";
+import { handleConnectGoogle } from "../Hooks/GoogleCalendar";
 
-export default function CustomerTable({ bookings, error, isLoading, role }) {
+export default function CustomerTable({
+  bookings,
+  resecduleTimeLimit,
+  error,
+  isLoading,
+  role,
+}) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
@@ -116,6 +123,7 @@ export default function CustomerTable({ bookings, error, isLoading, role }) {
           <AppointmentDetails
             booking={selectedData}
             setIsPopupOpen={setIsPopupOpen}
+            resecduleTimeLimit={resecduleTimeLimit}
           />
         ) : (
           <Text>No data available.</Text>

@@ -174,6 +174,7 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
           onSuccess: () => {
             toast.success("Unavailability slot deleted successfully");
             refetchSlots();
+            window.location.reload();
           },
           onError: () => {
             toast.error("Failed to delete unavailability slot");
@@ -206,8 +207,8 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
 
     return (
       <Select
-        label="Professional"
-        placeholder="Select professional"
+        label="Users"
+        placeholder="Select User"
         data={professionalOptions}
         value={selectedProfessionalId}
         onChange={handleProfessionalChange}
