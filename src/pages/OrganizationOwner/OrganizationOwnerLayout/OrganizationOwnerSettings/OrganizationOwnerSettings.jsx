@@ -8,7 +8,7 @@ export default function OrganizationOwnerSettings() {
   const navigate = useNavigate();
 
   return (
-    <main className="pt-20 max-w-[1440px]  grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-6">
+    <main className="pt-20   grid grid-cols-1 gap-y-5  lg:pt-0 lg:gap-6  p-6 lg:p-0">
       <Title
         mb={"lg"}
         c={"black"}
@@ -16,7 +16,7 @@ export default function OrganizationOwnerSettings() {
       >
         Settings
       </Title>
-      <section className="  flex   flex-col h-full gap-8">
+      <section className="  max-w-[1440px] mx-auto w-full flex   flex-col h-full gap-8">
         <Paper
           p={"xs"}
           radius="25px"

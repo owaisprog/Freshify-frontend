@@ -1,11 +1,13 @@
 import { Tabs, Text, Title } from "@mantine/core";
 import { useState, useMemo } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import SuperAdminUserAdmin from "./Components/SuperAdminUserAdmin";
 import SuperAdminUserProfessional from "./Components/SuperAdminUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 function SuperAdminUsers() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   // const { id } = JSON.parse(localStorage.getItem("data"));
   const { ownerId } = useParams();
@@ -38,10 +40,16 @@ function SuperAdminUsers() {
   return (
     <main className="flex flex-col pt-20 lg:pt-0 bg-[#F5F7FA]   min-h-screen">
       <Title
-        py={"sm"}
         c={"black"}
-        className="lg:!px-6 !px-2 lg:bg-[#FFFFFF]   lg:!text-[32px] !text-[24px] !font-[500] !py-[18px]  "
+        className="lg:!px-6  !hidden lg:!flex !items-center gap-4   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
+        <IoArrowBackCircle
+          className="cursor-pointer"
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/SuperAdminOrganization");
+          }}
+        />
         Users
       </Title>
       <section className="max-w-[1440px] w-full mx-auto p-6 flex flex-col h-full  gap-8">

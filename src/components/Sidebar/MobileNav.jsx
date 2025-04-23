@@ -41,11 +41,15 @@ export default function MobileNav({
   ));
 
   return (
-    <div className="lg:hidden bg-black fixed top-0 w-full z-50">
+    <div className="lg:hidden bg-[#040707] fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
       <nav className=" z-20  pr-4  flex justify-between items-center ">
-        <div className=" h-[80px]  w-[85%]">
-          <Image className="h-full" radius="md" src={freshifyLogoMobile} />
+        <div className="h-[80px] w-[75%] sm:w-[60%] overflow-hidden ">
+          <Image
+            className="h-full w-full object-contain"
+            src={freshifyLogoMobile}
+            alt="Freshify Logo"
+          />
         </div>
         <Burger
           color="white"
@@ -64,7 +68,7 @@ export default function MobileNav({
         zIndex={40}
         withCloseButton={false}
         classNames={{
-          body: "!px-0 !pt-24 h-full !bg-black", // Force full height on drawer body
+          body: "!px-0 !pt-24 h-full !bg-[#040707]", // Force full height on drawer body
           content: " h-full", // Full height for drawer content
         }}
         overlayProps={{ opacity: 0.5, blur: 4 }}

@@ -21,6 +21,7 @@ const PopupContext = createContext();
 
 const Popup = ({
   opened,
+
   setOpened,
   handleSubmit,
   children,
@@ -31,6 +32,8 @@ const Popup = ({
   return (
     <PopupContext.Provider value={form}>
       <Modal
+        radius={"lg"}
+        padding={"xl"}
         closeOnClickOutside={false}
         opened={opened}
         onClose={() => setOpened(false)}
@@ -43,7 +46,7 @@ const Popup = ({
         size="xl"
       >
         <form className="" onSubmit={form.onSubmit(handleSubmit)}>
-          <Paper bg={"white"} className="px-8 " radius={"md"}>
+          <Paper bg={"white"}>
             <Stack>{children}</Stack>
           </Paper>
         </form>

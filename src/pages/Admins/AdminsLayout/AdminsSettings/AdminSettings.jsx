@@ -8,7 +8,7 @@ export default function AdminSettings() {
   const navigate = useNavigate();
 
   return (
-    <main className="pt-20 max-w-[1440px] grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-6   ">
+    <main className="pt-20  grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  p-6 lg:p-0  ">
       <Title
         mb={"lg"}
         c={"black"}
@@ -18,7 +18,7 @@ export default function AdminSettings() {
       </Title>
       <section className="  max-w-[1440px] w-full mx-auto lg:p-6 flex flex-col h-full gap-8">
         <Paper
-          p="xs"
+          p="lg"
           radius="25px"
           className="lg:shadow-md !bg-[#f5f7fa] lg:!bg-white"
         >

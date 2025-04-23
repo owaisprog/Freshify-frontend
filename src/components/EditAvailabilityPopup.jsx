@@ -281,6 +281,8 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
       title="Edit Availability"
       size="lg"
       centered
+      radius={"lg"}
+      padding={"xl"}
       overlayProps={{ blur: 3 }}
     >
       {!isBarber && professionals.length === 0 ? (

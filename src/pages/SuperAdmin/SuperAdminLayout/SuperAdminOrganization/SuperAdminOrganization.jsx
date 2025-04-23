@@ -106,7 +106,7 @@ export default function SuperAdminOrganization() {
   }));
 
   return (
-    <main className="pt-20 grid grid-cols-1  max-w-[1440px] mx-auto lg:pt-0 lg:gap-6  p-6">
+    <main className="pt-20 grid grid-cols-1   lg:pt-0 lg:gap-6  p-6 lg:p-0">
       <Title
         mb={"lg"}
         c={"black"}
@@ -114,7 +114,7 @@ export default function SuperAdminOrganization() {
       >
         Organizations
       </Title>
-      <section className="grid grid-cols-1 gap-y-5 mt-6 lg:mt-0">
+      <section className="grid max-w-[1440px] mx-auto w-full grid-cols-1 gap-y-5 mt-6 lg:mt-0">
         {/* Most Organization Section */}
         <section className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6">
           {/* Most Sales Professional Section */}
@@ -163,6 +163,8 @@ export default function SuperAdminOrganization() {
 
         {/* Modal for Organization Details */}
         <Modal
+          padding={"xl"}
+          radius={"lg"}
           closeOnClickOutside={false}
           opened={modalOpened}
           onClose={() => setModalOpened(false)}
@@ -178,11 +180,8 @@ export default function SuperAdminOrganization() {
               fontSize: "1.5rem",
               fontWeight: 600,
               color: "#2F3542",
-              textAlign: "center",
+
               width: "100%",
-            },
-            body: {
-              padding: "2rem",
             },
           }}
         >

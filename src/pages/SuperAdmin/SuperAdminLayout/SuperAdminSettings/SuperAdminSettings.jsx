@@ -2,6 +2,7 @@ import { Paper, Tabs, Title, Select } from "@mantine/core";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import Tab from "../../../../components/Tab";
 import { FaChevronDown } from "react-icons/fa";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 export default function SuperAdminSettings() {
   const location = useLocation();
@@ -9,15 +10,22 @@ export default function SuperAdminSettings() {
   const { ownerId } = useParams();
 
   return (
-    <main className="pt-20 max-w-[1440px]  grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-6">
+    <main className="pt-20   grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-0">
       <Title
         mb={"lg"}
         c={"black"}
-        className="lg:!px-6 !hidden lg:!block    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+        className="lg:!px-6 !hidden lg:!flex !items-center gap-4   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
+        <IoArrowBackCircle
+          className="cursor-pointer"
+          onClick={(event) => {
+            event.preventDefault();
+            navigate("/SuperAdminOrganization");
+          }}
+        />
         Settings
       </Title>
-      <section className="flex   flex-col h-full gap-8s">
+      <section className="flex  max-w-[1440px] mx-auto w-full flex-col h-full gap-8s">
         <Paper
           p={"lg"}
           radius="25px"
@@ -49,7 +57,7 @@ export default function SuperAdminSettings() {
           </section>
 
           {/* Mobile Dropdown */}
-          <section className="flex items-center  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
+          <section className="flex bg-white items-center  shadow-sm rounded-[10px] py-4 min-w-[#333B69] px-2 justify-between lg:hidden ">
             <Title className="!text-[24px] !min-w-[89px] !font-[500] !text-[#333B69]">
               Settings
             </Title>

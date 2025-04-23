@@ -99,22 +99,10 @@ export default function CustomerTable({
   );
 
   return (
-    <div className="flex flex-col    ">
-      <div className="flex items-center justify-between">
-        <Text className="!text-[18px] !py-6 !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
-          My Appointments
-        </Text>
-        {role === "barber" && (
-          <Button
-            bg={"black"}
-            radius={"md"}
-            className="flex"
-            onClick={handleConnectGoogle}
-          >
-            Connect with Google
-          </Button>
-        )}
-      </div>
+    <div className="flex flex-col max-w-[1440px] mx-auto w-full   ">
+      <Text className="!text-[18px] !py-6 !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
+        My Appointments
+      </Text>
 
       <TableCom
         data={data}

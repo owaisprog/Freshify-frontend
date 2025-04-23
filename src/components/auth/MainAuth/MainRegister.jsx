@@ -74,13 +74,14 @@ export default function MainRegister() {
       </section>
 
       {/* This image will be visible on Mobile devices  */}
-      <section className=" lg:hidden h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
-        <Image
-          radius="md"
-          className="object-contain  w-full lg:w-[60%]  "
-          src={freshifyImage}
-          fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-        />
+      <section className=" lg:hidden h-[80px]    overflow-hidden bg-[#040707] flex items-center justify-center rounded-bl-xl rounded-br-xl">
+        <div className="h-[80px] w-full sm:w-[60%]  ">
+          <Image
+            className="h-full w-full object-contain"
+            src={freshifyImage}
+            alt="Freshify Logo"
+          />
+        </div>
       </section>
 
       {/* Right Section - Form */}
