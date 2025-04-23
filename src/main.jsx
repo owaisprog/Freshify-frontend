@@ -102,14 +102,17 @@ import CustomerLogout from "./pages/Customer/CustomerLayout/CustomerSettings/com
 import SuperAdminCalendar from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminCalendar/SuperAdminCalendar.jsx";
 import SuccessPage from "./components/SuccessPage.jsx";
 import Failure from "./components/failurePage.jsx";
+import OrganizationOwnerPlan from "./pages/OrganizationOwner/OrganizationOwnerPlan/OrganizationOwnerPlan.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      {/* plans */}
+      <Route path="/owner-plans" element={<OrganizationOwnerPlan />} />
       {/* strip pages */}
-      <Route path="success/:id" element={<SuccessPage />} />
-      <Route path="failure/:id" element={<Failure />} />
+      <Route path="success" element={<SuccessPage />} />
+      <Route path="payment-cancel" element={<Failure />} />
       {/* Customer Booking Routes Start   */}
       <Route
         path="booking"

@@ -1,14 +1,20 @@
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Failure() {
-  const { id } = useParams() || {};
+  const navigate = useNavigate();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate("/owner-plans"); // Redirect to login page after 10 seconds
+    }, 5000);
 
+    return () => clearTimeout(timer); // Clean up the timer
+  });
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-md overflow-hidden">
         <div className="bg-gray-200 text-center py-6">
           <h1 className="text-2xl font-bold text-red-500">Payment Failed</h1>
-          <p>{id}</p>
         </div>
         <div className="flex flex-col items-center justify-center py-10">
           <div className="w-24 h-24 rounded-full bg-red-500 flex items-center justify-center">
