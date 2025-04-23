@@ -4,7 +4,7 @@ import { Loader } from "@mantine/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function SuccessPage() {
+function SuccessPage({ id, key, endpoint, navigateURL }) {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const navigate = useNavigate();
