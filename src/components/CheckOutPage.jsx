@@ -9,7 +9,7 @@ const CheckoutPage = () => {
 
   const location = useLocation();
   const bookingData = location.state;
-  const { booking } = bookingData || {};
+  const { booking, merchantId } = bookingData || {};
   const {
     name,
     email,
@@ -26,15 +26,16 @@ const CheckoutPage = () => {
         endpoint: `/api/customer-payment`,
         payload: {
           price: totalPrice,
-          merchantAccountId: "acct_1RGFXGGamXrYD38W",
-          description: "Test payment for Product XYZ",
+          merchantAccountId: merchantId,
         },
       },
       {
-        onSuccess: () =>
+        onSuccess: (navigate) => {
           toast.success("Payment  Successfull", {
             position: "top-center",
-          }),
+          });
+          window.location.href = navigate.url;
+        },
         onError: () =>
           toast.error("Error While Creating Payment", {
             position: "top-center",
@@ -42,7 +43,7 @@ const CheckoutPage = () => {
       }
     );
   }
-  // console.log(bookingData?.bookingData.booking);
+  console.log({ booking, merchantId });
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="text-center mb-8">
