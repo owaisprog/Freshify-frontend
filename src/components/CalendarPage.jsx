@@ -26,6 +26,7 @@ export default function CalendarPage({
   numberOfMonths = 2,
   resecduleTimeLimit = 2,
   mode = "",
+  name = "",
 }) {
   const navigate = useNavigate();
   const { mutate: editAvalibility } = usePostMutation("avalibility");
@@ -247,6 +248,7 @@ export default function CalendarPage({
             }}
           />
         ) : null}
+        {mode === "superadmin" ? `${name} ` : null}
         Calendar
       </Title>
 

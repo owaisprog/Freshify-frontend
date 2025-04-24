@@ -3,11 +3,15 @@ import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import Tab from "../../../../components/Tab";
 import { FaChevronDown } from "react-icons/fa";
 import { IoArrowBackCircle } from "react-icons/io5";
+import { useState } from "react";
 
 export default function SuperAdminSettings() {
   const location = useLocation();
+  const name = location.state;
   const navigate = useNavigate();
   const { ownerId } = useParams();
+
+  const [organizationName] = useState(name);
 
   return (
     <main className="pt-20   grid grid-cols-1 gap-y-5 mx-auto lg:pt-0 lg:gap-6  lg:p-0">
@@ -23,7 +27,7 @@ export default function SuperAdminSettings() {
             navigate("/SuperAdminOrganization");
           }}
         />
-        Settings
+        {organizationName} Settings
       </Title>
       <section className="flex  max-w-[1440px] mx-auto w-full flex-col h-full gap-8s">
         <Paper

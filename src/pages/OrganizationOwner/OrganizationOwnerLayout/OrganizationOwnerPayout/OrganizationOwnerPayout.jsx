@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form";
 import Popup from "../../../../components/PopUp";
 import { toast } from "react-toastify";
 import { usePostMutation } from "../../../../services/reactQuery";
+import TransctionsTable from "../../../../components/TransctionsTable";
 
 // Complete list of countries
 const countries = [
@@ -87,17 +88,17 @@ export default function OrganizationOwnerPayout() {
   };
 
   return (
-    <main className="pt-20 max-w-[1440px] mx-auto lg:pt-0 lg:gap-6 p-6">
-      <section className="grid grid-cols-1 gap-y-5">
-        <Title
-          mb="lg"
-          c="black"
-          className="lg:!px-6 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
-        >
-          Payout
-        </Title>
-        <section className="-mt-10 lg:mt-0 px-2 flex justify-between items-center">
-          <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+    <main className="pt-20  lg:pt-0 lg:gap-6 p-6 lg:p-0">
+      <Title
+        mb="lg"
+        c="black"
+        className="lg:!px-6 !hidden lg:!block lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+      >
+        Payout
+      </Title>
+      <section className="grid  pt-4 lg:pt-0 max-w-[1440px] mx-auto w-full grid-cols-1 gap-y-5">
+        <section className=" px-2 flex flex-col lg:flex-row gap-2 justify-between items-center">
+          <Text className="lg:!text-[32px] !text-[24px] !font-[500]">
             Initiate Payout From Stripe
           </Text>
           <Button
@@ -110,42 +111,43 @@ export default function OrganizationOwnerPayout() {
             Connect Stripe
           </Button>
         </section>
+
+        <Popup
+          opened={opened}
+          setOpened={setOpened}
+          handleSubmit={handleSubmit}
+          form={form}
+          title="Connect Stripe Account"
+        >
+          <Popup.TextInputField
+            label="Email"
+            placeholder="Enter your email"
+            id="email"
+          />
+
+          <Popup.SingleSelector
+            label="Country"
+            placeholder="Select country"
+            id="country"
+            data={countries}
+          />
+
+          <Popup.SingleSelector
+            label="Business Type"
+            placeholder="Select business type"
+            id="business_type"
+            data={[
+              { value: "individual", label: "Individual" },
+              { value: "company", label: "Company" },
+            ]}
+          />
+
+          <Popup.SubmitButton loading={isPending}>
+            Connect Stripe
+          </Popup.SubmitButton>
+        </Popup>
+        <TransctionsTable />
       </section>
-
-      <Popup
-        opened={opened}
-        setOpened={setOpened}
-        handleSubmit={handleSubmit}
-        form={form}
-        title="Connect Stripe Account"
-      >
-        <Popup.TextInputField
-          label="Email"
-          placeholder="Enter your email"
-          id="email"
-        />
-
-        <Popup.SingleSelector
-          label="Country"
-          placeholder="Select country"
-          id="country"
-          data={countries}
-        />
-
-        <Popup.SingleSelector
-          label="Business Type"
-          placeholder="Select business type"
-          id="business_type"
-          data={[
-            { value: "individual", label: "Individual" },
-            { value: "company", label: "Company" },
-          ]}
-        />
-
-        <Popup.SubmitButton loading={isPending}>
-          Connect Stripe
-        </Popup.SubmitButton>
-      </Popup>
     </main>
   );
 }

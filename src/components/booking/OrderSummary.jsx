@@ -83,7 +83,7 @@ export default function OrderSummary() {
             time: null,
             finalStep: false,
           });
-          navigate("checkout", { state: data });
+          navigate("/checkout", { state: data });
         },
         onError: () => {
           setLoading(false);

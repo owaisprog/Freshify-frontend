@@ -14,10 +14,12 @@ import {
 } from "../../../../services/reactQuery";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoArrowBackCircle } from "react-icons/io5";
 
 function SuperAdminServices() {
+  const location = useLocation();
+  const name = location.state;
   const navigate = useNavigate();
   const { ownerId } = useParams();
 
@@ -262,7 +264,7 @@ function SuperAdminServices() {
             navigate("/SuperAdminOrganization");
           }}
         />
-        Services
+        {name} Services
       </Title>
 
       <section className="-mt-10 lg:mt-0 max-w-[1440px] mx-auto w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">

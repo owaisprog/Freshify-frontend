@@ -1,8 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Locations from "../../../../components/Locations";
 
 export default function SuperAdminLocations() {
   // const { id } = JSON.parse(localStorage.getItem("data"));
+  const location = useLocation();
+  const name = location.state;
   const { ownerId } = useParams();
   // endpoint: `/api/delete-location/${delId}`
   //  endpoint: `/api/update-location/${selectedLocation._id}`
@@ -14,6 +16,7 @@ export default function SuperAdminLocations() {
       endPointGet={`/api/get-locations-by-owner/${ownerId}`}
       id={ownerId}
       mode="superadmin"
+      name={name}
     />
   );
 }

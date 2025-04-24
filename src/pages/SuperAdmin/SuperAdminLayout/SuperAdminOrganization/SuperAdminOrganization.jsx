@@ -54,7 +54,7 @@ export default function SuperAdminOrganization() {
         td={"underline"}
         c={"black"} // Set color to black
         className="cursor-pointer"
-        onClick={() => navigate(`locations/${val._id}`)}
+        onClick={() => navigate(`locations/${val._id}`, { state: val.name })}
       >
         View Locations
       </Text>
@@ -65,7 +65,7 @@ export default function SuperAdminOrganization() {
         td={"underline"}
         c={"black"} // Set color to black
         className="cursor-pointer"
-        onClick={() => navigate(`Users/${val._id}`)}
+        onClick={() => navigate(`Users/${val._id}`, { state: val.name })}
       >
         View Users
       </Text>
@@ -76,7 +76,7 @@ export default function SuperAdminOrganization() {
         td={"underline"}
         c={"black"} // Set color to black
         className="cursor-pointer"
-        onClick={() => navigate(`calendar/${val._id}`)}
+        onClick={() => navigate(`calendar/${val._id}`, { state: val.name })}
       >
         View Calendar
       </Text>
@@ -87,7 +87,7 @@ export default function SuperAdminOrganization() {
         td={"underline"}
         c={"black"} // Set color to black
         className="cursor-pointer"
-        onClick={() => navigate(`Services/${val._id}`)}
+        onClick={() => navigate(`Services/${val._id}`, { state: val.name })}
       >
         View Services
       </Text>
@@ -98,7 +98,7 @@ export default function SuperAdminOrganization() {
         td={"underline"}
         c={"black"} // Set color to black
         className="cursor-pointer"
-        onClick={() => navigate(`settings/${val._id}`)}
+        onClick={() => navigate(`settings/${val._id}`, { state: val.name })}
       >
         View Settings
       </Text>

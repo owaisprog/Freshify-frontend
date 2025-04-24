@@ -34,6 +34,7 @@ export default function Locations({
   endPointGet,
   id,
   mode = "organization_owner",
+  name = "",
 }) {
   // const { id } = JSON.parse(localStorage.getItem("data"));
 
@@ -255,8 +256,10 @@ export default function Locations({
               event.preventDefault();
               navigate("/SuperAdminOrganization");
             }}
+            s
           />
         ) : null}
+        {mode === "superadmin" ? `${name} ` : null}
         Locations{" "}
       </Title>
       <section className=" max-w-[1440px] mx-auto w-full -mt-10 lg:mt-0 px-2 flex justify-between items-center">
