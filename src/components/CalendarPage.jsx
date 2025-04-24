@@ -25,7 +25,7 @@ import { useNavigate } from "react-router-dom";
 export default function CalendarPage({
   numberOfMonths = 2,
   resecduleTimeLimit = 2,
-  mode = "superadmin",
+  mode = "",
 }) {
   const navigate = useNavigate();
   const { mutate: editAvalibility } = usePostMutation("avalibility");
