@@ -6,26 +6,24 @@ import { useNavigate } from "react-router-dom";
 
 function SuccessPage({ id, key, endpoint, navigateURL }) {
   const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get("session_id");
+  const sessionId = searchParams.get(id);
   const navigate = useNavigate();
 
   const { data: success, isSuccess } = useQueryHook({
-    queryKey: "success",
-    endpoint: `/api/success?session_id=${sessionId}`,
+    queryKey: key,
+    endpoint: `${endpoint}=${sessionId}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
-        navigate("/Login?role=organization_owner"); // Redirect to login page after 10 seconds
+        navigate(navigateURL); // Redirect to login page after 10 seconds
       }, 5000);
 
       return () => clearTimeout(timer); // Clean up the timer
     }
-  }, [isSuccess, navigate]);
-
-  console.log(success);
+  }, [isSuccess, navigateURL, navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

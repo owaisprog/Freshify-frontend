@@ -28,7 +28,8 @@ export default function OrderSummary() {
   const navigate = useNavigate();
 
   const { bookingData, updateBookingData } = useBookingContext();
-  const { mutate: createBookings } = usePostMutation("bookings");
+  const { mutate: createBookings, data: checkdata } =
+    usePostMutation("bookings");
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
   const [loading, setLoading] = useState(false);
 
@@ -67,11 +68,13 @@ export default function OrderSummary() {
         },
       },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setLoading(false);
           toast.success("Booking Created Successfully", {
             position: "top-center",
           });
+          console.log(data, checkdata);
+
           updateBookingData({
             location: null,
             professional: null,
@@ -80,7 +83,7 @@ export default function OrderSummary() {
             time: null,
             finalStep: false,
           });
-          navigate("/booking");
+          navigate("checkout", { state: data });
         },
         onError: () => {
           setLoading(false);

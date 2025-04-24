@@ -103,6 +103,7 @@ import SuperAdminCalendar from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminCa
 import SuccessPage from "./components/SuccessPage.jsx";
 import Failure from "./components/FailurePage.jsx";
 import OrganizationOwnerPlan from "./pages/OrganizationOwner/OrganizationOwnerPlan/OrganizationOwnerPlan.jsx";
+import CheckoutPage from "./components/CheckOutPage.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -111,7 +112,28 @@ const router = createBrowserRouter(
       {/* plans */}
       <Route path="/owner-plans" element={<OrganizationOwnerPlan />} />
       {/* strip pages */}
-      <Route path="success" element={<SuccessPage />} />
+      <Route
+        path="success"
+        element={
+          <SuccessPage
+            id="session_id"
+            key="success"
+            endpoint="/api/success?session_id"
+            navigateURL="/Login?role=organization_owner"
+          />
+        }
+      />
+      <Route
+        path="connect_success"
+        element={
+          <SuccessPage
+            id="account_id"
+            key="success"
+            endpoint="/api/connect/success?account_id"
+            navigateURL="/OrganizationOwnerDashboard/Payout"
+          />
+        }
+      />
       <Route path="payment-cancel" element={<Failure />} />
       {/* Customer Booking Routes Start   */}
       <Route
@@ -126,6 +148,7 @@ const router = createBrowserRouter(
         <Route path="professional" element={<ProfessionalStep />} />
         <Route path="services" element={<ServicesStep />} />
         <Route path="datetime" element={<DateTimeStep />} />
+        <Route path="checkout" element={<CheckoutPage />} />
       </Route>
       {/* Customer Booking Routes End   */}
       <Route
