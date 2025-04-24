@@ -27,7 +27,7 @@ export default function MainVerifyEmail() {
       setLoading(false);
 
       if (data.user.role === "organization_owner") {
-        navigate("/OrganizationOwnerDashboard");
+        navigate("/");
       } else if (data.user.role === "superadmin") {
         navigate("/ProfessionalDashboard");
       } else if (data.user.role === "customer") {

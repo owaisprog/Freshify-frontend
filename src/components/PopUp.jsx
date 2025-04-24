@@ -119,7 +119,7 @@ function SubmitButton({ loading, children }) {
         c={"white"}
         radius={"md"}
         loading={loading}
-        loaderProps={{ type: "dots" }}
+        loaderProps={{ type: "bars" }}
       >
         {children}
       </Button>

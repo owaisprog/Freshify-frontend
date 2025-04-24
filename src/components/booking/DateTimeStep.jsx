@@ -154,7 +154,7 @@ export default function DateTimeStep() {
 
       {isLoading ? (
         <div className="flex justify-center py-4">
-          <Loader />
+          <Loader type="bars" />
         </div>
       ) : timeSlots.length > 0 ? (
         <div className="max-w-[458px] grid grid-cols-3 pb-[100px] lg:pb-0 md:grid-cols-4 lg:grid-cols-4 gap-[10px]">
