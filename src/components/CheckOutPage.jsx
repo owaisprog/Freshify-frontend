@@ -3,13 +3,14 @@
 import { useLocation } from "react-router-dom";
 import { usePostMutation } from "../services/reactQuery";
 import { toast } from "react-toastify";
+import { Button, Title } from "@mantine/core";
 
 const CheckoutPage = () => {
-  const { mutate: createPayment } = usePostMutation("payment");
+  const { mutate: createPayment, isPending } = usePostMutation("payment");
 
   const location = useLocation();
   const bookingData = location.state;
-  const { booking } = bookingData || {};
+  const { booking, merchantId } = bookingData || {};
   const {
     name,
     email,
@@ -26,15 +27,17 @@ const CheckoutPage = () => {
         endpoint: `/api/customer-payment`,
         payload: {
           price: totalPrice,
-          merchantAccountId: "acct_1RGFXGGamXrYD38W",
-          description: "Test payment for Product XYZ",
+          merchantAccountId: merchantId,
         },
       },
       {
-        onSuccess: () =>
+        onSuccess: (navigate) => {
           toast.success("Payment  Successfull", {
             position: "top-center",
-          }),
+          });
+          console.log(navigate.url);
+          window.location.href = navigate.url;
+        },
         onError: () =>
           toast.error("Error While Creating Payment", {
             position: "top-center",
@@ -42,14 +45,17 @@ const CheckoutPage = () => {
       }
     );
   }
-  // console.log(bookingData?.bookingData.booking);
+  console.log({ booking, merchantId });
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold">Checkout</h1>
-      </div>
-
-      <div className=" p-6 rounded-lg shadow-md">
+    <section className=" min-h-[100dvh] flex  flex-col items-center  p-4 ">
+      <Title
+        mb="lg"
+        c="black"
+        className="lg:!px-6 !w-full !text-center  bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+      >
+        Checkout
+      </Title>
+      <div className="max-w-4xl w-full rounded-xl mx-auto p-6 bg-[#FFFFFF]">
         <div className="mb-4">
           <label className="block text-lg font-medium">Booking Name:</label>
           <p className="text-sm">{name}</p>
@@ -85,16 +91,16 @@ const CheckoutPage = () => {
           <p className="text-sm">${totalPrice}</p>
         </div>
       </div>
-
-      <div className="text-center mt-8">
-        <button
-          onClick={handlePayment}
-          className="bg-white text-black px-6 py-2 rounded-md shadow-md hover:bg-gray-300 transition"
-        >
-          Confirm Booking
-        </button>
-      </div>
-    </div>
+      <Button
+        loading={isPending}
+        loaderProps={{ type: "bars" }}
+        disabled={isPending}
+        onClick={handlePayment}
+        className="!bg-black !text-white mt-4 !w-full !max-w-4xl   !h-[41px] !px-[40px] !py-[10px] !rounded-lg  hover:!bg-black/80 !transition-all !duration-300 !cursor-pointer"
+      >
+        Pay Now
+      </Button>
+    </section>
   );
 };
 

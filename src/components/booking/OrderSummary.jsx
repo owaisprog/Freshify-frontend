@@ -51,7 +51,7 @@ export default function OrderSummary() {
             totalServices,
             bookingData?.date
           ),
-          organizationOwnerId: "6800ab465a4954de1a6aa5e2",
+          organizationOwnerId: "680b2e451031eaa183eafec2",
           location: bookingData.location?._id,
           professionalId: bookingData.professional._id,
           services: bookingData?.services.map((val) => val?._id),
@@ -84,7 +84,7 @@ export default function OrderSummary() {
             time: null,
             finalStep: false,
           });
-          navigate("checkout", { state: data });
+          navigate("/checkout", { state: data });
         },
         onError: () => {
           setLoading(false);

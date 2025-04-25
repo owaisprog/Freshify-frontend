@@ -1,12 +1,20 @@
 import { Tabs, Text, Title } from "@mantine/core";
 import { useState, useMemo } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import SuperAdminUserAdmin from "./Components/SuperAdminUserAdmin";
 import SuperAdminUserProfessional from "./Components/SuperAdminUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
 import { IoArrowBackCircle } from "react-icons/io5";
 
 function SuperAdminUsers() {
+  const location = useLocation();
+  const name = location.state;
+
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   // const { id } = JSON.parse(localStorage.getItem("data"));
@@ -50,7 +58,7 @@ function SuperAdminUsers() {
             navigate("/SuperAdminOrganization");
           }}
         />
-        Users
+        {name} Users
       </Title>
       <section className="max-w-[1440px] w-full mx-auto p-6 flex flex-col h-full  gap-8">
         {/* First Section  */}

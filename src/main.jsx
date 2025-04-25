@@ -110,6 +110,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       {/* plans */}
+      <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/owner-plans" element={<OrganizationOwnerPlan />} />
       {/* strip pages */}
       <Route
@@ -120,6 +121,17 @@ const router = createBrowserRouter(
             key="success"
             endpoint="/api/success?session_id"
             navigateURL="/Login?role=organization_owner"
+          />
+        }
+      />
+      <Route
+        path="/payment-success"
+        element={
+          <SuccessPage
+            id="session_id"
+            key="success"
+            endpoint="/api/payment-success?session_id"
+            navigateURL="/Login?role=customer"
           />
         }
       />
@@ -148,7 +160,6 @@ const router = createBrowserRouter(
         <Route path="professional" element={<ProfessionalStep />} />
         <Route path="services" element={<ServicesStep />} />
         <Route path="datetime" element={<DateTimeStep />} />
-        <Route path="checkout" element={<CheckoutPage />} />
       </Route>
       {/* Customer Booking Routes End   */}
       <Route
