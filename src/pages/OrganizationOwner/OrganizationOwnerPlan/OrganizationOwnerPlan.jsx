@@ -2,9 +2,21 @@ import PlainsCard from "../../../components/PlainsCard";
 
 function OrganizationOwnerPlan() {
   const plansData = [
-    { price: 20, plainName: "pro", description: "asdlkjsadlkj" },
-    { price: 30, plainName: "premium", description: "213" },
-    { price: 10, plainName: "starter", description: "asdsad" },
+    {
+      price: 10,
+      plainName: "starter",
+      description: "Description will provide here...",
+    },
+    {
+      price: 20,
+      plainName: "pro",
+      description: "Description will provide here...",
+    },
+    {
+      price: 30,
+      plainName: "premium",
+      description: "Description will provide here...",
+    },
   ];
   return (
     <div className="min-h-screen w-screen  flex items-center justify-center p-4">

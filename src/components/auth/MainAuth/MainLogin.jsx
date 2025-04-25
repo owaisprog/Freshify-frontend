@@ -16,11 +16,15 @@ export default function MainLogin() {
     try {
       setLoading(true);
       const userData = await loginUser(values.email, values.password, role);
+      console.log("User data is :", userData);
       toast(userData.message, { position: "top-right" });
       if (
         userData.user.role === "organization_owner" &&
         role === "organization_owner"
       ) {
+        if (userData?.subscriptionStatus !== "paid") {
+          return navigate("/owner-plans");
+        }
         navigate("/OrganizationOwnerDashboard");
       } else if (userData.user.role === "superadmin" && role === "superadmin") {
         navigate("/SuperAdminOrganization");

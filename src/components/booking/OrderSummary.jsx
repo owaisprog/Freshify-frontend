@@ -74,6 +74,7 @@ export default function OrderSummary() {
           toast.success("Booking Created Successfully", {
             position: "top-center",
           });
+
           console.log(data, checkdata);
 
           updateBookingData({
@@ -84,6 +85,9 @@ export default function OrderSummary() {
             time: null,
             finalStep: false,
           });
+          if (bookingData.location?.enableCashPayments) {
+            return navigate("/Login?role=customer");
+          }
           navigate("/checkout", { state: data });
         },
         onError: () => {
@@ -231,7 +235,9 @@ export default function OrderSummary() {
               onClick={handleBookings}
               className="  !text-[18px]  !font-[400]  "
             >
-              Proceed To Checkout
+              {bookingData.location?.enableCashPayments
+                ? "Book Now"
+                : "Proceed To Checkout"}
             </Button>
           )}
       </div>
