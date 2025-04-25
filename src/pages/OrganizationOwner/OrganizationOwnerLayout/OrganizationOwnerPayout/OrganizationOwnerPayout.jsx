@@ -146,7 +146,7 @@ export default function OrganizationOwnerPayout() {
             Connect Stripe
           </Popup.SubmitButton>
         </Popup>
-        <TransctionsTable />
+        <TransctionsTable endpoint={`/api/organization-transactions`} />
       </section>
     </main>
   );

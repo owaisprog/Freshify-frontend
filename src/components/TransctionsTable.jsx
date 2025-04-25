@@ -1,14 +1,14 @@
 import { useQueryHook } from "../services/reactQuery";
 import TableCom from "./Table";
 
-function TransactionsTable() {
+function TransactionsTable({ endpoint }) {
   const {
     data: response = {},
     isLoading,
     error,
   } = useQueryHook({
     queryKey: "transaction",
-    endpoint: `/api/organization-transactions`,
+    endpoint: endpoint,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
@@ -48,7 +48,7 @@ function TransactionsTable() {
     <div>
       <TableCom
         data={tableData}
-        error={error?.message || "Failed to fetch transactions"}
+        error={error?.message || "No transactions Availiable"}
         columns={columns}
         isLoading={isLoading}
         handleFunction={handleSubmit}
