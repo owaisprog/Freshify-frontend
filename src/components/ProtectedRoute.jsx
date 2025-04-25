@@ -11,6 +11,7 @@ const ProtectedRoute = ({ requiredRole, path, children }) => {
   }
   // "/OrganizationOwnerLogin"
   // If role does not match, show Unauthorized error
+
   if (user && user?.role !== requiredRole) {
     return (
       <ErrorPage
@@ -19,6 +20,13 @@ const ProtectedRoute = ({ requiredRole, path, children }) => {
         message="You don't have permission to view this page"
       />
     );
+  }
+
+  if (
+    user?.role === "organization_owner" &&
+    userData?.subscriptionStatus !== "paid"
+  ) {
+    return Navigate("/owner-plans");
   }
 
   return children;
