@@ -28,6 +28,7 @@ export default function OrderSummary() {
   const navigate = useNavigate();
 
   const { bookingData, updateBookingData } = useBookingContext();
+  console.log("Booking Data is :", bookingData);
   const { mutate: createBookings, data: checkdata } =
     usePostMutation("bookings");
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
