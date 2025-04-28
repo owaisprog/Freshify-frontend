@@ -26,7 +26,8 @@ const ProtectedRoute = ({ requiredRole, path, children }) => {
     user?.role === "organization_owner" &&
     userData?.subscriptionStatus !== "paid"
   ) {
-    return Navigate("/owner-plans");
+    return <Navigate to={"/owner-plans"} />;
+    // Navigate("/owner-plans");
   }
 
   return children;
