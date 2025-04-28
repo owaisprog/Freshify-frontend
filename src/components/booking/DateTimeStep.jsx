@@ -167,7 +167,7 @@ export default function DateTimeStep() {
           })}
         </div>
       ) : (
-        <div className="text-center py-4 text-gray-500">
+        <div className="max-w-[458px] text-center py-4 text-gray-500">
           {selectedDate
             ? "No available slots for this date"
             : "Select a date to see available slots"}

@@ -516,7 +516,7 @@ export default function Locations({
           placeholder="Enter Location Description"
           id="description"
         />
-        <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
+        <Popup.SubmitButton loading={loading}>Update</Popup.SubmitButton>
       </Popup>
       {/* Modal for Address & Description */}
       <Modal
