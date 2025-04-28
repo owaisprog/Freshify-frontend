@@ -3,17 +3,17 @@ import PlainsCard from "../../../components/PlainsCard";
 function OrganizationOwnerPlan() {
   const plansData = [
     {
-      price: 20,
+      price: 10,
       plainName: "starter",
       description: "Description will provide here...",
     },
     {
-      price: 40,
+      price: 20,
       plainName: "pro",
       description: "Description will provide here...",
     },
     {
-      price: 60,
+      price: 30,
       plainName: "premium",
       description: "Description will provide here...",
     },

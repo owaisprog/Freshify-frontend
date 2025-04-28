@@ -1,11 +1,12 @@
 // src/components/CheckoutPage.js
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { usePostMutation } from "../services/reactQuery";
 import { toast } from "react-toastify";
 import { Button, Title } from "@mantine/core";
 
 const CheckoutPage = () => {
+  const navigate = useNavigate();
   const { mutate: createPayment, isPending } = usePostMutation("payment");
 
   const location = useLocation();
@@ -19,6 +20,7 @@ const CheckoutPage = () => {
     bookingTime,
     endTime,
     totalDuration,
+    paymentMethod,
     totalPrice,
   } = booking || {};
   function handlePayment() {
@@ -45,7 +47,7 @@ const CheckoutPage = () => {
       }
     );
   }
-  console.log({ booking, merchantId });
+  console.log(bookingData, paymentMethod);
   return (
     <section className=" min-h-[100dvh] flex  flex-col items-center  p-4 ">
       <Title
@@ -91,15 +93,30 @@ const CheckoutPage = () => {
           <p className="text-sm">${totalPrice}</p>
         </div>
       </div>
-      <Button
-        loading={isPending}
-        loaderProps={{ type: "bars" }}
-        disabled={isPending}
-        onClick={handlePayment}
-        className="!bg-black !text-white mt-4 !w-full !max-w-4xl   !h-[41px] !px-[40px] !py-[10px] !rounded-lg  hover:!bg-black/80 !transition-all !duration-300 !cursor-pointer"
-      >
-        Pay Now
-      </Button>
+      <div className="flex w-full gap-4 max-w-4xl">
+        <Button
+          loading={isPending}
+          loaderProps={{ type: "bars" }}
+          disabled={isPending}
+          onClick={handlePayment}
+          className="!bg-black !text-white mt-4 !w-full !max-w-4xl   !h-[41px] !px-[40px] !py-[10px] !rounded-lg  hover:!bg-black/80 !transition-all !duration-300 !cursor-pointer"
+        >
+          Pay Online
+        </Button>
+        {paymentMethod === "cash" && (
+          <Button
+            onClick={() => {
+              toast.success("Payment  Successfull", {
+                position: "top-center",
+              });
+              navigate("/Login?role=customer");
+            }}
+            className="!bg-black !text-white mt-4 !w-full !max-w-4xl   !h-[41px] !px-[40px] !py-[10px] !rounded-lg  hover:!bg-black/80 !transition-all !duration-300 !cursor-pointer"
+          >
+            Cash Pay
+          </Button>
+        )}
+      </div>
     </section>
   );
 };

@@ -85,9 +85,9 @@ export default function OrderSummary() {
             time: null,
             finalStep: false,
           });
-          if (bookingData.location?.enableCashPayments) {
-            return navigate("/Login?role=customer");
-          }
+          // if (bookingData.location?.enableCashPayments) {
+          //   return navigate("/Login?role=customer");
+          // }
           navigate("/checkout", { state: data });
         },
         onError: () => {
