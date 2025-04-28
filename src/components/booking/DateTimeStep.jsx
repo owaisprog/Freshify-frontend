@@ -115,15 +115,6 @@ export default function DateTimeStep() {
     setSelectedDate(null);
   };
 
-  // const handleConnectGoogle = async () => {
-  //   try {
-  //     const { url } = await apiGet(`/api/auth/google`);
-  //     window.location.href = url;
-  //   } catch (err) {
-  //     console.error("Error connecting to Google:", err);
-  //   }
-  // };
-
   const isLoading = isLoadingSlots || isFetching;
 
   return (

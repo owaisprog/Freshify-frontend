@@ -235,9 +235,7 @@ export default function OrderSummary() {
               onClick={handleBookings}
               className="  !text-[18px]  !font-[400]  "
             >
-              {bookingData.location?.enableCashPayments
-                ? "Book Now"
-                : "Proceed To Checkout"}
+              Proceed To Checkout
             </Button>
           )}
       </div>
