@@ -4,7 +4,9 @@ import ErrorPage from "./ErrorPage";
 const ProtectedRoute = ({ requiredRole, path, children }) => {
   const token = localStorage.getItem("token"); // Get token from localStorage
   const userData = localStorage.getItem("data"); // Store user data separately (JSON)
+  const subscriptionStatus = localStorage.getItem("subscriptionStatus"); // Store user data separately (JSON)
   const user = userData ? JSON.parse(userData) : null; // Parse user data
+  // const navigate = useNavigate();
   // If no token, redirect to login
   if (!token) {
     return <Navigate to={path} replace />;
@@ -21,13 +23,15 @@ const ProtectedRoute = ({ requiredRole, path, children }) => {
       />
     );
   }
+  console.log(
+    user?.role === "organization_owner",
+    subscriptionStatus === "unpaid"
+  );
 
-  if (
-    user?.role === "organization_owner" &&
-    userData?.subscriptionStatus !== "paid"
-  ) {
-    return <Navigate to={"/owner-plans"} />;
-    // Navigate("/owner-plans");
+  if (user?.role === "organization_owner" && subscriptionStatus === "unpaid") {
+    return <Navigate to={"/owner-plans"} replace />;
+    // navigate("/owner-plans");
+    // ximeca8411@astimei.com
   }
 
   return children;
