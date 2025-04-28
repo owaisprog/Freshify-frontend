@@ -59,7 +59,7 @@ function SuccessPage({ id, key, endpoint, navigateURL }) {
               <div className="w-24 h-24 rounded-full bg-black flex items-center justify-center">
                 {isSuccess ? (
                   <svg
-                    className="w-12 h-12 text-black"
+                    className="w-12 h-12 text-white"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"

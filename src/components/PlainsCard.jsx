@@ -1,7 +1,8 @@
+import { Button } from "@mantine/core";
 import { usePostMutation } from "../services/reactQuery";
 
 function PlainsCard({ data }) {
-  const { mutate: selectPlan } = usePostMutation("plan");
+  const { mutate: selectPlan, isPending } = usePostMutation("plan");
   function handleSubscribe(data) {
     console.log(data);
     selectPlan(
@@ -25,7 +26,7 @@ function PlainsCard({ data }) {
         <div className="grid items-center justify-center w-full grid-cols-1 text-left">
           <div>
             <h2 className="text-lg capitalize font-medium tracking-tighter text-gray-600 lg:text-3xl">
-              {data?.plainName}
+              {data?.plainName} Membership
             </h2>
             <p className="mt-2 text-sm text-gray-500">{data?.description}</p>
           </div>
@@ -40,12 +41,16 @@ function PlainsCard({ data }) {
         </div>
       </div>
       <div className="flex px-6 pb-8 sm:px-8 mt-auto">
-        <button
+        <Button
           onClick={() => handleSubscribe(data)}
-          className="flex items-center justify-center w-full px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full nline-flex hover:bg-transparent hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
+          color="dark"
+          loading={isPending}
+          loaderProps={{ type: "bars" }}
+          radius={"xl"}
+          fullWidth
         >
           Subscribe
-        </button>
+        </Button>
       </div>
     </div>
   );
