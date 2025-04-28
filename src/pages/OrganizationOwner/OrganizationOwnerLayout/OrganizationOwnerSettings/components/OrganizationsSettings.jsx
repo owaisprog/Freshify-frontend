@@ -2,6 +2,7 @@ import { Button, CopyButton, Loader } from "@mantine/core";
 import CustomSelect from "../../../../../components/CustomSelector";
 import { useEffect, useState } from "react";
 import {
+  usePostMutation,
   useQueryHook,
   useUpdateMutationPut,
 } from "../../../../../services/reactQuery";
@@ -18,6 +19,9 @@ export default function OrganizationsSettings() {
     staleTime: 0,
   });
   const { mutate: updateBookingTime } = useUpdateMutationPut(queryKey);
+  const { mutate: cancelSubscription } = usePostMutation([
+    "cancelSubscription",
+  ]);
 
   /* -------------------- UPDATE HELPER -------------------- */
   // Accepts an object with either {bookingWindowMonths} or {timeRestrictionHours}
@@ -62,7 +66,28 @@ export default function OrganizationsSettings() {
     );
   }
 
+  /* -------------------- Cancel Subscription -------------------- */
+  function handleCancelSubscription() {
+    cancelSubscription(
+      {
+        endpoint: `/api/cancel-subscription`,
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          toast.success("Subscription cancelled Successfully", {
+            position: "top-center",
+          });
+        },
+        onError: () =>
+          toast.error("Error While cancelling Subscription", {
+            position: "top-center",
+          }),
+      }
+    );
+  }
   /* -------------------- RENDER -------------------- */
+
   return (
     <section className="flex flex-col gap-2">
       <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF] px-2">
@@ -91,7 +116,12 @@ export default function OrganizationsSettings() {
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Subscription Management
         </span>
-        <Button className="!w-[123px] lg:!w-[240px]" bg="black" radius="md">
+        <Button
+          className="!w-[123px] lg:!w-[240px]"
+          bg="black"
+          radius="md"
+          onClick={handleCancelSubscription}
+        >
           <span className="lg:hidden">Cancel</span>
           <span className="hidden lg:block">Cancel Subscription</span>
         </Button>
