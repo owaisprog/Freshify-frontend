@@ -120,7 +120,7 @@ const router = createBrowserRouter(
             id="session_id"
             key="success"
             endpoint="/api/success?session_id"
-            navigateURL="/Login?role=organization_owner"
+            navigateURL="/OrganizationOwnerDashboard"
           />
         }
       />
@@ -205,7 +205,7 @@ const router = createBrowserRouter(
       />
       {/* organization owner */}
       <Route
-        path="OrganizationOwnerDashboard"
+        path="/OrganizationOwnerDashboard"
         element={
           <ProtectedRoute
             path="/Login?role=organization_owner"

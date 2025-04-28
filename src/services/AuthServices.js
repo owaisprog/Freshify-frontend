@@ -15,6 +15,10 @@ export const loginUser = async (email, password, role) => {
     // ✅ Store the token after login
     localStorage.setItem("token", data.token);
     localStorage.setItem("data", JSON.stringify(data.user));
+    localStorage.setItem(
+      "subscriptionStatus",
+      JSON.stringify(data?.subscriptionStatus)
+    );
 
     return data;
   } catch (error) {
