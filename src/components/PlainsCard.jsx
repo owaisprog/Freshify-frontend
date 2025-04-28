@@ -11,6 +11,7 @@ function PlainsCard({ data }) {
       },
       {
         onSuccess: (redirect) => {
+          console.log(redirect);
           window.location.href = redirect.url;
         },
         onError: () => {},

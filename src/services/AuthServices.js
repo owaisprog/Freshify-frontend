@@ -17,7 +17,7 @@ export const loginUser = async (email, password, role) => {
     localStorage.setItem("data", JSON.stringify(data.user));
     localStorage.setItem(
       "subscriptionStatus",
-      JSON.stringify(data.subscriptionStatus)
+      JSON.stringify(data?.subscriptionStatus)
     );
 
     return data;

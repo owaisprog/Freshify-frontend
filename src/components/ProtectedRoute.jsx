@@ -4,7 +4,9 @@ import ErrorPage from "./ErrorPage";
 const ProtectedRoute = ({ requiredRole, path, children }) => {
   const token = localStorage.getItem("token"); // Get token from localStorage
   const userData = localStorage.getItem("data"); // Store user data separately (JSON)
-  const subscriptionStatus = localStorage.getItem("subscriptionStatus"); // Store user data separately (JSON)
+  const subscriptionStatus = JSON.parse(
+    localStorage.getItem("subscriptionStatus")
+  ); // Store user data separately (JSON)
   const user = userData ? JSON.parse(userData) : null; // Parse user data
   // const navigate = useNavigate();
   // If no token, redirect to login
@@ -23,10 +25,7 @@ const ProtectedRoute = ({ requiredRole, path, children }) => {
       />
     );
   }
-  console.log(
-    user?.role === "organization_owner",
-    subscriptionStatus === "unpaid"
-  );
+  console.log(user?.role === "organization_owner", typeof subscriptionStatus);
 
   if (user?.role === "organization_owner" && subscriptionStatus === "unpaid") {
     return <Navigate to={"/owner-plans"} replace />;
