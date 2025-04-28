@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
@@ -11,7 +11,7 @@ const formatMidnightHours = (time24) => {
   if (!time24) return "";
   if (time24 === "00:00") return "12:00";
   if (time24 === "00:30") return "12:30";
-  return time24; // Return original for all other times
+  return time24;
 };
 
 export default function DateTimeStep() {
@@ -20,6 +20,7 @@ export default function DateTimeStep() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
   const { bookingData, updateBookingData } = useBookingContext();
+  const initialized = useRef(false);
 
   const formattedUTC = selectedDate
     ? format(new Date(selectedDate), "yyyy-MM-dd")
@@ -93,6 +94,17 @@ export default function DateTimeStep() {
   useEffect(() => {
     generateAvailableSlots();
   }, [generateAvailableSlots]);
+
+  // Initialize with current date (runs only once on mount)
+  useEffect(() => {
+    if (!initialized.current) {
+      const currentDate = new Date();
+      setSelectedDay(currentDate.toDateString());
+      setSelectedDate(currentDate);
+      updateBookingData({ date: currentDate, time: null });
+      initialized.current = true;
+    }
+  }, [updateBookingData]);
 
   const OnClickDay = async (date) => {
     const DateOBJ = new Date(date);
