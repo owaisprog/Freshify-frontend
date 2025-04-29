@@ -29,7 +29,8 @@ export default function CalendarPage({
   name = "",
 }) {
   const navigate = useNavigate();
-  const { mutate: editAvalibility } = usePostMutation("avalibility");
+  const { mutate: editAvalibility, isPending: isLoadingAvailability } =
+    usePostMutation("avalibility");
   const { mutate: updateSeen } = useUpdateMutationPut("seen");
 
   const [weekOptions, setWeekOptions] = useState([]);
@@ -216,17 +217,18 @@ export default function CalendarPage({
           },
         },
         {
-          onSuccess: () =>
+          onSuccess: () => {
             toast.success("Submitted Successfully", {
               position: "top-center",
-            }),
+            });
+            setAvailabilityModalOpen(false);
+          },
           onError: () =>
             toast.error("Error Submitting", {
               position: "top-center",
             }),
         }
       );
-      setAvailabilityModalOpen(false);
     },
     [editAvalibility, id]
   );
@@ -307,6 +309,7 @@ export default function CalendarPage({
         onSubmit={handleAvailabilitySubmit}
         initialDate={calendarState.selectedDate}
         setIsLoader={setIsLoader}
+        isLoadingAvailability={isLoadingAvailability}
       />
     </main>
   );

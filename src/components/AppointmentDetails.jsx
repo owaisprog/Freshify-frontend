@@ -29,15 +29,17 @@ export default function AppointmentDetails({
     createdAt,
     _id,
   } = booking;
-
+  console.log(booking, "appotiment details");
   const [selectedDate, setSelectedDate] = useState(new Date(bookingDate));
   const [selectedTime, setSelectedTime] = useState(null);
   const [timeSlots, setTimeSlots] = useState([]);
   const [isGeneratingSlots, setIsGeneratingSlots] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-  const { mutate: updateBooking } = useUpdateMutationPut(["reschedule", _id]);
-  const { mutate: cancelBooking } = useUpdateMutationPut(["bookings", _id]);
+  const { mutate: updateBooking, isPending: isLoadingUpdate } =
+    useUpdateMutationPut(["reschedule", _id]);
+  const { mutate: cancelBooking, isPending: isLoadingCancel } =
+    useUpdateMutationPut(["bookings", _id]);
 
   // Check if 2 hours have passed from the booking time
   const isPastRescheduleWindow = useMemo(() => {
@@ -227,7 +229,7 @@ export default function AppointmentDetails({
 
       <div className="flex items-center justify-between">
         <Text weight={600}>Location:</Text>
-        <Text>{location?.name || location || "N/A"}</Text>
+        <Text>{locationDetails?.name || "N/A"}</Text>
       </div>
 
       <div className="flex items-center justify-between">
@@ -325,6 +327,8 @@ export default function AppointmentDetails({
           fullWidth
           radius={"md"}
           onClick={handleUpdate}
+          loading={isLoadingUpdate}
+          loaderProps={{ type: "bars" }}
           disabled={!selectedDate || !selectedTime || isPastRescheduleWindow}
         >
           {isPastRescheduleWindow
@@ -336,6 +340,8 @@ export default function AppointmentDetails({
           radius={"md"}
           color="#622929"
           onClick={handleCancelBooking}
+          loading={isLoadingCancel}
+          loaderProps={{ type: "bars" }}
           disabled={isPastRescheduleWindow && status === "completed"}
         >
           Cancel Booking

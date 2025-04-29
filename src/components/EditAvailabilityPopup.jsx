@@ -17,7 +17,13 @@ import { IoTrash } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
-const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
+const EditAvailabilityPopup = ({
+  opened,
+  onClose,
+  onSubmit,
+  setIsLoader,
+  isLoadingAvailability,
+}) => {
   const { id, role, location } = JSON.parse(localStorage.getItem("data")) || {};
   const [currentApi, setCurrentApi] = useState("");
   const [selectedProfessionalId, setSelectedProfessionalId] = useState(null);
@@ -146,9 +152,9 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
         ...values,
         date: dateIsoString,
       });
-      onClose();
+      // onClose();
     },
-    [onClose, onSubmit]
+    [onSubmit]
   );
 
   // Handle slot deletion
@@ -321,9 +327,10 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
             type="submit"
             fullWidth
             mt="md"
+            loaderProps={{ type: "bars" }}
             color="#000000"
             onClick={form.onSubmit(handleSubmit)}
-            loading={form.isSubmitting}
+            loading={isLoadingAvailability}
           >
             Add Unavailability
           </Button>
