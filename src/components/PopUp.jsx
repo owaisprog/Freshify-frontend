@@ -36,6 +36,7 @@ const Popup = ({
         padding={"xl"}
         closeOnClickOutside={false}
         opened={opened}
+        classNames={{ title: "!text-xl !font-bold" }}
         onClose={() => setOpened(false)}
         title={title}
         centered
