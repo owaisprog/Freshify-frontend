@@ -167,10 +167,10 @@ export default function DateTimeStep() {
               <button
                 key={time}
                 onClick={() => updateBookingData({ time })}
-                className={`!py-[5px] !px-[25px] border rounded-full text-center !text-[22px] !font-bold transition-colors ${
+                className={`!py-[5px] !px-[25px] border  rounded-full text-center !text-[22px] !font-bold transition-colors ${
                   bookingData.time === time
                     ? "bg-black text-white"
-                    : "hover:bg-gray-50"
+                    : " hover:bg-black  hover:text-white duration-300 cursor-pointer"
                 }`}
               >
                 {displayTime}
