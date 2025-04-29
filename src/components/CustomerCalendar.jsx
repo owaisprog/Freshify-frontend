@@ -62,7 +62,7 @@ const CalendarComp = ({ selectedDay, onClickDay }) => {
           <button
             key={month}
             onClick={() => setSelectedMonth(month)}
-            className={`rounded-[10px] border border-black px-[40px] w-[131px] py-[10px] text-[18px]
+            className={`rounded-[10px] border border-black px-[40px] w-[131px] hover:bg-black  hover:text-white duration-300 cursor-pointer py-[10px] text-[18px]
               ${selectedMonth === month ? "bg-black text-white" : "bg-white text-black"}`}
           >
             {format(

@@ -134,10 +134,7 @@ export default function OrganizationOwnerPayout() {
             label="Business Type"
             placeholder="Select business type"
             id="business_type"
-            data={[
-              { value: "individual", label: "Individual" },
-              { value: "company", label: "Company" },
-            ]}
+            data={[{ value: "individual", label: "Individual" }]}
           />
 
           <Popup.SubmitButton loading={isPending}>

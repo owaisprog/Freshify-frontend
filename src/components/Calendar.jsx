@@ -135,7 +135,7 @@ const Calendar = ({
                 <button
                   key={date.toString()}
                   onClick={() => handleDateClick(date)}
-                  className={`w-12 h-12 flex items-center justify-center rounded-full transition-all ${
+                  className={`w-12 h-12 flex items-center hover:cursor-pointer justify-center rounded-full transition-all ${
                     isSelected
                       ? " border border-black text-black"
                       : isTodayDate

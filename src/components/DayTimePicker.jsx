@@ -87,6 +87,7 @@ export default function TimePicker({
         label={label}
         ref={ref}
         value={timeValue}
+        readOnly
         onChange={(e) => handleTimeChange(e.target.value)}
         rightSection={pickerControl}
         disabled={disabled}

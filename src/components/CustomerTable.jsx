@@ -100,9 +100,21 @@ export default function CustomerTable({
 
   return (
     <div className="flex flex-col max-w-[1440px] mx-auto w-full   ">
-      <Text className="!text-[18px] !py-6 !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
-        My Appointments
-      </Text>
+      <div className="flex justify-between items-center">
+        <Text className="!text-[18px] !py-6 !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
+          My Appointments
+        </Text>
+        {role === "barber" && (
+          <Button
+            bg={"black"}
+            radius={"md"}
+            className="flex"
+            onClick={handleConnectGoogle}
+          >
+            Connect with Google
+          </Button>
+        )}
+      </div>
 
       <TableCom
         data={data}
@@ -115,6 +127,8 @@ export default function CustomerTable({
       <Modal
         opened={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
+        radius={"lg"}
+        classNames={{ title: "!text-xl !font-bold !capitalize" }}
         title="Booking Details"
         size="lg"
         centered

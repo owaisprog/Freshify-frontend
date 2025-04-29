@@ -17,7 +17,13 @@ import { IoTrash } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 
-const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
+const EditAvailabilityPopup = ({
+  opened,
+  onClose,
+  onSubmit,
+  setIsLoader,
+  isLoadingAvailability,
+}) => {
   const { id, role, location } = JSON.parse(localStorage.getItem("data")) || {};
   const [currentApi, setCurrentApi] = useState("");
   const [selectedProfessionalId, setSelectedProfessionalId] = useState(null);
@@ -110,14 +116,16 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
         !isBarber && !value ? "Select a professional" : null,
       date: (value) => (!value ? "Select a date" : null),
       startTime: (value) => (!value ? "Enter start time" : null),
-      endTime: (value) => {
+      endTime: (value, values) => {
         if (!value) return "Enter end time";
-        if (form.values.startTime && value <= form.values.startTime) {
+        if (!values.startTime) return "Please select start time first";
+        if (value <= values.startTime) {
           return "End time must be after start time";
         }
         return null;
       },
     },
+    validateInputOnChange: true,
   });
 
   // Handle professional change
@@ -132,6 +140,17 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
   // Handle form submission
   const handleSubmit = useCallback(
     (values) => {
+      // Additional validation check before submission
+      if (!values.startTime || !values.endTime) {
+        toast.error("Please select both start and end times");
+        return;
+      }
+
+      if (values.endTime <= values.startTime) {
+        toast.error("End time must be after start time");
+        return;
+      }
+
       const localDate = new Date(values.date);
       const utcDate = new Date(
         Date.UTC(
@@ -146,9 +165,8 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
         ...values,
         date: dateIsoString,
       });
-      onClose();
     },
-    [onClose, onSubmit]
+    [onSubmit]
   );
 
   // Handle slot deletion
@@ -216,6 +234,7 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
         required
         searchable
         nothingFoundMessage="No professionals found"
+        error={form.errors.professionalId}
       />
     );
   };
@@ -280,6 +299,7 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
       onClose={onClose}
       title="Edit Availability"
       size="lg"
+      classNames={{ title: "!text-xl !font-bold !capitalize" }}
       centered
       radius={"lg"}
       padding={"xl"}
@@ -301,6 +321,7 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
             value={form.values.date}
             onChange={(date) => form.setFieldValue("date", date)}
             mb="md"
+            error={form.errors.date}
           />
 
           <TimePicker
@@ -308,6 +329,7 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
             value={form.values.startTime}
             onChange={(value) => form.setFieldValue("startTime", value)}
             mb="md"
+            error={form.errors.startTime}
           />
 
           <TimePicker
@@ -315,15 +337,17 @@ const EditAvailabilityPopup = ({ opened, onClose, onSubmit, setIsLoader }) => {
             value={form.values.endTime}
             onChange={(value) => form.setFieldValue("endTime", value)}
             mb="md"
+            error={form.errors.endTime}
           />
 
           <Button
             type="submit"
             fullWidth
             mt="md"
+            loaderProps={{ type: "bars" }}
             color="#000000"
             onClick={form.onSubmit(handleSubmit)}
-            loading={form.isSubmitting}
+            loading={isLoadingAvailability}
           >
             Add Unavailability
           </Button>
