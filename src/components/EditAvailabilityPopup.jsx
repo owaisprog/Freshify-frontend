@@ -299,6 +299,7 @@ const EditAvailabilityPopup = ({
       onClose={onClose}
       title="Edit Availability"
       size="lg"
+      classNames={{ title: "!text-xl !font-bold !capitalize" }}
       centered
       radius={"lg"}
       padding={"xl"}

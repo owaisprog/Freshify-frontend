@@ -127,6 +127,8 @@ export default function CustomerTable({
       <Modal
         opened={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
+        radius={"lg"}
+        classNames={{ title: "!text-xl !font-bold !capitalize" }}
         title="Booking Details"
         size="lg"
         centered
