@@ -137,7 +137,7 @@ export default function DateTimeStep() {
     if (data?.role && token) {
       updateBookingData({ proceedToPay: true });
     } else {
-      navigate("BookingAuth");
+      navigate("/booking/BookingAuth");
     }
   }
   return (

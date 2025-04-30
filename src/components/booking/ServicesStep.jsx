@@ -20,7 +20,7 @@ export default function ServicesStep() {
     // error,
   } = useQueryHook({
     queryKey: ["services", _id], // ✅ Cache users by owner ID
-    endpoint: `/api/get-services-by-barber/${_id}`,
+    endpoint: `/api/public/services/barber/${_id}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
     enabled: !!_id,
   });

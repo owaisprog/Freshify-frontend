@@ -25,7 +25,7 @@ export default function ProfessionalStep() {
     // error,
   } = useQueryHook({
     queryKey: ["users", _id], // ✅ Cache users by owner ID
-    endpoint: `/api/get-barbers-by-location/${_id}`,
+    endpoint: `/api/public/barbers/location/${_id}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
   const professionals = allUsers.filter((val) => val.role == "barber");

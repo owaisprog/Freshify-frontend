@@ -27,7 +27,7 @@ export default function LocationStep() {
     // error,
   } = useQueryHook({
     queryKey: ["locations", id],
-    endpoint: `/api/get-locations-by-owner/${id}`,
+    endpoint: `/api/public/locations/${id}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
   console.log(locations);
