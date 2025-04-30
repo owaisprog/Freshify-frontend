@@ -4,7 +4,7 @@ import { Image } from "@mantine/core";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
-
+import { RiPriceTag2Line } from "react-icons/ri";
 // react icons import
 
 import { GoOrganization } from "react-icons/go";
@@ -16,6 +16,12 @@ const data = [
     label: "Organizations",
     activePath: "/SuperAdminOrganization",
     icon: GoOrganization,
+  },
+  {
+    link: "plan",
+    label: "Plans",
+    activePath: "/SuperAdminOrganization/plan",
+    icon: RiPriceTag2Line,
   },
 ];
 

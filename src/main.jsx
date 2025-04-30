@@ -105,6 +105,7 @@ import Failure from "./components/FailurePage.jsx";
 import OrganizationOwnerPlan from "./pages/OrganizationOwner/OrganizationOwnerPlan/OrganizationOwnerPlan.jsx";
 import CheckoutPage from "./components/CheckOutPage.jsx";
 import BookingAuth from "./components/booking/BookingAuth.jsx";
+import SuperAdminPlan from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminPlan/SuperAdminPlan.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -244,6 +245,7 @@ const router = createBrowserRouter(
         }
       >
         <Route index element={<SuperAdminOrganization />} />
+        <Route path="plan" element={<SuperAdminPlan />} />
         <Route path="Services/:ownerId" element={<SuperAdminServices />} />
         <Route path="Users/:ownerId" element={<SuperAdminUsers />} />
         <Route path="calendar/:ownerId" element={<SuperAdminCalendar />} />
