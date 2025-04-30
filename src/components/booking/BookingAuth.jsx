@@ -1,0 +1,99 @@
+import { Button, Text, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { useBookingContext } from "./BookingContext";
+
+export default function BookingAuth() {
+  const { bookingData, updateBookingData } = useBookingContext();
+
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      email: "",
+      name: "",
+      phone: "",
+    },
+    validate: {
+      email: (value) => (/^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email"),
+      name: (value) =>
+        value.trim().length > 2
+          ? null
+          : "Full Name must be at least 3 characters",
+      phone: (value) =>
+        /^\+?\d{10,15}$/.test(value) ? null : "Invalid phone number",
+    },
+  });
+
+  const handleSubmit = async (values) => {
+    try {
+      updateBookingData({ userDetails: values, proceedToPay: true });
+      console.log(values, bookingData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <section className="h-full  flex items-center  justify-center">
+      <form
+        className="w-full flex flex-col max-w-[547px]  bg-[#FFFFFF] rounded-[25px] gap-[10px] p-[20px]"
+        onSubmit={form.onSubmit(handleSubmit)}
+      >
+        {/* Title & Login Link */}
+
+        <Text
+          ta={"center"}
+          className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
+        >
+          Enter Your Details
+        </Text>
+
+        {/* Input Fields */}
+        <div className="flex flex-col gap-[10px]">
+          <span className=" !font-[400] !text-[18px] !text-[#000000]">
+            Email Address
+          </span>
+          <TextInput
+            radius={"md"}
+            placeholder="Enter your email"
+            {...form.getInputProps("email")}
+          />
+        </div>
+        <div className="flex flex-col gap-[10px]">
+          <span className=" !font-[400] !text-[18px] !text-[#000000]">
+            Full Name
+          </span>
+          <TextInput
+            radius={"md"}
+            placeholder="Enter your full name"
+            {...form.getInputProps("name")}
+          />
+        </div>
+
+        <div className="flex flex-col gap-[10px]">
+          <span className=" !font-[400] !text-[18px] !text-[#000000]">
+            Phone Number
+          </span>
+          <TextInput
+            radius={"md"}
+            placeholder="Enter your phone number"
+            {...form.getInputProps("phone")}
+          />
+        </div>
+
+        {/* Signup Button */}
+        <Button
+          type="submit"
+          fullWidth
+          bg={"black"}
+          disabled={bookingData.proceedToPay}
+          c={"white"}
+          radius={"md"}
+          className="!text-[18px] !font-[400]"
+          loaderProps={{ type: "dots" }}
+        >
+          Confirm Booking
+        </Button>
+      </form>
+    </section>
+  );
+}

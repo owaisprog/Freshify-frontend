@@ -104,6 +104,7 @@ import SuccessPage from "./components/SuccessPage.jsx";
 import Failure from "./components/FailurePage.jsx";
 import OrganizationOwnerPlan from "./pages/OrganizationOwner/OrganizationOwnerPlan/OrganizationOwnerPlan.jsx";
 import CheckoutPage from "./components/CheckOutPage.jsx";
+import BookingAuth from "./components/booking/BookingAuth.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -160,6 +161,7 @@ const router = createBrowserRouter(
         <Route path="professional" element={<ProfessionalStep />} />
         <Route path="services" element={<ServicesStep />} />
         <Route path="datetime" element={<DateTimeStep />} />
+        <Route path="BookingAuth" element={<BookingAuth />} />
       </Route>
       {/* Customer Booking Routes End   */}
       <Route

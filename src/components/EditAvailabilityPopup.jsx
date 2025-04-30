@@ -29,6 +29,7 @@ const EditAvailabilityPopup = ({
   const [selectedProfessionalId, setSelectedProfessionalId] = useState(null);
   const [deletingSlotId, setDeletingSlotId] = useState(null);
   const { ownerId } = useParams() || {};
+  const [professionals, setProfessionals] = useState([]);
 
   // Memoized role check
   const isBarber = useMemo(() => role === "barber", [role]);
@@ -54,7 +55,7 @@ const EditAvailabilityPopup = ({
 
   // Fetch professionals list
   const {
-    data: professionals = [],
+    data: professional = [],
     isLoading: isLoadingProfessionals,
     isError: isErrorProfessionals,
   } = useQueryHook({
@@ -67,6 +68,10 @@ const EditAvailabilityPopup = ({
   // Update loader state
   useEffect(() => {
     setIsLoader(isLoadingProfessionals);
+    const filteredProfessionals = professional?.filter(
+      (val) => val?.role === "barber"
+    );
+    setProfessionals(filteredProfessionals);
   }, [isLoadingProfessionals, setIsLoader]);
 
   // Memoized professional options

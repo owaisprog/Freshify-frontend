@@ -256,7 +256,6 @@ export default function Locations({
               event.preventDefault();
               navigate("/SuperAdminOrganization");
             }}
-            s
           />
         ) : null}
         {mode === "superadmin" ? `${name} ` : null}

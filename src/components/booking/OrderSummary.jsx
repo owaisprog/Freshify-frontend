@@ -46,6 +46,9 @@ export default function OrderSummary() {
         endpoint: "/api/create-booking",
         payload: {
           userId: id,
+          name: bookingData.userDetails?.name,
+          email: bookingData.userDetails?.email,
+          phone: bookingData.userDetails?.phone,
           endTime: calculateEndTime(
             bookingData?.time,
             totalServices,
@@ -222,7 +225,8 @@ export default function OrderSummary() {
           bookingData.professional &&
           bookingData.services.length > 0 &&
           bookingData.date &&
-          bookingData.time && (
+          bookingData.time &&
+          bookingData.proceedToPay && (
             <Button
               loading={loading}
               loaderProps={{ type: "dots" }}

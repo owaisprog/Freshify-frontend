@@ -6,6 +6,8 @@ import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
 import { Button, Loader } from "@mantine/core";
 import { handleConnectGoogle } from "../../Hooks/GoogleCalendar";
+import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const formatMidnightHours = (time24) => {
   if (!time24) return "";
@@ -15,9 +17,12 @@ const formatMidnightHours = (time24) => {
 };
 
 export default function DateTimeStep() {
+  const data = JSON.parse(localStorage.getItem("data"));
+  const token = localStorage.getItem("token");
   const [timeSlots, setTimeSlots] = useState([]);
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  const navigate = useNavigate();
   const [isFetching, setIsFetching] = useState(false);
   const { bookingData, updateBookingData } = useBookingContext();
   const initialized = useRef(false);
@@ -101,7 +106,7 @@ export default function DateTimeStep() {
       const currentDate = new Date();
       setSelectedDay(currentDate.toDateString());
       setSelectedDate(currentDate);
-      updateBookingData({ date: currentDate, time: null });
+      updateBookingData({ date: currentDate });
       initialized.current = true;
     }
   }, [updateBookingData]);
@@ -128,7 +133,13 @@ export default function DateTimeStep() {
   };
 
   const isLoading = isLoadingSlots || isFetching;
-
+  function handleAuth() {
+    if (data?.role && token) {
+      updateBookingData({ proceedToPay: true });
+    } else {
+      navigate("BookingAuth");
+    }
+  }
   return (
     <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
       <h1 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left">
@@ -154,7 +165,6 @@ export default function DateTimeStep() {
       <h2 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left mb-4">
         Available Time Slots
       </h2>
-
       {isLoading ? (
         <div className="flex justify-center py-4">
           <Loader type="bars" />
@@ -185,6 +195,20 @@ export default function DateTimeStep() {
             : "Select a date to see available slots"}
         </div>
       )}
+      {bookingData?.time && selectedDate && !bookingData.proceedToPay && (
+        <div className=" flex justify-end mt-6">
+          <Button
+            onClick={() => handleAuth()}
+            loaderProps={{ type: "bars" }}
+            bg="black"
+            radius="md"
+            rightSection={<FaArrowRight />}
+            className="!text-[18px] !px-[40px] !font-[400]  !py-[10px]"
+          >
+            Book Appointment
+          </Button>
+        </div>
+      )}{" "}
     </div>
   );
 }
