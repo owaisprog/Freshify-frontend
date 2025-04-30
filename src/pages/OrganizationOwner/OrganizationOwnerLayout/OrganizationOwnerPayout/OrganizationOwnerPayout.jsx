@@ -73,9 +73,7 @@ export default function OrganizationOwnerPayout() {
       {
         onSuccess: (data) => {
           setOpened(false);
-          toast.success("Connected Successfully", {
-            position: "top-center",
-          });
+
           window.location.href = data.url;
         },
         onError: () => {
