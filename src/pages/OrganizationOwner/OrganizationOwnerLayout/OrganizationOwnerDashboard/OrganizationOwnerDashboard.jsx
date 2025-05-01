@@ -199,8 +199,7 @@ export default function OrganizationOwnerDashboard() {
                           </div>
                           <div className=" flex-1/2">
                             <Text className="!text-[18px] !font-[400]">
-                              {/* {service.service} */}
-                              Service 1
+                              {service.service}
                             </Text>
                             <Progress
                               color="#718EBF"
