@@ -37,7 +37,7 @@ export const registerUser = async (userData) => {
     //   );
     // }
     // ✅ Store the token after login
-    localStorage.setItem("token", JSON.stringify(data.newUser.token));
+    localStorage.setItem("token", JSON.stringify(data.user.token));
     localStorage.setItem("data", JSON.stringify(data.newUser));
     return data;
   } catch (error) {

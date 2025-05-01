@@ -49,11 +49,12 @@ export default function MainRegister() {
       // //console.log(userData.newUser);
       // Simulate API call
       toast(userData.message, { position: "top-center" });
+      console.log("asd");
+      navigate("/VerifyEmail", {
+        state: { userEmail: values.email },
+      });
       setTimeout(() => {
         setLoading(false);
-        navigate("/VerifyEmail", {
-          state: { userEmail: values.email },
-        });
       }, 1500);
     } catch (error) {
       toast(error, { position: "top-center" });
