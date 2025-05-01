@@ -33,7 +33,7 @@ export default function OrganizationOwnerDashboard() {
     TotalOrders,
     WeeklyLocationSales = [],
   } = response || {};
-  console.log(response);
+  console.log(popularServices);
   // Loading and error states
   if (isServicesLoading) {
     return (
@@ -173,6 +173,11 @@ export default function OrganizationOwnerDashboard() {
                 >
                   {/* Services Section  */}
                   {popularServices.map((service, index) => {
+                    let progressValue = null;
+                    if (index === 0) progressValue = 95;
+                    if (index === 1) progressValue = 80;
+                    if (index === 2) progressValue = 60;
+                    if (index === 3) progressValue = 45;
                     return (
                       <div
                         key={index}
@@ -194,9 +199,14 @@ export default function OrganizationOwnerDashboard() {
                           </div>
                           <div className=" flex-1/2">
                             <Text className="!text-[18px] !font-[400]">
-                              {service.service}
+                              {/* {service.service} */}
+                              Service 1
                             </Text>
-                            <Progress color="#718EBF" size="lg" value={95} />
+                            <Progress
+                              color="#718EBF"
+                              size="md"
+                              value={progressValue}
+                            />
                           </div>
                         </div>
                         <Text
@@ -280,13 +290,13 @@ export default function OrganizationOwnerDashboard() {
                   All Locations By Users
                 </Text>
                 <div
-                  className={` px-2   ${LocationsByUser.length < 3 ? "h-auto" : "max-h-[220px] overflow-hidden "}   rounded-[25px] specialBorder`}
+                  className={`bg-[#FFFFFF] px-2   ${LocationsByUser.length < 3 ? "h-auto" : "max-h-[220px] overflow-hidden "}   rounded-[25px] specialBorder`}
                 >
                   {/* United State America Section  */}
                   {LocationsByUser.map((location, index) => (
                     <div
                       key={index}
-                      className={`h-[65px] mt-2 flex px-[13px]  items-center  justify-between  ${index === LocationsByUser.length - 1 ? "" : "specialBorderBottom"}`}
+                      className={` h-[65px] mt-2 flex px-[13px]  items-center  justify-between  ${index === LocationsByUser.length - 1 ? "" : "specialBorderBottom"}`}
                     >
                       <div className="flex items-center gap-2">
                         <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
