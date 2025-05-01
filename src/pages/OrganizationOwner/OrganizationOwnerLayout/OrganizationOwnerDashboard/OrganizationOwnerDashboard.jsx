@@ -3,6 +3,7 @@ import SalesChart from "../../../../components/SalesChart";
 import { useQueryHook } from "../../../../services/reactQuery";
 
 export default function OrganizationOwnerDashboard() {
+  const { id } = JSON.parse(localStorage.getItem("data")) || {};
   // Safely get stored data with null checks
   // const storedData = JSON.parse(localStorage.getItem("data") || {});
   // const { id } = storedData;
@@ -15,7 +16,7 @@ export default function OrganizationOwnerDashboard() {
   } = useQueryHook({
     queryKey: "OrganizationDashboard",
     // endpoint: id ? `/api/dashboard/67e45bf2ddeafab8b200eb2b` : null, // Prevent invalid endpoint when no ID
-    endpoint: `/api/dashboard/67e45bf2ddeafab8b200eb2b`, // Prevent invalid endpoint when no ID
+    endpoint: `/api/dashboard/${id}`, // Prevent invalid endpoint when no ID
     staleTime: 0 * 60 * 1000,
     // enabled: !!id, // Only fetch if ID exists
   });
@@ -32,7 +33,7 @@ export default function OrganizationOwnerDashboard() {
     TotalOrders,
     WeeklyLocationSales = [],
   } = response || {};
-
+  console.log(response);
   // Loading and error states
   if (isServicesLoading) {
     return (
