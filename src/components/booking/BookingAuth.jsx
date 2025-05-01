@@ -39,14 +39,12 @@ export default function BookingAuth() {
         onSubmit={form.onSubmit(handleSubmit)}
       >
         {/* Title & Login Link */}
-
         <Text
           ta={"center"}
           className="!text-[28px] !font-[400] lg:!text-[32px] lg:!font-[500]"
         >
           Enter Your Details
         </Text>
-
         {/* Input Fields */}
         <div className="flex flex-col gap-[10px]">
           <span className=" !font-[400] !text-[18px] !text-[#000000]">
@@ -68,7 +66,6 @@ export default function BookingAuth() {
             {...form.getInputProps("name")}
           />
         </div>
-
         <div className="flex flex-col gap-[10px]">
           <span className=" !font-[400] !text-[18px] !text-[#000000]">
             Phone Number
@@ -79,20 +76,21 @@ export default function BookingAuth() {
             {...form.getInputProps("phone")}
           />
         </div>
-
         {/* Signup Button */}
-        <Button
-          type="submit"
-          fullWidth
-          bg={"black"}
-          disabled={bookingData.proceedToPay}
-          c={"white"}
-          radius={"md"}
-          className="!text-[18px] !font-[400]"
-          loaderProps={{ type: "dots" }}
-        >
-          Confirm Booking
-        </Button>
+        {!bookingData.proceedToPay && (
+          <Button
+            type="submit"
+            fullWidth
+            bg={"black"}
+            disabled={bookingData.proceedToPay}
+            c={"white"}
+            radius={"md"}
+            className="!text-[18px] !font-[400]"
+            loaderProps={{ type: "dots" }}
+          >
+            Confirm Booking
+          </Button>
+        )}{" "}
       </form>
     </section>
   );

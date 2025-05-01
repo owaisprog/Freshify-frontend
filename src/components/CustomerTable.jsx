@@ -15,15 +15,13 @@ export default function CustomerTable({
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
-  // // Debugging: Only log when bookings actually changes
-  // useEffect(() => {
-  //   if (bookings && bookings.length > 0) {
-  //     console.log("Bookings data updated:", {
-  //       count: bookings.length,
-  //       firstItem: bookings[0],
-  //     });
-  //   }
-  // }, [bookings]);
+  const sortedBookings = useMemo(() => {
+    if (!bookings) return [];
+    // newest createdAt first
+    return [...bookings].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+  }, [bookings]);
 
   // Memoized table columns
   const columns = useMemo(
@@ -40,10 +38,11 @@ export default function CustomerTable({
     ],
     []
   );
+  console.log(bookings);
 
   // Memoized data transformation
   const data = useMemo(() => {
-    return bookings?.map((booking) => ({
+    return sortedBookings?.map((booking) => ({
       "": (
         <GoDotFill
           size={30}
@@ -86,7 +85,7 @@ export default function CustomerTable({
       ),
       __originalBooking: booking,
     }));
-  }, [bookings]);
+  }, [sortedBookings]);
 
   const handleSubmit = useCallback(
     (rowData) => {

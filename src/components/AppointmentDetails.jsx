@@ -201,8 +201,6 @@ export default function AppointmentDetails({
 
   return (
     <div className="flex flex-col space-y-4">
-      <Text className="text-lg font-bold mb-2">Appointment Details</Text>
-
       <div className="flex items-center justify-between">
         <Text weight={600}>Professional:</Text>
         <Text>{professionalId?.name || "N/A"}</Text>

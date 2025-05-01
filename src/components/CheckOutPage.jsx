@@ -8,7 +8,8 @@ import { Button, Title } from "@mantine/core";
 const CheckoutPage = () => {
   const navigate = useNavigate();
   const { mutate: createPayment, isPending } = usePostMutation("payment");
-
+  const data = JSON.parse(localStorage.getItem("data"));
+  const token = localStorage.getItem("token") || {};
   const location = useLocation();
   const bookingData = location.state;
   const { booking, merchantId } = bookingData || {};
@@ -34,10 +35,6 @@ const CheckoutPage = () => {
       },
       {
         onSuccess: (navigate) => {
-          toast.success("Payment  Successfull", {
-            position: "top-center",
-          });
-          console.log(navigate.url);
           window.location.href = navigate.url;
         },
         onError: () =>
@@ -47,7 +44,14 @@ const CheckoutPage = () => {
       }
     );
   }
-  console.log(bookingData, paymentMethod);
+
+  function handleCashPay() {
+    if (data?.role === "customer" && token) {
+      navigate("/CustomerDashboard");
+    } else {
+      navigate("/Login?role=customer");
+    }
+  }
   return (
     <section className=" min-h-[100dvh] flex  flex-col items-center  p-4 ">
       <Title
@@ -105,12 +109,7 @@ const CheckoutPage = () => {
         </Button>
         {paymentMethod === "cash" && (
           <Button
-            onClick={() => {
-              toast.success("Payment  Successfull", {
-                position: "top-center",
-              });
-              navigate("/Login?role=customer");
-            }}
+            onClick={handleCashPay}
             className="!bg-black !text-white mt-4 !w-full !max-w-4xl   !h-[41px] !px-[40px] !py-[10px] !rounded-lg  hover:!bg-black/80 !transition-all !duration-300 !cursor-pointer"
           >
             Cash Pay

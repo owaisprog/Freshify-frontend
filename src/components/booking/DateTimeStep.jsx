@@ -83,7 +83,7 @@ export default function DateTimeStep() {
         blockedSlots: safeBlockedSlots,
         date: DateOBJ,
       });
-
+      console.log(slots, "...........");
       setTimeSlots(slots);
     } catch (error) {
       console.error("Error generating slots:", error);
@@ -134,7 +134,7 @@ export default function DateTimeStep() {
 
   const isLoading = isLoadingSlots || isFetching;
   function handleAuth() {
-    if (data?.role && token) {
+    if (data?.role === "customer" && token) {
       updateBookingData({ proceedToPay: true });
     } else {
       navigate("/booking/BookingAuth");
@@ -196,7 +196,7 @@ export default function DateTimeStep() {
         </div>
       )}
       {bookingData?.time && selectedDate && !bookingData.proceedToPay && (
-        <div className=" flex justify-end mt-6">
+        <div className=" flex pb-[100px] lg:pb-0 justify-end mt-6">
           <Button
             onClick={() => handleAuth()}
             loaderProps={{ type: "bars" }}

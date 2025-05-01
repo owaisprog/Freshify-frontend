@@ -7,6 +7,7 @@ import {
   useUpdateMutationPut,
 } from "../../../../../services/reactQuery";
 import { toast } from "react-toastify";
+import { logoutUser } from "../../../../../services/AuthServices";
 
 export default function OrganizationsSettings() {
   const [userId, setUserId] = useState(null);
@@ -73,11 +74,11 @@ export default function OrganizationsSettings() {
         endpoint: `/api/cancel-subscription`,
       },
       {
-        onSuccess: (data) => {
-          console.log(data);
+        onSuccess: () => {
           toast.success("Subscription cancelled Successfully", {
             position: "top-center",
           });
+          logoutUser();
         },
         onError: () =>
           toast.error("Error While cancelling Subscription", {
