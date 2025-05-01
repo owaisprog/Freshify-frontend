@@ -17,7 +17,14 @@ export default function MainLogin() {
       setLoading(true);
       const userData = await loginUser(values.email, values.password, role);
       console.log("User data is :", userData);
-      toast(userData.message, { position: "top-right" });
+
+      if (role === "organization_owner") {
+        if (userData?.subscriptionStatus !== "paid") {
+          toast("Please Subscribe your Plan", { position: "top-right" });
+        }
+      } else {
+        toast(userData.message, { position: "top-right" });
+      }
       if (
         userData.user.role === "organization_owner" &&
         role === "organization_owner"
