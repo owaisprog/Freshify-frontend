@@ -76,7 +76,7 @@ export default function BookingAuth() {
             {...form.getInputProps("phone")}
           />
         </div>
-        {/* Signup Button */}
+        {/* Confirm Booking Button */}
         {!bookingData.proceedToPay && (
           <Button
             type="submit"

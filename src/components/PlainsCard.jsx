@@ -33,9 +33,12 @@ function PlainsCard({ data }) {
           <div className="mt-6">
             <p>
               <span className="text-5xl font-light tracking-tight text-black">
-                ${data?.price}
+                &euro; {data?.price}
               </span>
-              <span className="text-base font-medium text-gray-500"> /mo </span>
+              <span className="text-base font-medium text-gray-500">
+                {" "}
+                /month{" "}
+              </span>
             </p>
           </div>
         </div>

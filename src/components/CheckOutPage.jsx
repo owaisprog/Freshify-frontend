@@ -13,6 +13,7 @@ const CheckoutPage = () => {
   const location = useLocation();
   const bookingData = location.state;
   const { booking, merchantId } = bookingData || {};
+  console.log("Booking Data", bookingData);
   const {
     name,
     email,

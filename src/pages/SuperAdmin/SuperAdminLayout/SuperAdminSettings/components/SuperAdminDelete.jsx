@@ -20,7 +20,7 @@ function SuperAdminDelete() {
             // Clear localStorage
 
             // Show success message
-            toast.success("SuperAdmin deleted successfully!");
+            toast.success("Deleted successfully!");
 
             // Redirect to home page
             navigate("/SuperAdminOrganization");
