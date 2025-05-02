@@ -3,6 +3,7 @@ import { useQueryHook } from "../../../../services/reactQuery";
 import SalesChart from "../../../../components/SalesChart";
 
 export default function OrganizationOwnerDashboard() {
+  const { id } = JSON.parse(localStorage.getItem("data")) || {};
   // Safely get stored data with null checks
   // const storedData = JSON.parse(localStorage.getItem("data") || {});
   // const { id } = storedData;
@@ -15,7 +16,7 @@ export default function OrganizationOwnerDashboard() {
   } = useQueryHook({
     queryKey: "OrganizationDashboard",
     // endpoint: id ? `/api/dashboard/67e45bf2ddeafab8b200eb2b` : null, // Prevent invalid endpoint when no ID
-    endpoint: `/api/dashboard/67e45bf2ddeafab8b200eb2b`, // Prevent invalid endpoint when no ID
+    endpoint: `/api/dashboard/${id}`, // Prevent invalid endpoint when no ID
     staleTime: 0 * 60 * 1000,
     // enabled: !!id, // Only fetch if ID exists
   });
@@ -81,7 +82,7 @@ export default function OrganizationOwnerDashboard() {
               {/* Sales Section  */}
               <section className=" ">
                 <Text className="!text-[22px] !font-[700]">Sales</Text>
-                <div className="bg-[#FFFFFF]  px-2 rounded-[25px] specialBorder ">
+                <div className="bg-[#FFFFFF] min-h-[200px] max-h-[200px]  px-2 rounded-[25px] specialBorder ">
                   {/* Total Sales Section  */}
                   <div className="h-[99px] flex px-[13px]  items-center  justify-between  specialBorderBottom">
                     <div className="flex items-center gap-2">
@@ -123,8 +124,12 @@ export default function OrganizationOwnerDashboard() {
               {/* Sales Section  */}
               <section className="  ">
                 <Text className="!text-[22px] !font-[700]">Top Performers</Text>
-                <div className="bg-[#FFFFFF] px-2 rounded-[25px] specialBorder ">
-                  {/* Total Sales Section 12,996 */}
+                <div className="bg-[#FFFFFF] h-[200px] max-h-[200px] px-2 rounded-[25px] specialBorder ">
+                  {TopPerformer.length <= 0 ? (
+                    <div className=" flex items-center justify-center h-full">
+                      <p>No data Available</p>
+                    </div>
+                  ) : null}
                   {TopPerformer.map((performer, index) => (
                     <div
                       key={index}
@@ -168,9 +173,14 @@ export default function OrganizationOwnerDashboard() {
                   Popular Services
                 </Text>
                 <div
-                  className={`bg-[#FFFFFF] p-[20px]  flex flex-col justify-between rounded-[25px] specialBorder ${popularServices.length < 4 ? "h-auto" : "h-[322px] overflow-hidden "}`}
+                  className={`bg-[#FFFFFF] p-[20px]  flex flex-col justify-between rounded-[25px] specialBorder ${popularServices.length < 4 ? "h-[322px]" : "h-[322px] overflow-hidden "}`}
                 >
                   {/* Services Section  */}
+                  {popularServices.length <= 0 ? (
+                    <div className=" flex items-center justify-center h-full">
+                      <p>No data Available</p>
+                    </div>
+                  ) : null}
                   {popularServices.map((service, index) => {
                     return (
                       <div
@@ -279,9 +289,14 @@ export default function OrganizationOwnerDashboard() {
                   All Locations By Users
                 </Text>
                 <div
-                  className={` px-2   ${LocationsByUser.length < 3 ? "h-auto" : "max-h-[220px] overflow-hidden "}   rounded-[25px] specialBorder`}
+                  className={` bg-[#FFFFFF] px-2   ${LocationsByUser.length < 3 ? "h-[220px]" : "max-h-[220px] overflow-hidden "}   rounded-[25px] specialBorder`}
                 >
                   {/* United State America Section  */}
+                  {LocationsByUser.length <= 0 ? (
+                    <div className=" flex items-center justify-center h-full">
+                      <p>No data Available</p>
+                    </div>
+                  ) : null}
                   {LocationsByUser.map((location, index) => (
                     <div
                       key={index}

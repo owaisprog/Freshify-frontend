@@ -515,7 +515,7 @@ export default function Locations({
           placeholder="Enter Location Description"
           id="description"
         />
-        <Popup.SubmitButton loading={loading}>Update</Popup.SubmitButton>
+        <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
       </Popup>
       {/* Modal for Address & Description */}
       <Modal
@@ -524,6 +524,7 @@ export default function Locations({
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
         title={modalTitle}
+        classNames={{ title: "!text-xl !font-bold" }}
         centered
         radius={"lg"}
         overlayProps={{
@@ -539,6 +540,7 @@ export default function Locations({
         opened={workingHoursModalOpen}
         onClose={() => setWorkingHoursModalOpen(false)}
         title="Edit Working Hours"
+        classNames={{ title: "!text-xl !font-bold" }}
         centered
         closeOnClickOutside={false}
         overlayProps={{

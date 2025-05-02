@@ -55,7 +55,7 @@ export default function LocationStep() {
             justify-center bg-[#FFFFFF] rounded-3xl border specialBorder hover:border-none
              transition-all duration-500"
           >
-            <p className="text-[24px] lg:text-[32px] font-[700]">
+            <p className="text-[24px] lg:text-[32px] capitalize font-[700]">
               {location.name}
             </p>
           </button>

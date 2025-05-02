@@ -317,6 +317,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
         opened={servicesModalOpen}
         onClose={() => setServicesModalOpen(false)}
         title="Services"
+        classNames={{ title: "!text-xl !font-bold" }}
         centered
       >
         <div>

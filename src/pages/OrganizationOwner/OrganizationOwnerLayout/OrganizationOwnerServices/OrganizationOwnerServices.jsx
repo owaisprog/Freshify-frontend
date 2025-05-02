@@ -412,6 +412,7 @@ function OrganizationOwnerServices() {
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
         title="Description"
+        classNames={{ title: "!text-xl !font-bold" }}
         centered
       >
         <p>{modalContent}</p>

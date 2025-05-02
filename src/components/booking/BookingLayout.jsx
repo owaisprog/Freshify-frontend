@@ -9,10 +9,10 @@ export default function BookingLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="flex flex-col md:flex-row md:py-6 justify-between gap-10   md:px-10  min-h-screen">
+    <div className="flex flex-col md:flex-row md:py-6 justify-between gap-10  md:px-6  min-h-screen">
       {/* Main Content */}
       <div className="flex-1 text-black max-w-[1207px]  w-full  ">
-        <section className=" lg:hidden mb-8 h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
+        <section className=" lg:hidden  mb-8 h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
           <Image
             radius="md"
             className="object-contain  w-full lg:w-[60%]  "
@@ -24,7 +24,7 @@ export default function BookingLayout() {
       </div>
 
       {/* Desktop Order Summary */}
-      <div className="hidden lg:block ">
+      <div className="hidden  lg:block ">
         <OrderSummary />
       </div>
 

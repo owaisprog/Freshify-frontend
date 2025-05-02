@@ -67,7 +67,9 @@ export default function ProfessionalStep() {
                 </p>
                 <p className="text-[18px] text-left font-[700]">
                   Availability:{" "}
-                  <span className="font-normal">{pro.availability}</span>
+                  <span className="font-normal capitalize">
+                    {pro.availability}
+                  </span>
                 </p>
               </div>
             </div>

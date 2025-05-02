@@ -303,6 +303,7 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
         closeOnClickOutside={false}
         opened={servicesModalOpen}
         onClose={() => setServicesModalOpen(false)}
+        classNames={{ title: "!text-xl !font-bold" }}
         title="Services"
         centered
       >
