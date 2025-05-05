@@ -16,6 +16,10 @@ function SuccessPage({ id, key, endpoint, navigateURL }) {
   });
 
   useEffect(() => {
+    if (navigateURL === "OrganizationOwnerDashboard") {
+      localStorage.setItem("subscriptionStatus", "paid");
+    }
+
     if (isSuccess) {
       const timer = setTimeout(() => {
         navigate(navigateURL); // Redirect to login page after 10 seconds
