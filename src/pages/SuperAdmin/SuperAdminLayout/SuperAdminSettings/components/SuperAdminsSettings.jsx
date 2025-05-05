@@ -77,15 +77,6 @@ export default function SuperAdminsSettings() {
           />
         </div>
       </div>
-
-      <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF] px-2">
-        <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
-          Delete Account
-        </span>
-        <Button className="!w-[120px] lg:w-[131px] " bg="black" radius="md">
-          Delete
-        </Button>
-      </div>
     </section>
   );
 }

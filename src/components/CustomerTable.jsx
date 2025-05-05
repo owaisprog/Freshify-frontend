@@ -4,6 +4,7 @@ import { GoDotFill } from "react-icons/go";
 import { useState, useMemo, useCallback } from "react";
 import AppointmentDetails from "./AppointmentDetails";
 import { handleConnectGoogle } from "../Hooks/GoogleCalendar";
+import { useNavigate } from "react-router-dom";
 
 export default function CustomerTable({
   bookings,
@@ -14,6 +15,8 @@ export default function CustomerTable({
 }) {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
+
+  const navigate = useNavigate();
 
   const sortedBookings = useMemo(() => {
     if (!bookings) return [];
@@ -97,12 +100,29 @@ export default function CustomerTable({
     [role]
   );
 
+  console.log("User Role is ", role);
   return (
     <div className="flex flex-col max-w-[1440px] mx-auto w-full   ">
       <div className="flex justify-between items-center">
-        <Text className="!text-[18px] !py-6 !font-[400] lg:!text-[22px] lg:!font-[700] mb-6">
-          My Appointments
-        </Text>
+        <div className="flex flex-col mb-4 sm:mb-0 sm:flex-row items-center justify-between  w-full">
+          <Text className="!text-[18px] !py-4 !font-[400] lg:!text-[22px] lg:!font-[700] ">
+            My Appointments
+          </Text>
+
+          {role === "customer" && (
+            <Button
+              bg="black"
+              radius="md"
+              fw={"normal"}
+              className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
+              onClick={() => {
+                navigate("/booking");
+              }}
+            >
+              Book Appointment
+            </Button>
+          )}
+        </div>
         {role === "barber" && (
           <Button
             bg={"black"}

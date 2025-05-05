@@ -122,7 +122,7 @@ const router = createBrowserRouter(
             id="session_id"
             key="success"
             endpoint="/api/success?session_id"
-            navigateURL="/Login?role=organization_owner"
+            navigateURL="/OrganizationOwnerDashboard"
           />
         }
       />
@@ -177,6 +177,9 @@ const router = createBrowserRouter(
             </Link>
             <Link to="/Login?role=organization_owner">
               <li>Organization owner</li>
+            </Link>
+            <Link to="/booking">
+              <li>Book Appointment</li>
             </Link>
           </ul>
         }

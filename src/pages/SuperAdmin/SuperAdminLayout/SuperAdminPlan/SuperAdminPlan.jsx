@@ -101,7 +101,7 @@ function SuperAdminPlan() {
                   loaderProps={{ type: "bars" }}
                   type="submit"
                   color="#040707"
-                  radius="xl"
+                  radius="md"
                   fullWidth
                   disabled={!plan._id}
                 >

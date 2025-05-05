@@ -11,6 +11,7 @@ import { logoutUser } from "../../../../../services/AuthServices";
 
 export default function OrganizationsSettings() {
   const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   /* -------------------- QUERY + MUTATION -------------------- */
   const queryKey = ["bookingTime"];
@@ -69,21 +70,25 @@ export default function OrganizationsSettings() {
 
   /* -------------------- Cancel Subscription -------------------- */
   function handleCancelSubscription() {
+    setLoading(true);
     cancelSubscription(
       {
         endpoint: `/api/cancel-subscription`,
       },
       {
         onSuccess: () => {
+          setLoading(false);
           toast.success("Subscription cancelled Successfully", {
             position: "top-center",
           });
           logoutUser();
         },
-        onError: () =>
+        onError: () => {
+          setLoading(false);
           toast.error("Error While cancelling Subscription", {
             position: "top-center",
-          }),
+          });
+        },
       }
     );
   }
@@ -120,6 +125,8 @@ export default function OrganizationsSettings() {
         <Button
           className="!w-[123px] lg:!w-[240px]"
           bg="black"
+          loading={loading}
+          loaderProps={{ type: "bars" }}
           radius="md"
           onClick={handleCancelSubscription}
         >
@@ -183,15 +190,6 @@ export default function OrganizationsSettings() {
             }}
           />
         </div>
-      </div>
-
-      <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF] px-2">
-        <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
-          Delete Account
-        </span>
-        <Button className="!w-[120px] lg:!w-[131px]" bg="black" radius="md">
-          Delete
-        </Button>
       </div>
     </section>
   );
