@@ -12,6 +12,8 @@ import { logoutUser } from "../../../../../services/AuthServices";
 export default function OrganizationsSettings() {
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [bookingLoading, setBookingLoading] = useState(false);
+  const [restrictionLoading, setRestrictionLoading] = useState(false);
 
   /* -------------------- QUERY + MUTATION -------------------- */
   const queryKey = ["bookingTime"];
@@ -28,12 +30,25 @@ export default function OrganizationsSettings() {
   /* -------------------- UPDATE HELPER -------------------- */
   // Accepts an object with either {bookingWindowMonths} or {timeRestrictionHours}
   const updateSettings = (partial) => {
+    if (partial.bookingWindowMonths) {
+      setBookingLoading(true);
+    } else {
+      setRestrictionLoading(true);
+    }
     updateBookingTime(
       { endpoint: "/api/update-months", payload: partial },
       {
-        onSuccess: () =>
-          toast.success("Settings updated", { position: "top-center" }),
-        onError: () => toast.error("Update failed", { position: "top-center" }),
+        onSuccess: () => {
+          setBookingLoading(false);
+          setRestrictionLoading(false);
+          toast.success("Settings updated", { position: "top-center" });
+        },
+
+        onError: () => {
+          setBookingLoading(false);
+          setRestrictionLoading(false);
+          toast.error("Update failed", { position: "top-center" });
+        },
       }
     );
   };
@@ -101,20 +116,28 @@ export default function OrganizationsSettings() {
           Clients Advance Booking Time
         </span>
         <div className="w-[97px] lg:w-[154px] h-[40px]">
-          <CustomSelect
-            data={bookingTimeOptions}
-            value={bookingTime.bookingWindowMonths?.toString() || ""}
-            onChange={(v) => updateSettings({ bookingWindowMonths: Number(v) })}
-            styles={{
-              input: {
-                border: "none",
-                borderBottom: "1px solid black",
-                borderRadius: 0,
-                fontSize: "14px",
-                backgroundColor: "transparent",
-              },
-            }}
-          />
+          {bookingLoading ? (
+            <div className=" w-full flex items-center justify-center">
+              <Loader type="bars" size={"sm"} />
+            </div>
+          ) : (
+            <CustomSelect
+              data={bookingTimeOptions}
+              value={bookingTime.bookingWindowMonths?.toString() || ""}
+              onChange={(v) =>
+                updateSettings({ bookingWindowMonths: Number(v) })
+              }
+              styles={{
+                input: {
+                  border: "none",
+                  borderBottom: "1px solid black",
+                  borderRadius: 0,
+                  fontSize: "14px",
+                  backgroundColor: "transparent",
+                },
+              }}
+            />
+          )}
         </div>
       </div>
 
@@ -170,25 +193,31 @@ export default function OrganizationsSettings() {
           Time Restriction For Rescheduling/Cancelation
         </span>
         <div className="w-[113px] lg:w-[154px]">
-          <CustomSelect
-            data={rescheduleOptions}
-            value={bookingTime.timeRestrictionHours?.toString() || ""}
-            onChange={(v) =>
-              updateSettings({
-                timeRestrictionHours: Number(v),
-                // bookingWindowMonths: Number(bookingTime.bookingWindowMonths),
-              })
-            }
-            styles={{
-              input: {
-                border: "none",
-                borderBottom: "1px solid black",
-                borderRadius: 0,
-                fontSize: "14px",
-                backgroundColor: "transparent",
-              },
-            }}
-          />
+          {restrictionLoading ? (
+            <div className=" w-full flex items-center justify-center">
+              <Loader type="bars" size={"sm"} />
+            </div>
+          ) : (
+            <CustomSelect
+              data={rescheduleOptions}
+              value={bookingTime.timeRestrictionHours?.toString() || ""}
+              onChange={(v) =>
+                updateSettings({
+                  timeRestrictionHours: Number(v),
+                  // bookingWindowMonths: Number(bookingTime.bookingWindowMonths),
+                })
+              }
+              styles={{
+                input: {
+                  border: "none",
+                  borderBottom: "1px solid black",
+                  borderRadius: 0,
+                  fontSize: "14px",
+                  backgroundColor: "transparent",
+                },
+              }}
+            />
+          )}
         </div>
       </div>
     </section>

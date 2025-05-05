@@ -223,7 +223,7 @@ export default function OrganizationOwnerDashboard() {
           </section>
 
           {/* Third Section  */}
-          <section className=" max-w-[1440px] mx-auto w-full px-2 lg:px-0 flex justify-between flex-col w-full  lg:flex-row gap-8">
+          <section className=" max-w-[1440px] mx-auto pb-6 px-2 lg:px-0 flex justify-between flex-col w-full  lg:flex-row gap-8">
             {/* Sales and Top performer section  */}
             <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
               {/* Sales Section  */}

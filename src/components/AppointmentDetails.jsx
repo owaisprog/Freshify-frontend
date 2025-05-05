@@ -243,12 +243,12 @@ export default function AppointmentDetails({
       </div>
 
       <div className="flex items-center justify-between">
-        <Text weight={600}>Current Date:</Text>
+        <Text weight={600}>Booking Date:</Text>
         <Text>{format(new Date(bookingDate), "MMM dd, yyyy")}</Text>
       </div>
 
       <div className="flex items-center justify-between">
-        <Text weight={600}>Current Time:</Text>
+        <Text weight={600}>Booking Time:</Text>
         <Text>
           {bookingTime} - {endTime}
         </Text>
@@ -330,7 +330,7 @@ export default function AppointmentDetails({
           disabled={!selectedDate || !selectedTime || isPastRescheduleWindow}
         >
           {isPastRescheduleWindow
-            ? "Reschedule Window Expired"
+            ? "Reschedule Time Expired"
             : "Update Booking"}
         </Button>
         <Button

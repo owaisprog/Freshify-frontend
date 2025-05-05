@@ -33,7 +33,9 @@ export default function OrganizationOwnerDashboard() {
     TotalOrders,
     WeeklyLocationSales = [],
   } = response || {};
-  console.log(popularServices);
+
+  console.log("Dashboard Response", response);
+
   // Loading and error states
   if (isServicesLoading) {
     return (
@@ -173,7 +175,7 @@ export default function OrganizationOwnerDashboard() {
                   Popular Services
                 </Text>
                 <div
-                  className={`bg-[#FFFFFF] p-[20px]  flex flex-col justify-between rounded-[25px] specialBorder ${popularServices.length < 4 ? "h-[322px]" : "h-[322px] overflow-hidden "}`}
+                  className={`bg-[#FFFFFF] p-[20px]  flex flex-col  rounded-[25px] specialBorder ${popularServices.length < 4 ? "h-[322px]" : "h-[322px] overflow-hidden "}`}
                 >
                   {/* Services Section  */}
                   {popularServices.length <= 0 ? (
@@ -232,7 +234,7 @@ export default function OrganizationOwnerDashboard() {
           </section>
 
           {/* Third Section  */}
-          <section className="  max-w-[1440px] mx-auto px-2 lg:px-0 flex justify-between flex-col w-full  lg:flex-row gap-8">
+          <section className="  max-w-[1440px]  pb-6 mx-auto px-2 lg:px-0 flex justify-between flex-col w-full  lg:flex-row gap-8">
             {/* Sales and Top performer section  */}
             <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
               {/* Sales Section  */}

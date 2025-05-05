@@ -133,7 +133,7 @@ const router = createBrowserRouter(
             id="session_id"
             key="success"
             endpoint="/api/payment-success?session_id"
-            navigateURL="/Login?role=customer"
+            navigateURL="/CustomerDashboard"
           />
         }
       />

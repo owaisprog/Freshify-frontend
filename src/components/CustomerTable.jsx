@@ -18,6 +18,8 @@ export default function CustomerTable({
 
   const navigate = useNavigate();
 
+  console.log("Bookings are", bookings);
+
   const sortedBookings = useMemo(() => {
     if (!bookings) return [];
     // newest createdAt first
@@ -59,7 +61,7 @@ export default function CustomerTable({
       Price: `$${booking.totalPrice}`,
       Payment: booking.paymentMethod,
       Date: new Date(booking.bookingDate).toLocaleDateString(),
-      Time: booking.bookingTime,
+      Time: `${booking.bookingTime} - ${booking.endTime}`,
       Status: (
         <Text
           className="!rounded-[3px] !p-[4px] !text-white !text-center"
@@ -90,15 +92,12 @@ export default function CustomerTable({
     }));
   }, [sortedBookings]);
 
-  const handleSubmit = useCallback(
-    (rowData) => {
-      if (!role || role === "customer") return;
-      console.log("Row clicked:", rowData.__originalBooking);
-      setSelectedData(rowData.__originalBooking);
-      setIsPopupOpen(true);
-    },
-    [role]
-  );
+  const handleSubmit = useCallback((rowData) => {
+    // if (!role || role === "customer") return;
+    console.log("Row clicked:", rowData.__originalBooking);
+    setSelectedData(rowData.__originalBooking);
+    setIsPopupOpen(true);
+  }, []);
 
   console.log("User Role is ", role);
   return (
