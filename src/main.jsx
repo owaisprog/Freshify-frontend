@@ -129,14 +129,12 @@ const router = createBrowserRouter(
       <Route
         path="/payment-success"
         element={
-          <ProtectedRoute requiredRole="customer">
-            <SuccessPage
-              id="session_id"
-              key="success"
-              endpoint="/api/payment-success?session_id"
-              navigateURL="/CustomerDashboard"
-            />
-          </ProtectedRoute>
+          <SuccessPage
+            id="session_id"
+            key="success"
+            endpoint="/api/payment-success?session_id"
+            navigateURL="/Login?role=customer"
+          />
         }
       />
       <Route
@@ -179,9 +177,6 @@ const router = createBrowserRouter(
             </Link>
             <Link to="/Login?role=organization_owner">
               <li>Organization owner</li>
-            </Link>
-            <Link to="/booking">
-              <li>Book Appointment</li>
             </Link>
           </ul>
         }
