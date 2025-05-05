@@ -129,12 +129,14 @@ const router = createBrowserRouter(
       <Route
         path="/payment-success"
         element={
-          <SuccessPage
-            id="session_id"
-            key="success"
-            endpoint="/api/payment-success?session_id"
-            navigateURL="/CustomerDashboard"
-          />
+          <ProtectedRoute requiredRole="customer">
+            <SuccessPage
+              id="session_id"
+              key="success"
+              endpoint="/api/payment-success?session_id"
+              navigateURL="/CustomerDashboard"
+            />
+          </ProtectedRoute>
         }
       />
       <Route

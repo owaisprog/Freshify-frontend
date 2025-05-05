@@ -15,8 +15,6 @@ function SuccessPage({ id, key, endpoint, navigateURL }) {
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
 
-  console.log("Navigate Url is :", navigateURL);
-
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
