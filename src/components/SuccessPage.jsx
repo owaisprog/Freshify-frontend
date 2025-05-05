@@ -16,7 +16,7 @@ function SuccessPage({ id, key, endpoint, navigateURL }) {
   });
 
   useEffect(() => {
-    if (navigateURL === "OrganizationOwnerDashboard") {
+    if (navigateURL === "/OrganizationOwnerDashboard") {
       localStorage.setItem("subscriptionStatus", "paid");
     }
 
