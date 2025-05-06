@@ -178,6 +178,9 @@ const router = createBrowserRouter(
             <Link to="/Login?role=organization_owner">
               <li>Organization owner</li>
             </Link>
+            <Link to="/booking">
+              <li>Book Appointment</li>
+            </Link>
           </ul>
         }
       />{" "}
