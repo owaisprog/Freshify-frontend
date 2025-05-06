@@ -30,7 +30,7 @@ export default function LocationStep() {
     endpoint: `/api/public/locations/${id}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
-  console.log(locations);
+  //consoe.log(locations);
   const handleSelect = (location) => {
     updateBookingData({ location });
     navigate("/booking/professional");

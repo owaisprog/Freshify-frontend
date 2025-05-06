@@ -81,7 +81,7 @@ function SuperAdminServices() {
               (service) => service._id !== id
             );
             queryClient.setQueryData(["services"], updatedServices);
-            // //console.log("Service deleted successfully!");
+            // // //consoe.log("Service deleted successfully!");
           },
           onError: () => {
             setIsDeleting(null);

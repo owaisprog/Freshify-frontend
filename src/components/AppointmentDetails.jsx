@@ -29,7 +29,7 @@ export default function AppointmentDetails({
     createdAt,
     _id,
   } = booking;
-  console.log(booking, "appotiment details");
+  //consoe.log(booking, "appotiment details");
   const [selectedDate, setSelectedDate] = useState(new Date(bookingDate));
   const [selectedTime, setSelectedTime] = useState(null);
   const [timeSlots, setTimeSlots] = useState([]);
@@ -49,7 +49,7 @@ export default function AppointmentDetails({
       const bookingDateTime = new Date(createdAt);
       const currentDateTime = new Date();
       const rescheduleCutoff = addHours(bookingDateTime, resecduleTimeLimit);
-      console.log(rescheduleCutoff);
+      //consoe.log(rescheduleCutoff);
       return isAfter(currentDateTime, rescheduleCutoff);
     } catch (error) {
       console.error("Error calculating reschedule window:", error);

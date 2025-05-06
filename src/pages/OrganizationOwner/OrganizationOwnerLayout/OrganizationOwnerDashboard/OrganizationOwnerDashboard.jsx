@@ -34,7 +34,7 @@ export default function OrganizationOwnerDashboard() {
     WeeklyLocationSales = [],
   } = response || {};
 
-  console.log("Dashboard Response", response);
+  //consoe.log("Dashboard Response", response);
 
   // Loading and error states
   if (isServicesLoading) {

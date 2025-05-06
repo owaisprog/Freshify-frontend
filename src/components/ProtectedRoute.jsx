@@ -25,7 +25,7 @@ const ProtectedRoute = ({ requiredRole, path, children }) => {
       />
     );
   }
-  console.log(user?.role === "organization_owner", typeof subscriptionStatus);
+  //consoe.log(user?.role === "organization_owner", typeof subscriptionStatus);
 
   if (user?.role === "organization_owner" && subscriptionStatus === "unpaid") {
     return <Navigate to={"/owner-plans"} replace />;

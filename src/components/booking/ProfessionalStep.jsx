@@ -13,7 +13,7 @@ import { Loader } from "@mantine/core";
 export default function ProfessionalStep() {
   const { updateBookingData, bookingData } = useBookingContext();
   const { _id } = bookingData.location || {};
-  console.log(_id, "id");
+  //consoe.log(_id, "id");
   const navigate = useNavigate();
 
   // useEffect(() => {

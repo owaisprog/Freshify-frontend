@@ -4,7 +4,7 @@ import { usePostMutation } from "../services/reactQuery";
 function PlainsCard({ data }) {
   const { mutate: selectPlan, isPending } = usePostMutation("plan");
   function handleSubscribe(data) {
-    console.log(data);
+    //consoe.log(data);
     selectPlan(
       {
         endpoint: `/api/subscribe`,
@@ -12,7 +12,7 @@ function PlainsCard({ data }) {
       },
       {
         onSuccess: (redirect) => {
-          console.log(redirect);
+          //consoe.log(redirect);
           window.location.href = redirect.url;
         },
         onError: () => {},

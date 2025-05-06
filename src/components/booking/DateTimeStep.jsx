@@ -34,7 +34,7 @@ export default function DateTimeStep() {
     staleTime: 5 * 60 * 1000, // Cache for 15 minutes
   });
 
-  console.log("Advance Booking Data", bookingTime);
+  //consoe.log("Advance Booking Data", bookingTime);
 
   const formattedUTC = selectedDate
     ? format(new Date(selectedDate), "yyyy-MM-dd")
@@ -92,7 +92,7 @@ export default function DateTimeStep() {
         blockedSlots: safeBlockedSlots,
         date: DateOBJ,
       });
-      console.log(slots, "...........");
+      //consoe.log(slots, "...........");
       setTimeSlots(slots);
     } catch (error) {
       console.error("Error generating slots:", error);

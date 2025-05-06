@@ -11,7 +11,7 @@ export default function CustomerDashboard() {
     staleTime: 5 * 60 * 1000, // Cache for 15 minutes
   });
 
-  console.log("Booking Time is ", bookingTime);
+  //consoe.log("Booking Time is ", bookingTime);
 
   const { role } = JSON.parse(localStorage.getItem("data")) || {};
   const {

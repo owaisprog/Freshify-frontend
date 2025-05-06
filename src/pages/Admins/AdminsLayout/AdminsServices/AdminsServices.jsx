@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 function AdminsServices() {
   const { location, createdBy } = JSON.parse(localStorage.getItem("data"));
 
-  //console.log(location, email, id);
+  // //consoe.log(location, email, id);
 
   const {
     data: services = [],
@@ -72,7 +72,7 @@ function AdminsServices() {
               (service) => service._id !== id
             );
             queryClient.setQueryData(["services"], updatedServices);
-            // //console.log("Service deleted successfully!");
+            // // //consoe.log("Service deleted successfully!");
             toast.success("Service Delete Successfully", {
               position: "top-center",
             });

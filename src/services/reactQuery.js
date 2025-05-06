@@ -29,7 +29,7 @@ export const usePostMutation = (queryKey) => {
       queryClient.invalidateQueries([queryKey]); // ✅ Auto-refetch after mutation
     },
     onError: (err) => {
-      //console.log(err);
+      // //consoe.log(err);
     },
   });
   return {

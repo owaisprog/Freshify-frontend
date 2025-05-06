@@ -24,7 +24,7 @@ export default function ServicesStep() {
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
     enabled: !!_id,
   });
-  console.log(services);
+  //consoe.log(services);
   // useEffect(() => {
   //   if (!bookingData.professional) navigate("/booking/services");
   // }, []);

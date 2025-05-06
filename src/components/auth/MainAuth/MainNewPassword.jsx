@@ -19,7 +19,7 @@ export default function MainNewPassword() {
       });
 
       setLoading(false);
-      console.log(resetRequest);
+      //consoe.log(resetRequest);
       navigate(`/Login?role=${resetRequest.role}`);
 
       // role: "customer"

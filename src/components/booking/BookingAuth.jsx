@@ -26,9 +26,9 @@ export default function BookingAuth() {
   const handleSubmit = async (values) => {
     try {
       updateBookingData({ userDetails: values, proceedToPay: true });
-      console.log(values, bookingData);
+      //consoe.log(values, bookingData);
     } catch (error) {
-      console.log(error);
+      //consoe.log(error);
     }
   };
 

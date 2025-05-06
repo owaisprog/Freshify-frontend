@@ -93,7 +93,7 @@ export default function CalendarPage({
       updateSeen({
         endpoint: `/api/is-seen/${val?._id}`,
       });
-      console.log(val);
+      //consoe.log(val);
     });
   }, [updateSeen, role, bookings]);
 

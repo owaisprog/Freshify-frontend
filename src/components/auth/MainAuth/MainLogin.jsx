@@ -16,7 +16,7 @@ export default function MainLogin() {
     try {
       setLoading(true);
       const userData = await loginUser(values.email, values.password, role);
-      console.log("User data is :", userData);
+      //consoe.log("User data is :", userData);
 
       if (role === "organization_owner") {
         if (userData?.subscriptionStatus !== "paid") {

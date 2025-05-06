@@ -62,7 +62,7 @@ export default function Locations({
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        console.log("link copied");
+        //consoe.log("link copied");
       })
       .catch((err) => {
         console.error("Failed to copy: ", err);
@@ -77,7 +77,7 @@ export default function Locations({
     endpoint: endPointGet,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
-  console.log(locations);
+  //consoe.log(locations);
   const queryClient = useQueryClient();
 
   const DelLocation = (delId) => {
@@ -89,7 +89,7 @@ export default function Locations({
         { endpoint: `/api/delete-location/${delId}` },
         {
           onSuccess: () => {
-            //console.log(responseData);
+            // //consoe.log(responseData);
             queryClient.invalidateQueries({ queryKey: ["locations", id] });
             window.location.reload();
             toast.success("Location Deleted Successfully", {
@@ -178,7 +178,7 @@ export default function Locations({
   });
   const handleSubmit = (values) => {
     setLoading(true);
-    console.log(values);
+    //consoe.log(values);
 
     // Convert "enableCashPayments" from string to boolean
     let payload = {

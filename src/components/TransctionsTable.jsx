@@ -17,7 +17,7 @@ function TransactionsTable({ endpoint }) {
   const columns = ["name", "amount", "bookingDate", "Time"]; // Changed "timeSlot" to "Time"
 
   const handleSubmit = (row) => {
-    console.log("Row clicked:", row);
+    //consoe.log("Row clicked:", row);
     // You can add your custom logic here when a row is clicked
   };
 

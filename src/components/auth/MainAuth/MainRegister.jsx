@@ -45,11 +45,11 @@ export default function MainRegister() {
       setLoading(true);
       //register
       const userData = await registerUser(values, role);
-      // //console.log(userData);
-      // //console.log(userData.newUser);
+      // // //consoe.log(userData);
+      // // //consoe.log(userData.newUser);
       // Simulate API call
       toast(userData.message, { position: "top-center" });
-      console.log("asd");
+      //consoe.log("asd");
       navigate("/VerifyEmail", {
         state: { userEmail: values.email },
       });

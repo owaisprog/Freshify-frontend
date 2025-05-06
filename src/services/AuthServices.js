@@ -30,7 +30,7 @@ export const loginUser = async (email, password, role) => {
 export const registerUser = async (userData) => {
   try {
     const data = await apiPost("/api/register", userData);
-    // //console.log(data);
+    // // //consoe.log(data);
     // if (data && data.user.role !== role) {
     //   throw new Error(
     //     "Unauthorized: You do not have permission to access this page."

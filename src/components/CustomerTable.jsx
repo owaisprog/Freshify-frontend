@@ -26,7 +26,7 @@ export default function CustomerTable({
 
   const navigate = useNavigate();
 
-  console.log("Bookings are", bookings);
+  //consoe.log("Bookings are", bookings);
 
   const sortedBookings = useMemo(() => {
     if (!bookings) return [];
@@ -51,7 +51,7 @@ export default function CustomerTable({
     ],
     []
   );
-  console.log(bookings);
+  //consoe.log(bookings);
 
   // Memoized data transformation
   const data = useMemo(() => {
@@ -95,12 +95,12 @@ export default function CustomerTable({
 
   const handleSubmit = useCallback((rowData) => {
     // if (!role || role === "customer") return;
-    console.log("Row clicked:", rowData.__originalBooking);
+    //consoe.log("Row clicked:", rowData.__originalBooking);
     setSelectedData(rowData.__originalBooking);
     setIsPopupOpen(true);
   }, []);
 
-  console.log("User Role is ", role);
+  //consoe.log("User Role is ", role);
   return (
     <div className="flex flex-col max-w-[1440px] mx-auto w-full   ">
       <div className="flex justify-between items-center">
