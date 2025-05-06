@@ -142,7 +142,7 @@ const Calendar = ({
                         ? "bg-[#E9E9E9]  text-black"
                         : isPastDate
                           ? "bg-[#E9E9E9] text-gray-400 cursor-not-allowed"
-                          : "bg-[#E9E9E9]/30 text-black"
+                          : "!bg-red-500 text-black"
                   }`}
                   disabled={isPastDate}
                 >
