@@ -1,10 +1,18 @@
 import { Title } from "@mantine/core";
 import CustomerTable from "../../../../components/CustomerTable";
-import { usePostMutation } from "../../../../services/reactQuery";
+import { usePostMutation, useQueryHook } from "../../../../services/reactQuery";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 export default function CustomerDashboard() {
+  const { data: bookingTime = {} } = useQueryHook({
+    queryKey: ["bookingTime"],
+    endpoint: `/api/get-months`,
+    staleTime: 5 * 60 * 1000, // Cache for 15 minutes
+  });
+
+  console.log("Booking Time is ", bookingTime);
+
   const { role } = JSON.parse(localStorage.getItem("data")) || {};
   const {
     data: bookings = [],
@@ -27,6 +35,7 @@ export default function CustomerDashboard() {
     };
     fetchBookings();
   }, [getMutateBookings, role]);
+
   return (
     <main className="pt-20 grid grid-cols-1 gap-y-5  lg:pt-0 lg:gap-6  p-6 lg:p-0  ">
       <div>
@@ -42,6 +51,7 @@ export default function CustomerDashboard() {
         isLoading={isLoading}
         error={error}
         role={role}
+        resecduleTimeLimit={bookingTime?.timeRestrictionHours}
       />
     </main>
   );

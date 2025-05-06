@@ -39,7 +39,7 @@ const TableCom = ({ columns, data, isLoading, error, handleFunction }) => {
                     {columns.map((col, colIndex) => (
                       <td
                         key={colIndex}
-                        className=" px-4 py-3  text-[#000000] text-[18px] font-[400]"
+                        className=" px-4 py-3 capitalize text-[#000000] text-[18px] font-[400]"
                       >
                         {row[col] || "—"}
                       </td>
@@ -50,7 +50,7 @@ const TableCom = ({ columns, data, isLoading, error, handleFunction }) => {
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="text-center  py-4 text-gray-500"
+                    className="text-center   py-4 text-gray-500"
                   >
                     {isLoading ? (
                       <Loader className="mx-auto" color="blue" type="bars" />

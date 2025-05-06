@@ -13,6 +13,14 @@ export default function CustomerTable({
   isLoading,
   role,
 }) {
+  // Define the formatDate function
+  function formatDate(date) {
+    const newDate = new Date(date);
+    const day = newDate.getDate().toString().padStart(2, "0");
+    const month = (newDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = newDate.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedData, setSelectedData] = useState(null);
 
@@ -60,28 +68,21 @@ export default function CustomerTable({
       Location: booking.locationDetails?.name || "N/A",
       Price: `$${booking.totalPrice}`,
       Payment: booking.paymentMethod,
-      Date: new Date(booking.bookingDate).toLocaleDateString(),
+      Date: formatDate(booking.bookingDate),
       Time: `${booking.bookingTime} - ${booking.endTime}`,
       Status: (
         <Text
-          className="!rounded-[3px] !p-[4px] !text-white !text-center"
+          className="!rounded-[3px] !text-[14px] !p-[4px] !text-black !text-center"
           bg={
             booking.status === "completed"
-              ? "#A3E8AE"
+              ? "#DDE8A3"
               : booking.status === "cancelled"
-                ? "red"
+                ? "#E8A3A3"
                 : booking.status === "pending"
                   ? "orange"
-                  : "gray"
-          }
-          c={
-            booking.status === "completed"
-              ? "#427B42"
-              : booking.status === "cancelled"
-                ? "red"
-                : booking.status === "pending"
-                  ? "white"
-                  : "white"
+                  : booking.status === "scheduled"
+                    ? "#DDE8A3"
+                    : "gray"
           }
           weight={500}
         >
