@@ -1,6 +1,7 @@
 import { Button, CopyButton, Loader } from "@mantine/core";
 import CustomSelect from "../../../../../components/CustomSelector";
 import { useEffect, useState } from "react";
+
 import {
   usePostMutation,
   useQueryHook,
@@ -10,6 +11,7 @@ import { toast } from "react-toastify";
 import { logoutUser } from "../../../../../services/AuthServices";
 
 export default function OrganizationsSettings() {
+  const { id } = JSON.parse(localStorage.getItem("data"));
   const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
@@ -19,7 +21,7 @@ export default function OrganizationsSettings() {
   const queryKey = ["bookingTime"];
   const { data: bookingTime = {}, isLoading } = useQueryHook({
     queryKey,
-    endpoint: "/api/get-months",
+    endpoint: `/api/get-months/${id}`,
     staleTime: 0,
   });
   const { mutate: updateBookingTime } = useUpdateMutationPut(queryKey);
@@ -36,7 +38,7 @@ export default function OrganizationsSettings() {
       setRestrictionLoading(true);
     }
     updateBookingTime(
-      { endpoint: "/api/update-months", payload: partial },
+      { endpoint: `/api/update-months/${id}`, payload: partial },
       {
         onSuccess: () => {
           setBookingLoading(false);

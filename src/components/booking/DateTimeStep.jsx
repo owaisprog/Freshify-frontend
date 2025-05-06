@@ -27,6 +27,15 @@ export default function DateTimeStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   const initialized = useRef(false);
 
+  // This api will get the response from the advace booking and then i will pass it to the CalendarComt to show the montsh for advace booking
+  const { data: bookingTime = {} } = useQueryHook({
+    queryKey: ["bookingTime"],
+    endpoint: `/api/get-months/${"6819b7433395928ea1c08d0e"}`,
+    staleTime: 5 * 60 * 1000, // Cache for 15 minutes
+  });
+
+  console.log("Advance Booking Data", bookingTime);
+
   const formattedUTC = selectedDate
     ? format(new Date(selectedDate), "yyyy-MM-dd")
     : null;
@@ -149,6 +158,7 @@ export default function DateTimeStep() {
         <CalendarComp
           onClickDay={OnClickDay}
           selectedDay={selectedDay}
+          monthsToShow={bookingTime?.bookingWindowMonths}
           setSelectedDay={setSelectedDay}
           handleMonthChange={handleMonthChange}
           workingHours={bookingData?.location?.workingHours}

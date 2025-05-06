@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import freshifyImage from "../assets/freshifyImage.png";
 import { useQueryHook } from "../services/reactQuery";
 import { BackgroundImage, Container, Loader, Overlay } from "@mantine/core";
 import { useEffect } from "react";
@@ -32,7 +33,7 @@ function SuccessPage({ id, key, endpoint, navigateURL }) {
   return (
     <main className="h-screen w-full">
       <BackgroundImage
-        src="/src/assets/freshifyImage.png"
+        src={freshifyImage}
         className="h-full w-full"
         radius="xs"
       >

@@ -49,7 +49,7 @@ export default function OrganizationOwnerPayout() {
   const form = useForm({
     initialValues: {
       email: email,
-      country: "US",
+      country: "NL",
       business_type: "individual",
     },
     validate: {
