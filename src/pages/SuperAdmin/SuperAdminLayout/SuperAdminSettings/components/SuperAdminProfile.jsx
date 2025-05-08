@@ -107,6 +107,11 @@ function SuperAdminProfile() {
     );
   }
 
+  // Trigger the file input click when the div is clicked
+  const handleClick = () => {
+    document.getElementById("image-upload").click();
+  };
+
   return (
     <div className="text-white  flex flex-col lg:flex-row items-start justify-center lg:gap-8 w-full">
       {/* Profile Picture */}
@@ -117,14 +122,16 @@ function SuperAdminProfile() {
           size={110}
           radius="100%"
         />
-        <div className="absolute bottom-6 right-2 lg:right-0 bg-black p-2 rounded-full cursor-pointer">
-          <label htmlFor="image-upload" className="cursor-pointer">
-            <FaPencilAlt size={14} className="text-white" />
-          </label>
+        <div
+          className="absolute bottom-6 right-2 lg:right-0 bg-black p-2 rounded-full cursor-pointer"
+          onClick={handleClick} // Trigger file input click
+        >
+          <FaPencilAlt size={14} className="text-white" />
           <input
             id="image-upload"
             type="file"
             accept="image/*"
+            className=""
             style={{ display: "none" }}
             onChange={(e) => handleImageUpload(e.target.files[0])}
           />
