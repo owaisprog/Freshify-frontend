@@ -14,7 +14,7 @@ function TransactionsTable({ endpoint }) {
 
   const transactions = response?.transactions || [];
 
-  const columns = ["name", "amount", "bookingDate", "Time"]; // Changed "timeSlot" to "Time"
+  const columns = ["Name", "Amount", "BookingDate", "Time"]; // Changed "timeSlot" to "Time"
 
   const handleSubmit = (row) => {
     //consoe.log("Row clicked:", row);
@@ -35,9 +35,9 @@ function TransactionsTable({ endpoint }) {
       : new Date(transaction.createdAt).toLocaleDateString();
 
     return {
-      name: transaction.name || "—",
-      amount: `${transaction.amount}` || "—",
-      bookingDate: bookingDate,
+      Name: transaction.name || "—",
+      Amount: `${transaction.amount}` || "—",
+      BookingDate: bookingDate,
       Time: timeSlot, // Changed property name to match column header
       // Include the original data in case you need it in handleSubmit
       originalData: transaction,
