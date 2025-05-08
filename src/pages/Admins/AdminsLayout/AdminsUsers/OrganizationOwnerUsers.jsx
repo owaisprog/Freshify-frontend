@@ -4,7 +4,7 @@ import AdminsUserProfessional from "./Components/AdminsUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
 
 function AdminsUsers() {
-  const { id } = JSON.parse(localStorage.getItem("data"));
+  const { id, location } = JSON.parse(localStorage.getItem("data"));
 
   // Get active tab from query params or default to "admin"
 
@@ -74,7 +74,9 @@ function AdminsUsers() {
 
         <section>
           <AdminsUserProfessional
-            userdata={allUsers}
+            userdata={allUsers?.filter(
+              (user) => user?.location?._id === location._id
+            )}
             isLoading={isLoading}
             error={error}
           />

@@ -1,6 +1,5 @@
 import { TextInput, Button, Avatar } from "@mantine/core";
 import { FaPencilAlt } from "react-icons/fa";
-// import { useState } from "react";
 import { useForm } from "@mantine/form";
 import { toast } from "react-toastify";
 import { useUpdateMutation } from "../services/reactQuery";
@@ -43,13 +42,11 @@ export default function ProfileForm() {
           },
           onError: () => {
             toast.error("Failed to update profile.");
-            //console.error("Error updating profile:", error);
           },
         }
       );
     } catch {
       toast.error("Failed to update profile.");
-      //console.error("Error updating profile:", error);
     }
   };
 
@@ -75,12 +72,16 @@ export default function ProfileForm() {
       toast.success("Image uploaded successfully!");
     } catch {
       toast.error("Failed to upload image.");
-      //console.error("Error uploading file to Cloudinary:", error);
     }
   };
 
+  // Trigger the file input click when the div is clicked
+  const handleClick = () => {
+    document.getElementById("image-upload").click();
+  };
+
   return (
-    <div className="text-white  flex flex-col lg:flex-row items-start justify-center lg:gap-8 w-full">
+    <div className="text-white flex flex-col lg:flex-row items-start justify-center lg:gap-8 w-full">
       {/* Profile Picture */}
       <div className="relative w-32 h-32">
         <Avatar
@@ -89,14 +90,16 @@ export default function ProfileForm() {
           size={110}
           radius="100%"
         />
-        <div className="absolute bottom-6 right-2 lg:right-0 bg-black p-2 rounded-full cursor-pointer">
-          <label htmlFor="image-upload" className="cursor-pointer">
-            <FaPencilAlt size={14} className="text-white" />
-          </label>
+        <div
+          className="absolute bottom-6 right-2 lg:right-0 bg-black p-2 rounded-full cursor-pointer"
+          onClick={handleClick} // Trigger file input click
+        >
+          <FaPencilAlt size={14} className="text-white" />
           <input
             id="image-upload"
             type="file"
             accept="image/*"
+            className=""
             style={{ display: "none" }}
             onChange={(e) => handleImageUpload(e.target.files[0])}
           />
