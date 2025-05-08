@@ -66,7 +66,7 @@ export default function SuperAdminSidebar() {
       </div>
 
       <button
-        className={`group rounded-[8px] border cursor-pointer border-white m-4 flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2 transition-all duration-300 text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black `}
+        className={`group rounded-[8px]  cursor-pointer  m-4 flex items-center gap-[10px] no-underline text-[18px] font-[400] px-4 py-2 transition-all duration-300 text-[#b1b1b1] hover:bg-gray-50 hover:text-black dark:hover:bg-[#f5f7fa] dark:hover:text-black `}
         onClick={() => logoutUser()}
       >
         <CiLogout
