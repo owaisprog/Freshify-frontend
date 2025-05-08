@@ -316,7 +316,7 @@ export default function AppointmentDetails({
 
       <div className="flex items-center justify-between">
         <Text weight={600}>Status:</Text>
-        <StatusBadge status={status} />
+        <StatusBadge status={status === "pending" ? "scheduled" : status} />
       </div>
 
       <div className="flex items-center gap-2 mt-6">

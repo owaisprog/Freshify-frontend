@@ -67,26 +67,38 @@ export default function CustomerTable({
       Professional: booking.professionalId?.name || "N/A",
       Location: booking.locationDetails?.name || "N/A",
       Price: `$${booking.totalPrice}`,
-      Payment: booking.paymentMethod,
+      Payment: <span className="capitalize">{booking.paymentMethod}</span>,
       Date: formatDate(booking.bookingDate),
       Time: `${booking.bookingTime} - ${booking.endTime}`,
       Status: (
         <Text
-          className="!rounded-[3px] !text-[14px] !p-[4px] !text-black !text-center"
+          px={"md"}
+          className="!rounded-[3px] !font-[400] !capitalize !text-[14px] !w-fit   !text-center"
           bg={
             booking.status === "completed"
-              ? "#DDE8A3"
+              ? "#A3E8AE"
               : booking.status === "cancelled"
                 ? "#E8A3A3"
                 : booking.status === "pending"
-                  ? "orange"
+                  ? "#DDE8A3"
                   : booking.status === "scheduled"
                     ? "#DDE8A3"
                     : "gray"
           }
+          c={
+            booking.status === "completed"
+              ? "#427B42"
+              : booking.status === "cancelled"
+                ? "#622929"
+                : booking.status === "pending"
+                  ? "#626229"
+                  : booking.status === "scheduled"
+                    ? "#626229"
+                    : "gray"
+          }
           weight={500}
         >
-          {booking.status}
+          {booking.status === "pending" ? "scheduled" : booking.status}
         </Text>
       ),
       __originalBooking: booking,
