@@ -87,7 +87,7 @@ export default function ServicesStep() {
       {bookingData.services.length > 0 && (
         <button
           onClick={() => navigate("/booking/datetime")}
-          className="self-start lg:self-end my-3 w-[311px] h-[41px] cursor-pointer text-white bg-black rounded-[10px] text-center"
+          className="self-start  my-3 w-[311px] h-[41px] cursor-pointer text-white bg-black rounded-[10px] text-center"
         >
           Choose Time
         </button>
