@@ -87,6 +87,8 @@ export default function OrganizationsSettings() {
 
   /* -------------------- Cancel Subscription -------------------- */
   function handleCancelSubscription() {
+    let cancelSubcription = confirm("Do you want to cancel subscription?");
+    if (!cancelSubcription) return null;
     setLoading(true);
     cancelSubscription(
       {

@@ -277,9 +277,10 @@ export default function CalendarPage({
           bg="black"
           loading={isloader}
           radius="md"
+          px={"xl"}
           fw={"normal"}
           loaderProps={{ type: "bars" }}
-          className="!text-[18px] !px-[40px]  !font-[400] !py-[10px]"
+          className="!text-[18px] !  !font-[400] "
           onClick={() => handleAvailabilityLoader()}
         >
           Edit Availability

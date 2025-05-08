@@ -39,7 +39,7 @@ const TableCom = ({ columns, data, isLoading, error, handleFunction }) => {
                     {columns.map((col, colIndex) => (
                       <td
                         key={colIndex}
-                        className=" px-4 py-3 capitalize text-[#000000] text-[18px] font-[400]"
+                        className=" px-4 py-3  text-[#000000] text-[18px] font-[400]"
                       >
                         {row[col] || "—"}
                       </td>

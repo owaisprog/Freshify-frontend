@@ -113,8 +113,9 @@ export default function CustomerTable({
             <Button
               bg="black"
               radius="md"
+              px={"xl"}
               fw={"normal"}
-              className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
+              className="!text-[18px]  !font-[400] "
               onClick={() => {
                 navigate("/booking");
               }}
@@ -122,17 +123,18 @@ export default function CustomerTable({
               Book Appointment
             </Button>
           )}
+          {role === "barber" && (
+            <Button
+              bg={"black"}
+              radius={"md"}
+              px={"xl"}
+              className="!text-[18px]  !font-[400]  "
+              onClick={handleConnectGoogle}
+            >
+              Connect with Google
+            </Button>
+          )}
         </div>
-        {role === "barber" && (
-          <Button
-            bg={"black"}
-            radius={"md"}
-            className="flex"
-            onClick={handleConnectGoogle}
-          >
-            Connect with Google
-          </Button>
-        )}
       </div>
 
       <TableCom
