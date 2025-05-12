@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { Loader } from "@mantine/core";
 import { useQueryHook } from "../../services/reactQuery";
 
-// Owner cards list – column below 500 px, row above
 export default function OwnerCards() {
   const {
     data: owners = [],
