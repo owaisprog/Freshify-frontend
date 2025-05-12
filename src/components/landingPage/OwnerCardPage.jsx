@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Loader } from "@mantine/core";
 import { useQueryHook } from "../../services/reactQuery";
 
 export default function OwnerCards() {
+  const navigate = useNavigate();
+
   const {
     data: owners = [],
     isLoading,
@@ -52,12 +54,12 @@ export default function OwnerCards() {
               <p className="mt-2 text-sm text-gray-500">Organization owner</p>
             </div>
 
-            <Link
-              to={`/booking/${_id}`}
+            <button
+              onClick={() => navigate(`/booking`, { state: _id })}
               className="mt-6 inline-flex items-center justify-center px-6 py-2.5 text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
             >
               Book Now
-            </Link>
+            </button>
           </div>
         </div>
       ))}

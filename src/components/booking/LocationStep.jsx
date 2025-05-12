@@ -1,5 +1,5 @@
 // components/steps/LocationStep.jsx
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useBookingContext } from "./BookingContext";
 import { useEffect } from "react";
 import { useQueryHook } from "../../services/reactQuery";
@@ -11,9 +11,12 @@ import { Loader } from "@mantine/core";
 // ];
 
 export default function LocationStep() {
-  const id = "6819b7433395928ea1c08d0e";
-  // 680f5dba274830d8e04ab2cc
-  // 680b2e451031eaa183eafec2
+  // const id = "6819b7433395928ea1c08d0e";
+
+  const location = useLocation();
+  const id = location.state;
+  console.log(id);
+
   const { updateBookingData } = useBookingContext(); // Removed unused bookingData
   const navigate = useNavigate();
   useEffect(() => {

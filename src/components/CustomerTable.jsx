@@ -129,7 +129,7 @@ export default function CustomerTable({
               fw={"normal"}
               className="!text-[18px]  !font-[400] "
               onClick={() => {
-                navigate("/booking");
+                navigate("/");
               }}
             >
               Book Appointment
