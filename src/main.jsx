@@ -9,7 +9,6 @@ import { MantineProvider } from "@mantine/core";
 import {
   createBrowserRouter,
   createRoutesFromElements,
-  Link,
   Route,
   RouterProvider,
 } from "react-router-dom";
@@ -106,6 +105,7 @@ import OrganizationOwnerPlan from "./pages/OrganizationOwner/OrganizationOwnerPl
 import CheckoutPage from "./components/CheckOutPage.jsx";
 import BookingAuth from "./components/booking/BookingAuth.jsx";
 import SuperAdminPlan from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminPlan/SuperAdminPlan.jsx";
+import LandingPage from "./components/landingPage/LandingPage.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -165,26 +165,7 @@ const router = createBrowserRouter(
         <Route path="BookingAuth" element={<BookingAuth />} />
       </Route>
       {/* Customer Booking Routes End   */}
-      <Route
-        index
-        element={
-          <ul className="font-bold text-[2rem]">
-            <Link to="/Login?role=superadmin">
-              <li>SuperAdmin</li>
-            </Link>
-            <Link to="/Login?role=customer">
-              <li>Customer</li>
-            </Link>
-            <Link to="/Login?role=organization_owner">
-              <li>Organization owner</li>
-            </Link>
-            <Link to="/booking">
-              <li>Book Appointment</li>
-            </Link>
-          </ul>
-        }
-      />{" "}
-      {/* main auth */}
+      <Route index element={<LandingPage />} /> {/* main auth */}
       <Route path="NewPassword/:resetToken" element={<MainNewPassword />} />
       <Route path="Login" element={<MainLogin />} />
       <Route path="Register" element={<MainRegister />} />
