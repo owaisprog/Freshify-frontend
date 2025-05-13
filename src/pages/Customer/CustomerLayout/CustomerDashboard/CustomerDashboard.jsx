@@ -1,15 +1,21 @@
 import { Title } from "@mantine/core";
 import CustomerTable from "../../../../components/CustomerTable";
 import { usePostMutation, useQueryHook } from "../../../../services/reactQuery";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function CustomerDashboard() {
+  const [currentOwnerID, setIsCurrentOwnerId] = useState("");
+
   const { data: bookingTime = {} } = useQueryHook({
     queryKey: ["bookingTime"],
-    endpoint: `/api/get-months`,
+    endpoint: `/api/get-months/${currentOwnerID}`,
     staleTime: 5 * 60 * 1000, // Cache for 15 minutes
+    enabled: () => {
+      return currentOwnerID ? true : false;
+    },
   });
+  console.log(currentOwnerID, "sad", bookingTime);
 
   //consoe.log("Booking Time is ", bookingTime);
 
@@ -52,6 +58,7 @@ export default function CustomerDashboard() {
         error={error}
         role={role}
         resecduleTimeLimit={bookingTime?.timeRestrictionHours}
+        setIsCurrentOwnerId={setIsCurrentOwnerId}
       />
     </main>
   );
