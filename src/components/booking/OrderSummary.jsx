@@ -29,8 +29,7 @@ export default function OrderSummary() {
 
   const { bookingData, updateBookingData } = useBookingContext();
   //consoe.log("Booking Data is :", bookingData);
-  const { mutate: createBookings, data: checkdata } =
-    usePostMutation("bookings");
+  const { mutate: createBookings } = usePostMutation("bookings");
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
   const [loading, setLoading] = useState(false);
 
@@ -54,7 +53,7 @@ export default function OrderSummary() {
             totalServices,
             bookingData?.date
           ),
-          organizationOwnerId: "6819b7433395928ea1c08d0e",
+          organizationOwnerId: bookingData.organizationId,
           location: bookingData.location?._id,
           professionalId: bookingData.professional._id,
           services: bookingData?.services.map((val) => val?._id),

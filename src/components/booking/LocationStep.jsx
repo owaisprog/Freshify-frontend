@@ -35,7 +35,7 @@ export default function LocationStep() {
   });
   //consoe.log(locations);
   const handleSelect = (location) => {
-    updateBookingData({ location });
+    updateBookingData({ location, organizationId: id });
     navigate("/booking/professional");
   };
   if (isLoading)

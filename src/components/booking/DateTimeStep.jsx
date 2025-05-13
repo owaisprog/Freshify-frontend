@@ -30,7 +30,7 @@ export default function DateTimeStep() {
   // This api will get the response from the advace booking and then i will pass it to the CalendarComt to show the montsh for advace booking
   const { data: bookingTime = {} } = useQueryHook({
     queryKey: ["bookingTime"],
-    endpoint: `/api/get-months/${"6819b7433395928ea1c08d0e"}`,
+    endpoint: `/api/get-months/${bookingData.organizationId}`,
     staleTime: 5 * 60 * 1000, // Cache for 15 minutes
   });
 

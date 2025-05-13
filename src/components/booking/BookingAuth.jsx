@@ -1,6 +1,7 @@
 import { Button, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useBookingContext } from "./BookingContext";
+import { toast } from "react-toastify";
 
 export default function BookingAuth() {
   const { bookingData, updateBookingData } = useBookingContext();
@@ -24,12 +25,9 @@ export default function BookingAuth() {
   });
 
   const handleSubmit = async (values) => {
-    try {
-      updateBookingData({ userDetails: values, proceedToPay: true });
-      //consoe.log(values, bookingData);
-    } catch (error) {
-      //consoe.log(error);
-    }
+    localStorage.removeItem("data");
+    updateBookingData({ userDetails: values, proceedToPay: true });
+    toast.success("Proceed to Checkout", { position: "top-center" });
   };
 
   return (
