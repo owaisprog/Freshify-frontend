@@ -26,6 +26,7 @@ export default function BookingAuth() {
 
   const handleSubmit = async (values) => {
     localStorage.removeItem("data");
+    localStorage.removeItem("token");
     updateBookingData({ userDetails: values, proceedToPay: true });
     toast.success("Proceed to Checkout", { position: "top-center" });
   };
