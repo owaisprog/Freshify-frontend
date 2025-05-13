@@ -15,11 +15,11 @@ export default function CustomerDashboard() {
       return currentOwnerID ? true : false;
     },
   });
-  console.log(currentOwnerID, "sad", bookingTime);
+  // console.log(currentOwnerID, "sad", bookingTime);
 
   //consoe.log("Booking Time is ", bookingTime);
 
-  const { role } = JSON.parse(localStorage.getItem("data")) || {};
+  const data = JSON.parse(localStorage.getItem("data")) || {};
   const {
     data: bookings = [],
     mutate: getMutateBookings,
@@ -33,14 +33,14 @@ export default function CustomerDashboard() {
       try {
         getMutateBookings({
           endpoint: `/api/get-all-bookings`,
-          payload: { role },
+          payload: { role: data?.role },
         });
       } catch {
         toast.error("Error fetching bookings");
       }
     };
     fetchBookings();
-  }, [getMutateBookings, role]);
+  }, [getMutateBookings, data?.role]);
 
   return (
     <main className="pt-20 grid grid-cols-1 gap-y-5  lg:pt-0 lg:gap-6  p-6 lg:p-0  ">
@@ -56,7 +56,7 @@ export default function CustomerDashboard() {
         bookings={bookings}
         isLoading={isLoading}
         error={error}
-        role={role}
+        role={data?.role}
         resecduleTimeLimit={bookingTime?.timeRestrictionHours}
         setIsCurrentOwnerId={setIsCurrentOwnerId}
       />
