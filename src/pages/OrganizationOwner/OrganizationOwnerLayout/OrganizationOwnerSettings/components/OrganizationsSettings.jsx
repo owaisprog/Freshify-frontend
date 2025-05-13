@@ -126,6 +126,7 @@ export default function OrganizationsSettings() {
             </div>
           ) : (
             <CustomSelect
+              defaultValue={2}
               data={bookingTimeOptions}
               value={bookingTime.bookingWindowMonths?.toString() || ""}
               onChange={(v) =>
@@ -203,6 +204,7 @@ export default function OrganizationsSettings() {
             </div>
           ) : (
             <CustomSelect
+              defaultValue={2}
               data={rescheduleOptions}
               value={bookingTime.timeRestrictionHours?.toString() || ""}
               onChange={(v) =>
