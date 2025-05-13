@@ -19,7 +19,12 @@ export default function CustomerDashboard() {
 
   //consoe.log("Booking Time is ", bookingTime);
 
-  const data = JSON.parse(localStorage.getItem("data")) || {};
+  const data = localStorage.getItem("data")
+    ? JSON.parse(localStorage.getItem("data"))
+    : {}; // Fallback to an empty object if "data" is not in localStorage or is invalid
+
+  const { role } = data || {}; // Safely destructure role if data is valid, otherwise it will default to an empty object
+
   const {
     data: bookings = [],
     mutate: getMutateBookings,
@@ -33,14 +38,14 @@ export default function CustomerDashboard() {
       try {
         getMutateBookings({
           endpoint: `/api/get-all-bookings`,
-          payload: { role: data?.role },
+          payload: { role },
         });
       } catch {
         toast.error("Error fetching bookings");
       }
     };
     fetchBookings();
-  }, [getMutateBookings, data?.role]);
+  }, [getMutateBookings, role]);
 
   return (
     <main className="pt-20 grid grid-cols-1 gap-y-5  lg:pt-0 lg:gap-6  p-6 lg:p-0  ">
@@ -56,7 +61,7 @@ export default function CustomerDashboard() {
         bookings={bookings}
         isLoading={isLoading}
         error={error}
-        role={data?.role}
+        role={role}
         resecduleTimeLimit={bookingTime?.timeRestrictionHours}
         setIsCurrentOwnerId={setIsCurrentOwnerId}
       />
