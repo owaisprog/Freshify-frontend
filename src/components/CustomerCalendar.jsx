@@ -120,8 +120,8 @@ const CalendarComp = ({
                       );
 
                       if (
-                        !isBefore(date, today) &&
-                        !isAfter(date, lastAvailableDate) &&
+                        // !isBefore(date, today) &&
+                        // !isAfter(date, lastAvailableDate) &&
                         hasWorkingHours
                       ) {
                         onClickDay(date);
