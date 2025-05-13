@@ -1,16 +1,17 @@
 import { Text, Modal, Button } from "@mantine/core";
 import TableCom from "./Table";
 import { GoDotFill } from "react-icons/go";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import AppointmentDetails from "./AppointmentDetails";
 import { handleConnectGoogle } from "../Hooks/GoogleCalendar";
 import { useNavigate } from "react-router-dom";
 
 export default function CustomerTable({
   bookings,
-  resecduleTimeLimit,
+  resecduleTimeLimit = 0,
   error,
   isLoading,
+  setIsCurrentOwnerId,
   role,
 }) {
   // Define the formatDate function
@@ -105,12 +106,12 @@ export default function CustomerTable({
     }));
   }, [sortedBookings]);
 
-  const handleSubmit = useCallback((rowData) => {
-    // if (!role || role === "customer") return;
-    //consoe.log("Row clicked:", rowData.__originalBooking);
+  const handleSubmit = (rowData) => {
+    if (role === "customer")
+      setIsCurrentOwnerId(rowData?.__originalBooking?.organizationOwnerId);
     setSelectedData(rowData.__originalBooking);
     setIsPopupOpen(true);
-  }, []);
+  };
 
   //consoe.log("User Role is ", role);
   return (
