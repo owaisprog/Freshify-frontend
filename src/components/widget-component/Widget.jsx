@@ -38,7 +38,7 @@ export default function Widget() {
           key={_id}
           className="flex flex-col min-[350px]:flex-row bg-white rounded-3xl overflow-hidden shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
         >
-          {/* Image */}
+          {/* Image This image will display  */}
           <img
             src={image || "/profile.webp"}
             alt={name}
