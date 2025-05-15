@@ -1,10 +1,7 @@
 // components/OrderSummary.jsx
-import { toast } from "react-toastify";
-import { usePostMutation } from "../../services/reactQuery";
 import { useBookingContext } from "./BookingContext";
 import { addMinutes, format } from "date-fns";
 import { Button } from "@mantine/core";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function OrderSummary() {
@@ -27,11 +24,10 @@ export default function OrderSummary() {
 
   const navigate = useNavigate();
 
-  const { bookingData, updateBookingData } = useBookingContext();
+  const { bookingData } = useBookingContext();
   //consoe.log("Booking Data is :", bookingData);
-  const { mutate: createBookings } = usePostMutation("bookings");
+
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
-  const [loading, setLoading] = useState(false);
 
   let totalServices = bookingData.services.reduce(
     (sum, s) => sum + s.duration,
@@ -39,67 +35,45 @@ export default function OrderSummary() {
   );
   // const formattedTime = format(new Date(bookingData?.time), "HH:mm");
   function handleBookings() {
-    setLoading(true);
-    createBookings(
-      {
-        endpoint: "/api/create-booking",
-        payload: {
-          userId: id,
-          name: bookingData.userDetails?.name,
-          email: bookingData.userDetails?.email,
-          phone: bookingData.userDetails?.phone,
-          endTime: calculateEndTime(
-            bookingData?.time,
-            totalServices,
-            bookingData?.date
-          ),
-          organizationOwnerId: bookingData.organizationId,
-          location: bookingData.location?._id,
-          professionalId: bookingData.professional._id,
-          services: bookingData?.services.map((val) => val?._id),
-          // services: "67f75b2871c7c802a785f32d",
-          bookingDate: format(new Date(bookingData.date), "yyyy-MM-dd"),
-          bookingWeek: getWeekOfMonth(bookingData?.date),
-          bookingTime: bookingData.time,
-          totalPrice: bookingData.services.reduce(
-            (sum, s) => +sum + +s.price,
-            0
-          ),
-          paymentMethod: bookingData.location?.enableCashPayments
-            ? "cash"
-            : "online",
-        },
-      },
-      {
-        onSuccess: (data) => {
-          setLoading(false);
-          toast.success("Booking Created Successfully", {
-            position: "top-center",
-          });
+    //consoe.log(data, checkdata);
+    // updateBookingData({
+    //   location: null,
+    //   professional: null,
+    //   services: [],
+    //   date: null,
+    //   time: null,
+    //   finalStep: false,
+    // });
+    // if (bookingData.location?.enableCashPayments) {
+    //   return navigate("/Login?role=customer");
+    // }
+    // },
 
-          //consoe.log(data, checkdata);
-
-          updateBookingData({
-            location: null,
-            professional: null,
-            services: [],
-            date: null,
-            time: null,
-            finalStep: false,
-          });
-          // if (bookingData.location?.enableCashPayments) {
-          //   return navigate("/Login?role=customer");
-          // }
-          navigate("/checkout", { state: data });
-        },
-        onError: () => {
-          setLoading(false);
-          toast.error("Error Booking ", {
-            position: "top-center",
-          });
-        },
-      }
-    );
+    const payload = {
+      userId: id,
+      name: bookingData.userDetails?.name,
+      email: bookingData.userDetails?.email,
+      phone: bookingData.userDetails?.phone,
+      endTime: calculateEndTime(
+        bookingData?.time,
+        totalServices,
+        bookingData?.date
+      ),
+      totalDuration: totalServices,
+      organizationOwnerId: bookingData.organizationId,
+      location: bookingData.location?._id,
+      professionalId: bookingData.professional._id,
+      services: bookingData?.services.map((val) => val?._id),
+      // services: "67f75b2871c7c802a785f32d",
+      bookingDate: format(new Date(bookingData.date), "yyyy-MM-dd"),
+      bookingWeek: getWeekOfMonth(bookingData?.date),
+      bookingTime: bookingData.time,
+      totalPrice: bookingData.services.reduce((sum, s) => +sum + +s.price, 0),
+      paymentMethod: bookingData.location?.enableCashPayments
+        ? "cash"
+        : "online",
+    };
+    navigate("/checkout", { state: payload });
   }
 
   return (
@@ -227,7 +201,6 @@ export default function OrderSummary() {
           bookingData.time &&
           bookingData.proceedToPay && (
             <Button
-              loading={loading}
               loaderProps={{ type: "dots" }}
               fullWidth
               radius={"md"}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
 import { format } from "date-fns";
@@ -31,9 +31,11 @@ export default function DateTimeStep() {
   const { data: bookingTime = {} } = useQueryHook({
     queryKey: ["bookingTime"],
     endpoint: `/api/get-months/${bookingData.organizationId}`,
-    staleTime: 5 * 60 * 1000, // Cache for 15 minutes
+    staleTime: 10 * 60 * 1000, // Cache for 15 minutes
+    enabled: () => {
+      return bookingData.organizationId ? true : false;
+    },
   });
-
   //consoe.log("Advance Booking Data", bookingTime);
 
   const formattedUTC = selectedDate
@@ -41,17 +43,22 @@ export default function DateTimeStep() {
     : null;
 
   const {
-    data: unavailableSlots = { bookedSlots: [], unavailablePeriods: [] },
+    data: unavailableSlots,
     isLoading: isLoadingSlots,
     refetch,
   } = useQueryHook({
     queryKey: ["unavailable", formattedUTC],
-    endpoint: formattedUTC
-      ? `/api/unavailable-slots/${bookingData?.professional?._id}/${formattedUTC}`
-      : null,
+    endpoint: `/api/unavailable-slots/${bookingData?.professional?._id}/${formattedUTC}`,
     enabled: !!formattedUTC,
     staleTime: 5 * 60 * 1000,
   });
+
+  const { bookedSlots, unavailablePeriods } = useMemo(() => {
+    return {
+      bookedSlots: unavailableSlots?.bookedSlots || [],
+      unavailablePeriods: unavailableSlots?.unavailablePeriods || [],
+    };
+  }, [unavailableSlots]);
 
   const generateAvailableSlots = useCallback(() => {
     if (!selectedDate) {
@@ -73,8 +80,8 @@ export default function DateTimeStep() {
       }
 
       const safeBlockedSlots = [
-        ...(unavailableSlots.bookedSlots ?? []),
-        ...(unavailableSlots.unavailablePeriods ?? []),
+        ...(bookedSlots ?? []),
+        ...(unavailablePeriods ?? []),
       ]
         .map((val) => {
           if (!val?.startTime || !val?.endTime) return null;
@@ -102,7 +109,8 @@ export default function DateTimeStep() {
     selectedDate,
     bookingData?.location?.workingHours,
     bookingData?.services,
-    unavailableSlots,
+    bookedSlots,
+    unavailablePeriods,
   ]);
 
   useEffect(() => {

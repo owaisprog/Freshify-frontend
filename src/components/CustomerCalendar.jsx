@@ -11,6 +11,7 @@ import {
   isBefore,
   isAfter,
   getDate,
+  startOfDay,
 } from "date-fns";
 
 const CalendarComp = ({
@@ -120,8 +121,13 @@ const CalendarComp = ({
                       );
 
                       if (
-                        !isBefore(date, today) &&
-                        !isAfter(date, lastAvailableDate) &&
+                        // !isBefore(date, today) &&
+                        // !isAfter(date, lastAvailableDate) &&
+                        !isBefore(startOfDay(date), startOfDay(today)) &&
+                        !isAfter(
+                          startOfDay(date),
+                          startOfDay(lastAvailableDate)
+                        ) &&
                         hasWorkingHours
                       ) {
                         onClickDay(date);
