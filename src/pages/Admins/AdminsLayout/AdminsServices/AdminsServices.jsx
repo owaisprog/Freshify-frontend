@@ -16,9 +16,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 function AdminsServices() {
-  const { location, createdBy } = JSON.parse(localStorage.getItem("data"));
+  const { location, createdBy, organizationOwnerId } = JSON.parse(
+    localStorage.getItem("data")
+  );
 
-  // //consoe.log(location, email, id);
+  // Fetch Most Sold  services (always enabled)
+  const { data: mostSoldServices = [] } = useQueryHook({
+    queryKey: "mostSoldServices",
+    endpoint: `/api/most-sold-service/admin/${organizationOwnerId._id}/${location._id}`,
+    staleTime: 0 * 60 * 1000, // No cache
+  });
 
   const {
     data: services = [],
@@ -263,12 +270,12 @@ function AdminsServices() {
                 Most Sold Service
               </Text>
               <Text className="!text-[14px] !text-[#333B69] !font-[400]">
-                Haircut
+                {mostSoldServices.MostSoldService.service}
               </Text>
             </div>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            $4,790
+            ${mostSoldServices.MostSoldService.totalRevenue}
           </Text>
         </div>
 
@@ -283,7 +290,7 @@ function AdminsServices() {
             </Text>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            1,360
+            {mostSoldServices.MostSoldService.totalOrders}
           </Text>
         </div>
       </section>

@@ -32,6 +32,13 @@ function OrganizationOwnerServices() {
   // State to control when to fetch locations
   const [fetchLocations, setFetchLocations] = useState(false);
 
+  // Fetch Most Sold  services (always enabled)
+  const { data: mostSoldServices = [] } = useQueryHook({
+    queryKey: "mostSoldServices",
+    endpoint: `/api/most-sold-service/${id}`,
+    staleTime: 0 * 60 * 1000, // No cache
+  });
+
   // Fetch services (always enabled)
   const {
     data: services = [],
@@ -297,12 +304,12 @@ function OrganizationOwnerServices() {
                 Most Sold Service
               </Text>
               <Text className="!text-[14px] !text-[#333B69] !font-[400]">
-                Haircut
+                {mostSoldServices.MostSoldService?.service}
               </Text>
             </div>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            $4,790
+            ${mostSoldServices.MostSoldService?.totalRevenue}
           </Text>
         </div>
 
@@ -316,7 +323,7 @@ function OrganizationOwnerServices() {
             </Text>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            1,360
+            {mostSoldServices.MostSoldService?.totalOrders}
           </Text>
         </div>
       </section>

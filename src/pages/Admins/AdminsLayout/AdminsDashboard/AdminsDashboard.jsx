@@ -3,7 +3,8 @@ import { useQueryHook } from "../../../../services/reactQuery";
 import SalesChart from "../../../../components/SalesChart";
 
 export default function OrganizationOwnerDashboard() {
-  const { id, location } = JSON.parse(localStorage.getItem("data")) || {};
+  const { location, organizationOwnerId } =
+    JSON.parse(localStorage.getItem("data")) || {};
 
   // Safely get stored data with null checks
   // const storedData = JSON.parse(localStorage.getItem("data") || {});
@@ -17,7 +18,7 @@ export default function OrganizationOwnerDashboard() {
   } = useQueryHook({
     queryKey: "OrganizationDashboard",
     // endpoint: id ? `/api/dashboard/67e45bf2ddeafab8b200eb2b` : null, // Prevent invalid endpoint when no ID
-    endpoint: `/api/dashboard/admin/${id}/${location._id}`, // Prevent invalid endpoint when no ID
+    endpoint: `/api/dashboard/admin/${organizationOwnerId._id}/${location._id}`, // Prevent invalid endpoint when no ID
     staleTime: 0 * 60 * 1000,
     // enabled: !!id, // Only fetch if ID exists
   });
@@ -31,6 +32,7 @@ export default function OrganizationOwnerDashboard() {
     LocationsByUser = [],
     OrderThisWeek,
     OrdersToday,
+    TopCustomers,
     TotalOrders,
     WeeklyLocationSales = [],
   } = response || {};
@@ -286,38 +288,32 @@ export default function OrganizationOwnerDashboard() {
             <section className="  lg:w-full  flex flex-col gap-[10px]  lg:max-w-[868px]">
               {/* Sales Section  */}
               <section className=" ">
-                <Text className="!text-[22px] !font-[700]">
-                  All Locations By Users
-                </Text>
+                <Text className="!text-[22px] !font-[700]">Top Customers</Text>
                 <div
                   className={` bg-[#FFFFFF] px-2   ${LocationsByUser.length < 3 ? "h-[220px]" : "max-h-[220px] overflow-hidden "}   rounded-[25px] specialBorder`}
                 >
                   {/* United State America Section  */}
-                  {LocationsByUser.length <= 0 ? (
+                  {TopCustomers.length <= 0 ? (
                     <div className=" flex items-center justify-center h-full">
                       <p>No data Available</p>
                     </div>
                   ) : null}
-                  {LocationsByUser.map((location, index) => (
+                  {TopCustomers.map((customer, index) => (
                     <div
                       key={index}
                       className={`h-[65px] mt-2 flex px-[13px]  items-center  justify-between  ${index === LocationsByUser.length - 1 ? "" : "specialBorderBottom"}`}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
+                        <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#B1B1B1] rounded-full">
                           {" "}
-                          <img
-                            className="h-[25px] w-[17.5px]"
-                            src="/usaLocationIcon.png"
-                            alt=""
-                          />
+                          <img src="/topPerformerIcon.png" alt="" />
                         </div>
-                        <Text className="!text-[18px] !font-[400]">
-                          {location.location}
+                        <Text className="!text-[18px] capitalize !font-[400]">
+                          {customer.name}
                         </Text>
                       </div>
                       <Text className="!text-[30px] !font-[600]">
-                        {location.count}
+                        ${Number(customer.count).toFixed()}
                       </Text>
                     </div>
                   ))}

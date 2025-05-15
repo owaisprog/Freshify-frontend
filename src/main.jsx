@@ -106,11 +106,13 @@ import CheckoutPage from "./components/CheckOutPage.jsx";
 import BookingAuth from "./components/booking/BookingAuth.jsx";
 import SuperAdminPlan from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminPlan/SuperAdminPlan.jsx";
 import LandingPage from "./components/landingPage/LandingPage.jsx";
+import Widget from "./components/widget-component/Widget.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="freshifyWidget" element={<Widget />} />
       {/* plans */}
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/owner-plans" element={<OrganizationOwnerPlan />} />
