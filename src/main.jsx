@@ -112,7 +112,7 @@ import Widget from "./components/widget-component/Widget.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="freshifyWidget" element={<Widget />} />
+      <Route path="freshifyWidget/:ownerId" element={<Widget />} />
       {/* plans */}
       <Route path="/checkout" element={<CheckoutPage />} />
       <Route path="/owner-plans" element={<OrganizationOwnerPlan />} />
