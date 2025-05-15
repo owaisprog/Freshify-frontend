@@ -26,7 +26,7 @@ export default function Widget() {
   if (error) {
     return (
       <p className="text-center text-red-500 py-4">
-        Failed to load organization owners. Please try again later.
+        Failed to load Organization Owners. Please try again later.
       </p>
     );
   }
