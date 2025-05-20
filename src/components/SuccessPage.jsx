@@ -5,7 +5,13 @@ import { BackgroundImage, Container, Loader, Overlay } from "@mantine/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function SuccessPage({ id, key, endpoint, navigateURL }) {
+function SuccessPage({
+  id,
+  key,
+  endpoint,
+  navigateURL,
+  message = "Successful Payment",
+}) {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get(id);
   const navigate = useNavigate();
@@ -82,7 +88,7 @@ function SuccessPage({ id, key, endpoint, navigateURL }) {
                 )}
               </div>
               <h2 className="mt-6 text-xl font-semibold text-gray-800">
-                Successful Payment
+                {message}
               </h2>
               {isSuccess && (
                 <p className="text-sm text-gray-500 mt-2">

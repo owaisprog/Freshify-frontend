@@ -145,6 +145,7 @@ const router = createBrowserRouter(
           <SuccessPage
             id="account_id"
             key="success"
+            message="Successfully Connected"
             endpoint="/api/connect/success?account_id"
             navigateURL="/OrganizationOwnerDashboard/Payout"
           />
