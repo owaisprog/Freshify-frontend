@@ -124,8 +124,6 @@ const Calendar = ({
         >
           <div className="flex gap-2 py-2 px-4">
             {datesToDisplay.map((date) => {
-              const isPastDate =
-                isBefore(date, internalState.today) && !isToday(date);
               const isSelected =
                 internalState.selectedDate &&
                 isSameDay(internalState.selectedDate, date);
@@ -140,11 +138,9 @@ const Calendar = ({
                       ? " border border-black text-black"
                       : isTodayDate
                         ? " bg-[#F5F7FA] text-black"
-                        : isPastDate
-                          ? "bg-[#E9E9E9] text-gray-400 !cursor-not-allowed"
-                          : "bg-[#F5F7FA]  text-black"
+                        : "bg-[#F5F7FA]  text-black"
                   }`}
-                  disabled={isPastDate}
+                  // disabled={isPastDate}
                 >
                   {format(date, "d")}
                 </button>
