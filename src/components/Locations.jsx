@@ -35,7 +35,7 @@ export default function Locations({
   id,
   mode = "organization_owner",
   name = "",
-  numberOfMonths = 2,
+  numberOfMonths = 1,
 }) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -295,7 +295,7 @@ export default function Locations({
         Locations
       </Title>
       <section className="max-w-[1440px] mx-auto w-full -mt-10 lg:mt-0 px-2 flex justify-between items-center">
-        <Text className="!text-[18px] !font-[400] lg:!text-[22px] !font-[700]">
+        <Text className="!text-[18px]  lg:!text-[22px] !font-[700]">
           All Locations
         </Text>
         <Button
@@ -413,7 +413,7 @@ export default function Locations({
                     </Text>
                     <Text
                       c={"#718EBF"}
-                      className="cursor-pointer underline !text-[18px] !font-[400]"
+                      className="cursor-pointer !underline !text-[18px] !font-[400]"
                       onClick={() => openWorkingHoursModal(val)}
                     >
                       Edit
