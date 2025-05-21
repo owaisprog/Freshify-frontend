@@ -40,7 +40,7 @@ export default function Locations({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const totalWeeks = Math.ceil(numberOfMonths * 4.345);
+  const totalWeeks = numberOfMonths * 5; // 5 weeks per month for consistency
 
   const { mutate: deleteLocation } = useDeleteMutation(["locations", id]);
   const { mutate: createLocation } = usePostMutation(["locations", id]);
@@ -126,7 +126,28 @@ export default function Locations({
     return workingHours;
   };
 
-  const [defaultWorkingHours] = useState(generateDefaultWorkingHours());
+  const openWorkingHoursModal = (location) => {
+    setSelectedLocation(location);
+    const defaultWorkingHours = generateDefaultWorkingHours();
+    let updatedWorkingHours = [];
+
+    if (location.workingHours && Array.isArray(location.workingHours)) {
+      // Merge existing working hours with defaults for all weeks
+      updatedWorkingHours = defaultWorkingHours.map((defaultEntry) => {
+        const existingEntry = location.workingHours.find(
+          (item) =>
+            item.week === defaultEntry.week && item.day === defaultEntry.day
+        );
+        return existingEntry || { ...defaultEntry, _id: undefined };
+      });
+    } else {
+      updatedWorkingHours = [...defaultWorkingHours];
+    }
+
+    setWorkingHoursData(updatedWorkingHours);
+    setSelectedWeek("1");
+    setWorkingHoursModalOpen(true);
+  };
 
   const handleTimeChange = (day, field, value) => {
     setWorkingHoursData((prev) =>
@@ -139,24 +160,27 @@ export default function Locations({
   };
 
   const handleDayToggle = (day, closed) => {
-    setWorkingHoursData((prev) =>
-      prev.map((item) =>
-        item.day === day && item.week === parseInt(selectedWeek)
-          ? { ...item, closed }
-          : item
-      )
-    );
-  };
-
-  const openWorkingHoursModal = (location) => {
-    setSelectedLocation(location);
-    if (location.workingHours && Array.isArray(location.workingHours)) {
-      setWorkingHoursData(location.workingHours);
-    } else {
-      setWorkingHoursData([...defaultWorkingHours]);
-    }
-    setSelectedWeek("1");
-    setWorkingHoursModalOpen(true);
+    setWorkingHoursData((prev) => {
+      const existingEntry = prev.find(
+        (item) => item.day === day && item.week === parseInt(selectedWeek)
+      );
+      if (existingEntry) {
+        return prev.map((item) =>
+          item.day === day && item.week === parseInt(selectedWeek)
+            ? { ...item, closed }
+            : item
+        );
+      }
+      // Create new entry if it doesn't exist
+      const newEntry = {
+        week: parseInt(selectedWeek),
+        day,
+        start: "08:00",
+        end: "18:00",
+        closed,
+      };
+      return [...prev, newEntry];
+    });
   };
 
   const form = useForm({
@@ -218,18 +242,7 @@ export default function Locations({
           }
         );
       } else {
-        const workingHoursCreate = [];
-        for (let week = 1; week <= totalWeeks; week++) {
-          daysOfWeek.forEach((day) => {
-            workingHoursCreate.push({
-              week,
-              day,
-              start: values.startTime,
-              end: values.endTime,
-              closed: false,
-            });
-          });
-        }
+        const workingHoursCreate = generateDefaultWorkingHours();
         if (mode === "superadmin") {
           payload = { ...payload, organizationOwnerId: id };
         }
@@ -622,10 +635,23 @@ export default function Locations({
               if (selectedLocation) {
                 setLoading(true);
                 try {
+                  // Ensure all weeks (1–10) are included in the payload
+                  const completeWorkingHours =
+                    generateDefaultWorkingHours().map((defaultEntry) => {
+                      const existingEntry = workingHoursData.find(
+                        (item) =>
+                          item.week === defaultEntry.week &&
+                          item.day === defaultEntry.day
+                      );
+                      return (
+                        existingEntry || { ...defaultEntry, _id: undefined }
+                      );
+                    });
+
                   await updateLocation({
                     endpoint: `/api/update-location/${selectedLocation._id}`,
                     payload: {
-                      workingHours: workingHoursData,
+                      workingHours: completeWorkingHours,
                     },
                   });
                   toast.success("Working Hours Updated Successfully", {

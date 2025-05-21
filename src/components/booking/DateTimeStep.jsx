@@ -22,7 +22,7 @@ const formatMidnightHours = (time24) => {
   return time24;
 };
 
-export default function DateTimeStep({ numberOfMonths = 1 }) {
+export default function DateTimeStep({ numberOfMonths = 2 }) {
   const data = JSON.parse(localStorage.getItem("data"));
   const token = localStorage.getItem("token");
   const [timeSlots, setTimeSlots] = useState([]);
@@ -42,46 +42,40 @@ export default function DateTimeStep({ numberOfMonths = 1 }) {
     },
   });
 
-  const totalWeeks = Math.ceil(numberOfMonths * 4.345);
+  const totalWeeks = numberOfMonths * 5; // 5 weeks per month
 
-  const calculateWeekNumber = useCallback(
-    (date) => {
-      const startDate = startOfDay(new Date(2025, 4, 1)); // May 1, 2025
-      const selected = startOfDay(date);
-      const firstMonth = new Date(2025, 4, 1); // May 2025
-      const secondMonth = addMonths(firstMonth, 1); // June 2025
-      const daysSinceStart = differenceInDays(selected, startDate);
+  const calculateWeekNumber = useCallback((date) => {
+    const startDate = startOfDay(new Date(2025, 4, 1)); // May 1, 2025
+    const selected = startOfDay(date);
+    const firstMonth = new Date(2025, 4, 1); // May 2025
+    const secondMonth = addMonths(firstMonth, 1); // June 2025
+    const daysSinceStart = differenceInDays(selected, startDate);
 
-      if (isSameMonth(selected, firstMonth)) {
-        // First month (May 2025): Weeks 1–5
-        const weekNumber = Math.floor(daysSinceStart / 7) + 1;
-        return Math.min(Math.max(weekNumber, 1), totalWeeks);
-      } else if (isSameMonth(selected, secondMonth)) {
-        // Second month (June 2025): Start with Week 6
-        const daysInSecondMonth = differenceInDays(
-          selected,
-          startOfDay(secondMonth)
-        );
-        return totalWeeks + Math.floor(daysInSecondMonth / 7) + 1;
-      } else {
-        // Third month (July 2025) or beyond
-        const monthsSinceFirst = Math.floor(
-          differenceInDays(selected, firstMonth) / 30
-        );
-        const daysInCurrentMonth = differenceInDays(
-          selected,
-          startOfDay(addMonths(firstMonth, monthsSinceFirst))
-        );
-        return (
-          totalWeeks +
-          (monthsSinceFirst - 1) * 4 +
-          Math.floor(daysInCurrentMonth / 7) +
-          1
-        );
-      }
-    },
-    [totalWeeks]
-  );
+    if (isSameMonth(selected, firstMonth)) {
+      // First month (May 2025): Weeks 1–5
+      const weekNumber = Math.floor(daysSinceStart / 7) + 1;
+      return Math.min(Math.max(weekNumber, 1), 5);
+    } else if (isSameMonth(selected, secondMonth)) {
+      // Second month (June 2025): Weeks 6–10
+      const daysInSecondMonth = differenceInDays(
+        selected,
+        startOfDay(secondMonth)
+      );
+      return 5 + Math.floor(daysInSecondMonth / 7) + 1;
+    } else {
+      // Third month (July 2025) or beyond
+      const monthsSinceFirst = Math.floor(
+        differenceInDays(selected, firstMonth) / 30
+      );
+      const daysInCurrentMonth = differenceInDays(
+        selected,
+        startOfDay(addMonths(firstMonth, monthsSinceFirst))
+      );
+      return (
+        5 + (monthsSinceFirst - 1) * 5 + Math.floor(daysInCurrentMonth / 7) + 1
+      );
+    }
+  }, []);
 
   const formattedUTC = selectedDate
     ? format(new Date(selectedDate), "yyyy-MM-dd")
@@ -115,12 +109,6 @@ export default function DateTimeStep({ numberOfMonths = 1 }) {
       const DateOBJ = new Date(selectedDate);
       const dayName = format(DateOBJ, "EEEE").toLowerCase();
       const weekNumber = calculateWeekNumber(DateOBJ);
-
-      // Only generate slots for weeks 1–5 (first month)
-      if (weekNumber > totalWeeks) {
-        setTimeSlots([]);
-        return;
-      }
 
       const filterData = bookingData?.location?.workingHours?.find(
         (val) => val.day.toLowerCase() === dayName && val.week === weekNumber
@@ -163,7 +151,6 @@ export default function DateTimeStep({ numberOfMonths = 1 }) {
     bookedSlots,
     unavailablePeriods,
     calculateWeekNumber,
-    totalWeeks,
   ]);
 
   useEffect(() => {

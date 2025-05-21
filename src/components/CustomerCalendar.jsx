@@ -3,14 +3,14 @@ import { ScrollArea } from "@mantine/core";
 import {
   format,
   addMonths,
-  addDays,
+  // addDays,
   startOfMonth,
   endOfMonth,
   eachDayOfInterval,
   getDay,
   isSameDay,
   isBefore,
-  isAfter,
+  // isAfter,
   getDate,
   startOfDay,
 } from "date-fns";
@@ -29,7 +29,7 @@ const CalendarComp = ({
   const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
 
   // Last available date for first month (May 30, 2025)
-  const lastAvailableDate = addDays(firstMonthStart, 29); // May 1 + 29 days = May 30
+  // const lastAvailableDate = addDays(firstMonthStart, 29); // May 1 + 29 days = May 30
 
   const monthsToDisplay = Array.from(
     { length: Math.ceil(monthsToShow) },
@@ -48,9 +48,9 @@ const CalendarComp = ({
   const getDateStyle = (date) => {
     const isToday = isSameDay(date, today);
     const isOutOfRange =
-      isBefore(date, today) ||
-      isBefore(date, firstMonthStart) ||
-      isAfter(date, lastAvailableDate);
+      isBefore(date, today) || isBefore(date, firstMonthStart);
+    // ||
+    // isAfter(date, lastAvailableDate);
 
     const dayName = format(date, "EEEE").toLowerCase();
     const weekNumber = calculateWeekNumber(date);
@@ -140,10 +140,10 @@ const CalendarComp = ({
                           startOfDay(date),
                           startOfDay(firstMonthStart)
                         ) &&
-                        !isAfter(
-                          startOfDay(date),
-                          startOfDay(lastAvailableDate)
-                        ) &&
+                        // !isAfter(
+                        //   startOfDay(date),
+                        //   startOfDay(lastAvailableDate)
+                        // ) &&
                         hasWorkingHours
                       ) {
                         onClickDay(date);
