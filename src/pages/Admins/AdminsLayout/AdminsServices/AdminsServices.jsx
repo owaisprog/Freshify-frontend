@@ -76,7 +76,7 @@ function AdminsServices() {
             const previousServices =
               queryClient.getQueryData(["services"]) || [];
             const updatedServices = previousServices.filter(
-              (service) => service._id !== id
+              (service) => service?._id !== id
             );
             queryClient.setQueryData(["services"], updatedServices);
             // // //consoe.log("Service deleted successfully!");
@@ -270,12 +270,12 @@ function AdminsServices() {
                 Most Sold Service
               </Text>
               <Text className="!text-[14px] !text-[#333B69] !font-[400]">
-                {mostSoldServices.MostSoldService.service}
+                {mostSoldServices?.MostSoldService?.service}
               </Text>
             </div>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            ${mostSoldServices.MostSoldService.totalRevenue}
+            ${mostSoldServices?.MostSoldService?.totalRevenue}
           </Text>
         </div>
 
@@ -286,11 +286,11 @@ function AdminsServices() {
               <img src="/haircutTotalOrdersIcon.png" alt="" />
             </div>
             <Text className="!text-[#000000] !text-[14px] !font-[400]">
-              Haircut Total Orders
+              {mostSoldServices?.MostSoldService?.service} Total Orders
             </Text>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            {mostSoldServices.MostSoldService.totalOrders}
+            {mostSoldServices?.MostSoldService?.totalOrders}
           </Text>
         </div>
       </section>

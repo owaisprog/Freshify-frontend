@@ -13,6 +13,16 @@ function OrganizationOwnerUsers() {
   const currentTab = searchParams.get("tab") || "admin";
   const [activeTab, setActiveTab] = useState(currentTab);
 
+  // ✅ Fetch Top Pserformers Of the organization Owner
+  // Fetch Most Sold  services (always enabled)
+  const { data: topPerformers = [] } = useQueryHook({
+    queryKey: "topPerformers",
+    endpoint: `/api/top-performers/${id}`,
+    staleTime: 0 * 60 * 1000, // No cache
+  });
+
+  console.log("Top Performers", topPerformers);
+
   // ✅ Fetch all users with React Query
   const {
     data: allUsers = [],
@@ -60,12 +70,12 @@ function OrganizationOwnerUsers() {
                 </Text>
 
                 <Text className="!text-[14px] !font-[400]">
-                  Mirza Tayyab Khalid
+                  {topPerformers?.topPerformers?.[0]?.name}
                 </Text>
               </div>
             </div>
             <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-              $4,790
+              ${topPerformers?.topPerformers?.[0]?.totalRevenue}
             </Text>
           </div>
 
@@ -78,11 +88,11 @@ function OrganizationOwnerUsers() {
               </div>
 
               <Text className=" !text-[#000000] !text-[14px] !font-[400]">
-                Orders By Mirza
+                Orders By {topPerformers?.topPerformers?.[0]?.name}
               </Text>
             </div>
             <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-              1,360
+              {topPerformers?.topPerformers?.[0]?.totalOrders}
             </Text>
           </div>
         </section>

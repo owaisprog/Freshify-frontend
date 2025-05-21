@@ -4,9 +4,17 @@ import AdminsUserProfessional from "./Components/AdminsUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
 
 function AdminsUsers() {
-  const { id, location } = JSON.parse(localStorage.getItem("data"));
+  const { id, location, organizationOwnerId } = JSON.parse(
+    localStorage.getItem("data")
+  );
 
-  // Get active tab from query params or default to "admin"
+  // ✅ Fetch Top Pserformers Of the organization Owner
+  // Fetch Most Sold  services (always enabled)
+  const { data: topPerformers = [] } = useQueryHook({
+    queryKey: "topPerformers",
+    endpoint: `/api/top-performers/admin/${organizationOwnerId?._id}/${location._id}`,
+    staleTime: 0 * 60 * 1000, // No cache
+  });
 
   // ✅ Fetch all users with React Query
   const {
@@ -45,12 +53,14 @@ function AdminsUsers() {
                 </Text>
 
                 <Text className="!text-[14px] !font-[400]">
-                  Mirza Tayyab Khalid
+                  {topPerformers?.topPerformers?.[0]?.name}
                 </Text>
               </div>
             </div>
             <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-              $4,790
+              {topPerformers?.topPerformers?.[0]?.totalRevenue
+                ? `$${topPerformers.topPerformers[0].totalRevenue}`
+                : null}
             </Text>
           </div>
 
@@ -63,11 +73,11 @@ function AdminsUsers() {
               </div>
 
               <Text className=" !text-[#000000] !text-[14px] !font-[400]">
-                Orders By Mirza
+                Orders By {topPerformers?.topPerformers?.[0]?.name}
               </Text>
             </div>
             <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-              1,360
+              {topPerformers?.topPerformers?.[0]?.totalOrders}
             </Text>
           </div>
         </section>

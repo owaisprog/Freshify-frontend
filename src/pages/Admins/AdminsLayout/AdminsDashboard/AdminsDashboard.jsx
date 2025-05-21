@@ -28,7 +28,7 @@ export default function OrganizationOwnerDashboard() {
     TotalSales,
     AverageSalesPrice,
     TopPerformer = [],
-    popularServices = [],
+    PopularServices = [1, 2, 3, 4],
     LocationsByUser = [],
     OrderThisWeek,
     OrdersToday,
@@ -176,19 +176,24 @@ export default function OrganizationOwnerDashboard() {
                   Popular Services
                 </Text>
                 <div
-                  className={`bg-[#FFFFFF] p-[20px]  flex flex-col justify-between rounded-[25px] specialBorder ${popularServices.length < 4 ? "h-[322px]" : "h-[322px] overflow-hidden "}`}
+                  className={`bg-[#FFFFFF] p-[20px]  flex flex-col  rounded-[25px] specialBorder ${PopularServices.length < 4 ? "h-[322px] gap-4 " : "h-[322px] overflow-hidden justify-evenly "}`}
                 >
                   {/* Services Section  */}
-                  {popularServices.length <= 0 ? (
+                  {PopularServices.length <= 0 ? (
                     <div className=" flex items-center justify-center h-full">
                       <p>No data Available</p>
                     </div>
                   ) : null}
-                  {popularServices.map((service, index) => {
+                  {PopularServices.map((service, index) => {
+                    let progressValue = null;
+                    if (index === 0) progressValue = 95;
+                    if (index === 1) progressValue = 80;
+                    if (index === 2) progressValue = 60;
+                    if (index === 3) progressValue = 45;
                     return (
                       <div
                         key={index}
-                        className="h-[60px]   px-[13px] gap-4   grid grid-cols-5  specialBorderBottom"
+                        className="h-[60px]  px-[13px] gap-4   grid grid-cols-5  specialBorderBottom"
                       >
                         <div className="col-span-4 flex items-center gap-2  w-full ">
                           <div
@@ -208,14 +213,18 @@ export default function OrganizationOwnerDashboard() {
                             <Text className="!text-[18px] !font-[400]">
                               {service.service}
                             </Text>
-                            <Progress color="#718EBF" size="lg" value={95} />
+                            <Progress
+                              color="#718EBF"
+                              size="lg"
+                              value={progressValue}
+                            />
                           </div>
                         </div>
                         <Text
                           ta={"end"}
                           className=" !flex !items-center !justify-end !text-[30px] !font-[600]"
                         >
-                          {service.count}
+                          {service.totalOrders}
                         </Text>
                       </div>
                     );
@@ -313,7 +322,7 @@ export default function OrganizationOwnerDashboard() {
                         </Text>
                       </div>
                       <Text className="!text-[30px] !font-[600]">
-                        ${Number(customer.count).toFixed()}
+                        {Number(customer.orderCount).toFixed()}
                       </Text>
                     </div>
                   ))}
