@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Loader } from "@mantine/core";
 import { useQueryHook } from "../../services/reactQuery";
 
+import { toast } from "react-toastify";
+
 export default function OwnerCards() {
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ export default function OwnerCards() {
 
   return (
     <div className="grid m-6 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {owners.map(({ _id, name, image }) => (
+      {owners.map(({ _id, name, image, subscriptionStatus }) => (
         <div
           key={_id}
           className="flex flex-col min-[350px]:flex-row bg-white rounded-3xl overflow-hidden shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
@@ -55,7 +57,13 @@ export default function OwnerCards() {
             </div>
 
             <button
-              onClick={() => navigate(`/booking`, { state: _id })}
+              onClick={() => {
+                if (subscriptionStatus === "paid") {
+                  navigate(`/booking`, { state: _id });
+                } else {
+                  toast.warn("Please Subscribe");
+                }
+              }}
               className="mt-6 inline-flex items-center justify-center px-6 py-2.5 text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black cursor-pointer"
             >
               Book Now

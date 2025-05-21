@@ -1,7 +1,13 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { useBookingContext } from "./BookingContext";
 import CalendarComp from "../CustomerCalendar";
-import { format } from "date-fns";
+import {
+  format,
+  differenceInDays,
+  startOfDay,
+  isSameMonth,
+  addMonths,
+} from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
 import { Button, Loader } from "@mantine/core";
@@ -16,7 +22,7 @@ const formatMidnightHours = (time24) => {
   return time24;
 };
 
-export default function DateTimeStep() {
+export default function DateTimeStep({ numberOfMonths = 2 }) {
   const data = JSON.parse(localStorage.getItem("data"));
   const token = localStorage.getItem("token");
   const [timeSlots, setTimeSlots] = useState([]);
@@ -27,16 +33,49 @@ export default function DateTimeStep() {
   const { bookingData, updateBookingData } = useBookingContext();
   const initialized = useRef(false);
 
-  // This api will get the response from the advace booking and then i will pass it to the CalendarComt to show the montsh for advace booking
   const { data: bookingTime = {} } = useQueryHook({
     queryKey: ["bookingTime"],
     endpoint: `/api/get-months/${bookingData.organizationId}`,
-    staleTime: 10 * 60 * 1000, // Cache for 15 minutes
+    staleTime: 10 * 60 * 1000,
     enabled: () => {
       return bookingData.organizationId ? true : false;
     },
   });
-  //consoe.log("Advance Booking Data", bookingTime);
+
+  const totalWeeks = numberOfMonths * 5; // 5 weeks per month
+
+  const calculateWeekNumber = useCallback((date) => {
+    const startDate = startOfDay(new Date(2025, 4, 1)); // May 1, 2025
+    const selected = startOfDay(date);
+    const firstMonth = new Date(2025, 4, 1); // May 2025
+    const secondMonth = addMonths(firstMonth, 1); // June 2025
+    const daysSinceStart = differenceInDays(selected, startDate);
+
+    if (isSameMonth(selected, firstMonth)) {
+      // First month (May 2025): Weeks 1–5
+      const weekNumber = Math.floor(daysSinceStart / 7) + 1;
+      return Math.min(Math.max(weekNumber, 1), 5);
+    } else if (isSameMonth(selected, secondMonth)) {
+      // Second month (June 2025): Weeks 6–10
+      const daysInSecondMonth = differenceInDays(
+        selected,
+        startOfDay(secondMonth)
+      );
+      return 5 + Math.floor(daysInSecondMonth / 7) + 1;
+    } else {
+      // Third month (July 2025) or beyond
+      const monthsSinceFirst = Math.floor(
+        differenceInDays(selected, firstMonth) / 30
+      );
+      const daysInCurrentMonth = differenceInDays(
+        selected,
+        startOfDay(addMonths(firstMonth, monthsSinceFirst))
+      );
+      return (
+        5 + (monthsSinceFirst - 1) * 5 + Math.floor(daysInCurrentMonth / 7) + 1
+      );
+    }
+  }, []);
 
   const formattedUTC = selectedDate
     ? format(new Date(selectedDate), "yyyy-MM-dd")
@@ -69,12 +108,13 @@ export default function DateTimeStep() {
     try {
       const DateOBJ = new Date(selectedDate);
       const dayName = format(DateOBJ, "EEEE").toLowerCase();
+      const weekNumber = calculateWeekNumber(DateOBJ);
 
       const filterData = bookingData?.location?.workingHours?.find(
-        (val) => val.day.toLowerCase() === dayName
+        (val) => val.day.toLowerCase() === dayName && val.week === weekNumber
       );
 
-      if (!filterData) {
+      if (!filterData || filterData.closed) {
         setTimeSlots([]);
         return;
       }
@@ -99,7 +139,6 @@ export default function DateTimeStep() {
         blockedSlots: safeBlockedSlots,
         date: DateOBJ,
       });
-      //consoe.log(slots, "...........");
       setTimeSlots(slots);
     } catch (error) {
       console.error("Error generating slots:", error);
@@ -111,13 +150,13 @@ export default function DateTimeStep() {
     bookingData?.services,
     bookedSlots,
     unavailablePeriods,
+    calculateWeekNumber,
   ]);
 
   useEffect(() => {
     generateAvailableSlots();
   }, [generateAvailableSlots]);
 
-  // Initialize with current date (runs only once on mount)
   useEffect(() => {
     if (!initialized.current) {
       const currentDate = new Date();
@@ -150,6 +189,7 @@ export default function DateTimeStep() {
   };
 
   const isLoading = isLoadingSlots || isFetching;
+
   function handleAuth() {
     if (data?.role === "customer" && token) {
       updateBookingData({ proceedToPay: true });
@@ -157,6 +197,7 @@ export default function DateTimeStep() {
       navigate("/booking/BookingAuth");
     }
   }
+
   return (
     <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
       <h1 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left">
@@ -166,10 +207,13 @@ export default function DateTimeStep() {
         <CalendarComp
           onClickDay={OnClickDay}
           selectedDay={selectedDay}
-          monthsToShow={bookingTime?.bookingWindowMonths}
+          monthsToShow={bookingTime?.bookingWindowMonths || numberOfMonths}
           setSelectedDay={setSelectedDay}
           handleMonthChange={handleMonthChange}
           workingHours={bookingData?.location?.workingHours}
+          calculateWeekNumber={calculateWeekNumber}
+          totalWeeks={totalWeeks}
+          firstMonthStart={new Date(2025, 4, 1)} // May 1, 2025
         />
         <Button
           bg={"black"}
@@ -195,10 +239,10 @@ export default function DateTimeStep() {
               <button
                 key={time}
                 onClick={() => updateBookingData({ time })}
-                className={`!py-[5px] !px-[25px] border  rounded-full text-center !text-[22px] !font-bold transition-colors ${
+                className={`!py-[5px] !px-[25px] border rounded-full text-center !text-[22px] !font-bold transition-colors ${
                   bookingData.time === time
                     ? "bg-black text-white"
-                    : " hover:bg-black  hover:text-white duration-300 cursor-pointer"
+                    : "hover:bg-black hover:text-white duration-300 cursor-pointer"
                 }`}
               >
                 {displayTime}
@@ -214,19 +258,19 @@ export default function DateTimeStep() {
         </div>
       )}
       {bookingData?.time && selectedDate && !bookingData.proceedToPay && (
-        <div className=" flex pb-[100px] lg:pb-0 justify-end mt-6">
+        <div className="flex pb-[100px] lg:pb-0 justify-end mt-6">
           <Button
             onClick={() => handleAuth()}
             loaderProps={{ type: "bars" }}
             bg="black"
             radius="md"
             rightSection={<FaArrowRight />}
-            className="!text-[18px] !px-[40px] !font-[400]  !py-[10px]"
+            className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
           >
             Book Appointment
           </Button>
         </div>
-      )}{" "}
+      )}
     </div>
   );
 }

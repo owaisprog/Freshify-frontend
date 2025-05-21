@@ -167,7 +167,15 @@ export default function OrganizationsSettings() {
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Copy Booking Widget Code
         </span>
-        <CopyButton value={userId ?? ""}>
+        <CopyButton
+          value={`<iframe
+            src="http://localhost:5174/freshifyWidget/${userId}"
+            title="iframe-owner"
+            width="100%"
+            height="100%"
+          />
+`}
+        >
           {({ copied, copy }) => (
             <Button
               className="!w-[112px] lg:!w-[121px]"

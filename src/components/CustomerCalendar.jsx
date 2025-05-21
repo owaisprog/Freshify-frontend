@@ -3,13 +3,14 @@ import { ScrollArea } from "@mantine/core";
 import {
   format,
   addMonths,
+  // addDays,
   startOfMonth,
   endOfMonth,
   eachDayOfInterval,
   getDay,
   isSameDay,
   isBefore,
-  isAfter,
+  // isAfter,
   getDate,
   startOfDay,
 } from "date-fns";
@@ -17,42 +18,54 @@ import {
 const CalendarComp = ({
   selectedDay,
   onClickDay,
-  monthsToShow = 2, // Default to 1 month if not specified
+  monthsToShow = 2,
   workingHours,
+  handleMonthChange,
+  calculateWeekNumber,
+  totalWeeks,
+  firstMonthStart,
 }) => {
-  const today = new Date();
-  const [selectedMonthIndex, setSelectedMonthIndex] = useState(0); // Tracks which month is currently selected
+  const today = startOfDay(new Date());
+  const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
 
-  // Generate array of months to display
-  const monthsToDisplay = Array.from({ length: monthsToShow }, (_, i) =>
-    addMonths(today, i)
+  // Last available date for first month (May 30, 2025)
+  // const lastAvailableDate = addDays(firstMonthStart, 29); // May 1 + 29 days = May 30
+
+  const monthsToDisplay = Array.from(
+    { length: Math.ceil(monthsToShow) },
+    (_, i) => addMonths(firstMonthStart, i)
   );
 
-  // Get currently selected month
   const displayMonth = monthsToDisplay[selectedMonthIndex];
   const monthStart = startOfMonth(displayMonth);
   const monthEnd = endOfMonth(displayMonth);
 
-  // Calculate the last available date (monthsToShow months from today)
-  const lastAvailableDate = addMonths(today, monthsToShow);
-
-  // Build calendar grid for the selected month
   const calendarDays = [
     ...Array(getDay(monthStart)).fill(null),
     ...eachDayOfInterval({ start: monthStart, end: monthEnd }),
   ];
 
-  // Date cell styling - same as before but updated to consider working hours
   const getDateStyle = (date) => {
     const isToday = isSameDay(date, today);
     const isOutOfRange =
-      (isBefore(date, today) && !isToday) || isAfter(date, lastAvailableDate);
+      isBefore(date, today) || isBefore(date, firstMonthStart);
+    // ||
+    // isAfter(date, lastAvailableDate);
 
-    // Check if date has working hours
     const dayName = format(date, "EEEE").toLowerCase();
-    const hasWorkingHours = workingHours?.some(
-      (day) => day.day.toLowerCase() === dayName && day.start && day.end
-    );
+    const weekNumber = calculateWeekNumber(date);
+
+    // Only allow weeks 1–5 to have working hours
+    const hasWorkingHours =
+      weekNumber <= totalWeeks &&
+      workingHours?.some(
+        (day) =>
+          day.day.toLowerCase() === dayName &&
+          day.week === weekNumber &&
+          day.start &&
+          day.end &&
+          !day.closed
+      );
 
     const isSelected = selectedDay === date.toDateString();
 
@@ -71,12 +84,14 @@ const CalendarComp = ({
 
   return (
     <div className="mx-auto rounded-lg p-6">
-      {/* Month selector buttons - now dynamic */}
       <div className="flex flex-wrap gap-4 items-center mb-6">
         {monthsToDisplay.map((month, index) => (
           <button
             key={index}
-            onClick={() => setSelectedMonthIndex(index)}
+            onClick={() => {
+              setSelectedMonthIndex(index);
+              handleMonthChange();
+            }}
             className={`rounded-[10px] border border-black px-[40px] w-[131px] hover:bg-black hover:text-white duration-300 cursor-pointer py-[10px] text-[18px] ${
               selectedMonthIndex === index
                 ? "bg-black text-white"
@@ -87,11 +102,8 @@ const CalendarComp = ({
           </button>
         ))}
       </div>
-
-      {/* Calendar grid */}
       <ScrollArea type="auto" scrollbarSize={6}>
         <div className="w-[500px] pb-5 md:pb-0">
-          {/* Weekday headers */}
           <div className="grid grid-cols-7 mb-4">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
               <div
@@ -102,8 +114,6 @@ const CalendarComp = ({
               </div>
             ))}
           </div>
-
-          {/* Dates */}
           <div className="grid grid-cols-7 gap-y-3">
             {calendarDays.map((date, i) =>
               date ? (
@@ -111,23 +121,29 @@ const CalendarComp = ({
                   <div
                     className={getDateStyle(date)}
                     onClick={() => {
-                      // Only allow click if date is within range and has working hours
                       const dayName = format(date, "EEEE").toLowerCase();
-                      const hasWorkingHours = workingHours?.some(
-                        (day) =>
-                          day.day.toLowerCase() === dayName &&
-                          day.start &&
-                          day.end
-                      );
+                      const weekNumber = calculateWeekNumber(date);
+                      const hasWorkingHours =
+                        weekNumber <= totalWeeks &&
+                        workingHours?.some(
+                          (day) =>
+                            day.day.toLowerCase() === dayName &&
+                            day.week === weekNumber &&
+                            day.start &&
+                            day.end &&
+                            !day.closed
+                        );
 
                       if (
-                        // !isBefore(date, today) &&
-                        // !isAfter(date, lastAvailableDate) &&
-                        !isBefore(startOfDay(date), startOfDay(today)) &&
-                        !isAfter(
+                        !isBefore(startOfDay(date), today) &&
+                        !isBefore(
                           startOfDay(date),
-                          startOfDay(lastAvailableDate)
+                          startOfDay(firstMonthStart)
                         ) &&
+                        // !isAfter(
+                        //   startOfDay(date),
+                        //   startOfDay(lastAvailableDate)
+                        // ) &&
                         hasWorkingHours
                       ) {
                         onClickDay(date);

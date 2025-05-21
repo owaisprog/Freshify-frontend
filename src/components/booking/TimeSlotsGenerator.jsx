@@ -15,7 +15,6 @@ export default function generateTimeSlots({
   blockedSlots = [],
   date = new Date(),
 }) {
-  // Validate inputs
   if (!closingTime || !serviceDuration) {
     throw new Error("Missing required parameters");
   }
@@ -23,14 +22,12 @@ export default function generateTimeSlots({
   const openingDate = parseTimeToDate(date, openingTime);
   const closingDate = parseTimeToDate(date, closingTime);
 
-  // Check if the date is today
   const today = new Date();
   const isToday =
     date.getDate() === today.getDate() &&
     date.getMonth() === today.getMonth() &&
     date.getFullYear() === today.getFullYear();
 
-  // Process blocked slots
   const blockedIntervals = (Array.isArray(blockedSlots) ? blockedSlots : [])
     .map((slot) => {
       try {
@@ -49,10 +46,8 @@ export default function generateTimeSlots({
   const availableSlots = [];
   let currentSlot = openingDate;
 
-  // If it's today, adjust the starting time to current time
   if (isToday) {
     const now = new Date();
-    // Find the next slot after current time with buffer
     while (isBefore(currentSlot, now)) {
       currentSlot = addMinutes(currentSlot, slotInterval);
     }
@@ -60,14 +55,12 @@ export default function generateTimeSlots({
 
   const lastPossibleStart = addMinutes(closingDate, -serviceDuration);
 
-  // Generate all possible slots
   while (
     isBefore(currentSlot, lastPossibleStart) ||
     currentSlot.getTime() === lastPossibleStart.getTime()
   ) {
     const slotEnd = addMinutes(currentSlot, serviceDuration);
 
-    // Check if this slot overlaps with any blocked time
     const isBlocked = blockedIntervals.some((blocked) => {
       return (
         (isBefore(currentSlot, blocked.end) &&
