@@ -6,6 +6,7 @@ import {
   Loader,
   Modal,
   Paper,
+  Select,
   Switch,
   Table,
   Text,
@@ -16,7 +17,6 @@ import { IoArrowBackCircle } from "react-icons/io5";
 import { BsTrash } from "react-icons/bs";
 import { useForm } from "@mantine/form";
 import { useState } from "react";
-
 import { toast } from "react-toastify";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -35,12 +35,13 @@ export default function Locations({
   id,
   mode = "organization_owner",
   name = "",
+  numberOfMonths = 2,
 }) {
-  // const { id } = JSON.parse(localStorage.getItem("data"));
-
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  // Query logic
+  const totalWeeks = Math.ceil(numberOfMonths * 4.345);
+
   const { mutate: deleteLocation } = useDeleteMutation(["locations", id]);
   const { mutate: createLocation } = usePostMutation(["locations", id]);
   const { mutate: updateLocation } = useUpdateMutation(["locations", id]);
@@ -53,21 +54,19 @@ export default function Locations({
   const [modalTitle, setModalTitle] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isDeleting, setIsDeleting] = useState(null);
-
-  //workign hours
-
-  // const [workingHoursModalOpen, setWorkingHoursModalOpen] = useState(false);
+  const [workingHoursModalOpen, setWorkingHoursModalOpen] = useState(false);
+  const [workingHoursData, setWorkingHoursData] = useState([]);
+  const [selectedWeek, setSelectedWeek] = useState("1");
 
   const copyToClipboard = (text) => {
     navigator.clipboard
       .writeText(text)
-      .then(() => {
-        //consoe.log("link copied");
-      })
+      .then(() => {})
       .catch((err) => {
         console.error("Failed to copy: ", err);
       });
   };
+
   const {
     data: locations = [],
     isLoading,
@@ -75,21 +74,17 @@ export default function Locations({
   } = useQueryHook({
     queryKey: ["locations", id],
     endpoint: endPointGet,
-    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+    staleTime: 0 * 60 * 1000,
   });
-  //consoe.log(locations);
-  const queryClient = useQueryClient();
 
   const DelLocation = (delId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete?");
-
     if (confirmDelete) {
       setIsDeleting(delId);
       deleteLocation(
         { endpoint: `/api/delete-location/${delId}` },
         {
           onSuccess: () => {
-            // //consoe.log(responseData);
             queryClient.invalidateQueries({ queryKey: ["locations", id] });
             window.location.reload();
             toast.success("Location Deleted Successfully", {
@@ -105,31 +100,52 @@ export default function Locations({
     }
   };
 
-  // Fetch locations
-  const [defaultWorkingHours] = useState([
-    { day: "monday", start: "08:00", end: "18:00", closed: false },
-    { day: "tuesday", start: "08:00", end: "18:00", closed: false },
-    { day: "wednesday", start: "08:00", end: "18:00", closed: false },
-    { day: "thursday", start: "08:00", end: "18:00", closed: false },
-    { day: "friday", start: "08:00", end: "18:00", closed: false },
-    { day: "saturday", start: "08:00", end: "18:00", closed: false },
-    { day: "sunday", start: "08:00", end: "18:00", closed: false },
-  ]);
+  const daysOfWeek = [
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+    "sunday",
+  ];
 
-  const [workingHoursModalOpen, setWorkingHoursModalOpen] = useState(false);
-  const [workingHoursData, setWorkingHoursData] = useState([
-    ...defaultWorkingHours,
-  ]);
-  const handleTimeChange = (index, field, value) => {
-    const updatedHours = [...workingHoursData];
-    updatedHours[index][field] = value;
-    setWorkingHoursData(updatedHours);
+  const generateDefaultWorkingHours = () => {
+    const workingHours = [];
+    for (let week = 1; week <= totalWeeks; week++) {
+      daysOfWeek.forEach((day) => {
+        workingHours.push({
+          week,
+          day,
+          start: "08:00",
+          end: "18:00",
+          closed: false,
+        });
+      });
+    }
+    return workingHours;
   };
 
-  const handleDayToggle = (index, closed) => {
-    const updatedHours = [...workingHoursData];
-    updatedHours[index].closed = closed;
-    setWorkingHoursData(updatedHours);
+  const [defaultWorkingHours] = useState(generateDefaultWorkingHours());
+
+  const handleTimeChange = (day, field, value) => {
+    setWorkingHoursData((prev) =>
+      prev.map((item) =>
+        item.day === day && item.week === parseInt(selectedWeek)
+          ? { ...item, [field]: value }
+          : item
+      )
+    );
+  };
+
+  const handleDayToggle = (day, closed) => {
+    setWorkingHoursData((prev) =>
+      prev.map((item) =>
+        item.day === day && item.week === parseInt(selectedWeek)
+          ? { ...item, closed }
+          : item
+      )
+    );
   };
 
   const openWorkingHoursModal = (location) => {
@@ -139,9 +155,10 @@ export default function Locations({
     } else {
       setWorkingHoursData([...defaultWorkingHours]);
     }
+    setSelectedWeek("1");
     setWorkingHoursModalOpen(true);
   };
-  // Form logic
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -150,40 +167,38 @@ export default function Locations({
       address: "",
       googleLink: "",
       enableCashPayments: "false",
-      startTime: "08:00", // Default start time
-      endTime: "18:00", // Default end time
+      startTime: "08:00",
+      endTime: "18:00",
       description: "",
     },
     validate: {
       name: (value) =>
-        value.trim() === "" ? "Location name is required" : null, // Validate location name
-      address: (value) => (value.trim() === "" ? "Address is required" : null), // Validate address
+        value.trim() === "" ? "Location name is required" : null,
+      address: (value) => (value.trim() === "" ? "Address is required" : null),
       googleLink: (value) =>
         value && !/^https?:\/\/[^\s$.?#].[^\s]*$/i.test(value)
           ? "Invalid Google link"
-          : null, // Validate Google link URL
+          : null,
       enableCashPayments: (value) =>
         value !== "true" && value !== "false"
           ? "Must be 'true' or 'false'"
-          : null, // Validation for boolean values
+          : null,
       startTime: (value) =>
-        !value || value === "" ? "Start time is required" : null, // Validate start time
+        !value || value === "" ? "Start time is required" : null,
       endTime: (value, values) =>
         !value || value === ""
           ? "End time is required"
           : value <= values.startTime
             ? "End time must be after start time"
-            : null, // Validate end time and ensure it is after start time
+            : null,
     },
   });
+
   const handleSubmit = (values) => {
     setLoading(true);
-    //consoe.log(values);
-
-    // Convert "enableCashPayments" from string to boolean
     let payload = {
       ...values,
-      enableCashPayments: values.enableCashPayments === "true", // Convert to boolean
+      enableCashPayments: values.enableCashPayments === "true",
     };
 
     try {
@@ -203,13 +218,18 @@ export default function Locations({
           }
         );
       } else {
-        //   startTime: "08:00", // Default start time
-        // endTime: "18:00",
-        const workingHoursCreate = defaultWorkingHours.map((val) => ({
-          ...val,
-          start: values.startTime,
-          end: values.endTime,
-        }));
+        const workingHoursCreate = [];
+        for (let week = 1; week <= totalWeeks; week++) {
+          daysOfWeek.forEach((day) => {
+            workingHoursCreate.push({
+              week,
+              day,
+              start: values.startTime,
+              end: values.endTime,
+              closed: false,
+            });
+          });
+        }
         if (mode === "superadmin") {
           payload = { ...payload, organizationOwnerId: id };
         }
@@ -243,11 +263,11 @@ export default function Locations({
   };
 
   return (
-    <main className="grid grid-cols-1 gap-y-5  w-full pt-20 lg:pt-0  p-6 lg:p-0">
+    <main className="grid grid-cols-1 gap-y-5 w-full pt-20 lg:pt-0 p-6 lg:p-0">
       <Title
         mb={"lg"}
         c={"black"}
-        className="lg:!px-6  !flex !items-center gap-4  lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+        className="lg:!px-6 !flex !items-center gap-4 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
       >
         {mode === "superadmin" ? (
           <IoArrowBackCircle
@@ -259,10 +279,10 @@ export default function Locations({
           />
         ) : null}
         {mode === "superadmin" ? `${name} ` : null}
-        Locations{" "}
+        Locations
       </Title>
-      <section className=" max-w-[1440px] mx-auto w-full -mt-10 lg:mt-0 px-2 flex justify-between items-center">
-        <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
+      <section className="max-w-[1440px] mx-auto w-full -mt-10 lg:mt-0 px-2 flex justify-between items-center">
+        <Text className="!text-[18px] !font-[400] lg:!text-[22px] !font-[700]">
           All Locations
         </Text>
         <Button
@@ -278,17 +298,14 @@ export default function Locations({
           loaderProps={{ type: "bars" }}
           bg="black"
           radius="md"
-          className="!text-[18px] !px-[40px] !font-[400]  !py-[10px]"
+          className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
         >
           Add Location
         </Button>
       </section>
-      <section className=" max-w-[1440px] mx-auto w-full">
+      <section className="max-w-[1440px] mx-auto w-full">
         <Table.ScrollContainer minWidth={950}>
-          <Box
-            className="flex flex-col 
-              gap-4 p-2 justify-center items-center"
-          >
+          <Box className="flex flex-col gap-4 p-2 justify-center items-center">
             {isLoading ? (
               <Loader className="mx-auto" color="blue" type="bars" />
             ) : error ? (
@@ -299,9 +316,9 @@ export default function Locations({
               locations?.map((val, index) => (
                 <section
                   key={val._id}
-                  className="min-w-full grid grid-cols-7 justify-between gap-x-2  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] "
+                  className="min-w-full grid grid-cols-7 justify-between gap-x-2 items-center p-2 rounded-xl specialBorder min-h-[120px] bg-[#FFFFFF]"
                 >
-                  <div className=" col-span-2  flex gap-3 ">
+                  <div className="col-span-2 flex gap-3">
                     {index % 3 === 0 ? (
                       <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7EDFF] rounded-[20px]">
                         <img
@@ -327,7 +344,7 @@ export default function Locations({
                         />
                       </div>
                     )}
-                    <div className=" flex flex-col justify-center">
+                    <div className="flex flex-col justify-center">
                       <Text
                         tt={"capitalize"}
                         className="!text-[22px] !font-[700]"
@@ -347,8 +364,7 @@ export default function Locations({
                       </Text>
                     </div>
                   </div>
-                  {/* google places  */}
-                  <div className=" col-span-1">
+                  <div className="col-span-1">
                     <Text
                       tt={"capitalize"}
                       className="!text-[22px] !font-[700]"
@@ -364,9 +380,7 @@ export default function Locations({
                       Copy Link
                     </Text>
                   </div>
-
-                  {/* Onsite Payment  */}
-                  <div className=" col-span-1">
+                  <div className="col-span-1">
                     <Text
                       tt={"capitalize"}
                       className="!text-[22px] !font-[700]"
@@ -386,7 +400,7 @@ export default function Locations({
                     </Text>
                     <Text
                       c={"#718EBF"}
-                      className="cursor-pointer underline! !text-[18px] !font-[400]"
+                      className="cursor-pointer underline !text-[18px] !font-[400]"
                       onClick={() => openWorkingHoursModal(val)}
                     >
                       Edit
@@ -423,7 +437,7 @@ export default function Locations({
                           image: val.image,
                           address: val.address,
                           googleLink: val.googleLink,
-                          enableCashPayments: val.enableCashPayments.toString(), // Convert boolean to string
+                          enableCashPayments: val.enableCashPayments.toString(),
                           workingHours: val.workingHours,
                           description: val.description,
                         });
@@ -432,7 +446,6 @@ export default function Locations({
                     >
                       <FiUpload size={18} style={{ color: "white" }} />
                     </button>
-
                     <button
                       className="bg-[#622929] rounded p-2 cursor-pointer"
                       onClick={() => DelLocation(val._id)}
@@ -450,7 +463,6 @@ export default function Locations({
           </Box>
         </Table.ScrollContainer>
       </section>
-      {/* Popup for Adding/Editing Locations */}
       <Popup
         form={form}
         opened={opened}
@@ -473,12 +485,6 @@ export default function Locations({
           placeholder="Enter Google Link"
           id="googleLink"
         />
-        {/* <Popup.Input
-            label="Working Hours"
-            type="number"
-            placeholder="Enter Working Hours"
-            id="workingHours"
-          /> */}
         <Popup.FileInputField
           label="Upload Image"
           placeholder="Select an image"
@@ -506,8 +512,8 @@ export default function Locations({
           label="Enable Cash Payment"
           placeholder="Select an option"
           data={[
-            { value: "true", label: "Yes" }, // Use string "true"
-            { value: "false", label: "No" }, // Use string "false"
+            { value: "true", label: "Yes" },
+            { value: "false", label: "No" },
           ]}
         />
         <Popup.TextArea
@@ -517,7 +523,6 @@ export default function Locations({
         />
         <Popup.SubmitButton loading={loading}>Submit</Popup.SubmitButton>
       </Popup>
-      {/* Modal for Address & Description */}
       <Modal
         closeOnClickOutside={false}
         padding={"xl"}
@@ -550,43 +555,64 @@ export default function Locations({
         size="xl"
       >
         <div className="space-y-4">
-          {workingHoursData.map((dayData, index) => (
-            <div key={dayData.day} className="border-b pb-4">
-              <Flex justify="space-between" align="center" mb="sm">
-                <Text tt="capitalize " fw={500} fz={"h3"}>
-                  {dayData.day}
-                </Text>
-                <Switch
-                  size="lg"
-                  color="#34C759"
-                  checked={!dayData.closed}
-                  onChange={(e) =>
-                    handleDayToggle(index, !e.currentTarget.checked)
-                  }
-                  label={dayData.closed ? "Closed" : "Open"}
-                />
-              </Flex>
+          <Select
+            label="Select Week"
+            placeholder="Pick a week"
+            data={Array.from({ length: totalWeeks }, (_, i) => ({
+              value: `${i + 1}`,
+              label: `Week ${i + 1}`,
+            }))}
+            value={selectedWeek}
+            onChange={setSelectedWeek}
+            className="mb-4"
+          />
+          {daysOfWeek.map((day) => {
+            const dayData = workingHoursData.find(
+              (item) => item.day === day && item.week === parseInt(selectedWeek)
+            ) || {
+              day,
+              week: parseInt(selectedWeek),
+              start: "08:00",
+              end: "18:00",
+              closed: false,
+            };
 
-              {!dayData.closed && (
-                <Flex gap="md" align="center">
-                  <TimePicker
-                    label="Opening Time"
-                    value={dayData.start}
-                    onChange={(value) =>
-                      handleTimeChange(index, "start", value)
+            return (
+              <div key={`${day}-${selectedWeek}`} className="border-b pb-4">
+                <Flex justify="space-between" align="center" mb="sm">
+                  <Text tt="capitalize" fw={500} fz={"h3"}>
+                    {day}
+                  </Text>
+                  <Switch
+                    size="lg"
+                    color="#34C759"
+                    checked={!dayData.closed}
+                    onChange={(e) =>
+                      handleDayToggle(day, !e.currentTarget.checked)
                     }
-                  />
-                  <TimePicker
-                    label="Closing Time"
-                    value={dayData.end}
-                    onChange={(value) => handleTimeChange(index, "end", value)}
+                    label={dayData.closed ? "Closed" : "Open"}
                   />
                 </Flex>
-              )}
-            </div>
-          ))}
+                {!dayData.closed && (
+                  <Flex gap="md" align="center">
+                    <TimePicker
+                      label="Opening Time"
+                      value={dayData.start}
+                      onChange={(value) =>
+                        handleTimeChange(day, "start", value)
+                      }
+                    />
+                    <TimePicker
+                      label="Closing Time"
+                      value={dayData.end}
+                      onChange={(value) => handleTimeChange(day, "end", value)}
+                    />
+                  </Flex>
+                )}
+              </div>
+            );
+          })}
         </div>
-
         <Group justify="flex-end" mt="md">
           <Button
             variant="filled"
@@ -620,7 +646,7 @@ export default function Locations({
             Save Hours
           </Button>
         </Group>
-      </Modal>{" "}
+      </Modal>
     </main>
   );
 }

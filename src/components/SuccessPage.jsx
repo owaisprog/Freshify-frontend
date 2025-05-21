@@ -16,7 +16,7 @@ function SuccessPage({
   const sessionId = searchParams.get(id);
   const navigate = useNavigate();
 
-  const { data: success, isSuccess } = useQueryHook({
+  const { isSuccess } = useQueryHook({
     queryKey: key,
     endpoint: `${endpoint}=${sessionId}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes

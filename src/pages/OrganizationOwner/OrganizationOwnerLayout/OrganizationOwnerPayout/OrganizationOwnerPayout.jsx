@@ -1,9 +1,9 @@
-import { Button, Text, Title } from "@mantine/core";
+import { Button, Loader, Text, Title } from "@mantine/core";
 import { useState } from "react";
 import { useForm } from "@mantine/form";
 import Popup from "../../../../components/PopUp";
 import { toast } from "react-toastify";
-import { usePostMutation } from "../../../../services/reactQuery";
+import { usePostMutation, useQueryHook } from "../../../../services/reactQuery";
 import TransctionsTable from "../../../../components/TransctionsTable";
 
 // Complete list of countries
@@ -45,6 +45,14 @@ export default function OrganizationOwnerPayout() {
   const email = userData?.email || ""; // Safely get email with fallback
 
   const { mutate: connectStripe, isPending } = usePostMutation("connectStripe");
+
+  const { data, isLoading: isLoadingStatus } = useQueryHook({
+    queryKey: "connect_status",
+    endpoint: `/api/connect/status`,
+    staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+  });
+
+  console.log(data);
 
   const form = useForm({
     initialValues: {
@@ -99,15 +107,28 @@ export default function OrganizationOwnerPayout() {
           <Text className="lg:!text-[32px] !text-[24px] !font-[500]">
             Initiate Payout From Stripe
           </Text>
-          <Button
-            onClick={() => setOpened(true)}
-            loaderProps={{ type: "bars" }}
-            bg="black"
-            radius="md"
-            className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
-          >
-            Connect Stripe
-          </Button>
+          {isLoadingStatus && <Loader size={"sm"} type="bars" color="black" />}
+          {!isLoadingStatus && data && data?.status !== "complete" && (
+            <Button
+              onClick={() => setOpened(true)}
+              loaderProps={{ type: "bars" }}
+              bg="black"
+              radius="md"
+              className="!text-[18px] !px-[40px] !font-[400] "
+            >
+              Connect Stripe
+            </Button>
+          )}
+          {!isLoadingStatus && data && data?.status === "complete" && (
+            <Button
+              loaderProps={{ type: "bars" }}
+              bg="black"
+              radius="md"
+              className="!text-[18px] !px-[40px] !font-[400] "
+            >
+              Payout
+            </Button>
+          )}
         </section>
 
         <Popup
