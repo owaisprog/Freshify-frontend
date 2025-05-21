@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Loader } from "@mantine/core";
 import { useQueryHook } from "../../services/reactQuery";
+import { toast } from "react-toastify";
 
 export default function Widget() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function Widget() {
     endpoint: `/api/get-organizationowner/${ownerId}`,
     staleTime: 15 * 60 * 1000,
   });
-  const { _id, image, name } = owners || {};
+  const { _id, image, name, subscriptionStatus } = owners || {};
   console.log(owners);
   if (isLoading) {
     return (
@@ -64,7 +65,13 @@ export default function Widget() {
             hdjshjhds jhsdjhsdjhsj sdkjskdjsd skjdskjdksjdksjdk jdskjdksjdksjdk
           </p>
           <button
-            onClick={() => navigate(`/booking`, { state: _id })}
+            onClick={() => {
+              if (subscriptionStatus === "paid") {
+                navigate(`/booking`, { state: _id });
+              } else {
+                toast.warn("Please Subscribe");
+              }
+            }}
             className="mt-6 inline-flex items-center justify-center px-6 py-2.5 text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black cursor-pointer"
           >
             Book Now
