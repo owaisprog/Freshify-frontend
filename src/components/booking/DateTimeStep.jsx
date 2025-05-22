@@ -22,7 +22,7 @@ const formatMidnightHours = (time24) => {
   return time24;
 };
 
-export default function DateTimeStep({ numberOfMonths = 2 }) {
+export default function DateTimeStep() {
   const data = JSON.parse(localStorage.getItem("data"));
   const token = localStorage.getItem("token");
   const [timeSlots, setTimeSlots] = useState([]);
@@ -41,8 +41,6 @@ export default function DateTimeStep({ numberOfMonths = 2 }) {
       return bookingData.organizationId ? true : false;
     },
   });
-
-  const totalWeeks = numberOfMonths * 5; // 5 weeks per month
 
   const calculateWeekNumber = useCallback((date) => {
     const startDate = startOfDay(new Date(2025, 4, 1)); // May 1, 2025
@@ -207,12 +205,12 @@ export default function DateTimeStep({ numberOfMonths = 2 }) {
         <CalendarComp
           onClickDay={OnClickDay}
           selectedDay={selectedDay}
-          monthsToShow={bookingTime?.bookingWindowMonths || numberOfMonths}
+          monthsToShow={bookingTime?.bookingWindowMonths}
           setSelectedDay={setSelectedDay}
           handleMonthChange={handleMonthChange}
           workingHours={bookingData?.location?.workingHours}
           calculateWeekNumber={calculateWeekNumber}
-          totalWeeks={totalWeeks}
+          totalWeeks={bookingTime?.bookingWindowMonths * 5}
           firstMonthStart={new Date(2025, 4, 1)} // May 1, 2025
         />
         <Button
