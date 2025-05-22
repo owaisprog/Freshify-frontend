@@ -46,13 +46,35 @@ export default function OrganizationOwnerPayout() {
 
   const { mutate: connectStripe, isPending } = usePostMutation("connectStripe");
 
+  const { refetch: initiatePayout, isLoading: isPayoutLoading } = useQueryHook({
+    queryKey: "payout",
+    endpoint: `/api/connect/payout`,
+    params: { amount: 1000, currency: "usd" }, // Adjust based on your API
+    enabled: false,
+    staleTime: 0 * 60 * 1000,
+  });
+
+  async function PayOutFuncation() {
+    console.log("Initiating payout...");
+    try {
+      const { data } = await initiatePayout();
+      console.log("Payout response:", data);
+      toast.success("Payout initiated successfully!", {
+        position: "top-center",
+      });
+      window.location.href = data?.payoutUrl;
+    } catch (error) {
+      console.error("Payout error:", error);
+      toast.error(error?.message || "Error while initiating payout", {
+        position: "top-center",
+      });
+    }
+  }
   const { data, isLoading: isLoadingStatus } = useQueryHook({
     queryKey: "connect_status",
     endpoint: `/api/connect/status`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
   });
-
-  console.log(data);
 
   const form = useForm({
     initialValues: {
@@ -92,7 +114,7 @@ export default function OrganizationOwnerPayout() {
       }
     );
   };
-
+  console.log(data, "//////////////");
   return (
     <main className="pt-20  lg:pt-0 lg:gap-6 p-6 lg:p-0">
       <Title
@@ -108,10 +130,11 @@ export default function OrganizationOwnerPayout() {
             Initiate Payout From Stripe
           </Text>
           {isLoadingStatus && <Loader size={"sm"} type="bars" color="black" />}
-          {!isLoadingStatus && data && data?.status !== "complete" && (
+          {!isLoadingStatus && data?.status !== "complete" && (
             <Button
               onClick={() => setOpened(true)}
               loaderProps={{ type: "bars" }}
+              loading={isPayoutLoading}
               bg="black"
               radius="md"
               className="!text-[18px] !px-[40px] !font-[400] "
@@ -123,6 +146,8 @@ export default function OrganizationOwnerPayout() {
             <Button
               loaderProps={{ type: "bars" }}
               bg="black"
+              // loading={}
+              onClick={PayOutFuncation}
               radius="md"
               className="!text-[18px] !px-[40px] !font-[400] "
             >

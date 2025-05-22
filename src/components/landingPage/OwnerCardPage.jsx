@@ -35,42 +35,44 @@ export default function OwnerCards() {
 
   return (
     <div className="grid m-6 gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {owners.map(({ _id, name, image, subscriptionStatus }) => (
-        <div
-          key={_id}
-          className="flex flex-col min-[350px]:flex-row bg-white rounded-3xl overflow-hidden shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
-        >
-          {/* Image */}
-          <img
-            src={image || "/profile.webp"}
-            alt={name}
-            className="w-full min-[350px]:w-1/3 object-cover"
-          />
+      {owners.map(({ _id, name, image, subscriptionStatus }) => {
+        return subscriptionStatus === "paid" ? (
+          <div
+            key={_id}
+            className="flex flex-col min-[350px]:flex-row bg-white rounded-3xl overflow-hidden shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
+          >
+            {/* Image */}
+            <img
+              src={image || "/profile.webp"}
+              alt={name}
+              className="w-full min-[350px]:w-1/3 object-cover"
+            />
 
-          {/* Details */}
-          <div className="flex flex-col justify-between p-6 sm:p-8 w-full min-[500px]:w-2/3 text-left">
-            <div>
-              <h2 className="text-lg font-medium tracking-tighter text-gray-600 lg:text-3xl">
-                {name}
-              </h2>
-              <p className="mt-2 text-sm text-gray-500">Organization owner</p>
+            {/* Details */}
+            <div className="flex flex-col justify-between p-6 sm:p-8 w-full min-[500px]:w-2/3 text-left">
+              <div>
+                <h2 className="text-lg font-medium tracking-tighter text-gray-600 lg:text-3xl">
+                  {name}
+                </h2>
+                <p className="mt-2 text-sm text-gray-500">Organization owner</p>
+              </div>
+
+              <button
+                onClick={() => {
+                  if (subscriptionStatus === "paid") {
+                    navigate(`/booking`, { state: _id });
+                  } else {
+                    toast.warn("Please Subscribe");
+                  }
+                }}
+                className="mt-6 inline-flex items-center justify-center px-6 py-2.5 text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black cursor-pointer"
+              >
+                Book Now
+              </button>
             </div>
-
-            <button
-              onClick={() => {
-                if (subscriptionStatus === "paid") {
-                  navigate(`/booking`, { state: _id });
-                } else {
-                  toast.warn("Please Subscribe");
-                }
-              }}
-              className="mt-6 inline-flex items-center justify-center px-6 py-2.5 text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black cursor-pointer"
-            >
-              Book Now
-            </button>
           </div>
-        </div>
-      ))}
+        ) : null;
+      })}
     </div>
   );
 }
