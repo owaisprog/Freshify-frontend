@@ -28,6 +28,7 @@ import {
 import Popup from "./PopUp";
 import TimePicker from "./DayTimePicker";
 import { useNavigate } from "react-router-dom";
+import { addDays, format, endOfMonth, startOfMonth } from "date-fns";
 
 export default function Locations({
   endpointCreate,
@@ -132,7 +133,6 @@ export default function Locations({
     let updatedWorkingHours = [];
 
     if (location.workingHours && Array.isArray(location.workingHours)) {
-      // Merge existing working hours with defaults for all weeks
       updatedWorkingHours = defaultWorkingHours.map((defaultEntry) => {
         const existingEntry = location.workingHours.find(
           (item) =>
@@ -171,7 +171,6 @@ export default function Locations({
             : item
         );
       }
-      // Create new entry if it doesn't exist
       const newEntry = {
         week: parseInt(selectedWeek),
         day,
@@ -571,10 +570,45 @@ export default function Locations({
           <Select
             label="Select Week"
             placeholder="Pick a week"
-            data={Array.from({ length: totalWeeks }, (_, i) => ({
-              value: `${i + 1}`,
-              label: `Week ${i + 1}`,
-            }))}
+            data={Array.from({ length: totalWeeks }, (_, i) => {
+              const weekNumber = i + 1;
+              const weeksPerMonth = 5;
+              const monthOffset = Math.floor((weekNumber - 1) / weeksPerMonth);
+              const weekInMonth = ((weekNumber - 1) % weeksPerMonth) + 1;
+
+              const currentMonth = new Date().getMonth();
+              const currentYear = new Date().getFullYear();
+              const monthIndex = (currentMonth + monthOffset) % 12;
+              const yearOffset = Math.floor((currentMonth + monthOffset) / 12);
+              const monthStart = startOfMonth(
+                new Date(currentYear + yearOffset, monthIndex, 1)
+              );
+
+              let weekStart;
+              if (weekInMonth <= 4) {
+                // Weeks 1–4: 7 days each (days 1–28)
+                weekStart = addDays(monthStart, (weekInMonth - 1) * 7);
+              } else {
+                // Week 5: Starts on day 29, covers remaining days
+                weekStart = new Date(
+                  monthStart.getFullYear(),
+                  monthStart.getMonth(),
+                  29
+                );
+              }
+
+              const monthEnd = endOfMonth(monthStart);
+              if (weekStart > monthEnd) {
+                weekStart = monthEnd; // Cap at month end
+              }
+
+              const formattedDate = format(weekStart, "MMMM d, yyyy");
+
+              return {
+                value: `${weekNumber}`,
+                label: `Week ${weekNumber} (${formattedDate})`,
+              };
+            })}
             value={selectedWeek}
             onChange={setSelectedWeek}
             className="mb-4"
@@ -635,7 +669,6 @@ export default function Locations({
               if (selectedLocation) {
                 setLoading(true);
                 try {
-                  // Ensure all weeks (1–10) are included in the payload
                   const completeWorkingHours =
                     generateDefaultWorkingHours().map((defaultEntry) => {
                       const existingEntry = workingHoursData.find(

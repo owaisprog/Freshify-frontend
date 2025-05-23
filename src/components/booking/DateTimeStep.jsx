@@ -5,8 +5,8 @@ import {
   format,
   differenceInDays,
   startOfDay,
-  isSameMonth,
   addMonths,
+  startOfMonth,
 } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
@@ -43,36 +43,41 @@ export default function DateTimeStep() {
   });
 
   const calculateWeekNumber = useCallback((date) => {
-    const startDate = startOfDay(new Date(2025, 4, 1)); // May 1, 2025
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
     const selected = startOfDay(date);
-    const firstMonth = new Date(2025, 4, 1); // May 2025
-    const secondMonth = addMonths(firstMonth, 1); // June 2025
-    const daysSinceStart = differenceInDays(selected, startDate);
 
-    if (isSameMonth(selected, firstMonth)) {
-      // First month (May 2025): Weeks 1–5
-      const weekNumber = Math.floor(daysSinceStart / 7) + 1;
-      return Math.min(Math.max(weekNumber, 1), 5);
-    } else if (isSameMonth(selected, secondMonth)) {
-      // Second month (June 2025): Weeks 6–10
-      const daysInSecondMonth = differenceInDays(
-        selected,
-        startOfDay(secondMonth)
-      );
-      return 5 + Math.floor(daysInSecondMonth / 7) + 1;
-    } else {
-      // Third month (July 2025) or beyond
-      const monthsSinceFirst = Math.floor(
-        differenceInDays(selected, firstMonth) / 30
-      );
-      const daysInCurrentMonth = differenceInDays(
-        selected,
-        startOfDay(addMonths(firstMonth, monthsSinceFirst))
-      );
-      return (
-        5 + (monthsSinceFirst - 1) * 5 + Math.floor(daysInCurrentMonth / 7) + 1
-      );
+    // Find which month the selected date belongs to
+    let monthOffset = 0;
+    let monthStart = startOfMonth(new Date(currentYear, currentMonth, 1));
+    while (selected < monthStart) {
+      monthOffset--;
+      monthStart = startOfMonth(addMonths(monthStart, -1));
     }
+    while (selected >= startOfMonth(addMonths(monthStart, 1))) {
+      monthOffset++;
+      monthStart = startOfMonth(addMonths(monthStart, 1));
+    }
+
+    const yearOffset = Math.floor((currentMonth + monthOffset) / 12);
+    const monthIndex = (currentMonth + monthOffset) % 12;
+    monthStart = startOfMonth(
+      new Date(currentYear + yearOffset, monthIndex, 1)
+    );
+
+    // Calculate days since the start of the month
+    const daysSinceMonthStart = differenceInDays(selected, monthStart);
+    let weekNumber = Math.floor(daysSinceMonthStart / 7) + 1;
+
+    // Adjust for 5th week (days 29–end)
+    if (weekNumber > 4) {
+      weekNumber = 5;
+    }
+
+    // Calculate the first week of this month
+    const firstWeekOfMonth = monthOffset * 5 + 1;
+
+    return firstWeekOfMonth + weekNumber - 1;
   }, []);
 
   const formattedUTC = selectedDate
@@ -195,7 +200,7 @@ export default function DateTimeStep() {
       navigate("/booking/BookingAuth");
     }
   }
-
+  console.log(new Date(), bookingTime?.bookingWindowMonths * 5);
   return (
     <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
       <h1 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left">
@@ -211,7 +216,7 @@ export default function DateTimeStep() {
           workingHours={bookingData?.location?.workingHours}
           calculateWeekNumber={calculateWeekNumber}
           totalWeeks={bookingTime?.bookingWindowMonths * 5}
-          firstMonthStart={new Date(2025, 4, 1)} // May 1, 2025
+          firstMonthStart={new Date()}
         />
         <Button
           bg={"black"}

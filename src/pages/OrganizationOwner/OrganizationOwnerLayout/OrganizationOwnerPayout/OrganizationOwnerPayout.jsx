@@ -58,10 +58,7 @@ export default function OrganizationOwnerPayout() {
     console.log("Initiating payout...");
     try {
       const { data } = await initiatePayout();
-      console.log("Payout response:", data);
-      toast.success("Payout initiated successfully!", {
-        position: "top-center",
-      });
+
       window.location.href = data?.payoutUrl;
     } catch (error) {
       console.error("Payout error:", error);
@@ -114,7 +111,6 @@ export default function OrganizationOwnerPayout() {
       }
     );
   };
-  console.log(data, "//////////////");
   return (
     <main className="pt-20  lg:pt-0 lg:gap-6 p-6 lg:p-0">
       <Title
@@ -146,7 +142,7 @@ export default function OrganizationOwnerPayout() {
             <Button
               loaderProps={{ type: "bars" }}
               bg="black"
-              // loading={}
+              loading={isPayoutLoading}
               onClick={PayOutFuncation}
               radius="md"
               className="!text-[18px] !px-[40px] !font-[400] "
