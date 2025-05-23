@@ -10,6 +10,7 @@ function SuccessPage({
   key,
   endpoint,
   navigateURL,
+  secondLine = "You have been successfully charged for this transaction.",
   message = "Successful Payment",
 }) {
   const [searchParams] = useSearchParams();
@@ -98,9 +99,7 @@ function SuccessPage({
             </div>
 
             <div className="bg-gray-200 text-center py-6">
-              <p className="text-sm text-black">
-                You have been successfully charged for this transaction.
-              </p>
+              <p className="text-sm text-black">{secondLine}</p>
             </div>
           </div>
         </Container>

@@ -148,6 +148,7 @@ const router = createBrowserRouter(
             message="Successfully Connected"
             endpoint="/api/connect/success?account_id"
             navigateURL="/OrganizationOwnerDashboard/Payout"
+            secondLine={"You have successfully connected your stripe account"}
           />
         }
       />
