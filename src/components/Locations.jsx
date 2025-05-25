@@ -28,7 +28,14 @@ import {
 import Popup from "./PopUp";
 import TimePicker from "./DayTimePicker";
 import { useNavigate } from "react-router-dom";
-import { addDays, format, endOfMonth, startOfMonth } from "date-fns";
+import {
+  addDays,
+  format,
+  endOfMonth,
+  startOfMonth,
+  addMonths,
+  getDaysInMonth,
+} from "date-fns";
 
 export default function Locations({
   endpointCreate,
@@ -41,7 +48,19 @@ export default function Locations({
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const totalWeeks = numberOfMonths * 5; // 5 weeks per month for consistency
+  // Calculate total weeks more intelligently
+  const calculateTotalWeeks = () => {
+    let totalWeeks = 0;
+    for (let monthIndex = 0; monthIndex < numberOfMonths; monthIndex++) {
+      const currentMonth = addMonths(new Date(), monthIndex);
+      const daysInMonth = getDaysInMonth(currentMonth);
+      const weeksInMonth = daysInMonth <= 28 ? 4 : 5;
+      totalWeeks += weeksInMonth;
+    }
+    return totalWeeks;
+  };
+
+  const totalWeeks = calculateTotalWeeks();
 
   const { mutate: deleteLocation } = useDeleteMutation(["locations", id]);
   const { mutate: createLocation } = usePostMutation(["locations", id]);
@@ -111,18 +130,30 @@ export default function Locations({
     "sunday",
   ];
 
+  // IMPROVED: Smart working hours generation
   const generateDefaultWorkingHours = () => {
     const workingHours = [];
-    for (let week = 1; week <= totalWeeks; week++) {
-      daysOfWeek.forEach((day) => {
-        workingHours.push({
-          week,
-          day,
-          start: "08:00",
-          end: "18:00",
-          closed: false,
+    let globalWeekCounter = 1;
+
+    for (let monthIndex = 0; monthIndex < numberOfMonths; monthIndex++) {
+      const currentMonth = addMonths(new Date(), monthIndex);
+      const daysInMonth = getDaysInMonth(currentMonth);
+
+      // Calculate actual weeks needed for this month
+      const weeksInMonth = daysInMonth <= 28 ? 4 : 5;
+
+      for (let week = 1; week <= weeksInMonth; week++) {
+        daysOfWeek.forEach((day) => {
+          workingHours.push({
+            week: globalWeekCounter,
+            day,
+            start: "08:00",
+            end: "18:00",
+            closed: false,
+          });
         });
-      });
+        globalWeekCounter++;
+      }
     }
     return workingHours;
   };
@@ -152,7 +183,7 @@ export default function Locations({
   const handleTimeChange = (day, field, value) => {
     setWorkingHoursData((prev) =>
       prev.map((item) =>
-        item.day === day && item.week === parseInt(selectedWeek)
+        item.day === day && item.week === Number.parseInt(selectedWeek)
           ? { ...item, [field]: value }
           : item
       )
@@ -162,17 +193,18 @@ export default function Locations({
   const handleDayToggle = (day, closed) => {
     setWorkingHoursData((prev) => {
       const existingEntry = prev.find(
-        (item) => item.day === day && item.week === parseInt(selectedWeek)
+        (item) =>
+          item.day === day && item.week === Number.parseInt(selectedWeek)
       );
       if (existingEntry) {
         return prev.map((item) =>
-          item.day === day && item.week === parseInt(selectedWeek)
+          item.day === day && item.week === Number.parseInt(selectedWeek)
             ? { ...item, closed }
             : item
         );
       }
       const newEntry = {
-        week: parseInt(selectedWeek),
+        week: Number.parseInt(selectedWeek),
         day,
         start: "08:00",
         end: "18:00",
@@ -572,16 +604,31 @@ export default function Locations({
             placeholder="Pick a week"
             data={Array.from({ length: totalWeeks }, (_, i) => {
               const weekNumber = i + 1;
-              const weeksPerMonth = 5;
-              const monthOffset = Math.floor((weekNumber - 1) / weeksPerMonth);
-              const weekInMonth = ((weekNumber - 1) % weeksPerMonth) + 1;
+
+              // Calculate which month and week within that month
+              let currentWeekCounter = 0;
+              let monthIndex = 0;
+              let weekInMonth = 1;
+
+              for (let m = 0; m < numberOfMonths; m++) {
+                const currentMonth = addMonths(new Date(), m);
+                const daysInMonth = getDaysInMonth(currentMonth);
+                const weeksInThisMonth = daysInMonth <= 28 ? 4 : 5;
+
+                if (currentWeekCounter + weeksInThisMonth >= weekNumber) {
+                  monthIndex = m;
+                  weekInMonth = weekNumber - currentWeekCounter;
+                  break;
+                }
+                currentWeekCounter += weeksInThisMonth;
+              }
 
               const currentMonth = new Date().getMonth();
               const currentYear = new Date().getFullYear();
-              const monthIndex = (currentMonth + monthOffset) % 12;
-              const yearOffset = Math.floor((currentMonth + monthOffset) / 12);
+              const targetMonthIndex = (currentMonth + monthIndex) % 12;
+              const yearOffset = Math.floor((currentMonth + monthIndex) / 12);
               const monthStart = startOfMonth(
-                new Date(currentYear + yearOffset, monthIndex, 1)
+                new Date(currentYear + yearOffset, targetMonthIndex, 1)
               );
 
               let weekStart;
@@ -615,10 +662,11 @@ export default function Locations({
           />
           {daysOfWeek.map((day) => {
             const dayData = workingHoursData.find(
-              (item) => item.day === day && item.week === parseInt(selectedWeek)
+              (item) =>
+                item.day === day && item.week === Number.parseInt(selectedWeek)
             ) || {
               day,
-              week: parseInt(selectedWeek),
+              week: Number.parseInt(selectedWeek),
               start: "08:00",
               end: "18:00",
               closed: false,

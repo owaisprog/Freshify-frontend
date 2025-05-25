@@ -7,6 +7,7 @@ import {
   startOfDay,
   addMonths,
   startOfMonth,
+  getDaysInMonth,
 } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
@@ -42,6 +43,27 @@ export default function DateTimeStep() {
     },
   });
 
+  // FIXED: Smart total weeks calculation (same as Locations component)
+  const calculateTotalWeeks = useCallback(() => {
+    if (!bookingTime?.bookingWindowMonths) return 0;
+
+    let totalWeeks = 0;
+    for (
+      let monthIndex = 0;
+      monthIndex < bookingTime.bookingWindowMonths;
+      monthIndex++
+    ) {
+      const currentMonth = addMonths(new Date(), monthIndex);
+      const daysInMonth = getDaysInMonth(currentMonth);
+      const weeksInMonth = daysInMonth <= 28 ? 4 : 5;
+      totalWeeks += weeksInMonth;
+    }
+    return totalWeeks;
+  }, [bookingTime?.bookingWindowMonths]);
+
+  const totalWeeks = calculateTotalWeeks();
+
+  // FIXED: Smart week number calculation
   const calculateWeekNumber = useCallback((date) => {
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
@@ -50,6 +72,7 @@ export default function DateTimeStep() {
     // Find which month the selected date belongs to
     let monthOffset = 0;
     let monthStart = startOfMonth(new Date(currentYear, currentMonth, 1));
+
     while (selected < monthStart) {
       monthOffset--;
       monthStart = startOfMonth(addMonths(monthStart, -1));
@@ -74,8 +97,23 @@ export default function DateTimeStep() {
       weekNumber = 5;
     }
 
-    // Calculate the first week of this month
-    const firstWeekOfMonth = monthOffset * 5 + 1;
+    // FIXED: Calculate the first week of this month using smart logic
+    let firstWeekOfMonth = 1;
+    for (let m = 0; m < Math.abs(monthOffset); m++) {
+      const targetMonth =
+        monthOffset > 0
+          ? addMonths(new Date(currentYear, currentMonth, 1), m)
+          : addMonths(new Date(currentYear, currentMonth, 1), -(m + 1));
+
+      const daysInTargetMonth = getDaysInMonth(targetMonth);
+      const weeksInTargetMonth = daysInTargetMonth <= 28 ? 4 : 5;
+
+      if (monthOffset > 0) {
+        firstWeekOfMonth += weeksInTargetMonth;
+      } else {
+        firstWeekOfMonth -= weeksInTargetMonth;
+      }
+    }
 
     return firstWeekOfMonth + weekNumber - 1;
   }, []);
@@ -200,7 +238,15 @@ export default function DateTimeStep() {
       navigate("/booking/BookingAuth");
     }
   }
-  console.log(new Date(), bookingTime?.bookingWindowMonths * 5);
+
+  // Debug log to verify the fix
+  console.log(
+    "Smart calculation - Total weeks:",
+    totalWeeks,
+    "vs Old calculation:",
+    bookingTime?.bookingWindowMonths * 5
+  );
+
   return (
     <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
       <h1 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left">
@@ -215,7 +261,7 @@ export default function DateTimeStep() {
           handleMonthChange={handleMonthChange}
           workingHours={bookingData?.location?.workingHours}
           calculateWeekNumber={calculateWeekNumber}
-          totalWeeks={bookingTime?.bookingWindowMonths * 5}
+          totalWeeks={totalWeeks} // FIXED: Now uses smart calculation
           firstMonthStart={new Date()}
         />
         <Button
