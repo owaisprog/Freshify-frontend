@@ -29,6 +29,13 @@ export default function OrganizationsSettings() {
     "cancelSubscription",
   ]);
 
+  const { isLoading: isgenenatingInvioces, refetch } = useQueryHook({
+    queryKey: "generate-invoices",
+    endpoint: `/api/invoices`,
+    staleTime: 0,
+    enabled: false,
+  });
+
   /* -------------------- UPDATE HELPER -------------------- */
   // Accepts an object with either {bookingWindowMonths} or {timeRestrictionHours}
   const updateSettings = (partial) => {
@@ -111,6 +118,27 @@ export default function OrganizationsSettings() {
       }
     );
   }
+
+  /* -------------------- Generate Invoice Funcation -------------------- */
+  async function handleGenerateInvoices() {
+    try {
+      const data = await refetch();
+      const latestObject = data?.data?.invoices.reduce((latest, current) => {
+        return new Date(current.createdAt) > new Date(latest.createdAt)
+          ? current
+          : latest;
+      }, data?.data?.invoices[0]);
+      window.location.href = latestObject.invoicePdfUrl;
+      toast.success("Generated Successfully", {
+        position: "top-center",
+      });
+    } catch {
+      toast.error("Error While Generating Invioce", {
+        position: "top-center",
+      });
+    }
+  }
+
   /* -------------------- RENDER -------------------- */
 
   return (
@@ -187,6 +215,22 @@ export default function OrganizationsSettings() {
             </Button>
           )}
         </CopyButton>
+      </div>
+      {/* invoce generate button  */}
+      <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
+        <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
+          Generate Invoices
+        </span>
+        <Button
+          className="!w-[112px] lg:!w-[121px]"
+          bg="black"
+          loading={isgenenatingInvioces}
+          loaderProps={{ type: "bars" }}
+          radius="md"
+          onClick={handleGenerateInvoices}
+        >
+          <span className="lg:block">Generate</span>
+        </Button>
       </div>
 
       <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">

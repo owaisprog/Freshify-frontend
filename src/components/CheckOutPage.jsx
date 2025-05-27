@@ -7,9 +7,9 @@ import { Button, Title } from "@mantine/core";
 import { useState } from "react";
 
 const CheckoutPage = () => {
-  const { mutate: createBookings, isPending: isCreatingBookins } =
-    usePostMutation("bookings");
+  const { mutate: createBookings } = usePostMutation("bookings");
   const [isCreatingBooking, setIsCreatingBooking] = useState(false);
+  const [isCreatingBookingOnline, setIsCreatingBookingOnline] = useState(false);
   const navigate = useNavigate();
   const { mutate: createPayment, isPending } = usePostMutation("payment");
   const data = JSON.parse(localStorage.getItem("data"));
@@ -30,6 +30,7 @@ const CheckoutPage = () => {
 
   function handlePayment() {
     // Create the booking first
+    setIsCreatingBookingOnline(true);
     createBookings(
       {
         endpoint: "/api/create-booking",
@@ -54,6 +55,7 @@ const CheckoutPage = () => {
             },
             {
               onSuccess: (navigate) => {
+                setIsCreatingBookingOnline(false);
                 window.location.href = navigate.url;
               },
               onError: () =>
@@ -64,6 +66,8 @@ const CheckoutPage = () => {
           );
         },
         onError: () => {
+          setIsCreatingBookingOnline(false);
+
           toast.error("Error Booking", {
             position: "top-center",
           });
@@ -148,7 +152,7 @@ const CheckoutPage = () => {
       </div>
       <div className="flex w-full gap-4 max-w-4xl">
         <Button
-          loading={isCreatingBookins || isPending}
+          loading={isCreatingBookingOnline}
           loaderProps={{ type: "bars" }}
           disabled={isPending}
           onClick={handlePayment}
