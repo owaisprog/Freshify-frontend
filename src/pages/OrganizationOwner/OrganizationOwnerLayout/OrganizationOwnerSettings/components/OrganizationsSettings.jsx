@@ -9,6 +9,7 @@ import {
 } from "../../../../../services/reactQuery";
 import { toast } from "react-toastify";
 import { logoutUser } from "../../../../../services/AuthServices";
+import { useNavigate } from "react-router-dom";
 
 export default function OrganizationsSettings() {
   const { id } = JSON.parse(localStorage.getItem("data"));
@@ -16,6 +17,7 @@ export default function OrganizationsSettings() {
   const [loading, setLoading] = useState(false);
   const [bookingLoading, setBookingLoading] = useState(false);
   const [restrictionLoading, setRestrictionLoading] = useState(false);
+  const navigate = useNavigate();
 
   /* -------------------- QUERY + MUTATION -------------------- */
   const queryKey = ["bookingTime"];
@@ -237,7 +239,12 @@ export default function OrganizationsSettings() {
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Stripe Invoices List
         </span>
-        <Button className="!w-[123px] lg:!w-[153px]" bg="black" radius="md">
+        <Button
+          onClick={() => navigate("/OrganizationOwnerDashboard/invoices")}
+          className="!w-[123px] lg:!w-[153px]"
+          bg="black"
+          radius="md"
+        >
           View List
         </Button>
       </div>

@@ -18,7 +18,7 @@ axiosInstance.interceptors.request.use(
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
-    } catch (error) {
+    } catch {
       //console.error("LocalStorage error:", error);
     }
     return config;
