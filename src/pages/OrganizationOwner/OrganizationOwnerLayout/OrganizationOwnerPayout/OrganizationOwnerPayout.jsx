@@ -141,24 +141,24 @@ export default function OrganizationOwnerPayout() {
         Payout
       </Title>
       <section className="grid  pt-4 lg:pt-0 max-w-[1440px] mx-auto w-full grid-cols-1 gap-y-5">
-        <section className=" px-2 flex flex-col  lg:flex-row gap-2 justify-between items-center">
+        <section className="  px-2 flex flex-col  lg:flex-row gap-2 justify-between items-center">
           <Text className="lg:!text-[32px] !text-[24px] !font-[500]">
             Initiate Payout From Stripe
           </Text>
 
-          {!isLoadingStatus && data?.status !== "complete" && (
-            <Button
-              onClick={() => setOpened(true)}
-              loaderProps={{ type: "bars" }}
-              loading={isPayoutLoading}
-              bg="black"
-              radius="md"
-              className="!text-[18px] !px-[40px] !font-[400] "
-            >
-              Connect Stripe
-            </Button>
-          )}
-          <div className="flex gap-2">
+          <div className="flex gap-2 ">
+            {!isLoadingStatus && data?.status !== "complete" && (
+              <Button
+                onClick={() => setOpened(true)}
+                loaderProps={{ type: "bars" }}
+                loading={isPayoutLoading}
+                bg="black"
+                radius="md"
+                className="!text-[18px] !px-[40px] !font-[400] "
+              >
+                Connect Stripe
+              </Button>
+            )}
             {!isLoadingStatus && data && data?.status === "complete" && (
               <Button
                 loaderProps={{ type: "bars" }}
