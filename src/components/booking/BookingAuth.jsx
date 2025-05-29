@@ -2,9 +2,16 @@ import { Button, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useBookingContext } from "./BookingContext";
 import { toast } from "react-toastify";
+import { usePostMutation } from "../../services/reactQuery";
+import { useNavigate } from "react-router-dom";
 
 export default function BookingAuth() {
+  const navigate = useNavigate();
   const { bookingData, updateBookingData } = useBookingContext();
+
+  const { mutate: checkUser, isPending } = usePostMutation(
+    "check-user-authorize"
+  );
 
   const form = useForm({
     mode: "uncontrolled",
@@ -25,10 +32,32 @@ export default function BookingAuth() {
   });
 
   const handleSubmit = async (values) => {
-    localStorage.removeItem("data");
-    localStorage.removeItem("token");
-    updateBookingData({ userDetails: values, proceedToPay: true });
-    toast.success("Proceed to Checkout", { position: "top-center" });
+    checkUser(
+      {
+        endpoint: `/api/check-customer-exists`,
+        payload: {
+          email: values.email,
+        },
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data);
+          if (!data?.exists) {
+            localStorage.removeItem("data");
+            localStorage.removeItem("token");
+            updateBookingData({ userDetails: values, proceedToPay: true });
+            toast.success("Proceed to Checkout", { position: "top-center" });
+          } else {
+            toast.success("Please Login First", { position: "top-center" });
+            navigate("/Login?role=customer");
+          }
+        },
+        onError: () =>
+          toast.error("Error While Creating Payment", {
+            position: "top-center",
+          }),
+      }
+    );
   };
 
   return (
@@ -81,6 +110,7 @@ export default function BookingAuth() {
             type="submit"
             fullWidth
             bg={"black"}
+            loading={isPending}
             disabled={bookingData.proceedToPay}
             c={"white"}
             radius={"md"}

@@ -16,10 +16,9 @@ function TransactionsTable({ endpoint }) {
 
   const columns = ["Name", "Amount", "BookingDate", "Time"]; // Changed "timeSlot" to "Time"
 
-  const handleSubmit = (row) => {
-    //consoe.log("Row clicked:", row);
-    // You can add your custom logic here when a row is clicked
-  };
+  // const handleSubmit = () => {
+
+  // };
 
   // Format the data for the table
   const tableData = transactions.map((transaction) => {
@@ -51,7 +50,7 @@ function TransactionsTable({ endpoint }) {
         error={error?.message || "No transactions Availiable"}
         columns={columns}
         isLoading={isLoading}
-        handleFunction={handleSubmit}
+        // handleFunction={handleSubmit}
       />
     </div>
   );
