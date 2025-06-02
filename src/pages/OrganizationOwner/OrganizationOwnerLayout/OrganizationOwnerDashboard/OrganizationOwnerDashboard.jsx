@@ -1,27 +1,22 @@
 import { Loader, Progress, Text, Title } from "@mantine/core";
 import SalesChart from "../../../../components/SalesChart";
 import { useQueryHook } from "../../../../services/reactQuery";
+import NotificationDropdown from "../OrganizationOwnerNotifications/NotificationDropdown";
+NotificationDropdown;
 
 export default function OrganizationOwnerDashboard() {
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
-  // Safely get stored data with null checks
-  // const storedData = JSON.parse(localStorage.getItem("data") || {});
-  // const { id } = storedData;
 
-  // Changed default data to empty object instead of array
   const {
     data: response = {},
     isLoading: isServicesLoading,
     error: servicesError,
   } = useQueryHook({
     queryKey: "OrganizationDashboard",
-    // endpoint: id ? `/api/dashboard/67e45bf2ddeafab8b200eb2b` : null, // Prevent invalid endpoint when no ID
-    endpoint: `/api/dashboard/${id}`, // Prevent invalid endpoint when no ID
+    endpoint: `/api/dashboard/${id}`,
     staleTime: 0 * 60 * 1000,
-    // enabled: !!id, // Only fetch if ID exists
   });
 
-  // Destructure after ensuring response exists
   const {
     TotalSales,
     AverageSalesPrice,
@@ -33,8 +28,6 @@ export default function OrganizationOwnerDashboard() {
     TotalOrders,
     WeeklyLocationSales = [],
   } = response || {};
-
-  //consoe.log("Dashboard Response", response);
 
   // Loading and error states
   if (isServicesLoading) {
@@ -59,7 +52,6 @@ export default function OrganizationOwnerDashboard() {
     return <h1>Error loading data: {servicesError.message}</h1>;
   }
 
-  // Check if response has data (using object keys)
   const hasData = Object.keys(response).length > 0;
 
   return (
@@ -70,13 +62,18 @@ export default function OrganizationOwnerDashboard() {
 
       {hasData && (
         <section className="   grid grid-cols-1 gap-y-5  ">
-          <Title
-            mb={"lg"}
-            c={"black"}
-            className="lg:!px-6    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
-          >
-            Dashboard
-          </Title>
+          {/* Updated Title section with notification button */}
+          <div className="flex items-center justify-between mb-4 lg:px-6 px-2 lg:bg-[#FFFFFF] py-[18px] rounded-[16px]">
+            <Title
+              c={"black"}
+              className="lg:!text-[32px] !text-[24px] !font-[500] !m-0"
+            >
+              Dashboard
+            </Title>
+            {/* Notification Dropdown Button */}
+            <NotificationDropdown />
+          </div>
+
           {/* First Section  */}
           <section className=" max-w-[1440px]  mx-auto -mt-10 lg:mt-0  px-2 lg:px-0 flex flex-col justify-between w-full lg:flex-row gap-8 ">
             {/* Sales and Top performer section  */}
@@ -120,10 +117,8 @@ export default function OrganizationOwnerDashboard() {
               </section>
             </section>
 
-            {/* Tope Performers Section  */}
-            {/* Sales and Top performer section  */}
+            {/* Top Performers Section  */}
             <section className="  lg:w-full  flex flex-col gap-[10px] lg:max-w-[868px]">
-              {/* Sales Section  */}
               <section className="  ">
                 <Text className="!text-[22px] !font-[700]">Top Performers</Text>
                 <div className="bg-[#FFFFFF]  h-[200px] max-h-[200px] px-2 rounded-[25px] specialBorder ">
@@ -156,12 +151,11 @@ export default function OrganizationOwnerDashboard() {
             </section>
           </section>
 
+          {/* Rest of your existing sections remain the same... */}
           {/* Second Section  */}
-
           <section className="  max-w-[1440px] w-full mx-auto lg:mt-3 px-2 lg:px-0 flex flex-col  justify-between lg:flex-row gap-8  ">
             {/* Weekly Sales Section   */}
             <section className="    flex flex-col gap-[10px] lg:w-[749px] lg:h-[378px] overflow-x-hidden">
-              {/* Sales Section  */}
               <section className=" ">
                 <Text className="!text-[22px] !font-[700]">Weekly Sales</Text>
                 <SalesChart WeeklyLocationSales={WeeklyLocationSales} />
@@ -177,7 +171,6 @@ export default function OrganizationOwnerDashboard() {
                 <div
                   className={`bg-[#FFFFFF] p-[20px]  flex flex-col  rounded-[25px] specialBorder ${PopularServices.length < 4 ? "h-[322px] gap-4 " : "h-[322px] overflow-hidden justify-evenly "}`}
                 >
-                  {/* Services Section  */}
                   {PopularServices.length <= 0 ? (
                     <div className=" flex items-center justify-center h-full">
                       <p>No data Available</p>
@@ -198,7 +191,6 @@ export default function OrganizationOwnerDashboard() {
                           <div
                             className={`h-[50px] flex items-center justify-center w-[50px] ${index === 0 || index === 1 ? "bg-[#DCFAF8]" : "bg-[#FFE0EB]"} rounded-full`}
                           >
-                            {" "}
                             <img
                               src={
                                 index === 0 || index === 1
@@ -235,9 +227,8 @@ export default function OrganizationOwnerDashboard() {
 
           {/* Third Section  */}
           <section className="  max-w-[1440px]  pb-6 mx-auto px-2 lg:px-0 flex justify-between flex-col w-full  lg:flex-row gap-8">
-            {/* Sales and Top performer section  */}
+            {/* Orders section  */}
             <section className="   lg:w-full flex flex-col gap-[10px] lg:max-w-[470px]">
-              {/* Sales Section  */}
               <section className=" ">
                 <Text className="!text-[22px] !font-[700]">Orders</Text>
                 <div className="bg-[#FFFFFF] p-2 rounded-[25px] specialBorder  h-[220px]">
@@ -245,7 +236,6 @@ export default function OrganizationOwnerDashboard() {
                   <div className="h-[65px] flex px-[13px]  items-center   justify-between  specialBorderBottom">
                     <div className="flex items-center gap-2">
                       <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#FFF5D9] rounded-full">
-                        {" "}
                         <img src="/totalOrdersIcon.png" alt="" />
                       </div>
                       <Text className="!text-[18px] !font-[400]">
@@ -261,7 +251,6 @@ export default function OrganizationOwnerDashboard() {
                   <div className="h-[65px] mt-2 flex px-[13px]  items-center  justify-between specialBorderBottom ">
                     <div className="flex items-center gap-2">
                       <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
-                        {" "}
                         <img src="/orderThisWeekIcon.png" alt="" />
                       </div>
                       <Text className="!text-[18px] !font-[400]">
@@ -277,7 +266,6 @@ export default function OrganizationOwnerDashboard() {
                   <div className="h-[65px] mt-2 flex px-[13px]  items-center  justify-between ">
                     <div className="flex items-center gap-2">
                       <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#DCFAF8] rounded-full">
-                        {" "}
                         <img src="/ordersTodayIcon.png" alt="" />
                       </div>
                       <Text className="!text-[18px] !font-[400]">
@@ -292,9 +280,8 @@ export default function OrganizationOwnerDashboard() {
               </section>
             </section>
 
-            {/* Sales and Top performer section  */}
+            {/* All Locations By Users section  */}
             <section className="  lg:w-full  flex flex-col gap-[10px]  lg:max-w-[868px]">
-              {/* Sales Section  */}
               <section className=" ">
                 <Text className="!text-[22px] !font-[700]">
                   All Locations By Users
@@ -302,7 +289,6 @@ export default function OrganizationOwnerDashboard() {
                 <div
                   className={`bg-[#FFFFFF] px-2   ${LocationsByUser.length < 3 ? "h-[220px]" : "max-h-[220px] overflow-hidden "}   rounded-[25px] specialBorder`}
                 >
-                  {/* United State America Section  */}
                   {LocationsByUser.length <= 0 ? (
                     <div className=" flex items-center justify-center h-full">
                       <p>No data Available</p>
@@ -315,7 +301,6 @@ export default function OrganizationOwnerDashboard() {
                     >
                       <div className="flex items-center gap-2">
                         <div className="h-[50px] flex items-center justify-center w-[50px] bg-[#E7EDFF] rounded-full">
-                          {" "}
                           <img
                             className="h-[25px] w-[17.5px]"
                             src="/usaLocationIcon.png"
