@@ -28,7 +28,7 @@ export const usePostMutation = (queryKey) => {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey]); // ✅ Auto-refetch after mutation
     },
-    onError: (err) => {
+    onError: () => {
       // //consoe.log(err);
     },
   });

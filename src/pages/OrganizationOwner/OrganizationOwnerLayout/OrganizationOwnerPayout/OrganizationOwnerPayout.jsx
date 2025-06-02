@@ -49,7 +49,6 @@ export default function OrganizationOwnerPayout() {
   const { refetch: initiatePayout, isLoading: isPayoutLoading } = useQueryHook({
     queryKey: "payout",
     endpoint: `/api/connect/payout`,
-    params: { amount: 1000, currency: "usd" }, // Adjust based on your API
     enabled: false,
     staleTime: 0 * 60 * 1000,
   });

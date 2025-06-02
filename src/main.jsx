@@ -213,11 +213,6 @@ const router = createBrowserRouter(
         <Route path="Calendar" element={<OrganizationOwnerCalendar />} />
         <Route path="Payout" element={<OrganizationOwnerPayout />} />
         <Route path="locations" element={<OrganizationOwnerLocations />} />
-        <Route
-          path="organization-owner-notifications"
-          element={<NotificationsPage />}
-        />
-
         <Route path="settings" element={<OrganizationOwnerSettings />}>
           <Route index element={<OrganizationsSettings />} />
           <Route path="email" element={<OrganizationNotification />} />
