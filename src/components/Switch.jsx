@@ -1,24 +1,30 @@
-import { Switch } from "@mantine/core";
+import { Loader, Switch } from "@mantine/core";
 import { useQueryHook, useUpdateMutation } from "../services/reactQuery";
 import { toast } from "react-toastify";
 
 export function SwitchCom() {
-  const { id } = JSON.parse(localStorage.getItem("data"));
-  // /users
+  const { id, role } = JSON.parse(localStorage.getItem("data"));
+
+  let endpoint =
+    role === "admin" || role === "barber"
+      ? `/api/users/${id}/email-preferences`
+      : `/api/email-preferences`;
+
   const { data: notify, isLoading: isFetechingNotification } = useQueryHook({
     queryKey: "email-notification",
-    endpoint: `/api/users/${id}/email-preferences`,
+    endpoint,
     staleTime: 0 * 60 * 1000,
   });
 
   console.log(notify, "....notify");
   //
-  const { mutate: updateLocation } = useUpdateMutation("email-notification");
-  function handleUpdateNotification() {
+  const { mutate: updateLocation, isPending: isUpdatingNotification } =
+    useUpdateMutation("email-notification");
+  function handleUpdateNotification(currentState) {
     updateLocation(
       {
-        endpoint: `/api/users/${{}}/email-preferences`,
-        payload: [],
+        endpoint,
+        payload: { enabled: !currentState },
       },
       {
         onSuccess: () =>
@@ -33,12 +39,19 @@ export function SwitchCom() {
     );
   }
 
+  if (isFetechingNotification) return <Loader type="bars" c={"black"} />;
+  // value={notify?.emailNotificationsEnabled}
   return (
     <Switch
+      onChange={() =>
+        handleUpdateNotification(notify?.emailNotificationsEnabled)
+      }
       defaultChecked
+      checked={notify?.emailNotificationsEnabled}
       color="#34C759"
       label="Email Notification Preference"
       size="lg"
+      disabled={isUpdatingNotification}
     />
   );
 }
