@@ -1,6 +1,7 @@
 import { Loader, Progress, Text, Title } from "@mantine/core";
 import { useQueryHook } from "../../../../services/reactQuery";
 import SalesChart from "../../../../components/SalesChart";
+import NotificationDropdown from "../../../../components/notifications/NotificationDropdown";
 
 export default function OrganizationOwnerDashboard() {
   const { location, organizationOwnerId } =
@@ -42,9 +43,8 @@ export default function OrganizationOwnerDashboard() {
     return (
       <main className="pt-20  lg:pt-0 lg:gap-6  p-6 lg:p-0">
         <Title
-          mb={"lg"}
           c={"black"}
-          className="lg:!px-6 !px-2   lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+          className="lg:!text-[32px] !text-[24px] !font-[500] !m-0"
         >
           Dashboard
         </Title>
@@ -71,13 +71,16 @@ export default function OrganizationOwnerDashboard() {
 
       {hasData && (
         <section className="   grid grid-cols-1 gap-y-5  ">
-          <Title
-            mb={"lg"}
-            c={"black"}
-            className="lg:!px-6    lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
-          >
-            Dashboard
-          </Title>
+          <div className="flex items-center justify-between mb-4 lg:px-6 px-2 lg:bg-[#FFFFFF] py-[18px] rounded-[16px]">
+            <Title
+              c={"black"}
+              className="lg:!text-[32px] !text-[24px] !font-[500] !m-0"
+            >
+              Dashboard
+            </Title>
+            {/* Notification Dropdown Button */}
+            <NotificationDropdown />
+          </div>
           {/* First Section  */}
           <section className=" -mt-10 lg:mt-0   max-w-[1440px] mx-auto w-full px-2 lg:px-0 flex flex-col justify-between  lg:flex-row gap-8 ">
             {/* Sales and Top performer section  */}
