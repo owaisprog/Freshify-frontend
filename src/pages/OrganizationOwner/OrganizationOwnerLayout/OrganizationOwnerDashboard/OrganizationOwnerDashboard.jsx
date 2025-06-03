@@ -1,8 +1,6 @@
 import { Loader, Progress, Text, Title } from "@mantine/core";
 import SalesChart from "../../../../components/SalesChart";
 import { useQueryHook } from "../../../../services/reactQuery";
-import NotificationDropdown from "../OrganizationOwnerNotifications/NotificationDropdown";
-NotificationDropdown;
 
 export default function OrganizationOwnerDashboard() {
   const { id } = JSON.parse(localStorage.getItem("data")) || {};
@@ -70,8 +68,6 @@ export default function OrganizationOwnerDashboard() {
             >
               Dashboard
             </Title>
-            {/* Notification Dropdown Button */}
-            <NotificationDropdown />
           </div>
 
           {/* First Section  */}

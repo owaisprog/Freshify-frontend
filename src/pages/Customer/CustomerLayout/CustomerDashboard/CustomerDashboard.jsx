@@ -3,6 +3,7 @@ import CustomerTable from "../../../../components/CustomerTable";
 import { usePostMutation, useQueryHook } from "../../../../services/reactQuery";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import NotificationDropdown from "../../../../components/notifications/NotificationDropdown";
 
 export default function CustomerDashboard() {
   const [currentOwnerID, setIsCurrentOwnerId] = useState("");
@@ -49,13 +50,15 @@ export default function CustomerDashboard() {
 
   return (
     <main className="pt-20 grid grid-cols-1 gap-y-5  lg:pt-0 lg:gap-6  p-6 lg:p-0  ">
-      <div>
+      <div className="flex items-center justify-between mb-4 lg:px-6 px-2 lg:bg-[#FFFFFF] py-[18px] rounded-[16px]">
         <Title
           c={"black"}
-          className="lg:!px-6  hidden lg:!block  lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+          className="lg:!text-[32px] !text-[24px] !font-[500] !m-0"
         >
-          Appointments
+          Appoinments
         </Title>
+        {/* Notification Dropdown Button */}
+        <NotificationDropdown />
       </div>
       <CustomerTable
         bookings={bookings}
