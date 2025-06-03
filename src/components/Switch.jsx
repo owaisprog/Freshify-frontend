@@ -15,9 +15,10 @@ export function SwitchCom() {
     endpoint,
     staleTime: 0 * 60 * 1000,
   });
-  const notifications =
-    notify?.emailNotificationsEnabled ||
-    notify?.user?.emailNotificationsEnabled;
+  const notification =
+    (role === "admin" || role === "barber") && !isFetechingNotification
+      ? notify?.user?.emailNotificationsEnabled
+      : notify?.emailNotificationsEnabled;
 
   const { mutate: updateLocation, isPending: isUpdatingNotification } =
     useUpdateMutation("email-notification");
@@ -39,22 +40,21 @@ export function SwitchCom() {
       }
     );
   }
+  console.log(notification);
 
-  if (isFetechingNotification) return <Loader type="bars" c={"black"} />;
+  if (isFetechingNotification)
+    return (
+      <div className="w-full grid place-content-center">
+        <Loader type="bars" color={"black"} />
+      </div>
+    );
   // value={notify?.emailNotificationsEnabled}
   return (
     <Switch
-      onChange={() =>
-        handleUpdateNotification(
-          notify?.emailNotificationsEnabled ||
-            notify?.user?.emailNotificationsEnabled
-        )
-      }
+      className="!cursor-pointer"
+      onChange={() => handleUpdateNotification(notification)}
       defaultChecked
-      checked={
-        notify?.emailNotificationsEnabled ||
-        notify?.user?.emailNotificationsEnabled
-      }
+      checked={notification}
       color="#34C759"
       label="Email Notification Preference"
       size="lg"
