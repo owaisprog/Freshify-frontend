@@ -50,6 +50,26 @@ export default function NotificationsPage() {
       }
     );
   }
+
+  // Mutation for marking all notifications as read
+  const { mutate: updateAllSeen, isPending: isLoadingSeenAll } =
+    useUpdateMutation(["Notifications"]);
+  // `/api/notifications/${notificationId}/read`
+  function updateAllSeenFun() {
+    updateAllSeen(
+      {
+        endpoint: `/api/notification/read-all`,
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data, "Read Status updated successfully");
+        },
+        onError: (data) => {
+          console.log(data, "Faild to update read status");
+        },
+      }
+    );
+  }
   // Get icon based on notification type
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -108,11 +128,16 @@ export default function NotificationsPage() {
                 </div>
               </div>
             </div>
-            {unreadCount > 0 && (
-              <button className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all duration-200 font-medium shadow-lg flex items-center space-x-2">
-                <CheckCheck className="h-4 w-4" />
-                <span>Mark all as read</span>
-              </button>
+            {unreadCount <= 0 && (
+              <Button
+                onClick={updateAllSeenFun}
+                loading={isLoadingSeenAll}
+                radius={"md"}
+                className="!text-sm !text-gray-300 !bg-black hover:!text-white hover:!bg-gray-800 !transition-all !duration-300 !flex !items-center"
+              >
+                <Check className="h-3 w-3 mr-1" />
+                Mark all read
+              </Button>
             )}
           </div>
         </div>
