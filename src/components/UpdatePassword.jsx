@@ -32,20 +32,24 @@ function UpdatePassword() {
         },
         {
           onSuccess: () => {
-            toast.success("Password updated successfully!");
+            toast.success("Password updated successfully!", {
+              position: "top-center",
+            });
 
             // Clear the "profile" cache
             // queryClient.invalidateQueries("profile"); // Invalidate and refetch
             queryClient.removeQueries("profile"); // Remove without refetching
           },
           onError: (error) => {
-            toast.error("Failed to update password.");
+            toast.error("Failed to update password.", {
+              position: "top-center",
+            });
             //console.error("Error updating password:", error);
           },
         }
       );
     } catch (error) {
-      toast.error("Failed to update password.");
+      toast.error("Failed to update password.", { position: "top-center" });
       //console.error("Error updating password:", error);
     }
   };

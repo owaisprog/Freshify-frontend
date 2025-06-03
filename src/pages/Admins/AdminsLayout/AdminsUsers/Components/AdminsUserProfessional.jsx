@@ -137,7 +137,7 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
           }
         );
       }
-      // toast("Success", { position: "top-right" });
+      // toast("Success", { position: "top-center" });
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);

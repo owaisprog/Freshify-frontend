@@ -35,7 +35,7 @@ function SuperAdminPlan() {
 
   const handleSubmit = (values) => {
     if (!plan._id) {
-      toast.error("Plan ID is missing");
+      toast.error("Plan ID is missing", { position: "top-center" });
       return;
     }
 
@@ -46,10 +46,12 @@ function SuperAdminPlan() {
       },
       {
         onSuccess: () => {
-          toast.success("Price updated successfully");
+          toast.success("Price updated successfully", {
+            position: "top-center",
+          });
         },
         onError: () => {
-          toast.error("Failed to update price");
+          toast.error("Failed to update price", { position: "top-center" });
         },
       }
     );

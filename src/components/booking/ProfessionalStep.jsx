@@ -45,36 +45,41 @@ export default function ProfessionalStep() {
       <h1 className=" text-[28px] lg:text-[32px] text-center lg:text-left font-[500]">
         Choose Professional
       </h1>
+
       <div className="space-y-4 w-full  pb-[100px] lg:pb-0 ">
-        {professionals.map((pro) => (
-          <button
-            key={pro._id}
-            onClick={() => handleSelect(pro)}
-            className="   min-w-full  justify-between gap-x-2 cursor-pointer  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] border specialBorder hover:bg-black hover:text-white hover:border-none
+        {professionals.length > 0 ? (
+          professionals.map((pro) => (
+            <button
+              key={pro._id}
+              onClick={() => handleSelect(pro)}
+              className="   min-w-full  justify-between gap-x-2 cursor-pointer  items-center  p-2 rounded-xl specialBorder min-h-[120px]   bg-[#FFFFFF] border specialBorder hover:bg-black hover:text-white hover:border-none
              transition-all duration-500 "
-          >
-            <div className="flex    gap-3">
-              <div className="h-[100px] flex items-center  justify-center w-[100px]  bg-[#B1B1B1] rounded-[20px]">
-                <img
-                  className="w-[40px] h-[40px]"
-                  src="/personIcon.png"
-                  alt=""
-                />
+            >
+              <div className="flex    gap-3">
+                <div className="h-[100px] flex items-center  justify-center w-[100px]  bg-[#B1B1B1] rounded-[20px]">
+                  <img
+                    className="w-[40px] h-[40px]"
+                    src="/personIcon.png"
+                    alt=""
+                  />
+                </div>
+                <div className=" flex flex-col justify-center  ">
+                  <p className="text-[16px]  text-left lg:text-[22px] font-[700] uppercase ">
+                    {pro.name}
+                  </p>
+                  <p className="text-[18px] text-left font-[700]">
+                    Availability:{" "}
+                    <span className="font-normal capitalize">
+                      {pro.availability}
+                    </span>
+                  </p>
+                </div>
               </div>
-              <div className=" flex flex-col justify-center  ">
-                <p className="text-[16px]  text-left lg:text-[22px] font-[700] uppercase ">
-                  {pro.name}
-                </p>
-                <p className="text-[18px] text-left font-[700]">
-                  Availability:{" "}
-                  <span className="font-normal capitalize">
-                    {pro.availability}
-                  </span>
-                </p>
-              </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          ))
+        ) : (
+          <h1>No Professional Available</h1>
+        )}
       </div>
     </div>
   );

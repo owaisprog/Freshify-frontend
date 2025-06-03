@@ -38,7 +38,7 @@ function OrganizationOwnerInvoices() {
         URL.revokeObjectURL(url);
       },
 
-      onError: () => toast.error("Failed to download invoice."),
+      onError: () => toast.error("Failed to download invoice.",{position:"top-center"}),
     });
 
   // Define table columns

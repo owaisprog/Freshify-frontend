@@ -172,7 +172,7 @@ function AdminsServices() {
         setOpened(false);
       }, 2000);
     } catch {
-      toast("Error Creating/Updating service", { position: "top-right" });
+      toast("Error Creating/Updating service", { position: "top-center" });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }

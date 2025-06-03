@@ -69,7 +69,7 @@ export default function Widget() {
               if (subscriptionStatus === "paid") {
                 navigate(`/booking`, { state: _id });
               } else {
-                toast.warn("Please Subscribe");
+                toast.warn("Please Subscribe", { position: "top-center" });
               }
             }}
             className="mt-6 inline-flex items-center justify-center px-6 py-2.5 text-white duration-200 bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black cursor-pointer"

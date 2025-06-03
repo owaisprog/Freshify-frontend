@@ -147,12 +147,16 @@ const EditAvailabilityPopup = ({
     (values) => {
       // Additional validation check before submission
       if (!values.startTime || !values.endTime) {
-        toast.error("Please select both start and end times");
+        toast.error("Please select both start and end times", {
+          position: "top-center",
+        });
         return;
       }
 
       if (values.endTime <= values.startTime) {
-        toast.error("End time must be after start time");
+        toast.error("End time must be after start time", {
+          position: "top-center",
+        });
         return;
       }
 
@@ -178,7 +182,9 @@ const EditAvailabilityPopup = ({
   const handleDeleteSlot = useCallback(
     (slot) => {
       if (!slot._id) {
-        toast.error("Cannot delete slot - missing ID");
+        toast.error("Cannot delete slot - missing ID", {
+          position: "top-center",
+        });
         return;
       }
 
@@ -195,12 +201,16 @@ const EditAvailabilityPopup = ({
         },
         {
           onSuccess: () => {
-            toast.success("Unavailability slot deleted successfully");
+            toast.success("Unavailability slot deleted successfully", {
+              position: "top-center",
+            });
             refetchSlots();
             window.location.reload();
           },
           onError: () => {
-            toast.error("Failed to delete unavailability slot");
+            toast.error("Failed to delete unavailability slot", {
+              position: "top-center",
+            });
           },
           onSettled: () => {
             setDeletingSlotId(null);
