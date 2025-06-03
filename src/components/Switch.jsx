@@ -15,9 +15,10 @@ export function SwitchCom() {
     endpoint,
     staleTime: 0 * 60 * 1000,
   });
+  const notifications =
+    notify?.emailNotificationsEnabled ||
+    notify?.user?.emailNotificationsEnabled;
 
-  console.log(notify, "....notify");
-  //
   const { mutate: updateLocation, isPending: isUpdatingNotification } =
     useUpdateMutation("email-notification");
   function handleUpdateNotification(currentState) {
@@ -44,10 +45,16 @@ export function SwitchCom() {
   return (
     <Switch
       onChange={() =>
-        handleUpdateNotification(notify?.emailNotificationsEnabled)
+        handleUpdateNotification(
+          notify?.emailNotificationsEnabled ||
+            notify?.user?.emailNotificationsEnabled
+        )
       }
       defaultChecked
-      checked={notify?.emailNotificationsEnabled}
+      checked={
+        notify?.emailNotificationsEnabled ||
+        notify?.user?.emailNotificationsEnabled
+      }
       color="#34C759"
       label="Email Notification Preference"
       size="lg"
