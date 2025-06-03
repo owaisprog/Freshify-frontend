@@ -165,6 +165,10 @@ export default function NotificationDropdown() {
               <div className="  overflow-y-auto">
                 {notifications.slice(0, 5).map((notif, index) => (
                   <div
+                    onClick={() => {
+                      setShowDropdown(false);
+                      navigate("/notifications");
+                    }}
                     key={notif._id}
                     className={`px-6 py-4 hover:bg-gray-50 cursor-pointer border-l-4 ${
                       notif.isRead ? "border-gray-200" : "border-black"
@@ -211,7 +215,10 @@ export default function NotificationDropdown() {
                     <div className="flex justify-end   mt-2">
                       {!notif.isRead ? (
                         <Button
-                          onClick={() => updateSeenFun(notif._id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            updateSeenFun(notif._id);
+                          }}
                           disabled={markAsReadBtnLoading === notif._id}
                           loading={markAsReadBtnLoading === notif._id}
                           bg={"dark"}

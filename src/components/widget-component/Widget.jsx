@@ -81,7 +81,7 @@ export default function Widget() {
                   "_blank"
                 );
               } else {
-                toast.warn("Please Subscribe");
+                toast.warn("Please Subscribe", { position: "top-center" });
               }
             }}
             className="mt-4 sm:mt-6 inline-flex items-center justify-center px-5 py-2 text-white bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm"

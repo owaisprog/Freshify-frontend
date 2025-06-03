@@ -2,52 +2,52 @@ import { Button } from "@mantine/core";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDeleteMutation } from "../../../../../services/reactQuery";
+import CustomDialog from "../../../../../components/CustomDialogBox";
 
 function AdminDelete() {
   const navigate = useNavigate();
-
-  // Use the delete mutation from react-query
   const { mutate: deleteAdmin, isPending } = useDeleteMutation("Admin");
 
-  // Handle delete button click
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete your Admin?")) {
-      deleteAdmin(
-        { endpoint: "/api/delete-account" },
-        {
-          onSuccess: () => {
-            // Clear localStorage
-            localStorage.removeItem("token");
-            localStorage.removeItem("data");
-
-            // Show success message
-            toast.success("Admin deleted successfully!");
-
-            // Redirect to home page
-            navigate("/");
-          },
-          onError: () => {
-            toast.error("Failed to delete Admin.");
-            //console.error("Error deleting Admin:", error);
-          },
-        }
-      );
-    }
+    deleteAdmin(
+      { endpoint: "/api/delete-account" },
+      {
+        onSuccess: () => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("data");
+          toast.success("Admin deleted successfully!", {
+            position: "top-center",
+          });
+          navigate("/");
+        },
+        onError: () => {
+          toast.error("Failed to delete Admin.", { position: "top-center" });
+        },
+      }
+    );
   };
 
   return (
-    <div className="flex justify-between px-3 lg:px-0 ">
+    <div className="flex justify-between px-3 lg:px-0">
       <span>Delete Account</span>
-      <Button
-        color="dark"
-        loaderProps={{ type: "dots" }}
-        radius="md"
-        className="!w-[131px] !text-[18px] !font-[400]"
-        onClick={handleDelete}
-        loading={isPending}
-      >
-        Delete
-      </Button>
+      <CustomDialog
+        triggerButton={
+          <Button
+            color="dark"
+            loaderProps={{ type: "dots" }}
+            className="!w-[131px] !text-[18px] !font-[400]"
+            radius="md"
+            loading={isPending}
+          >
+            Delete
+          </Button>
+        }
+        title="Confirm Delete"
+        message="Are you sure you want to delete your Admin?"
+        confirmLabel="Delete"
+        cancelLabel="Cancel"
+        onConfirm={handleDelete}
+      />
     </div>
   );
 }

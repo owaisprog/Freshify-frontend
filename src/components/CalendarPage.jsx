@@ -81,7 +81,7 @@ export default function CalendarPage({
           payload: { role },
         });
       } catch {
-        toast.error("Error fetching bookings");
+        toast.error("Error fetching bookings", { position: "top-center" });
       }
     };
     fetchBookings();

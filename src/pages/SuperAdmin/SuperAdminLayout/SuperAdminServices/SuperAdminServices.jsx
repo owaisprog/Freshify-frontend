@@ -86,7 +86,7 @@ function SuperAdminServices() {
           onError: () => {
             setIsDeleting(null);
             //console.error("Error deleting service:", error);
-            toast("Error deleting service", { position: "top-right" });
+            toast("Error deleting service", { position: "top-center" });
           },
         }
       );
@@ -174,7 +174,7 @@ function SuperAdminServices() {
         setOpened(false);
       }, 2000);
     } catch {
-      toast("Error Creating/Updating service", { position: "top-right" });
+      toast("Error Creating/Updating service", { position: "top-center" });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }

@@ -80,7 +80,9 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
             }),
           onError: () => {
             setIsDeleting(null);
-            toast.error("Deletion Failed Try Again", { position: "top-right" });
+            toast.error("Deletion Failed Try Again", {
+              position: "top-center",
+            });
           },
         }
       );
@@ -135,7 +137,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
               }),
             onError: () =>
               toast.error("Deletion Error Try Again", {
-                position: "top-right",
+                position: "top-center",
               }),
           }
         );
@@ -153,7 +155,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
               }),
             onError: () =>
               toast.error("Creation Error Try Again", {
-                position: "top-right",
+                position: "top-center",
               }),
           }
         );
@@ -165,7 +167,7 @@ function OrganizationOwnerUserProfessional({ userdata, isLoading, error }) {
       }, 2000);
     } catch {
       //console.error("Error creating/updating user:", error);
-      toast("Something went wrong try again", { position: "top-right" });
+      toast("Something went wrong try again", { position: "top-center" });
     } finally {
       setLoading(false);
     }
