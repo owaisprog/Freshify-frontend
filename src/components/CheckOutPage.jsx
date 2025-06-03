@@ -53,7 +53,8 @@ const CheckoutPage = () => {
               endpoint: `/api/customer-payment`,
               payload: {
                 price: totalPrice,
-                merchantAccountId: data.merchantId, // Use the merchantId here
+                merchantAccountId: data.merchantId,
+                quantity: services.length, // Use the merchantId here
               },
             },
             {

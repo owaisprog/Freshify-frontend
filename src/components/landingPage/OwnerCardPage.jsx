@@ -60,7 +60,7 @@ export default function OwnerCards() {
               <button
                 onClick={() => {
                   if (subscriptionStatus === "paid") {
-                    navigate(`/booking`, { state: _id });
+                    navigate(`/booking?ownerId=${_id}`, { state: _id });
                   } else {
                     toast.warn("Please Subscribe", { position: "top-center" });
                   }
