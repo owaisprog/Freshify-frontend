@@ -34,10 +34,10 @@ export default function Widget() {
   }
 
   return (
-    <div className="p-8 grid place-content-center">
+    <div className="  items-center h-screen flex justify-center  ">
       <div
         key={_id}
-        className="flex flex-col min-[350px]:flex-row  bg-white rounded-3xl overflow-hidden shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
+        className="flex flex-col min-[350px]:flex-row h-[18rem]  bg-white rounded-3xl overflow-hidden shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
       >
         <img
           src={image || "/profile.webp"}
@@ -55,7 +55,7 @@ export default function Widget() {
             <h3 className="text-base font-medium text-gray-700">Locations:</h3>
             {locations && locations.length > 0 ? (
               <ul className="mt-2 space-y-1.5">
-                {locations.map((location) => (
+                {locations.slice(0, 4).map((location) => (
                   <li key={location._id} className="flex items-start">
                     <FaMapMarkerAlt className="text-gray-500 mr-2 mt-0.5" />
                     <div>
