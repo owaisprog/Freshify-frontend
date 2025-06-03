@@ -22,11 +22,14 @@ const CheckoutPage = () => {
     phone,
     bookingDate,
     bookingTime,
+    services,
     endTime,
     totalDuration,
     paymentMethod,
     totalPrice,
   } = bookingData || {};
+
+  console.log(bookingData, "Bookin Data is :");
 
   function handlePayment() {
     // Create the booking first
@@ -148,6 +151,10 @@ const CheckoutPage = () => {
         <div className="mb-4">
           <label className="block text-lg font-medium">Total Price:</label>
           <p className="text-sm">${totalPrice}</p>
+        </div>
+        <div className="mb-4">
+          <label className="block text-lg font-medium">Total Services:</label>
+          <p className="text-sm">{services?.length}</p>
         </div>
       </div>
       <div className="flex w-full gap-4 max-w-4xl">

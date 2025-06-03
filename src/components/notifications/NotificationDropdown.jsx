@@ -67,6 +67,26 @@ export default function NotificationDropdown() {
     );
   }
 
+  // Mutation for marking all notifications as read
+  const { mutate: updateAllSeen, isPending: isLoadingSeenAll } =
+    useUpdateMutation(["Notifications"]);
+  // `/api/notifications/${notificationId}/read`
+  function updateAllSeenFun() {
+    updateAllSeen(
+      {
+        endpoint: `/api/notification/read-all`,
+      },
+      {
+        onSuccess: (data) => {
+          console.log(data, "Read Status updated successfully");
+        },
+        onError: (data) => {
+          console.log(data, "Faild to update read status");
+        },
+      }
+    );
+  }
+
   return (
     <div className="relative   " ref={dropdownRef}>
       <button
@@ -96,13 +116,19 @@ export default function NotificationDropdown() {
                 </p>
               </div>
               <div className="flex space-x-2">
-                <button className="text-sm text-gray-300 cursor-pointer hover:text-white px-3 py-1 rounded-lg hover:bg-gray-800 flex items-center">
-                  <Check className="h-3 w-3 mr-1" />
-                  Mark all read
-                </button>
+                {unreadCount > 0 && (
+                  <Button
+                    onClick={updateAllSeenFun}
+                    loading={isLoadingSeenAll}
+                    className="!text-sm !text-gray-300 !bg-black hover:!text-white hover:!bg-gray-800 !transition-all !duration-300 !flex !items-center"
+                  >
+                    <Check className="h-3 w-3 mr-1" />
+                    Mark all read
+                  </Button>
+                )}
                 <button
                   onClick={() => setShowDropdown(false)}
-                  className="text-gray-300 hover:text-white cursor-pointer p-1 rounded-lg hover:bg-gray-800"
+                  className="text-gray-300 hover:text-white cursor-pointer p-1 rounded-lg hover:bg-gray-800 !transition-all !duration-300"
                 >
                   <X className="h-4 w-4" />
                 </button>

@@ -108,6 +108,7 @@ import SuperAdminPlan from "./pages/SuperAdmin/SuperAdminLayout/SuperAdminPlan/S
 import LandingPage from "./components/landingPage/LandingPage.jsx";
 import Widget from "./components/widget-component/Widget.jsx";
 import NotificationsPage from "./components/notifications/NotificationPage.jsx";
+import OrganizationOwnerInvoices from "./pages/OrganizationOwner/OrganizationOwnerInvoices/OrganizationOwnerInvoices.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -214,6 +215,8 @@ const router = createBrowserRouter(
         <Route path="Calendar" element={<OrganizationOwnerCalendar />} />
         <Route path="Payout" element={<OrganizationOwnerPayout />} />
         <Route path="locations" element={<OrganizationOwnerLocations />} />
+        <Route path="invoices" element={<OrganizationOwnerInvoices />} />
+
         <Route path="settings" element={<OrganizationOwnerSettings />}>
           <Route index element={<OrganizationsSettings />} />
           <Route path="email" element={<OrganizationNotification />} />
