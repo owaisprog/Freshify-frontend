@@ -146,7 +146,8 @@ export default function AdminsSettings() {
 
   return (
     <section className="flex flex-col gap-2">
-      <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF] px-2">
+      {/* Client Advacce Booking Time  */}
+      {/* <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF] px-2">
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Clients Advance Booking Time
         </span>
@@ -175,9 +176,9 @@ export default function AdminsSettings() {
             />
           )}
         </div>
-      </div>
-
-      <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
+      </div> */}
+      {/* Subscription Maanagement  */}
+      {/* <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Subscription Management
         </span>
@@ -192,8 +193,7 @@ export default function AdminsSettings() {
           <span className="lg:hidden">Cancel</span>
           <span className="hidden lg:block">Cancel Subscription</span>
         </Button>
-      </div>
-
+      </div> */}
       <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Copy Booking Widget Code
@@ -235,17 +235,18 @@ export default function AdminsSettings() {
           <span className="lg:block">Generate</span>
         </Button>
       </div>
-
-      <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
+      {/* View Invoice Lists  */}
+      {/* <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Stripe Invoices List
         </span>
         <Button className="!w-[123px] lg:!w-[153px]" bg="black" radius="md">
           View List
         </Button>
-      </div>
+      </div> */}
 
-      <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
+      {/* Time Restriction For Rescheduling/Cancelation */}
+      {/* <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
         <span className="lg:hidden ml-3 lg:ml-0 text-[14px] font-[400]">
           Restriction For Rescheduling
         </span>
@@ -280,7 +281,7 @@ export default function AdminsSettings() {
             />
           )}
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }
