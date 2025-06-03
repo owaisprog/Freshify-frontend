@@ -24,7 +24,7 @@ export default function MainNewPassword() {
 
       // role: "customer"
     } catch (error) {
-      toast(error, { position: "top-center" });
+      toast.error(error, { position: "top-center" });
       setLoading(false);
     }
   };

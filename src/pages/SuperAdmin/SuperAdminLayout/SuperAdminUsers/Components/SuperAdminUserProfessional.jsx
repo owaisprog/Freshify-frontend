@@ -162,7 +162,7 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
       }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
-      toast("Someting went wrong try again ", { position: "top-center" });
+      toast.error("Someting went wrong try again ", { position: "top-center" });
     } finally {
       setLoading(false);
     }

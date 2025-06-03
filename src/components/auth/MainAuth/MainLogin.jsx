@@ -20,10 +20,12 @@ export default function MainLogin() {
 
       if (role === "organization_owner") {
         if (userData?.subscriptionStatus !== "paid") {
-          toast("Please Subscribe your Plan", { position: "top-center" });
+          toast.message("Please Subscribe your Plan", {
+            position: "top-center",
+          });
         }
       } else {
-        toast(userData.message, { position: "top-center" });
+        toast.success(userData.message, { position: "top-center" });
       }
       if (
         userData.user.role === "organization_owner" &&
@@ -42,7 +44,7 @@ export default function MainLogin() {
         navigate("/");
       }
     } catch (error) {
-      toast(error, { position: "top-center" });
+      toast.error(error, { position: "top-center" });
       setLoading(false);
     }
   };

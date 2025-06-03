@@ -23,7 +23,7 @@ export default function MainVerifyEmail() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("data", JSON.stringify(data.user));
-      toast(data.message, { position: "top-center" });
+      toast.success(data.message, { position: "top-center" });
       setLoading(false);
 
       if (data.user.role === "organization_owner") {
@@ -37,7 +37,7 @@ export default function MainVerifyEmail() {
       }
     } catch (error) {
       setLoading(false);
-      toast(error, { position: "top-center" });
+      toast.error(error, { position: "top-center" });
     }
   };
 

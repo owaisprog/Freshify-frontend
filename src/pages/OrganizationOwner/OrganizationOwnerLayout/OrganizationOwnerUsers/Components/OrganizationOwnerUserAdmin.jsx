@@ -156,7 +156,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
       }, 2000);
     } catch {
       //console.error("Error creating/updating user:", error);
-      toast("Something went wrong", { position: "top-center" });
+      toast.error("Something went wrong", { position: "top-center" });
     } finally {
       setLoading(false);
     }

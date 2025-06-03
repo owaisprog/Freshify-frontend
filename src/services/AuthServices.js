@@ -5,9 +5,12 @@ export const loginUser = async (email, password, role) => {
   try {
     const data = await apiPost("/api/login", { email, password });
     if (data && data.user.role !== role) {
-      toast("Unauthorized: You do not have permission to access this page.", {
-        position: "top-right",
-      });
+      toast.error(
+        "Unauthorized: You do not have permission to access this page.",
+        {
+          position: "top-right",
+        }
+      );
       throw new Error(
         "Unauthorized: You do not have permission to access this page."
       );

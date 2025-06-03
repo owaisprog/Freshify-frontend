@@ -48,7 +48,7 @@ export default function MainRegister() {
       // // //consoe.log(userData);
       // // //consoe.log(userData.newUser);
       // Simulate API call
-      toast(userData.message, { position: "top-center" });
+      toast.success(userData.message, { position: "top-center" });
       //consoe.log("asd");
       navigate("/VerifyEmail", {
         state: { userEmail: values.email },
@@ -57,7 +57,7 @@ export default function MainRegister() {
         setLoading(false);
       }, 1500);
     } catch (error) {
-      toast(error, { position: "top-center" });
+      toast.error(error, { position: "top-center" });
       setLoading(false);
     }
   };

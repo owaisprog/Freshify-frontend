@@ -65,7 +65,9 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
           },
           onError: () => {
             setIsDeleting(null);
-            toast("Deletion Failed Try Again", { position: "top-center" });
+            toast.error("Deletion Failed Try Again", {
+              position: "top-center",
+            });
           },
         }
       );
@@ -115,7 +117,9 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
                 position: "top-center",
               }),
             onError: () =>
-              toast("Updation Failed Try Again", { position: "top-center" }),
+              toast.error("Updation Failed Try Again", {
+                position: "top-center",
+              }),
           }
         );
       } else {

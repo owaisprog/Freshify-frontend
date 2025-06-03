@@ -87,7 +87,7 @@ function AdminsServices() {
           onError: () => {
             setIsDeleting(null);
             //console.error("Error deleting service:", error);
-            toast("Error deleting service", { position: "top-center" });
+            toast.error("Error deleting service", { position: "top-center" });
           },
         }
       );
@@ -160,7 +160,7 @@ function AdminsServices() {
               });
             },
             onError: () => {
-              toast("Creation Failed Try Again", {
+              toast.error("Creation Failed Try Again", {
                 position: "top-center",
               });
             },
@@ -172,7 +172,9 @@ function AdminsServices() {
         setOpened(false);
       }, 2000);
     } catch {
-      toast("Error Creating/Updating service", { position: "top-center" });
+      toast.error("Error Creating/Updating service", {
+        position: "top-center",
+      });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }

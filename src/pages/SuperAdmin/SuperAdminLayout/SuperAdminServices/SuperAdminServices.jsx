@@ -74,7 +74,9 @@ function SuperAdminServices() {
         { endpoint: `/api/delete-service/${id}` },
         {
           onSuccess: () => {
-            toast("Service Deleted Successfully", { position: "top-center" });
+            toast.success("Service Deleted Successfully", {
+              position: "top-center",
+            });
             const previousServices =
               queryClient.getQueryData(["services"]) || [];
             const updatedServices = previousServices.filter(
@@ -86,7 +88,7 @@ function SuperAdminServices() {
           onError: () => {
             setIsDeleting(null);
             //console.error("Error deleting service:", error);
-            toast("Error deleting service", { position: "top-center" });
+            toast.error("Error deleting service", { position: "top-center" });
           },
         }
       );
@@ -174,7 +176,9 @@ function SuperAdminServices() {
         setOpened(false);
       }, 2000);
     } catch {
-      toast("Error Creating/Updating service", { position: "top-center" });
+      toast.error("Error Creating/Updating service", {
+        position: "top-center",
+      });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }

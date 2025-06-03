@@ -105,7 +105,7 @@ function OrganizationOwnerServices() {
           },
           onError: () => {
             setIsDeleting(null);
-            toast("Error deleting service", { position: "top-center" });
+            toast.error("Error deleting service", { position: "top-center" });
           },
         }
       );
@@ -191,7 +191,9 @@ function OrganizationOwnerServices() {
         setOpened(false);
       }, 2000);
     } catch {
-      toast("Error Creating/Updating service", { position: "top-center" });
+      toast.error("Error Creating/Updating service", {
+        position: "top-center",
+      });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
