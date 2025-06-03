@@ -128,7 +128,7 @@ export default function NotificationsPage() {
                 </div>
               </div>
             </div>
-            {unreadCount <= 0 && (
+            {unreadCount > 0 && (
               <Button
                 onClick={updateAllSeenFun}
                 loading={isLoadingSeenAll}
