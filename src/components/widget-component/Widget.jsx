@@ -36,7 +36,7 @@ export default function Widget() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen    ">
+    <div className="flex items-center justify-center h-screen">
       <div
         key={_id}
         className="flex flex-col sm:flex-row bg-white rounded-3xl overflow-hidden shadow-lg max-w-4xl w-full transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
