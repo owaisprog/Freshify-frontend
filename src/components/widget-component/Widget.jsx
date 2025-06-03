@@ -19,7 +19,7 @@ export default function Widget() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center py-8">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <Loader type="bars" color="black" />
       </div>
     );
@@ -27,42 +27,56 @@ export default function Widget() {
 
   if (error) {
     return (
-      <p className="text-center text-red-500 py-4">
-        Failed to load Organization Owners. Please try again later.
-      </p>
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <p className="text-center text-red-500 text-base sm:text-lg font-medium">
+          Failed to load Organization Owners. Please try again later.
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="  items-center h-screen flex justify-center  ">
+    <div className="flex items-center justify-center h-screen    ">
       <div
         key={_id}
-        className="flex flex-col min-[350px]:flex-row h-[18rem]  bg-white rounded-3xl overflow-hidden shadow-lg transition-transform duration-200 hover:scale-[1.03] hover:shadow-2xl"
+        className="flex flex-col sm:flex-row bg-white rounded-3xl overflow-hidden shadow-lg max-w-4xl w-full transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+        role="region"
+        aria-label="Profile card"
       >
-        <img
-          src={image || "/profile.webp"}
-          alt={name}
-          className="w-full min-[350px]:w-1/3 object-cover"
-        />
-        <div className="flex flex-col justify-between p-4 sm:p-6 w-full min-[350px]:w-3/5">
+        <div className="relative w-full sm:w-1/3 aspect-square sm:aspect-auto">
+          <img
+            src={image || "/profile.webp"}
+            alt={name || "Profile image"}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div className="flex flex-col p-4 sm:p-6 gap-4 w-full sm:w-2/3">
           <div>
-            <h2 className="text-lg font-medium text-gray-600 lg:text-xl">
-              {name}
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 tracking-tight">
+              {name || "Unknown User"}
             </h2>
-            <p className="mt-1 text-sm text-gray-500">Organization owner</p>
+            <p className="mt-1 text-sm sm:text-base text-gray-500">
+              Organization Owner
+            </p>
           </div>
-          <div className="mt-3">
-            <h3 className="text-base font-medium text-gray-700">Locations:</h3>
+          <div>
+            <h3 className="text-base sm:text-lg font-medium text-gray-700">
+              Locations:
+            </h3>
             {locations && locations.length > 0 ? (
-              <ul className="mt-2 space-y-1.5">
-                {locations.slice(0, 4).map((location) => (
+              <ul className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {locations.map((location) => (
                   <li key={location._id} className="flex items-start">
-                    <FaMapMarkerAlt className="text-gray-500 mr-2 mt-0.5" />
+                    <FaMapMarkerAlt
+                      className="text-gray-500 mr-2 mt-1 flex-shrink-0"
+                      aria-hidden="true"
+                    />
                     <div>
-                      <p className="text-sm font-medium text-gray-800">
+                      <p className="text-sm sm:text-base font-medium text-gray-800">
                         {location.name || "Unnamed Location"}
                       </p>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs sm:text-sm text-gray-600">
                         {location.address || "Address not available"}
                       </p>
                     </div>
@@ -70,7 +84,9 @@ export default function Widget() {
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-gray-500">No locations available</p>
+              <p className="text-sm sm:text-base text-gray-500 italic">
+                No locations available
+              </p>
             )}
           </div>
           <button
@@ -78,13 +94,20 @@ export default function Widget() {
               if (subscriptionStatus === "paid") {
                 window.open(
                   `https://freshify-one.vercel.app/booking?ownerId=${_id}`,
-                  "_blank"
+                  "_blank",
+                  "noopener,noreferrer"
                 );
               } else {
-                toast.warn("Please Subscribe", { position: "top-center" });
+                toast.warn("Please subscribe to book", {
+                  position: "top-center",
+                  duration: 3000,
+                });
               }
             }}
-            className="mt-4 sm:mt-6 inline-flex items-center justify-center px-5 py-2 text-white bg-black border-2 border-black rounded-full hover:bg-transparent hover:text-black focus:outline-none focus-visible:outline-black text-sm"
+            className="mt-4 sm:mt-6 inline-flex items-center justify-center px-6 py-2.5 text-sm sm:text-base font-medium text-white bg-black border-2 border-black rounded-full hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-colors duration-300"
+            aria-label={
+              subscriptionStatus === "paid" ? "Book now" : "Subscribe to book"
+            }
           >
             Book Now
           </button>
