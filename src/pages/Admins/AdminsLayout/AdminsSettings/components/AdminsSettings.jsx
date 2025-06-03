@@ -200,7 +200,7 @@ export default function AdminsSettings() {
         </span>
         <CopyButton
           value={`<iframe
-            src="http://localhost:5174/freshifyWidget/${organizationOwnerId?._id}"
+            src="${import.meta.env.VITE_FRONTEND_URL}/freshifyWidget/${organizationOwnerId?._id}"
             title="iframe-owner"
             width="100%"
             height="100%"

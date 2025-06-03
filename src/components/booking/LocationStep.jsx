@@ -49,19 +49,23 @@ export default function LocationStep() {
         Select a Location
       </h1>
       <div className="flex w-full  flex-col gap-4">
-        {locations.map((location) => (
-          <button
-            key={location._id}
-            onClick={() => handleSelect(location)}
-            className=" w-full max-w-[758px] h-[150px] lg:h-[200px] mx-auto hover:bg-black hover:text-white cursor-pointer flex items-center 
+        {locations.length > 0 ? (
+          locations.map((location) => (
+            <button
+              key={location._id}
+              onClick={() => handleSelect(location)}
+              className=" w-full max-w-[758px] h-[150px] lg:h-[200px] mx-auto hover:bg-black hover:text-white cursor-pointer flex items-center 
             justify-center bg-[#FFFFFF] rounded-3xl border specialBorder hover:border-none
              transition-all duration-500"
-          >
-            <p className="text-[24px] lg:text-[32px] capitalize font-[700]">
-              {location.name}
-            </p>
-          </button>
-        ))}
+            >
+              <p className="text-[24px] lg:text-[32px] capitalize font-[700]">
+                {location.name}
+              </p>
+            </button>
+          ))
+        ) : (
+          <h1 className="text-center">No Location Available</h1>
+        )}
       </div>
     </div>
   );

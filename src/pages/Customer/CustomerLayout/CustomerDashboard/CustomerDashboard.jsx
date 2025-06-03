@@ -42,7 +42,7 @@ export default function CustomerDashboard() {
           payload: { role },
         });
       } catch {
-        toast.error("Error fetching bookings",{position:"top-center"});
+        toast.error("Error fetching bookings", { position: "top-center" });
       }
     };
     fetchBookings();

@@ -199,7 +199,7 @@ export default function OrganizationsSettings() {
         </span>
         <CopyButton
           value={`<iframe
-            src="https://freshify-one.vercel.app/freshifyWidget/${userId}"
+            src="${import.meta.env.VITE_FRONTEND_URL}/freshifyWidget/${userId}"
             title="iframe-owner"
             width="100%"
             height="100%"
