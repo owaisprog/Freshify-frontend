@@ -102,7 +102,7 @@ function SuperAdminProfile() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
-        <Loader size="lg" />
+        <Loader size="lg" color="dark" type="bars" />
       </div>
     );
   }

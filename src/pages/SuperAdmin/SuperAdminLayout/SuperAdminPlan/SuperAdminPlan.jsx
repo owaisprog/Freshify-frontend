@@ -69,7 +69,7 @@ function SuperAdminPlan() {
 
       {isLoadingPlan ? (
         <section className="flex max-w-[1440px] mx-auto items-center justify-center ">
-          <Loader size="md" type="bars" />
+          <Loader size="md" color="dark" type="bars" />
         </section>
       ) : (
         <section className="grid max-w-[1440px] mx-auto w-full grid-cols-1 gap-y-5 mt-6 lg:mt-0">

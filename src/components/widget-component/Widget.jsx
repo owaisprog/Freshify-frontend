@@ -36,7 +36,7 @@ export default function Widget() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen !overflow-hidden">
       <div
         key={_id}
         className="flex flex-col sm:flex-row bg-white rounded-xl  sm:h-[300px] overflow-hidden shadow-lg max-w-3xl w-full  "

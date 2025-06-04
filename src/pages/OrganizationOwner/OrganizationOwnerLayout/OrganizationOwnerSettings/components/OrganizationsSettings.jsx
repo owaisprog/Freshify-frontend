@@ -88,8 +88,8 @@ export default function OrganizationsSettings() {
   /* -------------------- LOADING STATE -------------------- */
   if (isLoading) {
     return (
-      <section className="flex flex-col gap-2">
-        <Loader />
+      <section className="flex items-center justify-center   w-full">
+        <Loader color="dark" type="bars" />
       </section>
     );
   }
@@ -199,9 +199,9 @@ export default function OrganizationsSettings() {
         </span>
         <CopyButton
           value={`<div
-    style=" min-height: 450px; width: 100%; position: relative; padding: 10px 10px; display: flex; justify-content:
+    style=" overflow: hidden; min-height: 450px; width: 100%; position: relative; padding: 10px 10px; display: flex; justify-content:
   center; align-items: center;">
-  <iframe src="https://freshify-one.vercel.app/freshifyWidget/6819b7433395928ea1c08d0e" title="iframe-owner" width="100%"
+  <iframe src="https://freshify-one.vercel.app/freshifyWidget/${userId}" title="iframe-owner" width="100%"
     height="100%" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
   </div>
 `}

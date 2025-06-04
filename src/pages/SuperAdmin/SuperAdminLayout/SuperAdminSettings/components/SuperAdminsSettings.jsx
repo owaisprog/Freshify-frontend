@@ -80,7 +80,7 @@ export default function OrganizationsSettings() {
   if (isLoading) {
     return (
       <section className="flex flex-col gap-2">
-        <Loader />
+        <Loader color="dark" type="bars" />
       </section>
     );
   }
@@ -122,7 +122,7 @@ export default function OrganizationsSettings() {
         <div className="w-[97px] lg:w-[154px] h-[40px]">
           {bookingLoading ? (
             <div className=" w-full flex items-center justify-center">
-              <Loader type="bars" size={"sm"} />
+              <Loader color="dark" type="bars" size={"sm"} />
             </div>
           ) : (
             <CustomSelect
@@ -199,7 +199,7 @@ export default function OrganizationsSettings() {
         <div className="w-[113px] lg:w-[154px]">
           {restrictionLoading ? (
             <div className=" w-full flex items-center justify-center">
-              <Loader type="bars" size={"sm"} />
+              <Loader color="dark" type="bars" size={"sm"} />
             </div>
           ) : (
             <CustomSelect

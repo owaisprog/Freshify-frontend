@@ -40,7 +40,7 @@ export default function LocationStep() {
   if (isLoading)
     return (
       <div className="h-full flex flex-col gap-[20px] items-center  justify-center p-6 rounded-lg">
-        <Loader className="mx-auto " color="blue" type="bars" />
+        <Loader className="mx-auto " color="dark" type="bars" />
       </div>
     );
   return (

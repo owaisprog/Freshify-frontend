@@ -289,7 +289,7 @@ const EditAvailabilityPopup = ({
               <Table.Td>
                 <Group gap="xs">
                   {deletingSlotId === slot._id ? (
-                    <Loader size="xs" />
+                    <Loader size="xs" color="dark" type="bars" />
                   ) : (
                     <ActionIcon
                       color="red"
@@ -322,7 +322,7 @@ const EditAvailabilityPopup = ({
     >
       {!isBarber && professionals.length === 0 ? (
         isLoadingProfessionals ? (
-          <Loader className="mx-auto" color="blue" type="bars" />
+          <Loader className="mx-auto" color="dark" type="bars" />
         ) : (
           <Text align="center">
             No professionals available in your location.

@@ -50,7 +50,7 @@ export default function OrganizationOwnerDashboard() {
         </Title>
 
         <section className=" flex flex-col items-center justify-center h-[50vh]">
-          <Loader color="blue" size="lg" />
+          <Loader color="dark" type="bars" size="lg" />
         </section>
       </main>
     );

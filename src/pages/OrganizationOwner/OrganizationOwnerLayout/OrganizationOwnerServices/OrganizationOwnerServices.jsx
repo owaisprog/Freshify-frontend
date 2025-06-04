@@ -368,7 +368,7 @@ function OrganizationOwnerServices() {
         title={toggleTitle}
       >
         {isLocationsLoading ? (
-          <Loader className="mx-auto" color="blue" type="bars" />
+          <Loader className="mx-auto" color="dark" type="bars" />
         ) : !selectedService && locationNames.length === 0 ? (
           <Text className="!text-[16px] !font-[400]">
             Please create at least one location.

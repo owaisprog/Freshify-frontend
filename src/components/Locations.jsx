@@ -351,7 +351,7 @@ export default function Locations({
         <Table.ScrollContainer minWidth={950}>
           <Box className="flex flex-col gap-4 p-2 justify-center items-center">
             {isLoading ? (
-              <Loader className="mx-auto" color="blue" type="bars" />
+              <Loader className="mx-auto" color="dark" type="bars" />
             ) : error ? (
               <Paper p={"md"} mt={30} className="!bg-[#F5F7FA] font-[1.2rem]">
                 {error}
