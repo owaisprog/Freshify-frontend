@@ -307,7 +307,7 @@ export default function DateTimeStep() {
         </div>
       )}
       {bookingData?.time && selectedDate && !bookingData.proceedToPay && (
-        <div className="flex pb-[100px] lg:pb-0 justify-end mt-6">
+        <div className="flex pb-[100px] lg:pb-0 justify-start mt-8">
           <Button
             onClick={() => handleAuth()}
             loaderProps={{ type: "bars" }}
