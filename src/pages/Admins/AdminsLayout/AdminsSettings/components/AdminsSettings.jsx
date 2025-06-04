@@ -53,13 +53,13 @@ export default function AdminsSettings() {
         onSuccess: () => {
           setBookingLoading(false);
           setRestrictionLoading(false);
-          toast.success("Settings updated", { position: "top-center" });
+          toast.success("Settings updated", { position: "top-right" });
         },
 
         onError: () => {
           setBookingLoading(false);
           setRestrictionLoading(false);
-          toast.error("Update failed", { position: "top-center" });
+          toast.error("Update failed", { position: "top-right" });
         },
       }
     );
@@ -108,14 +108,14 @@ export default function AdminsSettings() {
         onSuccess: () => {
           setLoading(false);
           toast.success("Subscription cancelled Successfully", {
-            position: "top-center",
+            position: "top-right",
           });
           logoutUser();
         },
         onError: () => {
           setLoading(false);
           toast.error("Error While cancelling Subscription", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }
@@ -133,11 +133,11 @@ export default function AdminsSettings() {
       }, data?.data?.invoices[0]);
       window.location.href = latestObject.invoicePdfUrl;
       toast.success("Generated Successfully", {
-        position: "top-center",
+        position: "top-right",
       });
     } catch {
       toast.error("Error While Generating Invioce", {
-        position: "top-center",
+        position: "top-right",
       });
     }
   }

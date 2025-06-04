@@ -81,13 +81,13 @@ function AdminsServices() {
             queryClient.setQueryData(["services"], updatedServices);
             // // //consoe.log("Service deleted successfully!");
             toast.success("Service Delete Successfully", {
-              position: "top-center",
+              position: "top-right",
             });
           },
           onError: () => {
             setIsDeleting(null);
             //console.error("Error deleting service:", error);
-            toast.error("Error deleting service", { position: "top-center" });
+            toast.error("Error deleting service", { position: "top-right" });
           },
         }
       );
@@ -137,12 +137,12 @@ function AdminsServices() {
           {
             onSuccess: () => {
               toast.success("Update Service Successfully", {
-                position: "top-center",
+                position: "top-right",
               });
             },
             onError: () => {
               toast.error("Updation Failed Try Again", {
-                position: "top-center",
+                position: "top-right",
               });
             },
           }
@@ -156,12 +156,12 @@ function AdminsServices() {
           {
             onSuccess: () => {
               toast.success("Service Create Successfully", {
-                position: "top-center",
+                position: "top-right",
               });
             },
             onError: () => {
               toast.error("Creation Failed Try Again", {
-                position: "top-center",
+                position: "top-right",
               });
             },
           }
@@ -173,7 +173,7 @@ function AdminsServices() {
       }, 2000);
     } catch {
       toast.error("Error Creating/Updating service", {
-        position: "top-center",
+        position: "top-right",
       });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);

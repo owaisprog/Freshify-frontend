@@ -20,12 +20,12 @@ export default function OrganizationOwnerSentPassword() {
       });
       //consoe.log(response);
 
-      toast.success(response.message, { position: "top-center" });
+      toast.success(response.message, { position: "top-right" });
       setLoading(false);
       navigate("/OrganizationOwnerUserLogin"); // Redirect to login
     } catch (error) {
       //console.error("Error setting password:", error);
-      toast.error(error, { position: "top-center" });
+      toast.error(error, { position: "top-right" });
       setLoading(false);
     }
   };

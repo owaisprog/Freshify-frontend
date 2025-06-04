@@ -68,11 +68,11 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
         { endpoint: `/api/delete-user/${userId}` },
         {
           onSuccess: () =>
-            toast.success("Deletion Successfull", { position: "top-center" }),
+            toast.success("Deletion Successfull", { position: "top-right" }),
           onError: () => {
             setIsDeleting(null);
             toast.error("Deletion Failed Try Again", {
-              position: "top-center",
+              position: "top-right",
             });
           },
         }
@@ -123,10 +123,10 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
           },
           {
             onSuccess: () =>
-              toast.success("Updated Successfull", { position: "top-center" }),
+              toast.success("Updated Successfull", { position: "top-right" }),
             onError: () =>
               toast.error("Updation Failed Try Again", {
-                position: "top-center",
+                position: "top-right",
               }),
           }
         );
@@ -146,11 +146,11 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
             onSuccess: () =>
               toast.success(
                 "Created Successfull Check Email for Invitaion Link",
-                { position: "top-center" }
+                { position: "top-right" }
               ),
             onError: () =>
               toast.error("Invitaion Failed Try Again", {
-                position: "top-center",
+                position: "top-right",
               }),
           }
         );
@@ -162,7 +162,7 @@ function SuperAdminUserProfessional({ userdata, isLoading, error }) {
       }, 2000);
     } catch (error) {
       console.error("Error creating/updating user:", error);
-      toast.error("Someting went wrong try again ", { position: "top-center" });
+      toast.error("Someting went wrong try again ", { position: "top-right" });
     } finally {
       setLoading(false);
     }

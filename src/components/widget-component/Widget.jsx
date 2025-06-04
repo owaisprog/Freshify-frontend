@@ -99,7 +99,7 @@ export default function Widget() {
                 );
               } else {
                 toast.warn("Please subscribe to book", {
-                  position: "top-center",
+                  position: "top-right",
                   duration: 3000,
                 });
               }

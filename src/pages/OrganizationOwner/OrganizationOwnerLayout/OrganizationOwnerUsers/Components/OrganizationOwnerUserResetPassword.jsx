@@ -30,9 +30,9 @@ export default function OrganizationOwnerUserResetPassword() {
       const resetRequest = await apiPost("/api/forgot-password-user", values);
 
       // Show success message
-      toast.success(resetRequest.message, { position: "top-center" });
+      toast.success(resetRequest.message, { position: "top-right" });
     } catch (error) {
-      toast.error(error, { position: "top-center" });
+      toast.error(error, { position: "top-right" });
     } finally {
       setLoading(false);
     }

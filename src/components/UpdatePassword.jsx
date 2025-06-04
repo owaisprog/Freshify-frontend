@@ -33,7 +33,7 @@ function UpdatePassword() {
         {
           onSuccess: () => {
             toast.success("Password updated successfully!", {
-              position: "top-center",
+              position: "top-right",
             });
 
             // Clear the "profile" cache
@@ -42,14 +42,14 @@ function UpdatePassword() {
           },
           onError: (error) => {
             toast.error("Failed to update password.", {
-              position: "top-center",
+              position: "top-right",
             });
             //console.error("Error updating password:", error);
           },
         }
       );
     } catch (error) {
-      toast.error("Failed to update password.", { position: "top-center" });
+      toast.error("Failed to update password.", { position: "top-right" });
       //console.error("Error updating password:", error);
     }
   };

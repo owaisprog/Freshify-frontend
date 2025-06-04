@@ -17,13 +17,13 @@ function OrganizationDelete() {
           localStorage.removeItem("token");
           localStorage.removeItem("data");
           toast.success("Organization deleted successfully!", {
-            position: "top-center",
+            position: "top-right",
           });
           navigate("/");
         },
         onError: (error) => {
           toast.error("Failed to delete organization.", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }

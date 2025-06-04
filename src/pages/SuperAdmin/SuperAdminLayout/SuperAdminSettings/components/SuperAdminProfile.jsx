@@ -61,13 +61,13 @@ function SuperAdminProfile() {
             query.invalidateQueries("profile");
           },
           onError: () => {
-            toast.error("Failed to update profile.",{position:"top-center"});
+            toast.error("Failed to update profile.", { position: "top-right" });
             //console.error("Error updating profile:", error);
           },
         }
       );
     } catch {
-      toast.error("Failed to update profile.",{position:"top-center"});
+      toast.error("Failed to update profile.", { position: "top-right" });
       //console.error("Error updating profile:", error);
     }
   };
@@ -91,9 +91,9 @@ function SuperAdminProfile() {
 
       const uploadedUrl = response.data.secure_url;
       form.setFieldValue("image", uploadedUrl); // Update form field with image URL
-      toast.success("Image uploaded successfully!",{position:"top-center"});
+      toast.success("Image uploaded successfully!", { position: "top-right" });
     } catch {
-      toast.error("Failed to upload image.",{position:"top-center"});
+      toast.error("Failed to upload image.", { position: "top-right" });
       //console.error("Error uploading file to Cloudinary:", error);
     }
   };

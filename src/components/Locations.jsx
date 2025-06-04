@@ -108,12 +108,12 @@ export default function Locations({
             queryClient.invalidateQueries({ queryKey: ["locations", id] });
             window.location.reload();
             toast.success("Location Deleted Successfully", {
-              position: "top-center",
+              position: "top-right",
             });
           },
           onError: () => {
             setIsDeleting(null);
-            toast.error("Error deleting location", { position: "top-center" });
+            toast.error("Error deleting location", { position: "top-right" });
           },
         }
       );
@@ -266,10 +266,10 @@ export default function Locations({
           {
             onSuccess: () =>
               toast.success("Location Updated Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
-              toast.error("Error Updated Location", { position: "top-center" }),
+              toast.error("Error Updated Location", { position: "top-right" }),
           }
         );
       } else {
@@ -286,11 +286,11 @@ export default function Locations({
           {
             onSuccess: () =>
               toast.success("Location Created Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
               toast.error("Error While Creating Location", {
-                position: "top-center",
+                position: "top-right",
               }),
           }
         );
@@ -736,12 +736,12 @@ export default function Locations({
                     },
                   });
                   toast.success("Working Hours Updated Successfully", {
-                    position: "top-center",
+                    position: "top-right",
                   });
                   setWorkingHoursModalOpen(false);
                 } catch {
                   toast.error("Error Updating Working Hours", {
-                    position: "top-center",
+                    position: "top-right",
                   });
                 } finally {
                   setLoading(false);

@@ -43,7 +43,7 @@ function OrganizationOwnerInvoices() {
 
       onError: () => {
         setDownloadLoading(null);
-        toast.error("Failed to download invoice.", { position: "top-center" });
+        toast.error("Failed to download invoice.", { position: "top-right" });
       },
     });
 

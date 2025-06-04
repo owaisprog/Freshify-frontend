@@ -34,7 +34,7 @@ export default function ProfileForm() {
         {
           onSuccess: () => {
             toast.success("Profile updated successfully!", {
-              position: "top-center",
+              position: "top-right",
             });
             // Update localStorage with new data
             localStorage.setItem(
@@ -44,13 +44,13 @@ export default function ProfileForm() {
           },
           onError: () => {
             toast.error("Failed to update profile.", {
-              position: "top-center",
+              position: "top-right",
             });
           },
         }
       );
     } catch {
-      toast.error("Failed to update profile.", { position: "top-center" });
+      toast.error("Failed to update profile.", { position: "top-right" });
     }
   };
 
@@ -73,9 +73,9 @@ export default function ProfileForm() {
 
       const uploadedUrl = response.data.secure_url;
       form.setFieldValue("image", uploadedUrl); // Update form field with image URL
-      toast.success("Image uploaded successfully!", { position: "top-center" });
+      toast.success("Image uploaded successfully!", { position: "top-right" });
     } catch {
-      toast.error("Failed to upload image.", { position: "top-center" });
+      toast.error("Failed to upload image.", { position: "top-right" });
     }
   };
 

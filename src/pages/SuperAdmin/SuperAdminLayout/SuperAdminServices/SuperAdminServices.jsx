@@ -75,7 +75,7 @@ function SuperAdminServices() {
         {
           onSuccess: () => {
             toast.success("Service Deleted Successfully", {
-              position: "top-center",
+              position: "top-right",
             });
             const previousServices =
               queryClient.getQueryData(["services"]) || [];
@@ -88,7 +88,7 @@ function SuperAdminServices() {
           onError: () => {
             setIsDeleting(null);
             //console.error("Error deleting service:", error);
-            toast.error("Error deleting service", { position: "top-center" });
+            toast.error("Error deleting service", { position: "top-right" });
           },
         }
       );
@@ -142,10 +142,10 @@ function SuperAdminServices() {
           {
             onSuccess: () =>
               toast.success("Service Updated Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
-              toast.error("Error Updated Location", { position: "top-center" }),
+              toast.error("Error Updated Location", { position: "top-right" }),
           }
         );
       } else {
@@ -161,11 +161,11 @@ function SuperAdminServices() {
           {
             onSuccess: () =>
               toast.success("Service Created Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
               toast.error("Error Creating Location", {
-                position: "top-center",
+                position: "top-right",
               }),
           }
         );
@@ -177,7 +177,7 @@ function SuperAdminServices() {
       }, 2000);
     } catch {
       toast.error("Error Creating/Updating service", {
-        position: "top-center",
+        position: "top-right",
       });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);

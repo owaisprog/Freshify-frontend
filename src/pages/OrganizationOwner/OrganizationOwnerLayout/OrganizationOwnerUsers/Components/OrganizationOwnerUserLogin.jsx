@@ -34,7 +34,7 @@ export default function OrganizationOwnerUserLogin() {
       localStorage.setItem("data", JSON.stringify(response.user));
 
       // Redirect to dashboard/home page
-      toast.success(response.message, { position: "top-center" });
+      toast.success(response.message, { position: "top-right" });
       setTimeout(() => {
         if (response.user.role === "admin") {
           navigate("/AdminsDashboard");
@@ -44,7 +44,7 @@ export default function OrganizationOwnerUserLogin() {
       }, 2000);
     } catch (error) {
       //console.error("Error in login request:", error);
-      toast.error(error, { position: "top-center" });
+      toast.error(error, { position: "top-right" });
     } finally {
       setLoading(false);
     }

@@ -21,11 +21,11 @@ export default function MainLogin() {
       if (role === "organization_owner") {
         if (userData?.subscriptionStatus !== "paid") {
           toast.message("Please Subscribe your Plan", {
-            position: "top-center",
+            position: "top-right",
           });
         }
       } else {
-        toast.success(userData.message, { position: "top-center" });
+        toast.success(userData.message, { position: "top-right" });
       }
       if (
         userData.user.role === "organization_owner" &&
@@ -44,7 +44,7 @@ export default function MainLogin() {
         navigate("/");
       }
     } catch (error) {
-      toast.error(error, { position: "top-center" });
+      toast.error(error, { position: "top-right" });
       setLoading(false);
     }
   };

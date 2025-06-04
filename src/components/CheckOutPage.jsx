@@ -42,7 +42,7 @@ const CheckoutPage = () => {
       {
         onSuccess: (data) => {
           toast.success("Booking Created Successfully", {
-            position: "top-center",
+            position: "top-right",
           });
 
           // Extract merchantId from the response
@@ -64,7 +64,7 @@ const CheckoutPage = () => {
               },
               onError: () =>
                 toast.error("Error While Creating Payment", {
-                  position: "top-center",
+                  position: "top-right",
                 }),
             }
           );
@@ -73,7 +73,7 @@ const CheckoutPage = () => {
           setIsCreatingBookingOnline(false);
 
           toast.error("Error Booking", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }
@@ -91,7 +91,7 @@ const CheckoutPage = () => {
         onSuccess: (data) => {
           console.log(data, "customer datad");
           toast.success("Booking Created Successfully", {
-            position: "top-center",
+            position: "top-right",
           });
           setIsCreatingBooking(false);
           if (customerData?.role === "customer" && token) {
@@ -102,7 +102,7 @@ const CheckoutPage = () => {
         },
         onError: () => {
           toast.error("Error Booking", {
-            position: "top-center",
+            position: "top-right",
           });
           setIsCreatingBooking(false);
         },
