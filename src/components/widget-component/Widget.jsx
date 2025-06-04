@@ -39,45 +39,40 @@ export default function Widget() {
     <div className="flex items-center justify-center h-screen">
       <div
         key={_id}
-        className="flex flex-col sm:flex-row bg-white rounded-3xl overflow-hidden shadow-lg max-w-4xl w-full transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl"
+        className="flex flex-col sm:flex-row bg-white rounded-xl  sm:h-[300px] overflow-hidden shadow-lg max-w-3xl w-full  "
         role="region"
         aria-label="Profile card"
       >
-        <div className="relative w-full sm:w-1/3 aspect-square sm:aspect-auto">
+        <div className="relative h-[170px] sm:h-full w-full sm:w-1/3 aspect-square ">
           <img
             src={image || "/profile.webp"}
             alt={name || "Profile image"}
-            className="w-full h-full object-cover"
+            className="w-full h-full  object-cover"
             loading="lazy"
           />
         </div>
-        <div className="flex flex-col p-4 sm:p-6 gap-4 w-full sm:w-2/3">
+        <div className="flex flex-col  justify-between p-4  w-full sm:w-2/3">
           <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 tracking-tight">
+            <h2 className="text-xl  font-semibold text-gray-800 tracking-tight">
               {name || "Unknown User"}
             </h2>
-            <p className="mt-1 text-sm sm:text-base text-gray-500">
-              Organization Owner
-            </p>
+            <p className=" text-sm  text-gray-500">Organization Owner</p>
           </div>
           <div>
-            <h3 className="text-base sm:text-lg font-medium text-gray-700">
+            <h3 className="text-base  font-semibold text-gray-800">
               Locations:
             </h3>
             {locations && locations.length > 0 ? (
-              <ul className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <ul className="mt-2 grid grid-cols-2 lg:grid-cols-2 gap-3">
                 {locations.map((location) => (
                   <li key={location._id} className="flex items-start">
                     <FaMapMarkerAlt
-                      className="text-gray-500 mr-2 mt-1 flex-shrink-0"
+                      className="text-gray-800 mr-2 mt-1 flex-shrink-0"
                       aria-hidden="true"
                     />
                     <div>
-                      <p className="text-sm sm:text-base font-medium text-gray-800">
+                      <p className="text-sm  font-medium text-gray-500">
                         {location.name || "Unnamed Location"}
-                      </p>
-                      <p className="text-xs sm:text-sm text-gray-600">
-                        {location.address || "Address not available"}
                       </p>
                     </div>
                   </li>
@@ -104,7 +99,7 @@ export default function Widget() {
                 });
               }
             }}
-            className="mt-4 sm:mt-6 inline-flex items-center justify-center px-6 py-2.5 text-sm sm:text-base font-medium text-white bg-black border-2 border-black rounded-full hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-colors duration-300"
+            className="  py-2 !text-sm  font-medium text-white border border-black bg-black  rounded-xl hover:bg-[#F5F7FA] hover:text-black cursor-pointer transition-all duration-300 "
             aria-label={
               subscriptionStatus === "paid" ? "Book now" : "Subscribe to book"
             }
