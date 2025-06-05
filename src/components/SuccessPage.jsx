@@ -68,7 +68,7 @@ function SuccessPage({
           }, 10000);
         },
         onError: () => {
-          toast.error("Something Went Wrong");
+          toast.error("Something Went Wrong", { position: "top-right" });
         },
       }
     );
