@@ -148,14 +148,14 @@ const EditAvailabilityPopup = ({
       // Additional validation check before submission
       if (!values.startTime || !values.endTime) {
         toast.error("Please select both start and end times", {
-          position: "top-center",
+          position: "top-right",
         });
         return;
       }
 
       if (values.endTime <= values.startTime) {
         toast.error("End time must be after start time", {
-          position: "top-center",
+          position: "top-right",
         });
         return;
       }
@@ -183,7 +183,7 @@ const EditAvailabilityPopup = ({
     (slot) => {
       if (!slot._id) {
         toast.error("Cannot delete slot - missing ID", {
-          position: "top-center",
+          position: "top-right",
         });
         return;
       }
@@ -202,14 +202,14 @@ const EditAvailabilityPopup = ({
         {
           onSuccess: () => {
             toast.success("Unavailability slot deleted successfully", {
-              position: "top-center",
+              position: "top-right",
             });
             refetchSlots();
             window.location.reload();
           },
           onError: () => {
             toast.error("Failed to delete unavailability slot", {
-              position: "top-center",
+              position: "top-right",
             });
           },
           onSettled: () => {
@@ -289,7 +289,7 @@ const EditAvailabilityPopup = ({
               <Table.Td>
                 <Group gap="xs">
                   {deletingSlotId === slot._id ? (
-                    <Loader size="xs" />
+                    <Loader size="xs" color="dark" type="bars" />
                   ) : (
                     <ActionIcon
                       color="red"
@@ -322,7 +322,7 @@ const EditAvailabilityPopup = ({
     >
       {!isBarber && professionals.length === 0 ? (
         isLoadingProfessionals ? (
-          <Loader className="mx-auto" color="blue" type="bars" />
+          <Loader className="mx-auto" color="dark" type="bars" />
         ) : (
           <Text align="center">
             No professionals available in your location.

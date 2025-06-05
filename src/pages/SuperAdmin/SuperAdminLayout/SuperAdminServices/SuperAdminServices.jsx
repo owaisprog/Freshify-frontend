@@ -74,7 +74,9 @@ function SuperAdminServices() {
         { endpoint: `/api/delete-service/${id}` },
         {
           onSuccess: () => {
-            toast("Service Deleted Successfully", { position: "top-center" });
+            toast.success("Service Deleted Successfully", {
+              position: "top-right",
+            });
             const previousServices =
               queryClient.getQueryData(["services"]) || [];
             const updatedServices = previousServices.filter(
@@ -86,7 +88,7 @@ function SuperAdminServices() {
           onError: () => {
             setIsDeleting(null);
             //console.error("Error deleting service:", error);
-            toast("Error deleting service", { position: "top-center" });
+            toast.error("Error deleting service", { position: "top-right" });
           },
         }
       );
@@ -140,10 +142,10 @@ function SuperAdminServices() {
           {
             onSuccess: () =>
               toast.success("Service Updated Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
-              toast.error("Error Updated Location", { position: "top-center" }),
+              toast.error("Error Updated Location", { position: "top-right" }),
           }
         );
       } else {
@@ -159,11 +161,11 @@ function SuperAdminServices() {
           {
             onSuccess: () =>
               toast.success("Service Created Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
               toast.error("Error Creating Location", {
-                position: "top-center",
+                position: "top-right",
               }),
           }
         );
@@ -174,7 +176,9 @@ function SuperAdminServices() {
         setOpened(false);
       }, 2000);
     } catch {
-      toast("Error Creating/Updating service", { position: "top-center" });
+      toast.error("Error Creating/Updating service", {
+        position: "top-right",
+      });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }

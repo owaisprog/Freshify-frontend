@@ -81,7 +81,7 @@ export default function CalendarPage({
           payload: { role },
         });
       } catch {
-        toast.error("Error fetching bookings", { position: "top-center" });
+        toast.error("Error fetching bookings", { position: "top-right" });
       }
     };
     fetchBookings();
@@ -220,13 +220,13 @@ export default function CalendarPage({
         {
           onSuccess: () => {
             toast.success("Submitted Successfully", {
-              position: "top-center",
+              position: "top-right",
             });
             setAvailabilityModalOpen(false);
           },
           onError: () =>
             toast.error("Error Submitting", {
-              position: "top-center",
+              position: "top-right",
             }),
         }
       );

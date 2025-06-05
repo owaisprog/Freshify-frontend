@@ -60,12 +60,14 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
           onSuccess: () => {
             setIsDeleting(null);
             toast.success("Professional Deleted Successfully", {
-              position: "top-center",
+              position: "top-right",
             });
           },
           onError: () => {
             setIsDeleting(null);
-            toast("Deletion Failed Try Again", { position: "top-center" });
+            toast.error("Deletion Failed Try Again", {
+              position: "top-right",
+            });
           },
         }
       );
@@ -112,10 +114,12 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
           {
             onSuccess: () =>
               toast.success("Professional Updated Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
-              toast("Updation Failed Try Again", { position: "top-center" }),
+              toast.error("Updation Failed Try Again", {
+                position: "top-right",
+              }),
           }
         );
       } else {
@@ -128,23 +132,23 @@ function AdminsUserProfessional({ userdata, isLoading, error }) {
           {
             onSuccess: () =>
               toast.success("Invitation Link Sent on Email Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
               toast.error("Creation Failed Try Again", {
-                position: "top-center",
+                position: "top-right",
               }),
           }
         );
       }
-      // toast("Success", { position: "top-center" });
+      // toast("Success", { position: "top-right" });
       setTimeout(() => {
         setOpened(false);
         setSelectedUser(null);
       }, 2000);
     } catch {
       //console.error("Error creating/updating user:", error);
-      toast.error("Someting went wrong try again ", { position: "top-center" });
+      toast.error("Someting went wrong try again ", { position: "top-right" });
     } finally {
       setLoading(false);
     }

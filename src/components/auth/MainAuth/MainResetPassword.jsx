@@ -15,11 +15,11 @@ export default function MainResetPassword() {
     try {
       setLoading(true);
       const resetRequest = await apiPost("/api/forgot-password", values);
-      toast(resetRequest.message, { position: "top-center" });
+      toast.success(resetRequest.message, { position: "top-right" });
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      toast(error, { position: "top-center" });
+      toast.error(error, { position: "top-right" });
     }
   };
 

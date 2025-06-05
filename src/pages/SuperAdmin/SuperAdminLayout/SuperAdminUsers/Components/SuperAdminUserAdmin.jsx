@@ -67,11 +67,11 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
         {
           onSuccess: () =>
             toast.success("Admin Deleted Successfully", {
-              position: "top-center",
+              position: "top-right",
             }),
           onError: () => {
             setIsDeleting(null);
-            toast.error("Deletion Error", { position: "top-center" });
+            toast.error("Deletion Error", { position: "top-right" });
           },
         }
       );
@@ -119,10 +119,10 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
           {
             onSuccess: () =>
               toast.success("Admin Updated Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
-              toast.error("Admin Updation Error", { position: "top-center" }),
+              toast.error("Admin Updation Error", { position: "top-right" }),
           }
         );
       } else {
@@ -140,10 +140,10 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
           {
             onSuccess: () =>
               toast.success("Admin Created. Please Check Your Email", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
-              toast.error("Admin Creation Error", { position: "top-center" }),
+              toast.error("Admin Creation Error", { position: "top-right" }),
           }
         );
       }
@@ -153,7 +153,7 @@ function SuperAdminUserAdmin({ userdata, isLoading, error }) {
       }, 2000);
     } catch {
       //console.error("Error creating/updating user:", error);
-      toast("Something went wrong", { position: "top-center" });
+      toast.error("Something went wrong", { position: "top-right" });
     } finally {
       setLoading(false);
     }

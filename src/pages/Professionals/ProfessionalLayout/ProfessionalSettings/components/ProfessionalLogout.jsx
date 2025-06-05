@@ -6,7 +6,7 @@ import CustomDialog from "../../../../../components/CustomDialogBox";
 function ProfessionalLogout() {
   const handleConfirmLogout = () => {
     logoutUser();
-    toast.success("Logout Successfully", { position: "top-center" });
+    toast.success("Logout Successfully", { position: "top-right" });
   };
 
   return (

@@ -20,13 +20,13 @@ export default function MainResendOTP() {
 
     try {
       const response = await apiPost("/api/resend-otp", values);
-      toast(response.message, { position: "top-center" });
+      toast.success(response.message, { position: "top-right" });
       navigate("/VerifyEmail", {
         state: { userEmail: values.email },
       });
     } catch (error) {
       //console.error("Error resending OTP:", error);
-      toast(error, { position: "top-center" }); // Error message
+      toast.error(error, { position: "top-right" }); // Error message
     } finally {
       setLoading(false);
     }

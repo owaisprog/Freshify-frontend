@@ -12,7 +12,7 @@ const CheckoutPage = () => {
   const [isCreatingBookingOnline, setIsCreatingBookingOnline] = useState(false);
   const navigate = useNavigate();
   const { mutate: createPayment, isPending } = usePostMutation("payment");
-  const data = JSON.parse(localStorage.getItem("data"));
+  const customerData = JSON.parse(localStorage.getItem("data"));
   const token = localStorage.getItem("token") || {};
   const location = useLocation();
   const bookingData = location.state;
@@ -42,7 +42,7 @@ const CheckoutPage = () => {
       {
         onSuccess: (data) => {
           toast.success("Booking Created Successfully", {
-            position: "top-center",
+            position: "top-right",
           });
 
           // Extract merchantId from the response
@@ -64,7 +64,7 @@ const CheckoutPage = () => {
               },
               onError: () =>
                 toast.error("Error While Creating Payment", {
-                  position: "top-center",
+                  position: "top-right",
                 }),
             }
           );
@@ -73,7 +73,7 @@ const CheckoutPage = () => {
           setIsCreatingBookingOnline(false);
 
           toast.error("Error Booking", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }
@@ -89,11 +89,12 @@ const CheckoutPage = () => {
       },
       {
         onSuccess: (data) => {
+          console.log(data, "customer datad");
           toast.success("Booking Created Successfully", {
-            position: "top-center",
+            position: "top-right",
           });
           setIsCreatingBooking(false);
-          if (data?.role === "customer" && token) {
+          if (customerData?.role === "customer" && token) {
             navigate("/CustomerDashboard");
           } else {
             navigate("/Login?role=customer");
@@ -101,7 +102,7 @@ const CheckoutPage = () => {
         },
         onError: () => {
           toast.error("Error Booking", {
-            position: "top-center",
+            position: "top-right",
           });
           setIsCreatingBooking(false);
         },
@@ -121,15 +122,15 @@ const CheckoutPage = () => {
       <div className="max-w-4xl w-full rounded-xl mx-auto p-6 bg-[#FFFFFF]">
         <div className="mb-4">
           <label className="block text-lg font-medium">Booking Name:</label>
-          <p className="text-sm">{name || data?.name}</p>
+          <p className="text-sm">{name || customerData?.name}</p>
         </div>
         <div className="mb-4">
           <label className="block text-lg font-medium">Email:</label>
-          <p className="text-sm">{email || data?.email}</p>
+          <p className="text-sm">{email || customerData?.email}</p>
         </div>
         <div className="mb-4">
           <label className="block text-lg font-medium">Phone:</label>
-          <p className="text-sm">{phone || data?.phone}</p>
+          <p className="text-sm">{phone || customerData?.phone}</p>
         </div>
         <div className="mb-4">
           <label className="block text-lg font-medium">Booking Date:</label>

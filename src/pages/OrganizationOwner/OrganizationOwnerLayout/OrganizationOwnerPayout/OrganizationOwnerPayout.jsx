@@ -62,7 +62,7 @@ export default function OrganizationOwnerPayout() {
     } catch (error) {
       console.error("Payout error:", error);
       toast.error(error?.message || "Error while initiating payout", {
-        position: "top-center",
+        position: "top-right",
       });
     }
   }
@@ -104,7 +104,7 @@ export default function OrganizationOwnerPayout() {
         },
         onError: () => {
           toast.error("Error While Connecting", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }
@@ -125,7 +125,7 @@ export default function OrganizationOwnerPayout() {
       window.location.href = data?.data?.settingsUrl;
     } catch {
       toast.error("Error Updating Stripe", {
-        position: "top-center",
+        position: "top-right",
       });
     }
   }

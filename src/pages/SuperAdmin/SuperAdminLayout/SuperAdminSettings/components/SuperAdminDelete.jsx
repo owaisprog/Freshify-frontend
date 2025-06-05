@@ -14,12 +14,12 @@ function SuperAdminDelete() {
       { endpoint: `/api/delete-organizationbyowner/${ownerId}` },
       {
         onSuccess: () => {
-          toast.success("Deleted successfully!", { position: "top-center" });
+          toast.success("Deleted successfully!", { position: "top-right" });
           navigate("/SuperAdminOrganization");
         },
         onError: () => {
           toast.error("Failed to delete SuperAdmin.", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }

@@ -31,11 +31,11 @@ export function SwitchCom() {
       {
         onSuccess: () =>
           toast.success("Notifications Setting Successfully", {
-            position: "top-center",
+            position: "top-right",
           }),
         onError: () =>
           toast.error("Error Updated Setting", {
-            position: "top-center",
+            position: "top-right",
           }),
       }
     );

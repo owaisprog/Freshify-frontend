@@ -17,11 +17,11 @@ export default function ProfessionalDashboard() {
   //     {
   //       onSuccess: () =>
   //         toast.success("Location Created Successfully", {
-  //           position: "top-center",
+  //           position: "top-right",
   //         }),
   //       onError: () =>
   //         toast.error("Error While Creating Location", {
-  //           position: "top-center",
+  //           position: "top-right",
   //         }),
   //     }
   //   );

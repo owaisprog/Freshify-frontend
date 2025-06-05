@@ -16,12 +16,12 @@ function AdminDelete() {
           localStorage.removeItem("token");
           localStorage.removeItem("data");
           toast.success("Admin deleted successfully!", {
-            position: "top-center",
+            position: "top-right",
           });
           navigate("/");
         },
         onError: () => {
-          toast.error("Failed to delete Admin.", { position: "top-center" });
+          toast.error("Failed to delete Admin.", { position: "top-right" });
         },
       }
     );

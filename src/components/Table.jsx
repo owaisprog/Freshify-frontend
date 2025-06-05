@@ -53,7 +53,7 @@ const TableCom = ({ columns, data, isLoading, error, handleFunction }) => {
                     className="text-center   py-4 text-gray-500"
                   >
                     {isLoading ? (
-                      <Loader className="mx-auto" color="blue" type="bars" />
+                      <Loader className="mx-auto" color="dark" type="bars" />
                     ) : error ? (
                       error
                     ) : (

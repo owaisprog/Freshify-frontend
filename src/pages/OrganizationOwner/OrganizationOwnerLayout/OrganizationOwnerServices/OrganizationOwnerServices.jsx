@@ -94,7 +94,7 @@ function OrganizationOwnerServices() {
         {
           onSuccess: () => {
             toast.success("Service Deleted Successfully", {
-              position: "top-center",
+              position: "top-right",
             });
             const previousServices =
               queryClient.getQueryData(["services"]) || [];
@@ -105,7 +105,7 @@ function OrganizationOwnerServices() {
           },
           onError: () => {
             setIsDeleting(null);
-            toast("Error deleting service", { position: "top-center" });
+            toast.error("Error deleting service", { position: "top-right" });
           },
         }
       );
@@ -161,10 +161,10 @@ function OrganizationOwnerServices() {
           {
             onSuccess: () =>
               toast.success("Service Updated Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
-              toast.error("Error Updating Service", { position: "top-center" }),
+              toast.error("Error Updating Service", { position: "top-right" }),
           }
         );
       } else {
@@ -176,11 +176,11 @@ function OrganizationOwnerServices() {
           {
             onSuccess: () =>
               toast.success("Service Created Successfully", {
-                position: "top-center",
+                position: "top-right",
               }),
             onError: () =>
               toast.error("Error Creating Service", {
-                position: "top-center",
+                position: "top-right",
               }),
           }
         );
@@ -191,7 +191,9 @@ function OrganizationOwnerServices() {
         setOpened(false);
       }, 2000);
     } catch {
-      toast("Error Creating/Updating service", { position: "top-center" });
+      toast.error("Error Creating/Updating service", {
+        position: "top-right",
+      });
       //console.error("Error Creating/Updating service", error);
       setLoading(false);
     }
@@ -366,7 +368,7 @@ function OrganizationOwnerServices() {
         title={toggleTitle}
       >
         {isLocationsLoading ? (
-          <Loader className="mx-auto" color="blue" type="bars" />
+          <Loader className="mx-auto" color="dark" type="bars" />
         ) : !selectedService && locationNames.length === 0 ? (
           <Text className="!text-[16px] !font-[400]">
             Please create at least one location.

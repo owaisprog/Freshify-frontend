@@ -38,7 +38,7 @@ export default function OrganizationOwnerUserNewPassword() {
         }
       );
 
-      toast(resetRequest.message, { position: "top-center" });
+      toast.success(resetRequest.message, { position: "top-right" });
 
       // Show success message & redirect to login
       setMessage("Password reset successful! Redirecting to login...");
@@ -47,7 +47,7 @@ export default function OrganizationOwnerUserNewPassword() {
       }, 2000);
     } catch (error) {
       //console.error("Error in reset password request:", error);
-      toast(error, { position: "top-center" });
+      toast.error(error, { position: "top-right" });
     } finally {
       setLoading(false);
     }

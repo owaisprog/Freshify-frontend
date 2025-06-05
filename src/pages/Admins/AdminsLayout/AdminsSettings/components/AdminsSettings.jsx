@@ -53,13 +53,13 @@ export default function AdminsSettings() {
         onSuccess: () => {
           setBookingLoading(false);
           setRestrictionLoading(false);
-          toast.success("Settings updated", { position: "top-center" });
+          toast.success("Settings updated", { position: "top-right" });
         },
 
         onError: () => {
           setBookingLoading(false);
           setRestrictionLoading(false);
-          toast.error("Update failed", { position: "top-center" });
+          toast.error("Update failed", { position: "top-right" });
         },
       }
     );
@@ -90,7 +90,7 @@ export default function AdminsSettings() {
   if (isLoading) {
     return (
       <section className="flex flex-col gap-2">
-        <Loader />
+        <Loader color="dark" type="bars" />
       </section>
     );
   }
@@ -108,14 +108,14 @@ export default function AdminsSettings() {
         onSuccess: () => {
           setLoading(false);
           toast.success("Subscription cancelled Successfully", {
-            position: "top-center",
+            position: "top-right",
           });
           logoutUser();
         },
         onError: () => {
           setLoading(false);
           toast.error("Error While cancelling Subscription", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }
@@ -133,11 +133,11 @@ export default function AdminsSettings() {
       }, data?.data?.invoices[0]);
       window.location.href = latestObject.invoicePdfUrl;
       toast.success("Generated Successfully", {
-        position: "top-center",
+        position: "top-right",
       });
     } catch {
       toast.error("Error While Generating Invioce", {
-        position: "top-center",
+        position: "top-right",
       });
     }
   }
@@ -199,12 +199,12 @@ export default function AdminsSettings() {
           Copy Booking Widget Code
         </span>
         <CopyButton
-          value={`<iframe
-            src="http://localhost:5174/freshifyWidget/${organizationOwnerId?._id}"
-            title="iframe-owner"
-            width="100%"
-            height="100%"
-          />
+          value={`<div
+    style=" overflow: hidden; min-height: 450px; width: 100%; position: relative; padding: 10px 10px; display: flex; justify-content:
+  center; align-items: center;">
+  <iframe src="https://freshify-one.vercel.app/freshifyWidget/${organizationOwnerId?._id}" title="iframe-owner" width="100%"
+    height="100%" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+  </div>
 `}
         >
           {({ copied, copy }) => (

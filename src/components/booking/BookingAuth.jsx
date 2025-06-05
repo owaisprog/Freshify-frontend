@@ -46,15 +46,15 @@ export default function BookingAuth() {
             localStorage.removeItem("data");
             localStorage.removeItem("token");
             updateBookingData({ userDetails: values, proceedToPay: true });
-            toast.success("Proceed to Checkout", { position: "top-center" });
+            toast.success("Proceed to Checkout", { position: "top-right" });
           } else {
-            toast.success("Please Login First", { position: "top-center" });
+            toast.success("Please Login First", { position: "top-right" });
             navigate("/Login?role=customer");
           }
         },
         onError: () =>
           toast.error("Error While Creating Payment", {
-            position: "top-center",
+            position: "top-right",
           }),
       }
     );

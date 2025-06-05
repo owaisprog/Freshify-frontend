@@ -172,14 +172,14 @@ export default function AppointmentDetails({
       {
         onSuccess: () => {
           toast.success("Booking rescheduled successfully", {
-            position: "top-center",
+            position: "top-right",
           });
           window.location.reload();
           setIsPopupOpen(false);
         },
         onError: () => {
           toast.error("Failed to reschedule booking", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }
@@ -194,12 +194,12 @@ export default function AppointmentDetails({
       {
         onSuccess: () => {
           toast.success("Booking cancelled successfully", {
-            position: "top-center",
+            position: "top-right",
           });
           window.location.reload();
         },
         onError: () => {
-          toast.error("Failed to cancel booking", { position: "top-center" });
+          toast.error("Failed to cancel booking", { position: "top-right" });
         },
       }
     );

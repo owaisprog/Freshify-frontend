@@ -18,13 +18,13 @@ function CustomerDelete() {
           localStorage.removeItem("data");
           queryClient.invalidateQueries(["Customer"]);
           toast.success("Customer deleted successfully!", {
-            position: "top-center",
+            position: "top-right",
           });
           navigate("/");
         },
         onError: () => {
           toast.error("Failed to delete Customer.", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }

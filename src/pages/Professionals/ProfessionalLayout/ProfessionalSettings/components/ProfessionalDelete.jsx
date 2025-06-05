@@ -20,13 +20,13 @@ function ProfessionalDelete() {
           localStorage.removeItem("data");
           queryClient.invalidateQueries(["Professional"]);
           toast.success("Professional deleted successfully!", {
-            position: "top-center",
+            position: "top-right",
           });
           navigate("/");
         },
         onError: () => {
           toast.error("Failed to delete Professional.", {
-            position: "top-center",
+            position: "top-right",
           });
         },
       }
