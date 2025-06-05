@@ -1,9 +1,10 @@
 import { useSearchParams } from "react-router-dom";
 import freshifyImage from "../assets/freshifyImage.png";
-import { useQueryHook } from "../services/reactQuery";
+import { usePostMutation, useQueryHook } from "../services/reactQuery";
 import { BackgroundImage, Container, Loader, Overlay } from "@mantine/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SuccessPage({
   id,
@@ -17,13 +18,24 @@ function SuccessPage({
   const sessionId = searchParams.get(id);
   const navigate = useNavigate();
 
+  const data = localStorage.getItem("data");
+  const token = localStorage.getItem("token");
+  const { id: userId, role } = data ? JSON.parse(data) : {};
+
+  const { mutate: updateSuccess, isSuccess: isSuccessUpdated } =
+    usePostMutation(key);
+
   const { isSuccess } = useQueryHook({
     queryKey: key,
     endpoint: `${endpoint}=${sessionId}`,
     staleTime: 0 * 60 * 1000, // Cache for 15 minutes
+    enabled: () => {
+      return navigateURL === "/CustomerDashboard" ? false : true;
+    },
   });
 
   useEffect(() => {
+    if (navigateURL === "/CustomerDashboard") return;
     if (navigateURL === "/OrganizationOwnerDashboard") {
       localStorage.setItem("subscriptionStatus", JSON.stringify("paid"));
     }
@@ -36,6 +48,39 @@ function SuccessPage({
       return () => clearTimeout(timer); // Clean up the timer
     }
   }, [isSuccess, navigateURL, navigate]);
+
+  useEffect(() => {
+    if (navigateURL !== "/CustomerDashboard") return;
+
+    // Safely retrieve and parse data from localStorage
+
+    updateSuccess(
+      {
+        endpoint: `${endpoint}=${sessionId}`, // Fixed endpoint format
+        payload: {
+          userId: userId,
+        },
+      },
+      {
+        onSuccess: () => {
+          setTimeout(() => {
+            navigate(navigateURL);
+          }, 10000);
+        },
+        onError: () => {
+          toast.error("Something Went Wrong");
+        },
+      }
+    );
+  }, [
+    isSuccess,
+    navigateURL,
+    navigate,
+    userId,
+    sessionId,
+    updateSuccess,
+    endpoint,
+  ]);
 
   return (
     <main className="h-screen w-full">
@@ -91,9 +136,11 @@ function SuccessPage({
               <h2 className="mt-6 text-xl font-semibold text-gray-800">
                 {message}
               </h2>
-              {isSuccess && (
+              {(isSuccess || isSuccessUpdated) && (
                 <p className="text-sm text-gray-500 mt-2">
-                  You will be redirected to login in 10 seconds...
+                  {role === "cutomer" && token
+                    ? "You will be redirected to dashboard in 10 seconds..."
+                    : "You will be redirected to login in 10 seconds..."}
                 </p>
               )}
             </div>
