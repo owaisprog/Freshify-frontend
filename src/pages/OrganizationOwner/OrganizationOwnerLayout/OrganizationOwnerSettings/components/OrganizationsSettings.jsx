@@ -199,7 +199,7 @@ export default function OrganizationsSettings() {
         </span>
         <CopyButton
           value={`<div
-    style=" overflow: hidden; min-height: 450px; width: 100%; position: relative; padding: 10px 10px; display: flex; justify-content:
+    style=" overflow: hidden; min-height: 450px; width: 100%; position: relative;  display: flex; justify-content:
   center; align-items: center;">
   <iframe src="https://freshify-one.vercel.app/freshifyWidget/${userId}" title="iframe-owner" width="100%"
     height="100%" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>

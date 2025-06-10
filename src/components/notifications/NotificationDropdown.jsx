@@ -120,6 +120,7 @@ export default function NotificationDropdown() {
                   <Button
                     onClick={updateAllSeenFun}
                     loading={isLoadingSeenAll}
+                    loaderProps={{ type: "bars" }}
                     className="!text-sm !text-gray-300 !bg-black hover:!text-white hover:!bg-gray-800 !transition-all !duration-300 !flex !items-center"
                   >
                     <Check className="h-3 w-3 mr-1" />

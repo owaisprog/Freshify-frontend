@@ -23,9 +23,11 @@ export default function MainLogin() {
           toast.message("Please Subscribe your Plan", {
             position: "top-right",
           });
+        } else {
+          toast.success(userData?.message, { position: "top-right" });
         }
       } else {
-        toast.success(userData.message, { position: "top-right" });
+        toast.success(userData?.message, { position: "top-right" });
       }
       if (
         userData.user.role === "organization_owner" &&

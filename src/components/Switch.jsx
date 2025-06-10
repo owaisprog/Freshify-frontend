@@ -40,7 +40,6 @@ export function SwitchCom() {
       }
     );
   }
-  console.log(notification);
 
   if (isFetechingNotification)
     return (
@@ -51,7 +50,7 @@ export function SwitchCom() {
   // value={notify?.emailNotificationsEnabled}
   return (
     <Switch
-      className="!cursor-pointer"
+      sx={{ cursor: "pointer" }}
       onChange={() => handleUpdateNotification(notification)}
       defaultChecked
       checked={notification}

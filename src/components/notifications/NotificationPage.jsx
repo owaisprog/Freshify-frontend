@@ -132,6 +132,7 @@ export default function NotificationsPage() {
               <Button
                 onClick={updateAllSeenFun}
                 loading={isLoadingSeenAll}
+                loaderProps={{ type: "bars" }}
                 radius={"md"}
                 className="!text-sm !text-gray-300 !bg-black hover:!text-white hover:!bg-gray-800 !transition-all !duration-300 !flex !items-center"
               >
