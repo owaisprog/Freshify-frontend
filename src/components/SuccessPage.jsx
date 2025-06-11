@@ -63,9 +63,7 @@ function SuccessPage({
       },
       {
         onSuccess: () => {
-          setTimeout(() => {
-            navigate(navigateURL);
-          }, 10000);
+          navigate(navigateURL);
         },
         onError: () => {
           toast.error("Something Went Wrong", { position: "top-right" });
