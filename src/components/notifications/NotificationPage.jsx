@@ -31,7 +31,6 @@ export default function NotificationsPage() {
   const [markAsReadBtnLoading, setMarkAsReadBtnLoading] = useState(null);
 
   // Mutation for marking a notification as read
-  // `/api/notifications/${notificationId}/read`
   function updateSeenFun(notificationId) {
     setMarkAsReadBtnLoading(notificationId);
     updateSeen(
@@ -45,7 +44,7 @@ export default function NotificationsPage() {
         },
         onError: (data) => {
           setMarkAsReadBtnLoading(null);
-          console.log(data, "Faild to update read status");
+          console.log(data, "Failed to update read status");
         },
       }
     );
@@ -54,7 +53,7 @@ export default function NotificationsPage() {
   // Mutation for marking all notifications as read
   const { mutate: updateAllSeen, isPending: isLoadingSeenAll } =
     useUpdateMutation(["Notifications"]);
-  // `/api/notifications/${notificationId}/read`
+
   function updateAllSeenFun() {
     updateAllSeen(
       {
@@ -65,11 +64,12 @@ export default function NotificationsPage() {
           console.log(data, "Read Status updated successfully");
         },
         onError: (data) => {
-          console.log(data, "Faild to update read status");
+          console.log(data, "Failed to update read status");
         },
       }
     );
   }
+
   // Get icon based on notification type
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -98,11 +98,46 @@ export default function NotificationsPage() {
     }
   };
 
-  // Handle Load More
-  const handleLoadMore = () => {
-    if (page < pagination.pages) {
-      setPage((prev) => prev + 1);
+  // Handle pagination change
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.pages) {
+      setPage(newPage);
     }
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const totalPages = pagination.pages;
+    const currentPage = pagination.page;
+
+    // Always show first page
+    pages.push(1);
+
+    // Show ellipsis if needed before current page
+    if (currentPage > 3) {
+      pages.push("...");
+    }
+
+    // Show current page and adjacent pages
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    // Show ellipsis if needed after current page
+    if (currentPage < totalPages - 2) {
+      pages.push("...");
+    }
+
+    // Always show last page if different from first
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
   };
 
   return (
@@ -292,24 +327,48 @@ export default function NotificationsPage() {
           ) : null}
         </div>
 
-        {/* Load More Button */}
-        {pagination.page < pagination.pages &&
+        {/* Pagination */}
+        {pagination.pages > 1 &&
           !isLoadingNotification &&
           !notificationError && (
-            <div className="mt-8 text-center">
-              <button
-                onClick={handleLoadMore}
-                disabled={isLoadingNotification}
-                className={`inline-flex items-center px-8 py-3 rounded-xl text-sm font-medium cursor-pointer transition-all duration-300 ${
-                  isLoadingNotification
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-black text-gray-100 hover:bg-gray-300 hover:text-black hover:border-gray-300"
-                }`}
+            <div className="mt-8 flex items-center justify-center space-x-2">
+              <Button
+                onClick={() => handlePageChange(pagination.page - 1)}
+                disabled={pagination.page === 1 || isLoadingNotification}
+                radius="md"
+                className="!text-sm !text-gray-300 !bg-black hover:!text-white hover:!bg-gray-800 !transition-all !duration-300"
               >
-                <span>
-                  {isLoadingNotification ? "Loading..." : "Load more"}
-                </span>
-              </button>
+                Previous
+              </Button>
+
+              {getPageNumbers().map((pageNum, index) => (
+                <Button
+                  key={index}
+                  onClick={() =>
+                    typeof pageNum === "number" && handlePageChange(pageNum)
+                  }
+                  disabled={pageNum === "..." || isLoadingNotification}
+                  radius="md"
+                  className={`!text-sm !transition-all !duration-300 ${
+                    pagination.page === pageNum
+                      ? "!bg-black !text-white"
+                      : "!bg-gray-100 !text-gray-700 hover:!bg-gray-200"
+                  }`}
+                >
+                  {pageNum}
+                </Button>
+              ))}
+
+              <Button
+                onClick={() => handlePageChange(pagination.page + 1)}
+                disabled={
+                  pagination.page >= pagination.pages || isLoadingNotification
+                }
+                radius="md"
+                className="!text-sm !text-gray-300 !bg-black hover:!text-white hover:!bg-gray-800 !transition-all !duration-300"
+              >
+                Next
+              </Button>
             </div>
           )}
       </main>

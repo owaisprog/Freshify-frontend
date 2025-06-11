@@ -20,6 +20,8 @@ export default function CustomerDashboard() {
 
   //consoe.log("Booking Time is ", bookingTime);
 
+  console.log("Content Booking Time", bookingTime);
+
   const data = localStorage.getItem("data")
     ? JSON.parse(localStorage.getItem("data"))
     : {}; // Fallback to an empty object if "data" is not in localStorage or is invalid
