@@ -139,8 +139,8 @@ function SuccessPage({
               {(isSuccess || isSuccessUpdated) && (
                 <p className="text-sm text-gray-500 mt-2">
                   {role === "customer" && token
-                    ? "You will be redirected to dashboard in 10 seconds..."
-                    : "You will be redirected to login in 10 seconds..."}
+                    ? "You will be redirected to the dashboard soon… "
+                    : "You will be redirected to login soon…"}
                 </p>
               )}
             </div>

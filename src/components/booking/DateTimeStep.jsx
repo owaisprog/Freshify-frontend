@@ -11,10 +11,12 @@ import {
 } from "date-fns";
 import { useQueryHook } from "../../services/reactQuery";
 import generateTimeSlots from "./TimeSlotsGenerator";
-import { Button, Loader } from "@mantine/core";
+import { Button, Loader, MantineProvider } from "@mantine/core";
 import { handleConnectGoogle } from "../../Hooks/GoogleCalendar";
 import { FaArrowRight } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { FaCircleInfo } from "react-icons/fa6";
 
 const formatMidnightHours = (time24) => {
   if (!time24) return "";
@@ -33,6 +35,8 @@ export default function DateTimeStep() {
   const [isFetching, setIsFetching] = useState(false);
   const { bookingData, updateBookingData } = useBookingContext();
   const initialized = useRef(false);
+
+  const toastId = "signup-needed"; // ❶ single fixed id
 
   const { data: bookingTime = {} } = useQueryHook({
     queryKey: ["bookingTime"],
@@ -239,14 +243,6 @@ export default function DateTimeStep() {
     }
   }
 
-  // Debug log to verify the fix
-  console.log(
-    "Smart calculation - Total weeks:",
-    totalWeeks,
-    "vs Old calculation:",
-    bookingTime?.bookingWindowMonths * 5
-  );
-
   return (
     <div className="px-3 lg:px-0 h-full flex flex-col justify-center">
       <h1 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left">
@@ -264,14 +260,52 @@ export default function DateTimeStep() {
           totalWeeks={totalWeeks} // FIXED: Now uses smart calculation
           firstMonthStart={new Date()}
         />
-        <Button
-          bg={"black"}
-          radius={"md"}
-          className="flex"
-          onClick={handleConnectGoogle}
-        >
-          Connect with Google
-        </Button>
+        <div className="flex gap-2 sm:flex-row flex-col items-start">
+          <Button
+            bg={"black"}
+            radius={"md"}
+            className="!w-[10.5rem]"
+            onClick={() => {
+              console.log(token, data?.role, data?.role === "customer");
+              if (token && data?.role === "customer") {
+                handleConnectGoogle();
+              } else {
+                toast.info(
+                  <MantineProvider>
+                    {" "}
+                    {/* local provider */}
+                    <div className="flex flex-col gap-2">
+                      <span>Please sign up for this feature</span>
+                      <Button
+                        radius="md"
+                        color="dark"
+                        onClick={() => {
+                          navigate("/Login?role=customer");
+                          toast.dismiss(); // close after redirect
+                        }}
+                      >
+                        Signup
+                      </Button>
+                    </div>
+                  </MantineProvider>,
+                  {
+                    toastId,
+                    autoClose: false,
+                    hideProgressBar: true,
+                    position: "top-right",
+                    icon: (
+                      <span>
+                        <FaCircleInfo color="black" size={24} />
+                      </span>
+                    ),
+                  }
+                );
+              }
+            }}
+          >
+            Connect with Google
+          </Button>
+        </div>
       </div>
       <h2 className="text-[28px] lg:text-[32px] font-[500] text-center sm:text-left mb-4">
         Available Time Slots
