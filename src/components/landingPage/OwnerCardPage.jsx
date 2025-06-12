@@ -33,6 +33,17 @@ export default function OwnerCards() {
     );
   }
 
+  // Function to find the minimum price service for an owner
+  const getMinimumPrice = (services) => {
+    if (!services || services.length === 0) return null;
+
+    return services.reduce((min, service) => {
+      const currentPrice = parseFloat(service.price);
+      const minPrice = parseFloat(min.price);
+      return currentPrice < minPrice ? service : min;
+    }, services[0]);
+  };
+
   return (
     <section id="barbershops" className="py-16 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +58,11 @@ export default function OwnerCards() {
         </div> */}
 
         <div className="grid lg:grid-cols-3 gap-8 mb-8">
-          {owners.map(({ _id, name, image, subscriptionStatus }) => {
+          {owners.map(({ _id, name, image, subscriptionStatus, services }) => {
+            const minPriceService = getMinimumPrice(services);
+            const startingPrice = minPriceService
+              ? `$${minPriceService.price}`
+              : "$0";
             return subscriptionStatus === "paid" ? (
               <div
                 key={_id}
@@ -59,16 +74,16 @@ export default function OwnerCards() {
                     alt={name}
                     className="w-full h-48 object-cover"
                   />
-                  {/* <div className="absolute top-3 right-3 bg-white px-2 py-1 rounded text-sm font-medium">
-                      THis is the Badge
-                    </div> */}
+                  <div className="absolute top-3 right-3 bg-white px-2 py-1 rounded text-sm font-medium">
+                    Starting from {startingPrice}
+                  </div>
                 </div>
                 <div className="p-6 space-y-4">
                   <div className="space-y-2">
-                    <h3 className="text-lg font-semibold text-black">{name}</h3>
-                    <div className="flex items-center space-x-2 text-gray-600">
-                      <span className="text-sm">Organization owner</span>
-                    </div>
+                    <h3 className="text-lg font-semibold text-black">
+                      {name}{" "}
+                      <span className="text-xs font-normal">(Owner)</span>
+                    </h3>
 
                     {/* Rating section - you can add if available in your data */}
                     {/* <div className="flex items-center justify-between">
@@ -94,18 +109,20 @@ export default function OwnerCards() {
                         </span>
                       </div> */}
                   </div>
-
-                  {/* Services section - you can add if available in your data
-                  <div className="space-y-2">
+                  {/* Services section - you can add if available in your data */}
+                  <div className="flex flex-col gap-2">
+                    <span className="text-sm font-bold">Popular Services</span>
                     <div className="flex flex-wrap gap-2">
-                      <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
-                        Haircut
-                      </span>
-                      <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
-                        Shaving
-                      </span>
+                      {services.slice(0, 3).map((service) => (
+                        <span
+                          key={service?._id}
+                          className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded"
+                        >
+                          {service.name}
+                        </span>
+                      ))}
                     </div>
-                  </div> */}
+                  </div>
                   <Button
                     fullWidth
                     color="dark"
