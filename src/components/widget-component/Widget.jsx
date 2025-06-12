@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { Loader } from "@mantine/core";
+import { Button, Loader } from "@mantine/core";
 import { useQueryHook } from "../../services/reactQuery";
 import { toast } from "react-toastify";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -36,14 +36,14 @@ export default function Widget() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen !overflow-hidden">
+    <div className="flex  items-center justify-center h-screen !overflow-hidden">
       <div
         key={_id}
-        className="flex flex-col sm:flex-row bg-white rounded-xl  sm:h-[300px] overflow-hidden shadow-lg max-w-3xl w-full  "
+        className="flex flex-col   rounded-lg   overflow-hidden shadow-lg min-w-sm  "
         role="region"
         aria-label="Profile card"
       >
-        <div className="relative h-[170px] sm:h-full w-full sm:w-1/3 aspect-square ">
+        <div className="relative  h-[200px] w-full  aspect-square ">
           <img
             src={image || "/profile.webp"}
             alt={name || "Profile image"}
@@ -51,40 +51,19 @@ export default function Widget() {
             loading="lazy"
           />
         </div>
-        <div className="flex flex-col  justify-between p-4  w-full sm:w-2/3">
-          <div>
-            <h2 className="text-xl  font-semibold text-gray-800 tracking-tight">
-              {name || "Unknown User"}
-            </h2>
-            <p className=" text-sm  text-gray-500">Organization Owner</p>
+        <div className="p-6 space-y-4">
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-black">{name}</h3>
+            <div className="flex items-center space-x-2 text-gray-600">
+              <span className="text-sm">Organization owner</span>
+            </div>
           </div>
-          <div>
-            <h3 className="text-base  font-semibold text-gray-800">
-              Locations:
-            </h3>
-            {locations && locations.length > 0 ? (
-              <ul className="mt-2 grid grid-cols-2 lg:grid-cols-2 gap-3">
-                {locations.map((location) => (
-                  <li key={location._id} className="flex items-start">
-                    <FaMapMarkerAlt
-                      className="text-gray-800 mr-2 mt-1 flex-shrink-0"
-                      aria-hidden="true"
-                    />
-                    <div>
-                      <p className="text-sm  font-medium text-gray-500">
-                        {location.name || "Unnamed Location"}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-sm sm:text-base text-gray-500 italic">
-                No locations available
-              </p>
-            )}
-          </div>
-          <button
+
+          <Button
+            fullWidth
+            size="xs"
+            radius={"md"}
+            color="dark"
             onClick={() => {
               if (subscriptionStatus === "paid") {
                 window.open(
@@ -99,13 +78,12 @@ export default function Widget() {
                 });
               }
             }}
-            className="  py-2 !text-sm  font-medium text-white border border-black bg-black  rounded-xl hover:bg-[#F5F7FA] hover:text-black cursor-pointer transition-all duration-300 "
             aria-label={
               subscriptionStatus === "paid" ? "Book now" : "Subscribe to book"
             }
           >
             Book Now
-          </button>
+          </Button>
         </div>
       </div>
     </div>
