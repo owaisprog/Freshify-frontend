@@ -105,19 +105,11 @@ export default function Widget() {
   const { _id, image, name, subscriptionStatus } = owners || {};
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "0px",
-        right: "0px",
-        margin: 0,
-        padding: 0,
-        backgroundColor: "transparent",
-      }}
-    >
+    <div className="flex items-center justify-center  h-[3.5rem]">
       <Button
         loading={isLoading}
-        type="bars"
+        loaderProps={{ type: "bars", size: "xs" }}
+        size="md"
         onClick={() => {
           if (subscriptionStatus === "paid") {
             window.open(
@@ -135,10 +127,10 @@ export default function Widget() {
         aria-label={
           subscriptionStatus === "paid" ? "Book now" : "Subscribe to book"
         }
-        className="!flex !items-center !cursor-pointer !h-10 !text-sm !font-medium !rounded-xl  !hover:shadow-lg !transition-all !duration-300 !group"
+        className="!flex !items-center  !cursor-pointer hover:!scale-110 !text-sm !font-medium !rounded-xl  !transition-all !duration-700 !group"
         style={{ backgroundColor: bgColor, color: textColor }}
       >
-        <div className="flex-shrink-0">
+        <div>
           <img
             src={image || "/profile.webp"}
             alt={name || "Organization logo"}
@@ -149,7 +141,7 @@ export default function Widget() {
           style={{ borderColor: textColor }}
           className="border-l h-4 mx-2 group-hover:border-gray-500"
         ></span>
-        <span>{name || "Unknown Organization"}</span>
+        <span>{name || "Loading..."}</span>
       </Button>
     </div>
   );

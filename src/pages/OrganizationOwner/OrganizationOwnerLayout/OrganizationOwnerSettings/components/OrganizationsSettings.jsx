@@ -198,7 +198,10 @@ export default function OrganizationsSettings() {
           Copy Booking Widget Code
         </span>
         <CopyButton
-          value={`<iframe
+          value={` 
+      <p>....To change the colors style use the query string i.e URL?textColor=black&bgColor=white....</p>
+            
+    <iframe
        src="https://freshify-one.vercel.app/freshifyWidget/${userId}" title="iframe-owner"
         scrolling="no"
         style="
@@ -207,6 +210,7 @@ export default function OrganizationsSettings() {
           right: 16px;
           border: none;
           overflow: hidden;
+          height: 3.5rem;
           z-index: 9999;
         "
         frameborder="0"
