@@ -198,12 +198,20 @@ export default function OrganizationsSettings() {
           Copy Booking Widget Code
         </span>
         <CopyButton
-          value={`<div
-    style=" overflow: hidden; min-height: 450px; width: 100%; position: relative;  display: flex; justify-content:
-  center; align-items: center;">
-  <iframe src="https://freshify-one.vercel.app/freshifyWidget/${userId}" title="iframe-owner" width="100%"
-    height="100%" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
-  </div>
+          value={`<iframe
+       src="https://freshify-one.vercel.app/freshifyWidget/${userId}" title="iframe-owner"
+        scrolling="no"
+        style="
+          position: fixed;
+          bottom: 16px;
+          right: 16px;
+          border: none;
+          overflow: hidden;
+          z-index: 9999;
+        "
+        frameborder="0"
+      ></iframe>
+    
 `}
         >
           {({ copied, copy }) => (

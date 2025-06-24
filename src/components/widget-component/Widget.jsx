@@ -1,120 +1,156 @@
-import { useParams } from "react-router-dom";
-import { Button, Loader } from "@mantine/core";
+// import { useParams, useSearchParams } from "react-router-dom";
+// // import { Loader } from "@mantine/core";
+// import { useQueryHook } from "../../services/reactQuery";
+// // import { toast } from "react-toastify";
+
+// export default function Widget() {
+//   const { ownerId } = useParams();
+//   const [searchParams] = useSearchParams();
+//   const bgColor = searchParams.get("bgColor") || "black"; // Default to black if no bgColor
+//   const textColor = searchParams.get("textColor") || "white"; // Default to white if no textColor
+
+//   const {
+//     data: owners = [],
+//     isLoading,
+//     error,
+//   } = useQueryHook({
+//     queryKey: "organization",
+//     endpoint: `/api/get-organizationowner/${ownerId}`,
+//     staleTime: 15 * 60 * 1000,
+//   });
+//   const { _id, image, name, subscriptionStatus } = owners || {};
+
+//   // if (isLoading) {
+//   //   return (
+//   //     <div className="flex items-center justify-center min-h-screen bg-transparent">
+//   //       <Loader type="bars" color="black" />
+//   //     </div>
+//   //   );
+//   // }
+
+//   // if (error) {
+//   //   return (
+//   //     <div className="flex items-center justify-center min-h-screen bg-transparent">
+//   //       <p className="text-center text-red-500 text-base sm:text-lg font-medium">
+//   //         Failed to load Organization Owners. Please try again later.
+//   //       </p>
+//   //     </div>
+//   //   );
+//   // }
+
+//   return (
+//     <button
+//       onClick={() => {
+//         if (subscriptionStatus === "paid") {
+//           window.open(
+//             `https://freshify-one.vercel.app/booking?ownerId=${_id}`
+//             // "_blank",
+//             // "noopener,noreferrer"
+//           );
+//         } else {
+//           // toast.warn("Please subscribe to book", {
+//           //   position: "top-right",
+//           //   duration: 3000,
+//           // });
+//         }
+//       }}
+//       style={{ backgroundColor: bgColor, color: textColor }}
+//       className="fixed bottom-4 right-4 flex items-center !cursor-pointer py-2 px-4 text-sm font-medium rounded-xl border   border-black hover:bg-[#F5F7FA] hover:text-black hover:shadow-lg transition-all duration-300 group"
+//       aria-label={
+//         subscriptionStatus === "paid" ? "Book now" : "Subscribe to book"
+//       }
+//     >
+//       <div className="flex-shrink-0">
+//         <img
+//           src={image || "/profile.webp"}
+//           alt={name || "Organization logo"}
+//           className="w-8 h-8 rounded-full object-cover"
+//           loading="lazy"
+//         />
+//       </div>
+//       <span
+//         style={{ borderColor: textColor }}
+//         className="border-l h-4 mx-2 group-hover:border-gray-500"
+//       ></span>
+//       <span>{name || "Unknown Organization"}</span>
+//     </button>
+//   );
+// }
+
+// // function Widget() {
+// //   return (
+// //     <div>
+// //       <Button>hdaskjdhakjsdh</Button>
+// //     </div>
+// //   );
+// // }
+
+// // export default Widget;
+import { useParams, useSearchParams } from "react-router-dom";
 import { useQueryHook } from "../../services/reactQuery";
+import { Button } from "@mantine/core";
 import { toast } from "react-toastify";
 
 export default function Widget() {
   const { ownerId } = useParams();
-  const {
-    data: owners = [],
-    isLoading,
-    error,
-  } = useQueryHook({
+  const [searchParams] = useSearchParams();
+  const bgColor = searchParams.get("bgColor") || "black"; // Default to black if no bgColor
+  const textColor = searchParams.get("textColor") || "white"; // Default to white if no textColor
+
+  const { data: owners = [], isLoading } = useQueryHook({
     queryKey: "organization",
     endpoint: `/api/get-organizationowner/${ownerId}`,
     staleTime: 15 * 60 * 1000,
   });
-  const { _id, image, name, subscriptionStatus, services } = owners || {};
-
-  // Function to find the minimum price service
-  const getMinimumPrice = (services) => {
-    if (!services || services.length === 0) return null;
-
-    return services?.reduce((min, service) => {
-      const currentPrice = parseFloat(service.price);
-      const minPrice = parseFloat(min.price);
-      return currentPrice < minPrice ? service : min;
-    }, services[0]);
-  };
-
-  const minPriceService = getMinimumPrice(services);
-  const startingPrice = minPriceService ? `$${minPriceService.price}` : "$0";
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <Loader type="bars" color="black" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <p className="text-center text-red-500 text-base sm:text-lg font-medium">
-          Failed to load Organization Owners. Please try again later.
-        </p>
-      </div>
-    );
-  }
+  const { _id, image, name, subscriptionStatus } = owners || {};
 
   return (
-    <div className="flex  items-center justify-center h-screen !overflow-hidden">
-      <div
-        key={_id}
-        className="border border-gray-200 bg-white rounded-lg  shadow-sm hover:shadow-md transition-shadow   overflow-hidden  min-w-sm  "
-        role="region"
-        aria-label="Profile card"
+    <div
+      style={{
+        position: "fixed",
+        bottom: "0px",
+        right: "0px",
+        margin: 0,
+        padding: 0,
+        backgroundColor: "transparent",
+      }}
+    >
+      <Button
+        loading={isLoading}
+        type="bars"
+        onClick={() => {
+          if (subscriptionStatus === "paid") {
+            window.open(
+              `https://freshify-one.vercel.app/booking?ownerId=${_id}`,
+              "_blank",
+              "noopener,noreferrer"
+            );
+          } else {
+            toast.warn("Please subscribe to book", {
+              position: "top-right",
+              duration: 3000,
+            });
+          }
+        }}
+        aria-label={
+          subscriptionStatus === "paid" ? "Book now" : "Subscribe to book"
+        }
+        className="!flex !items-center !cursor-pointer !h-10 !text-sm !font-medium !rounded-xl  !hover:shadow-lg !transition-all !duration-300 !group"
+        style={{ backgroundColor: bgColor, color: textColor }}
       >
-        <div className="relative  h-[200px] w-full  aspect-square ">
+        <div className="flex-shrink-0">
           <img
             src={image || "/profile.webp"}
-            alt={name || "Profile image"}
-            className="w-full h-full  object-cover"
-            loading="lazy"
+            alt={name || "Organization logo"}
+            className="w-8 h-8 rounded-full object-cover"
           />
-          <div className="absolute top-3 right-3 bg-white px-2 py-1 rounded text-sm font-medium">
-            Starting from {startingPrice}
-          </div>
         </div>
-        <div className="p-6 space-y-4">
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold text-black">
-              {name} <span className="text-xs font-normal">(Owner)</span>
-            </h3>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <span className="text-sm font-bold">Popular Services</span>
-            <div className="flex flex-wrap gap-2">
-              {services?.slice(0, 3).map((service) => (
-                <span
-                  key={service?._id}
-                  className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded"
-                >
-                  {service.name}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <Button
-            fullWidth
-            size="xs"
-            radius={"md"}
-            color="dark"
-            onClick={() => {
-              if (subscriptionStatus === "paid") {
-                window.open(
-                  `https://freshify-one.vercel.app/booking?ownerId=${_id}`,
-                  "_blank",
-                  "noopener,noreferrer"
-                );
-              } else {
-                toast.warn("Please subscribe to book", {
-                  position: "top-right",
-                  duration: 3000,
-                });
-              }
-            }}
-            aria-label={
-              subscriptionStatus === "paid" ? "Book now" : "Subscribe to book"
-            }
-          >
-            Book Now
-          </Button>
-        </div>
-      </div>
+        <span
+          style={{ borderColor: textColor }}
+          className="border-l h-4 mx-2 group-hover:border-gray-500"
+        ></span>
+        <span>{name || "Unknown Organization"}</span>
+      </Button>
     </div>
   );
 }

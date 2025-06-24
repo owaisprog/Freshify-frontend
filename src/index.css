@@ -7,7 +7,9 @@
 
 html,
 body {
-  background-color: #f5f7fa;
+  background-color: transparent;
+  /* width: 0px !important; */
+  /* max-width: 0px; */
 }
 
 .specialBorder {
@@ -27,6 +29,6 @@ body {
 }
 
 .Toastify__toast {
-  min-width: 300px; /* Set your desired minimum width */
+  max-width: 300px; /* Set your desired minimum width */
 }
 /*  */
