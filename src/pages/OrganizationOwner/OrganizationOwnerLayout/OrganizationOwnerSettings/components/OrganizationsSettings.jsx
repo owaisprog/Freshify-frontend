@@ -199,14 +199,12 @@ export default function OrganizationsSettings() {
         </span>
         <CopyButton
           value={` 
-      <p>....To change the colors style use the query string i.e URL?textColor=black&bgColor=white....</p>
-            
     <iframe
        src="https://freshify-one.vercel.app/freshifyWidget/${userId}" title="iframe-owner"
         scrolling="no"
         style="
-          position: fixed;
-          bottom: 16px;
+          position: absolute;
+          top: 16px;
           right: 16px;
           border: none;
           overflow: hidden;
