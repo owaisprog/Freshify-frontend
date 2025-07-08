@@ -1,9 +1,10 @@
 import { MdArrowOutward } from "react-icons/md";
 import { Button, Menu } from "@mantine/core";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
 export function ButtonMenu() {
+  const navigate = useNavigate();
   return (
     <Menu
       transitionProps={{ transition: "pop-top-right" }}
@@ -22,11 +23,11 @@ export function ButtonMenu() {
           radius="md"
           size="md"
         >
-          Login
+          Partners
         </Button>
       </Menu.Target>
       <Menu.Dropdown>
-        <Link to="/Login?role=superadmin">
+        {/* <Link to="/Login?role=superadmin">
           <Menu.Item
             rightSection={
               <MdArrowOutward size={16} color="black" stroke={1.5} />
@@ -34,18 +35,16 @@ export function ButtonMenu() {
           >
             SuperAdmin
           </Menu.Item>
-        </Link>
+        </Link> */}
 
-        <Link to="/Login?role=organization_owner">
-          <Menu.Item
-            rightSection={
-              <MdArrowOutward size={16} color="black" stroke={1.5} />
-            }
-          >
-            Organization Owner
-          </Menu.Item>
-        </Link>
-        <Link to="/organizationOwnerUserLogin">
+        <Menu.Item
+          onClick={() => navigate("/organizationLanding", scrollTo(0, 0))}
+          rightSection={<MdArrowOutward size={16} color="black" stroke={1.5} />}
+        >
+          Organization Owner
+        </Menu.Item>
+
+        {/* <Link to="/organizationOwnerUserLogin">
           <Menu.Item
             rightSection={
               <MdArrowOutward size={16} color="black" stroke={1.5} />
@@ -53,8 +52,8 @@ export function ButtonMenu() {
           >
             Organization Admin
           </Menu.Item>
-        </Link>
-        <Link to="/organizationOwnerUserLogin">
+        </Link> */}
+        {/* <Link to="/organizationOwnerUserLogin">
           <Menu.Item
             rightSection={
               <MdArrowOutward size={16} color="black" stroke={1.5} />
@@ -62,7 +61,7 @@ export function ButtonMenu() {
           >
             Professional
           </Menu.Item>
-        </Link>
+        </Link> */}
 
         <Link to="/Login?role=customer">
           <Menu.Item

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FaCalendarAlt, FaUsers, FaChartLine, FaCut } from "react-icons/fa";
 import { FaScissors } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
   const [displayedText, setDisplayedText] = useState("");
@@ -10,6 +11,8 @@ const HeroSection = () => {
   const fullText = "FRESHIFY";
   const typingSpeed = 60; // ms per character
   const cursorRef = useRef(null);
+
+  const navigate = useNavigate();
 
   // Typing animation effect
   useEffect(() => {
@@ -49,7 +52,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative pt-16 px-6 py-20 lg:px-8 min-h-screen flex items-center overflow-hidden bg-white">
+    <section className="relative pt-16 px-6 py-20 lg:px-8 min-h-[85vh] flex items-center overflow-hidden bg-white">
       {/* Abstract background elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Rotated partial background with fading corners */}
@@ -69,10 +72,10 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
+      <div className="container mx-auto w-full relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
-            <div className="absolute -top-8 -left-8 w-16 h-16 rounded-full bg-black flex items-center justify-center">
+            <div className="absolute -top-8 -left-8 w-16 h-16 rounded-full bg-black hidden lg:flex items-center justify-center">
               <FaScissors className="text-white text-xl" />
             </div>
 
@@ -120,13 +123,16 @@ const HeroSection = () => {
               </p>
 
               <div className="flex gap-5 mb-12">
-                <button className="bg-black text-white hover:bg-gray-900 px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105 shadow-lg">
+                <button
+                  onClick={() => navigate("/Login?role=organization_owner")}
+                  className="bg-black text-white hover:bg-gray-900 px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                >
                   Get Started
                 </button>
               </div>
 
               {/* Features grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                   <div className="bg-black p-3 rounded-lg mr-3">
                     <FaCalendarAlt className="text-white text-xl" />
@@ -136,7 +142,7 @@ const HeroSection = () => {
                   </span>
                 </div>
                 <div className="flex items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                  <div className="bg-gray-800 p-3 rounded-lg mr-3">
+                  <div className="bg-black p-3 rounded-lg mr-3">
                     <FaUsers className="text-white text-xl" />
                   </div>
                   <span className="font-medium text-gray-800">
@@ -144,7 +150,7 @@ const HeroSection = () => {
                   </span>
                 </div>
                 <div className="flex items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
-                  <div className="bg-gray-700 p-3 rounded-lg mr-3">
+                  <div className="bg-black p-3 rounded-lg mr-3">
                     <FaChartLine className="text-white text-xl" />
                   </div>
                   <span className="font-medium text-gray-800">Analytics</span>
@@ -155,7 +161,7 @@ const HeroSection = () => {
 
           {/* Dashboard image */}
           <div
-            className={`relative transition-all duration-1000 ${
+            className={`relative transition-all  duration-1000 ${
               showContent
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-x-20"
@@ -163,8 +169,8 @@ const HeroSection = () => {
           >
             {/* Floating elements container */}
             <div className="absolute -inset-6">
-              <div className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-gray-300 rounded-tl-3xl"></div>
-              <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-gray-300 rounded-br-3xl"></div>
+              <div className="absolute top-0 left-2 w-32 h-32 border-t-2 border-l-2 border-gray-300 rounded-tl-3xl"></div>
+              <div className="absolute bottom-0 right-2 w-32 h-32 border-b-2 border-r-2 border-gray-300 rounded-br-3xl"></div>
               <div className="absolute top-1/4 right-1/4 w-16 h-16 border-2 border-gray-300 rounded-full"></div>
             </div>
 

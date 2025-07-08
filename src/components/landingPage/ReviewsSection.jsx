@@ -2,7 +2,10 @@ import { Star } from "lucide-react";
 
 export default function ReviewsSection() {
   return (
-    <section className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-16 relative overflow-hidden floating-shapes">
+    <section
+      id="reviews"
+      className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-24 relative overflow-hidden floating-shapes"
+    >
       <div className="container mx-auto relative z-10">
         <h2
           className="text-2xl sm:text-3xl font-bold text-black mb-6 sm:mb-8"
@@ -21,19 +24,19 @@ export default function ReviewsSection() {
             },
             {
               title: "Easy to use & explore",
-              text: "Fresha's reminders make life so much easier. I also found a few good barbershops that I didn't know existed.",
+              text: "Freshify's reminders make life so much easier. I also found a few good barbershops that I didn't know existed.",
               author: "Dan",
               location: "New York, USA",
             },
             {
               title: "Great for finding barbers",
-              text: "I've been using Fresha for two years and it's by far the best booking platform I've used. Highly recommend it!",
+              text: "I've been using Freshify for two years and it's by far the best booking platform I've used. Highly recommend it!",
               author: "Dale",
               location: "Sydney, Australia",
             },
             {
               title: "My go-to for self-care",
-              text: "Fresha is my go-to app for massages and facials. I can easily find and book places near me — I love it!",
+              text: "Freshify is my go-to app for massages and facials. I can easily find and book places near me — I love it!",
               author: "Cameron",
               location: "Edinburgh, UK",
             },

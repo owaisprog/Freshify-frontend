@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RecomendedSection from "./RecomendedSection";
 import AllBarberShops from "./AllBarberShops";
 import NewToFreshify from "./NewToFreshify";
 import ReviewsSection from "./ReviewsSection";
 import LandingPageNavbar from "./LandingPageNavbar";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import Footer from "./Footer";
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -123,6 +126,27 @@ export default function LandingPage() {
     </svg>
   );
 
+  if (recomendedShops.length <= 1) {
+    <section
+      id="hero"
+      className=" bg-gradient-to-r from-gray-50 via-pink-50 to-gray-50 px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes"
+    >
+      <h1
+        className="text-3xl max-w-6xl text-center mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight mb-8 sm:mb-12 bg-gradient-to-r capitalize from-black via-gray-800 to-gray-600 bg-clip-text px-4"
+        data-aos="fade-up"
+      >
+        Book local beauty and wellness services
+      </h1>
+    </section>;
+  }
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // animation duration in ms
+      once: false, // whether animation should happen only once
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Custom CSS for animations and responsive design */}
@@ -193,7 +217,7 @@ export default function LandingPage() {
                 data-aos="fade-up"
                 data-aos-delay="300"
               >
-                Download the Fresha app
+                Download the Freshify app
               </h2>
 
               <p
@@ -202,39 +226,9 @@ export default function LandingPage() {
                 data-aos-delay="400"
               >
                 Book unforgettable beauty and wellness experiences with the
-                Fresha mobile app. Easy booking, instant confirmations, and
+                freshify mobile app. Easy booking, instant confirmations, and
                 seamless payments.
               </p>
-
-              <div
-                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
-                data-aos="fade-up"
-                data-aos-delay="500"
-              >
-                <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105">
-                  <div className="w-24 h-24 sm:w-32 sm:h-32 bg-gradient-to-br from-gray-100 to-gray-300 rounded-xl flex items-center justify-center relative overflow-hidden">
-                    <div className="grid grid-cols-8 gap-1 w-full h-full p-2 sm:p-3">
-                      {Array.from({ length: 64 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`${Math.random() > 0.6 ? "bg-black" : "bg-transparent"} rounded-sm`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-400 mb-2">
-                    Scan to download
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-300">
-                    <SmartphoneIcon />
-                    <span className="text-sm sm:text-base">
-                      Works on iOS & Android
-                    </span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div
@@ -335,7 +329,7 @@ export default function LandingPage() {
       <section className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-3 sm:mb-4"
+            className="text-2xl capitalize sm:text-3xl md:text-4xl font-bold text-black mb-3 sm:mb-4"
             data-aos="fade-up"
           >
             The top-rated destination for beauty and wellness
@@ -354,21 +348,21 @@ export default function LandingPage() {
             data-aos="zoom-in"
             data-aos-delay="300"
           >
-            1 billion+
+            Thousands +
           </div>
           <p
             className="text-base sm:text-lg text-gray-600 mb-12 sm:mb-16"
             data-aos="fade-up"
             data-aos-delay="400"
           >
-            Appointments booked on Fresha
+            Appointments booked on Freshify
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
             {[
-              { number: "130,000+", text: "partner businesses" },
-              { number: "120+ countries", text: "using Fresha" },
-              { number: "450,000+", text: "stylists and professionals" },
+              { number: "130+", text: "partner businesses" },
+              { number: "10+ countries", text: "using Freshify" },
+              { number: "45,000+", text: "stylists and professionals" },
             ].map((stat, index) => (
               <div
                 key={index}
@@ -394,7 +388,7 @@ export default function LandingPage() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="order-2 lg:order-1" data-aos="fade-right">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text">
-                Fresha for Business
+                Freshify for Business
               </h2>
 
               <p
@@ -402,8 +396,8 @@ export default function LandingPage() {
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
-                Supercharge your business for free with the world&apos;s top
-                booking platform for salons and spas.
+                Supercharge your business with the world&apos;s top booking
+                platform for salons and spas.
               </p>
               <p
                 className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 leading-relaxed"
@@ -414,16 +408,13 @@ export default function LandingPage() {
               </p>
 
               <div
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12"
+                className="flex items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12"
                 data-aos="fade-up"
                 data-aos-delay="400"
               >
                 <button className="bg-white hover:bg-gray-100 text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105 flex items-center justify-center gap-2">
                   <DownloadIcon />
-                  Find out more
-                </button>
-                <button className="border-2 border-white/30 hover:border-white text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105">
-                  Watch demo
+                  Become Partner
                 </button>
               </div>
 
@@ -442,9 +433,6 @@ export default function LandingPage() {
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-300 text-sm sm:text-base">
-                  Over 1250 reviews on Capterra
-                </p>
 
                 <div className="grid grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-white/20">
                   <div className="text-center text-white">
@@ -605,6 +593,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

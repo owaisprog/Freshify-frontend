@@ -1,115 +1,44 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   FaArrowRight,
   FaCalendarAlt,
-  FaMapMarkerAlt,
   FaCreditCard,
   FaCog,
-  FaChartBar,
   // FaTrendingUp,
 } from "react-icons/fa";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import HeroSection from "../../../../components/HeroSectionOwner";
+import { Link } from "react-router-dom";
+import LandingPageNavbar from "../../../../components/landingPage/LandingPageNavbar";
+import Footer from "../../../../components/landingPage/Footer";
 
 export default function OrganizationLanding() {
-  const [scrollY, setScrollY] = useState(0);
-
   useEffect(() => {
-    // Initialize AOS
     AOS.init({
-      duration: 1000,
-      once: false,
-      offset: 100,
-      easing: "ease-out-cubic",
+      duration: 1000, // animation duration in ms
+      once: false, // whether animation should happen only once
     });
-
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-black ">
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
-        <div className="flex items-center justify-between px-6 py-4 lg:px-8">
-          <div className="flex items-center">
-            <img
-              src="/images/freshify-logo.png"
-              alt="FRESHIFY"
-              className="h-8 w-auto"
-            />
-          </div>
-
-          <div className="hidden md:flex items-center space-x-8">
-            <a
-              href="#"
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              Dashboard
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              Services
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              Locations
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              Calendar
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              Users
-            </a>
-            <a
-              href="#"
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              Pricing
-            </a>
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <a
-              href="#"
-              className="text-gray-600 hover:text-black transition-colors"
-            >
-              Log in
-            </a>
-            <button className="bg-black text-white hover:bg-gray-800 px-6 py-2 rounded-md font-medium transition-all duration-300 hover:scale-105">
-              Start Free Trial
-            </button>
-          </div>
-        </div>
-      </nav>
-
+    <div id="organizaton-home" className="min-h-screen  bg-white text-black ">
+      <LandingPageNavbar />
       <HeroSection />
       {/* Dashboard Analytics Section */}
-      <section className="px-6 py-20 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-6" data-aos="fade-up">
-            <div className="inline-flex items-center gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-medium mb-6 border border-gray-200 shadow-sm">
-              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+      <section id="organization-analytics" className=" py-20  px-4 w-full  ">
+        <div className="container overflow-hidden mx-auto ">
+          <div className=" mb-6" data-aos="fade-up">
+            <div className="flex w-fit items-center lg:justify-center lg:mx-auto gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-medium mb-6 border border-gray-200 shadow-sm">
+              <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
               Analytics and Insights
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
+            <h2 className="max-w-5xl mx-auto text-4xl lg:text-center capitalize md:text-5xl font-bold mb-6 text-black">
               Comprehensive dashboard for complete business oversight
             </h2>
-            <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-xl lg:text-center text-gray-600 leading-relaxed max-w-3xl mx-auto">
               Monitor sales performance, track top performers, analyze service
               popularity, and manage multi-location operations from a single,
               powerful dashboard.
@@ -117,7 +46,7 @@ export default function OrganizationLanding() {
           </div>
 
           <div
-            className="relative mb-16"
+            className="relative  mx-auto mb-16"
             data-aos="flip-up"
             data-aos-delay="200"
           >
@@ -125,79 +54,19 @@ export default function OrganizationLanding() {
               <img
                 src="/images/dashboard-analytics.png"
                 alt="FRESHIFY Dashboard Analytics"
-                className="w-full h-auto shadow-lg rounded-lg"
+                className="w-[85%] mx-auto h-auto shadow-lg rounded-lg"
               />
             </div>
           </div>
-
-          {/* <div className="grid md:grid-cols-4 gap-8">
-            {[
-              {
-                title: "Sales Analytics",
-                description:
-                  "Track total sales ($3340) and average sales ($78) with real-time updates",
-                icon: <FaChartBar className="w-6 h-6" />,
-                metric: "$3340",
-                label: "Total Sales",
-              },
-              {
-                title: "Top Performers",
-                description:
-                  "Monitor your best barbers like Rafay Mirza ($1850) and team performance",
-                // icon: <FaTrendingUp className="w-6 h-6" />,
-                metric: "$1850",
-                label: "Top Earner",
-              },
-              {
-                title: "Service Popularity",
-                description:
-                  "Hair Cuttings (33), Beard Trim (18), and Facial (2) service tracking",
-                icon: <FaUsers className="w-6 h-6" />,
-                metric: "33",
-                label: "Hair Cuttings",
-              },
-              {
-                title: "Multi-Location Insights",
-                description:
-                  "Track performance across Islamabad (3), Haseeb location (2), and more",
-                icon: <FaMapMarkerAlt className="w-6 h-6" />,
-                metric: "44",
-                label: "Total Orders",
-              },
-            ].map((item, index) => (
-              <div
-                key={item.title}
-                className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-lg transition-all duration-500 hover:scale-105"
-                data-aos="fade-up"
-                data-aos-delay={400 + index * 100}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600">
-                    {item.icon}
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-black">
-                      {item.metric}
-                    </div>
-                    <div className="text-sm text-gray-500">{item.label}</div>
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold mb-2 text-black">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600 text-sm">{item.description}</p>
-              </div>
-            ))}
-          </div> */}
         </div>
       </section>
 
       {/* Payout Management Section */}
-      <section className="px-6 py-20 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className=" px-4 mb-6 lg:mb-12 ">
+        <div className="container overflow-hidden mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
             <div data-aos="fade-right">
-              <h2 className="text-3xl font-bold mb-4 text-black">
+              <h2 className="text-3xl capitalize font-bold mb-4 text-black">
                 Manage payouts end-to-end
               </h2>
               <p className="text-gray-600 mb-8 leading-relaxed">
@@ -214,7 +83,7 @@ export default function OrganizationLanding() {
               </div>
             </div>
             <div data-aos="fade-left" data-aos-delay="200">
-              <h2 className="text-3xl font-bold mb-4 text-black">
+              <h2 className="text-3xl capitalize font-bold mb-4 text-black">
                 Service analytics
               </h2>
               <p className="text-gray-600 mb-8 leading-relaxed">
@@ -237,7 +106,7 @@ export default function OrganizationLanding() {
             data-aos-delay="400"
           >
             <div className="mb-6">
-              <h3 className="text-2xl font-bold mb-2 text-black">
+              <h3 className="text-3xl capitalize font-bold mb-4 text-black">
                 Comprehensive service management
               </h3>
               <p className="text-gray-600">
@@ -257,32 +126,27 @@ export default function OrganizationLanding() {
       </section>
 
       {/* Services & Collaboration Section */}
-      <section className="px-6 py-20 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
-            <div data-aos="fade-right">
-              <div className="inline-flex items-center gap-2 bg-white text-black px-3 py-1 rounded-full text-sm font-medium mb-4 border border-gray-200">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                Multi-location workflows
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
-                Collaborate across locations and teams
-              </h2>
+      <section id="organization-locations" className=" py-20 px-4 bg-gray-50">
+        <div className="container mx-auto">
+          <div className=" mb-6" data-aos="fade-up">
+            <div className="flex w-fit items-center lg:justify-center lg:mx-auto gap-2 bg-white text-black px-4 py-2 rounded-full text-sm font-medium mb-6 border border-gray-200 shadow-sm">
+              <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
+              Multi-location workflows
             </div>
-            <div data-aos="fade-left" data-aos-delay="200">
-              <p className="text-xl text-gray-600 leading-relaxed">
-                Expand your barbershop operations with comprehensive location
-                management that keeps all your branches aligned and coordinated.
-              </p>
-            </div>
+            <h2 className="max-w-5xl mx-auto text-4xl lg:text-center capitalize md:text-5xl font-bold mb-6 text-black">
+              Collaborate across locations and teams
+            </h2>
+            <p className="text-xl lg:text-center text-gray-600 leading-relaxed max-w-3xl mx-auto">
+              Expand your barbershop operations with comprehensive location
+              management that keeps all your branches aligned and coordinated.
+            </p>
           </div>
-
           <div
             className="relative mb-16"
             data-aos="zoom-in"
             data-aos-delay="400"
           >
-            <div className="bg-white rounded-lg p-4 shadow-2xl border border-gray-200 hover:shadow-3xl transition-all duration-500">
+            <div className=" animation  rounded-lg p-4   transition-all duration-500">
               <img
                 src="/images/locations-management.png"
                 alt="Multi-Location Management Interface"
@@ -291,14 +155,8 @@ export default function OrganizationLanding() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 pt-8 lg:pt-16">
             {[
-              {
-                title: "Google Places Integration",
-                description:
-                  "Connect each location with Google Places for better visibility",
-                icon: <FaMapMarkerAlt className="w-6 h-6" />,
-              },
               {
                 title: "On-site Payment Control",
                 description: "Enable or disable on-site payments per location",
@@ -318,7 +176,7 @@ export default function OrganizationLanding() {
             ].map((item, index) => (
               <div
                 key={item.title}
-                className="text-left transition-all duration-1000 hover:scale-105"
+                className="text-left shadow-md rounded-xl   p-4"
                 data-aos="fade-up"
                 data-aos-delay={600 + index * 100}
               >
@@ -336,10 +194,10 @@ export default function OrganizationLanding() {
       </section>
 
       {/* User Assignment Section */}
-      <section className="px-6 py-20 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16" data-aos="fade-up">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
+      <section className=" px-4 py-20">
+        <div className="container mx-auto overflow-hidden">
+          <div className="lg:text-center mb-16" data-aos="fade-up">
+            <h2 className="text-4xl md:text-5xl font-bold capitalize mb-6 text-black">
               Smart user management that scales with your business
             </h2>
             <div className="max-w-2xl mx-auto">
@@ -394,11 +252,11 @@ export default function OrganizationLanding() {
       </section>
 
       {/* Calendar & Scheduling Section */}
-      <section className="px-6 py-20 lg:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
+      <section className=" py-20 px-4 bg-gray-50">
+        <div className="container mx-auto overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
             <div data-aos="fade-right">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
+              <h2 className="text-4xl md:text-5xl capitalize font-bold mb-6 text-black">
                 Made for modern barbershop scheduling
               </h2>
             </div>
@@ -409,17 +267,18 @@ export default function OrganizationLanding() {
                 scheduling, seamless payments, and comprehensive business
                 management.
               </p>
-              <a
-                href="#"
+
+              <Link
+                to={"/login?role=organization_owner"}
                 className="text-black font-semibold hover:underline text-lg group"
               >
-                Start your free trial
+                Get Started
                 <FaArrowRight className="inline ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
+              </Link>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             {[
               {
                 title: "Smart calendar scheduling",
@@ -471,91 +330,8 @@ export default function OrganizationLanding() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="px-6 py-16 lg:px-8 bg-black text-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-12" data-aos="fade-up">
-            <div>
-              <div className="mb-6">
-                <img
-                  src="/images/freshify-logo.png"
-                  alt="FRESHIFY"
-                  className="h-8 w-auto"
-                />
-              </div>
-              <p className="text-gray-400 leading-relaxed">
-                Complete barbershop management solution for the modern business.
-                Experience excellence in every appointment, payment, and
-                customer interaction.
-              </p>
-            </div>
-
-            {[
-              {
-                title: "Platform",
-                links: [
-                  "Dashboard Analytics",
-                  "Services Management",
-                  "Calendar Scheduling",
-                  "User Management",
-                  "Location Control",
-                  "Payment Processing",
-                ],
-              },
-              {
-                title: "Company",
-                links: [
-                  "About FRESHIFY",
-                  "Our Mission",
-                  "Careers",
-                  "Press Kit",
-                  "Contact Us",
-                ],
-              },
-              {
-                title: "Support",
-                links: [
-                  "Help Center",
-                  "API Documentation",
-                  "System Status",
-                  "Feature Requests",
-                  "Contact Support",
-                ],
-              },
-            ].map((section, index) => (
-              <div
-                key={section.title}
-                data-aos="fade-up"
-                data-aos-delay={100 + index * 100}
-              >
-                <h4 className="font-bold mb-6 text-lg">{section.title}</h4>
-                <ul className="space-y-3">
-                  {section.links.map((link) => (
-                    <li key={link}>
-                      <a
-                        href="#"
-                        className="text-gray-400 hover:text-white transition-colors"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div
-            className="border-t border-gray-800 pt-8 text-center text-gray-400"
-            data-aos="fade-up"
-          >
-            <p>
-              &copy; 2024 FRESHIFY. All rights reserved. Built for barbershop
-              excellence.
-            </p>
-          </div>
-        </div>
-      </footer>
+      {/* Footer Section  */}
+      <Footer />
     </div>
   );
 }

@@ -4,46 +4,32 @@ import { useNavigate } from "react-router-dom";
 
 export default function RecomendedSection({ recomendedShops }) {
   const navigate = useNavigate();
-  if (recomendedShops?.length <= 1) {
-    return (
-      <section className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-16 relative overflow-hidden floating-shapes">
-        <div className="container mx-auto relative z-10 ">
-          <h2
-            className="text-2xl sm:text-3xl font-bold text-black mb-6 sm:mb-8"
-            data-aos="fade-up"
-          >
-            Recommended
-          </h2>
-          <div className="flex items-center justify-center">
-            <Loader type="bars" color="dark" />
-          </div>
-        </div>
-      </section>
-    );
-  }
+
   return (
     <section
       id="recomended"
-      className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-16 relative overflow-hidden floating-shapes"
+      className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-24 relative overflow-hidden floating-shapes"
     >
-      <div className="container mx-auto relative z-10">
-        <h2
-          className="text-2xl sm:text-3xl font-bold text-black mb-6 sm:mb-8"
-          data-aos="fade-up"
-        >
-          Recommended
-        </h2>
+      {recomendedShops.length > 1 ? (
+        <div className="container mx-auto relative z-10">
+          <h2
+            data-aos="fade-up"
+            className="text-2xl sm:text-3xl font-bold text-black mb-6 sm:mb-8"
+          >
+            Recommended
+          </h2>
 
-        {recomendedShops.length > 1 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4">
-            {recomendedShops?.slice(0, 4)?.map((shop) => {
+            {recomendedShops?.slice(0, 4)?.map((shop, index) => {
               const startingPrice =
                 shop.minPrice > 0 ? `$${shop.minPrice.toFixed(2)}` : "Varies";
 
               return (
                 <div
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
                   key={shop.id}
-                  className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg  hover:scale-105 transition-all duration-300"
+                  className="bg-white   rounded-lg overflow-hidden shadow-md hover:shadow-lg !transition-all !duration-500  cursor-pointer hover:scale-105"
                 >
                   <div className="relative">
                     <img
@@ -125,8 +111,8 @@ export default function RecomendedSection({ recomendedShops }) {
               );
             })}
           </div>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </section>
   );
 }

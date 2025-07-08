@@ -185,9 +185,9 @@ export default function AllBarberShops({
         </div>
       </div> */}
 
-      <div className="container mx-auto flex flex-col   gap-8  ">
+      <div className="container mx-auto flex flex-col  gap-8 ">
         {/* Filters Sidebar */}
-        <div className=" lg:sticky lg:top-2 left-0 lg:bg-white z-20 rounded-full ">
+        <div data-aos="fade-up" className="  lg:bg-white z-20 rounded-full ">
           <div className="  w-full  lg:overflow-y-auto  shadow-sm  border border-gray-200 px-2 lg:px-6 rounded-3xl   ">
             <div className="flex py-3 lg:py-0 h-full items-center justify-between  ">
               <h2 className="text-lg lg:hidden font-semibold text-black">
@@ -223,7 +223,7 @@ export default function AllBarberShops({
                 <select
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md hover:shadow-lg text-gray-700"
+                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md cursor-pointer hover:shadow-lg text-gray-700"
                 >
                   {locations.map((location) => (
                     <option key={location} value={location}>
@@ -238,7 +238,7 @@ export default function AllBarberShops({
                 <select
                   value={selectedPriceRange}
                   onChange={(e) => setSelectedPriceRange(e.target.value)}
-                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md hover:shadow-lg text-gray-700"
+                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700"
                 >
                   {priceRanges.map((range) => (
                     <option key={range} value={range}>
@@ -253,7 +253,7 @@ export default function AllBarberShops({
                 <select
                   value={selectedServices}
                   onChange={handleServiceToggle}
-                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md hover:shadow-lg text-gray-700 "
+                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700 "
                 >
                   {uniqueServices.slice(0, 5).map((service) => (
                     <option key={service} value={service}>
@@ -306,20 +306,22 @@ export default function AllBarberShops({
 
           {/* Barbershops Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {sortedBarbershops.slice(0, 4).map((shop) => {
+            {sortedBarbershops.slice(0, 4).map((shop, index) => {
               const startingPrice =
                 shop.minPrice > 0 ? `$${shop.minPrice.toFixed(2)}` : "Varies";
 
               return (
                 <div
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
                   key={shop.id}
-                  className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                  className="bg-white   rounded-lg overflow-hidden shadow-md hover:shadow-lg !transition-all !duration-500  cursor-pointer hover:scale-105"
                 >
-                  <div className="relative">
+                  <div className="relative ">
                     <img
                       src={shop.image}
                       alt={shop.name}
-                      className="w-full h-48 object-cover"
+                      className="w-full h-48 object-cover  "
                       onError={(e) => {
                         e.target.src = "/profile.webp";
                       }}
@@ -333,7 +335,7 @@ export default function AllBarberShops({
                       Starting from {startingPrice}
                     </div>
                   </div>
-                  <div className="p-6 space-y-4">
+                  <div className="p-6 space-y-4 ">
                     <div className="space-y-2">
                       <h3 className="text-lg font-semibold text-black">
                         {shop.name}
