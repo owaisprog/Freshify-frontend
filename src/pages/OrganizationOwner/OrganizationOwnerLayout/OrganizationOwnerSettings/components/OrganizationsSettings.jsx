@@ -1,4 +1,4 @@
-import { Button, CopyButton, Loader } from "@mantine/core";
+import { Button, CopyButton, Loader, Modal, TextInput } from "@mantine/core";
 import CustomSelect from "../../../../../components/CustomSelector";
 import { useEffect, useState } from "react";
 
@@ -18,6 +18,11 @@ export default function OrganizationsSettings() {
   const [bookingLoading, setBookingLoading] = useState(false);
   const [restrictionLoading, setRestrictionLoading] = useState(false);
   const navigate = useNavigate();
+
+  // State for color customization modal
+  const [isColorModalOpen, setIsColorModalOpen] = useState(false);
+  const [bgColor, setBgColor] = useState("");
+  const [textColor, setTextColor] = useState("");
 
   /* -------------------- QUERY + MUTATION -------------------- */
   const queryKey = ["bookingTime"];
@@ -88,7 +93,7 @@ export default function OrganizationsSettings() {
   /* -------------------- LOADING STATE -------------------- */
   if (isLoading) {
     return (
-      <section className="flex items-center justify-center   w-full">
+      <section className="flex items-center justify-center w-full">
         <Loader color="dark" type="bars" />
       </section>
     );
@@ -141,17 +146,88 @@ export default function OrganizationsSettings() {
     }
   }
 
-  /* -------------------- RENDER -------------------- */
+  /* -------------------- Generate Widget Code -------------------- */
+  const generateWidgetCode = () => {
+    return `<iframe
+  src="https://freshify-one.vercel.app/freshifyWidget/${userId}?bgColor=${encodeURIComponent(
+    bgColor
+  )}&textColor=${encodeURIComponent(textColor)}"
+  title="iframe-owner"
+  scrolling="no"
+  style="
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    border: none;
+    overflow: hidden;
+    height: 3.5rem;
+    z-index: 9999;
+  "
+  frameborder="0"
+></iframe>`;
+  };
 
+  /* -------------------- Handle Copy Widget Code -------------------- */
+  const handleCopyWidgetCode = (copy) => {
+    copy();
+    setIsColorModalOpen(false);
+    toast.success("Widget code copied to clipboard", {
+      position: "top-right",
+    });
+  };
+
+  /* -------------------- RENDER -------------------- */
   return (
     <section className="flex flex-col gap-2">
+      {/* Color Customization Modal */}
+      <Modal
+        classNames={{ title: "!font-bold" }}
+        closeOnClickOutside={false}
+        radius={"lg"}
+        opened={isColorModalOpen}
+        onClose={() => setIsColorModalOpen(false)}
+        title="Customize Widget Colors"
+        centered
+      >
+        <div className="flex flex-col gap-4 mb-6">
+          <TextInput
+            classNames={{ label: "!font-normal" }}
+            radius={"md"}
+            label="Background Color"
+            placeholder="Enter color (e.g., #FFFFFF, white)"
+            value={bgColor}
+            onChange={(e) => setBgColor(e.currentTarget.value)}
+          />
+          <TextInput
+            classNames={{ label: "!font-normal" }}
+            label="Text Color"
+            radius={"md"}
+            placeholder="Enter color (e.g., #000000, black)"
+            value={textColor}
+            onChange={(e) => setTextColor(e.currentTarget.value)}
+          />
+        </div>
+        <CopyButton value={generateWidgetCode()}>
+          {({ copied, copy }) => (
+            <Button
+              fullWidth
+              radius={"md"}
+              color="dark"
+              onClick={() => handleCopyWidgetCode(copy)}
+            >
+              {copied ? "Copied!" : "Copy Widget Code"}
+            </Button>
+          )}
+        </CopyButton>
+      </Modal>
+
       <div className="flex justify-between items-center border-b-[0.5px] py-3 border-[#718EBF] px-2">
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Clients Advance Booking Time
         </span>
         <div className="w-[97px] lg:w-[154px] h-[40px]">
           {bookingLoading ? (
-            <div className=" w-full flex items-center justify-center">
+            <div className="w-full flex items-center justify-center">
               <Loader type="bars" size={"sm"} />
             </div>
           ) : (
@@ -197,37 +273,16 @@ export default function OrganizationsSettings() {
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
           Copy Booking Widget Code
         </span>
-        <CopyButton
-          value={` 
-    <iframe
-       src="https://freshify-one.vercel.app/freshifyWidget/${userId}" title="iframe-owner"
-        scrolling="no"
-        style="
-          position: absolute;
-          top: 16px;
-          right: 16px;
-          border: none;
-          overflow: hidden;
-          height: 3.5rem;
-          z-index: 9999;
-        "
-        frameborder="0"
-      ></iframe>
-    
-`}
+        <Button
+          className="!w-[112px] lg:!w-[121px]"
+          radius="md"
+          bg="black"
+          onClick={() => setIsColorModalOpen(true)}
         >
-          {({ copied, copy }) => (
-            <Button
-              className="!w-[112px] lg:!w-[121px]"
-              radius="md"
-              bg="black"
-              onClick={copy}
-            >
-              {copied ? "Copied" : "Copy"}
-            </Button>
-          )}
-        </CopyButton>
+          Copy
+        </Button>
       </div>
+
       {/* invoce generate button  */}
       <div className="flex justify-between items-center border-b-[0.5px] py-3 px-2 border-[#718EBF]">
         <span className="text-[14px] ml-3 lg:ml-0 lg:text-[18px] font-[400]">
@@ -268,7 +323,7 @@ export default function OrganizationsSettings() {
         </span>
         <div className="w-[113px] lg:w-[154px]">
           {restrictionLoading ? (
-            <div className=" w-full flex items-center justify-center">
+            <div className="w-full flex items-center justify-center">
               <Loader type="bars" size={"sm"} />
             </div>
           ) : (
@@ -279,7 +334,6 @@ export default function OrganizationsSettings() {
               onChange={(v) =>
                 updateSettings({
                   timeRestrictionHours: Number(v),
-                  // bookingWindowMonths: Number(bookingTime.bookingWindowMonths),
                 })
               }
               styles={{
