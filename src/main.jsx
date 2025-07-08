@@ -109,12 +109,14 @@ import LandingPage from "./components/landingPage/LandingPage.jsx";
 import Widget from "./components/widget-component/Widget.jsx";
 import NotificationsPage from "./components/notifications/NotificationPage.jsx";
 import OrganizationOwnerInvoices from "./pages/OrganizationOwner/OrganizationOwnerInvoices/OrganizationOwnerInvoices.jsx";
+import AllBarberShops from "./components/landingPage/AllBarberShops.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/notifications" element={<NotificationsPage />} />
+      <Route path="/allOwners" element={<AllBarberShops />} />
       <Route path="freshifyWidget/:ownerId" element={<Widget />} />
       {/* plans */}
       <Route path="/checkout" element={<CheckoutPage />} />

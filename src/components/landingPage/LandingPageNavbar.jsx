@@ -15,23 +15,23 @@ export default function LandingPageNavbar() {
       <div className=" px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-2">
-            {/* <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white text-xl">
+            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white text-xl">
               <Scissors className="w-4 h-4 text-white" />
-            </div> */}
+            </div>
             <span className="text-xl font-semibold text-black">Freshify</span>
           </div>
-          {/* <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-8">
             <button
-              onClick={() => scrollToSection("features")}
+              onClick={() => scrollToSection("hero")}
               className="text-gray-600 hover:text-black transition-colors cursor-pointer"
             >
-              Features
+              Home
             </button>
             <button
-              onClick={() => scrollToSection("barbershops")}
+              onClick={() => scrollToSection("recomended")}
               className="text-gray-600 hover:text-black cursor-pointer transition-colors"
             >
-              Barbershops
+              Recomended
             </button>
             <button
               onClick={() => scrollToSection("how-it-works")}
@@ -45,7 +45,7 @@ export default function LandingPageNavbar() {
             >
               Testimonials
             </button>
-          </nav> */}
+          </nav>
           <div className="flex items-center">
             <ButtonMenu />
           </div>
