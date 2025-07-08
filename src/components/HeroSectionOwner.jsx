@@ -52,7 +52,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative pt-16 px-6 py-20 lg:px-8 min-h-[85vh] flex items-center overflow-hidden bg-white">
+    <section className="relative pt-16 px-6 py-20 lg:px-8 min-h-[80vh] flex items-center overflow-hidden bg-white">
       {/* Abstract background elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {/* Rotated partial background with fading corners */}

@@ -1,3 +1,4 @@
+import footerLogo from "../../assets/footerLogo.png";
 export default function Footer() {
   return (
     <footer className="px-6 py-16 lg:px-8 bg-black text-white">
@@ -5,11 +6,7 @@ export default function Footer() {
         <div className="grid " data-aos="fade-up">
           <div>
             <div className="mb-6  flex items-center justify-center">
-              <img
-                src="/src/assets/footerLogo.png"
-                alt="FRESHIFY"
-                className="h-12 w-auto"
-              />
+              <img src={footerLogo} alt="FRESHIFY" className="h-12 w-auto" />
             </div>
             <p className="text-gray-400 max-w-3xl mx-auto lg:text-center mb-4 leading-relaxed">
               Complete barbershop management solution for the modern business.

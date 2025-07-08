@@ -1,5 +1,5 @@
 import { ButtonMenu } from "./LandingPageLoginButton";
-import freshifyRoundedBlack from "../../assets/freshifyRoundedBlack.png";
+import navbarLogo from "../../assets/navbarLogo.jpg";
 import { useLocation } from "react-router-dom";
 export default function LandingPageNavbar() {
   const location = useLocation();
@@ -18,7 +18,7 @@ export default function LandingPageNavbar() {
       <div className=" px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <img
-            src="/src/assets/navbarLogo.jpg"
+            src={navbarLogo}
             className="h-[80px] w-52 text-white object-contain"
           />
           {location.pathname === "/" ? (

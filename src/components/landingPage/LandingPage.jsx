@@ -126,6 +126,13 @@ export default function LandingPage() {
     </svg>
   );
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // animation duration in ms
+      once: false, // whether animation should happen only once
+    });
+  }, []);
+
   if (recomendedShops.length <= 1) {
     <section
       id="hero"
@@ -139,13 +146,6 @@ export default function LandingPage() {
       </h1>
     </section>;
   }
-
-  useEffect(() => {
-    AOS.init({
-      duration: 1000, // animation duration in ms
-      once: false, // whether animation should happen only once
-    });
-  }, []);
 
   return (
     <div className="min-h-screen bg-white">
@@ -174,8 +174,6 @@ export default function LandingPage() {
       {/* New to Fresha Section */}
       <NewToFreshify newToFreshify={recomendedShops} />
 
-      {/* Reviews Section */}
-      <ReviewsSection />
       {/* App Download Section */}
       <section className="bg-black px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
         <div className="container  mx-auto relative z-10">
@@ -325,62 +323,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Statistics Section */}
-      <section className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2
-            className="text-2xl capitalize sm:text-3xl md:text-4xl font-bold text-black mb-3 sm:mb-4"
-            data-aos="fade-up"
-          >
-            The top-rated destination for beauty and wellness
-          </h2>
-          <p
-            className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12 px-4"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            One solution, one software. Trusted by the best in the beauty and
-            wellness industry
-          </p>
-
-          <div
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-3 sm:mb-4 bg-gradient-to-r from-black via-gray-700 to-gray-500 bg-clip-text pulse-animation"
-            data-aos="zoom-in"
-            data-aos-delay="300"
-          >
-            Thousands +
-          </div>
-          <p
-            className="text-base sm:text-lg text-gray-600 mb-12 sm:mb-16"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            Appointments booked on Freshify
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
-            {[
-              { number: "130+", text: "partner businesses" },
-              { number: "10+ countries", text: "using Freshify" },
-              { number: "45,000+", text: "stylists and professionals" },
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="text-center p-4 sm:p-6 rounded-xl bg-white  border border-gray-100 card-hover"
-                data-aos="fade-up"
-                data-aos-delay={500 + index * 100}
-              >
-                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-2">
-                  {stat.number}
-                </div>
-                <p className="text-gray-600 text-sm sm:text-base">
-                  {stat.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Reviews Section */}
+      <ReviewsSection />
 
       {/* Fresha for Business Section */}
       <section className="bg-black px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
@@ -590,6 +534,63 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Statistics Section */}
+      <section className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <h2
+            className="text-2xl capitalize sm:text-3xl md:text-4xl font-bold text-black mb-3 sm:mb-4"
+            data-aos="fade-up"
+          >
+            The top-rated destination for beauty and wellness
+          </h2>
+          <p
+            className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12 px-4"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            One solution, one software. Trusted by the best in the beauty and
+            wellness industry
+          </p>
+
+          <div
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-3 sm:mb-4 bg-gradient-to-r from-black via-gray-700 to-gray-500 bg-clip-text pulse-animation"
+            data-aos="zoom-in"
+            data-aos-delay="300"
+          >
+            Thousands +
+          </div>
+          <p
+            className="text-base sm:text-lg text-gray-600 mb-12 sm:mb-16"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            Appointments booked on Freshify
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8">
+            {[
+              { number: "130+", text: "partner businesses" },
+              { number: "10+ countries", text: "using Freshify" },
+              { number: "45,000+", text: "stylists and professionals" },
+            ].map((stat, index) => (
+              <div
+                key={index}
+                className="text-center p-4 sm:p-6 rounded-xl bg-white  border border-gray-100 card-hover"
+                data-aos="fade-up"
+                data-aos-delay={500 + index * 100}
+              >
+                <div className="text-2xl sm:text-3xl md:text-4xl font-bold text-black mb-2">
+                  {stat.number}
+                </div>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  {stat.text}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
