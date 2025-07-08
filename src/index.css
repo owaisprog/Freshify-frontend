@@ -31,4 +31,17 @@ body {
 .Toastify__toast {
   max-width: 300px; /* Set your desired minimum width */
 }
-/*  */
+.animation {
+  transform: perspective(300px) rotateX(5deg); /* Slight inward tilt (like a plate) */
+  animation: float 7s ease-in-out; /* Gentle floating motion */
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: perspective(500px) rotateX(5deg) translateY(0);
+  }
+  50% {
+    transform: perspective(500px) rotateX(5deg) translateY(-10px); /* Slight upward drift */
+  }
+}

@@ -109,7 +109,7 @@ import LandingPage from "./components/landingPage/LandingPage.jsx";
 import Widget from "./components/widget-component/Widget.jsx";
 import NotificationsPage from "./components/notifications/NotificationPage.jsx";
 import OrganizationOwnerInvoices from "./pages/OrganizationOwner/OrganizationOwnerInvoices/OrganizationOwnerInvoices.jsx";
-import AllBarberShops from "./components/landingPage/AllBarberShops.jsx";
+import OrganizationLanding from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerLanding/OrganizationLanding.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
@@ -200,6 +200,7 @@ const router = createBrowserRouter(
         element={<OrganizationOwnerUserLogin />}
       />
       {/* organization owner */}
+      <Route path="organizationLanding" element={<OrganizationLanding />} />
       <Route
         path="/OrganizationOwnerDashboard"
         element={
