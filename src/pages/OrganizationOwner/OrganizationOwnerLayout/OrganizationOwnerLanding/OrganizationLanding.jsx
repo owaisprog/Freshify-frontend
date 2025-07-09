@@ -53,21 +53,27 @@ export default function OrganizationLanding() {
   });
 
   return (
-    <div id="organizaton-home" className="min-h-screen  bg-white text-black ">
+    <>
       <LandingPageNavbar />
-      <HeroSection />
-      {/* Dashboard Analytics Section */}
-      <DashboardAnalytics />
-      {/* Payout Management Section */}
-      <PayoutManagement />
-      {/* Services & Collaboration Section */}
-      <ServicesSection />
-      {/* User Assignment Section */}
-      <UserAssignmentSection />
-      {/* Calendar & Scheduling Section */}
-      <CalendarSection />
-      {/* Footer Section  */}
-      <Footer />
-    </div>
+      <div
+        id="organizaton-home"
+        className="min-h-screen overflow-hidden bg-white text-black "
+      >
+        <HeroSection />
+
+        {/* Dashboard Analytics Section */}
+        <DashboardAnalytics />
+        {/* Payout Management Section */}
+        <PayoutManagement />
+        {/* Services & Collaboration Section */}
+        <ServicesSection />
+        {/* User Assignment Section */}
+        <UserAssignmentSection />
+        {/* Calendar & Scheduling Section */}
+        <CalendarSection />
+        {/* Footer Section  */}
+        <Footer />
+      </div>
+    </>
   );
 }

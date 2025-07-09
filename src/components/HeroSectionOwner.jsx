@@ -52,8 +52,8 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative pt-16 px-6 py-20 lg:px-8 min-h-[80vh] flex items-center overflow-hidden bg-white">
-      <div className="container overflow-hidden mx-auto w-full relative z-10">
+    <section className="relative pt-16 px-6 py-20  min-h-[80vh] flex items-center overflow-hidden bg-white">
+      <div className="container overflow-hidden mx-auto relative  z-10">
         <div className="grid  gap-16 items-center">
           <div className="relative">
             {/* <div className="absolute -top-8 -left-8 w-16 h-16 rounded-full bg-black hidden lg:flex items-center justify-center">
