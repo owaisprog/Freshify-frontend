@@ -55,10 +55,7 @@ export default function OrganizationLanding() {
   return (
     <>
       <LandingPageNavbar />
-      <div
-        id="organizaton-home"
-        className="min-h-screen overflow-hidden bg-white text-black "
-      >
+      <div className="min-h-screen overflow-hidden bg-white text-black ">
         <HeroSection />
 
         {/* Dashboard Analytics Section */}
