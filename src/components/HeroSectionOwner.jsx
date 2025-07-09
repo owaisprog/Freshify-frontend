@@ -149,7 +149,6 @@ const HeroSection = () => {
             <div className="absolute -inset-6">
               <div className="absolute top-0 left-2 w-32 h-32 border-t-2 border-l-2 border-gray-300 rounded-tl-3xl"></div>
               <div className="absolute bottom-0 right-2 w-32 h-32 border-b-2 border-r-2 border-gray-300 rounded-br-3xl"></div>
-              <div className="absolute top-1/4 right-1/4 w-16 h-16 border-2 border-gray-300 rounded-full"></div>
             </div>
 
             {/* Main image card */}
