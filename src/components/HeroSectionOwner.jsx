@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { FaCalendarAlt, FaUsers, FaChartLine, FaCut } from "react-icons/fa";
-import { FaScissors } from "react-icons/fa6";
+// import { FaScissors } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
@@ -113,7 +113,7 @@ const HeroSection = () => {
               </div>
 
               {/* Features grid */}
-              {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                   <div className="bg-black p-3 rounded-lg mr-3">
                     <FaCalendarAlt className="text-white text-xl" />
@@ -136,7 +136,7 @@ const HeroSection = () => {
                   </div>
                   <span className="font-medium text-gray-800">Analytics</span>
                 </div>
-              </div> */}
+              </div>
             </div>
           </div>
 
@@ -145,12 +145,6 @@ const HeroSection = () => {
             data-aos="fade-up"
             className={`relative transition-all  duration-1000`}
           >
-            {/* Floating elements container */}
-            <div className="absolute -inset-6">
-              <div className="absolute top-0 left-2 w-32 h-32 border-t-2 border-l-2 border-gray-300 rounded-tl-3xl"></div>
-              <div className="absolute bottom-0 right-2 w-32 h-32 border-b-2 border-r-2 border-gray-300 rounded-br-3xl"></div>
-            </div>
-
             {/* Main image card */}
             <img
               src="/images/FinalImage.png"
