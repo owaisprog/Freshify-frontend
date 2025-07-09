@@ -175,7 +175,7 @@ export default function LandingPage() {
       <NewToFreshify newToFreshify={recomendedShops} />
 
       {/* App Download Section */}
-      <section className="bg-black px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
+      {/* <section className="bg-black px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
         <div className="container  mx-auto relative z-10">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div
@@ -321,10 +321,7 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Reviews Section */}
-      <ReviewsSection />
+      </section> */}
 
       {/* Fresha for Business Section */}
       <section className="bg-black px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
@@ -537,7 +534,8 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
+      {/* Reviews Section */}
+      <ReviewsSection />
       {/* Statistics Section */}
       <section className="bg-gray-100 px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes">
         <div className="max-w-4xl mx-auto text-center relative z-10">
