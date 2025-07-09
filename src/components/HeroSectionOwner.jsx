@@ -53,31 +53,12 @@ const HeroSection = () => {
 
   return (
     <section className="relative pt-16 px-6 py-20 lg:px-8 min-h-[80vh] flex items-center overflow-hidden bg-white">
-      {/* Abstract background elements */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Rotated partial background with fading corners */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-12 w-[150%] h-[150%]">
-          <div className="absolute inset-0 bg-grid-black/[0.05] bg-[length:40px_40px]"></div>
-
-          {/* Fading corners */}
-          <div className="absolute top-0 left-0 w-[30%] h-[30%] bg-gradient-to-br from-white via-white to-transparent"></div>
-          <div className="absolute top-0 right-0 w-[30%] h-[30%] bg-gradient-to-bl from-white via-white to-transparent"></div>
-          <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-gradient-to-tr from-white via-white to-transparent"></div>
-          <div className="absolute bottom-0 right-0 w-[30%] h-[30%] bg-gradient-to-tl from-white via-white to-transparent"></div>
-
-          {/* Floating elements */}
-          <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-black/[0.03] blur-3xl"></div>
-          <div className="absolute bottom-20 left-20 w-40 h-40 rounded-full bg-black/[0.03] blur-3xl"></div>
-          <div className="absolute top-1/3 left-1/4 w-24 h-24 rounded-full bg-black/[0.03] blur-3xl"></div>
-        </div>
-      </div>
-
       <div className="container mx-auto w-full relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid  gap-16 items-center">
           <div className="relative">
-            <div className="absolute -top-8 -left-8 w-16 h-16 rounded-full bg-black hidden lg:flex items-center justify-center">
+            {/* <div className="absolute -top-8 -left-8 w-16 h-16 rounded-full bg-black hidden lg:flex items-center justify-center">
               <FaScissors className="text-white text-xl" />
-            </div>
+            </div> */}
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
               <div className="whitespace-nowrap">
@@ -132,7 +113,7 @@ const HeroSection = () => {
               </div>
 
               {/* Features grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex items-center bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
                   <div className="bg-black p-3 rounded-lg mr-3">
                     <FaCalendarAlt className="text-white text-xl" />
@@ -155,17 +136,14 @@ const HeroSection = () => {
                   </div>
                   <span className="font-medium text-gray-800">Analytics</span>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Dashboard image */}
           <div
-            className={`relative transition-all  duration-1000 ${
-              showContent
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-x-20"
-            }`}
+            data-aos="fade-up"
+            className={`relative transition-all  duration-1000`}
           >
             {/* Floating elements container */}
             <div className="absolute -inset-6">
@@ -175,16 +153,11 @@ const HeroSection = () => {
             </div>
 
             {/* Main image card */}
-            <div className="relative bg-white rounded-3xl p-6 border border-gray-200 shadow-xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-white opacity-80 z-10 pointer-events-none"></div>
-              <div className="relative w-full h-auto max-w-md mx-auto rounded-xl">
-                <img
-                  src="/images/FRESHIFY-LOGO-02.png"
-                  alt="Freshify Logo"
-                  className="w-full h-auto object-contain"
-                />
-              </div>
-            </div>
+            <img
+              src="/images/FinalImage.png"
+              alt="Freshify Logo"
+              className="w-full h-auto object-contain"
+            />
           </div>
         </div>
       </div>
