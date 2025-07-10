@@ -142,7 +142,7 @@ export default function LandingPage() {
         className="text-3xl capitalize max-w-6xl text-center mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight mb-8 sm:mb-12 bg-gradient-to-r  from-black via-gray-800 to-gray-600 bg-clip-text px-4"
         data-aos="fade-up"
       >
-        Book a sercive
+        Book a service
       </h1>
     </section>;
   }
@@ -163,7 +163,7 @@ export default function LandingPage() {
           className="text-3xl max-w-6xl text-center mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight mb-8 sm:mb-12 bg-gradient-to-r capitalize from-black via-gray-800 to-gray-600 bg-clip-text px-4"
           data-aos="fade-up"
         >
-          Book a services
+          Book a service
         </h1>
 
         <AllBarberShops setRecomendedShops={setRecomendedShops} />
