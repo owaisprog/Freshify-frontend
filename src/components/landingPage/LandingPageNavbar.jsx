@@ -1,15 +1,14 @@
 // import { ButtonMenu } from "./LandingPageLoginButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import navbarLogo from "../../assets/navbarLogo.jpg";
 import { FiMenu } from "react-icons/fi";
-import { IoClose } from "react-icons/io5";
 // import { useLocation } from "react-router-dom";
 import { Button, Drawer } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 export default function LandingPageNavbar() {
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
-  // const location = useLocation();
+  const location = useLocation();
 
   // const scrollToSection = (sectionId) => {
   //   const element = document.getElementById(sectionId);
@@ -76,13 +75,17 @@ export default function LandingPageNavbar() {
           )} */}
             <div className="lg:flex items-center gap-2 hidden">
               {/* <ButtonMenu /> */}
-              <Button
-                radius={"md"}
-                classNames={{ root: "!bg-black hover:!bg-gray-900" }}
-                onClick={() => navigate("/organizationLanding", scrollTo(0, 0))}
-              >
-                Become A Partner
-              </Button>
+              {location.pathname === "/" && (
+                <Button
+                  radius={"md"}
+                  classNames={{ root: "!bg-black hover:!bg-gray-900" }}
+                  onClick={() =>
+                    navigate("/organizationLanding", scrollTo(0, 0))
+                  }
+                >
+                  Become A Partner
+                </Button>
+              )}
               <Button
                 radius={"md"}
                 classNames={{ root: "!bg-black hover:!bg-gray-900" }}
