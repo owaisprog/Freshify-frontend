@@ -123,15 +123,17 @@ export default function LandingPageNavbar() {
               body: " !flex !flex-col !gap-8 !h-[60vh] !items-center justify-center",
             }}
           >
-            <Button
-              radius={"md"}
-              classNames={{
-                root: "!bg-black hover:!bg-gray-900 !min-w-[170px]",
-              }}
-              onClick={() => navigate("/organizationLanding", scrollTo(0, 0))}
-            >
-              Become A Partner
-            </Button>
+            {location.pathname === "/" && (
+              <Button
+                radius={"md"}
+                classNames={{
+                  root: "!bg-black hover:!bg-gray-900 !min-w-[170px]",
+                }}
+                onClick={() => navigate("/organizationLanding", scrollTo(0, 0))}
+              >
+                Become A Partner
+              </Button>
+            )}
             <Button
               radius={"md"}
               classNames={{
