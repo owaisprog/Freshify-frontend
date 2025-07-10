@@ -96,7 +96,11 @@ export default function LandingPageNavbar() {
             </div>
             {/* Hamburger section  */}
             <div className="lg:hidden">
-              <FiMenu onClick={open} size={30} />
+              <FiMenu
+                className="cursor-pointer hover:scale-105 transition-all duration-200"
+                onClick={open}
+                size={30}
+              />
             </div>
           </div>
         </div>
