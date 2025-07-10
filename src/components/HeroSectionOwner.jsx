@@ -109,7 +109,7 @@ const HeroSection = () => {
               <div className="flex gap-5 mb-12">
                 <button
                   onClick={() => navigate("/Login?role=organization_owner")}
-                  className="bg-black text-white hover:bg-gray-900 px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
+                  className="bg-black text-white cursor-pointer ml-2 hover:bg-gray-900 px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105 shadow-lg"
                 >
                   Get Started
                 </button>
