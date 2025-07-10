@@ -73,7 +73,7 @@ export default function LandingPageNavbar() {
               </button>
             </nav>
           )} */}
-            <div className="lg:flex items-center gap-2 hidden">
+            <div className="sm:flex items-center gap-2 hidden">
               {/* <ButtonMenu /> */}
               {location.pathname === "/" && (
                 <Button
@@ -95,7 +95,7 @@ export default function LandingPageNavbar() {
               </Button>
             </div>
             {/* Hamburger section  */}
-            <div className="lg:hidden">
+            <div className="sm:hidden">
               <FiMenu
                 className="cursor-pointer hover:scale-105 transition-all duration-200"
                 onClick={open}
@@ -111,7 +111,12 @@ export default function LandingPageNavbar() {
         <Drawer.Overlay />
         <Drawer.Content>
           <Drawer.Header>
-            <Drawer.CloseButton />
+            <Drawer.CloseButton
+              size={"lg"}
+              classNames={{
+                close: "!border-none hover:!bg-white",
+              }}
+            />
           </Drawer.Header>
           <Drawer.Body
             classNames={{
