@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { FaStar } from "react-icons/fa";
 
 export default function ReviewsSection() {
   return (
@@ -49,7 +49,7 @@ export default function ReviewsSection() {
             >
               <div className="flex mb-3 sm:mb-4 text-yellow-500">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} color="orange" />
+                  <FaStar key={i} color="orange" />
                 ))}
               </div>
               <h3 className="font-semibold text-black mb-2 sm:mb-3 text-sm sm:text-base">
