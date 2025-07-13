@@ -38,7 +38,7 @@ export default function CalendarSection() {
               visual: (
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
                   <img
-                    src="/images/calendar-appointments.png"
+                    src="/images/myappointment_new.png"
                     alt="Calendar Scheduling Interface"
                     className="w-full h-auto rounded"
                   />
@@ -52,7 +52,7 @@ export default function CalendarSection() {
               visual: (
                 <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
                   <img
-                    src="/images/settings-page.png"
+                    src="/images/setting_new.png"
                     alt="Advanced Settings Interface"
                     className="w-full h-auto rounded"
                   />

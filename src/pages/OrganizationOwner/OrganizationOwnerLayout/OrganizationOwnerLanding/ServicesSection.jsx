@@ -35,7 +35,7 @@ export default function ServicesSection() {
             className=" animation  rounded-lg p-4   transition-all duration-500"
           >
             <img
-              src="/images/locations-management_2.png"
+              src="/images/location_new.png"
               alt="Multi-Location Management Interface"
               className="w-full h-auto rounded-lg"
             />

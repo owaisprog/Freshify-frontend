@@ -31,7 +31,7 @@ export default function DashboardAnalytics() {
         <div className="relative  mx-auto mb-16">
           <div data-aos="flip-down" data-aos-delay="300">
             <img
-              src="/images/dashboard-analytics.png"
+              src="/images/dashboard_new.png"
               alt="FRESHIFY Dashboard Analytics"
               className="w-[85%] mx-auto h-auto shadow-lg rounded-lg animation"
             />
