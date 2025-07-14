@@ -2,7 +2,7 @@ import { MapPin, Scissors, Search, Filter } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryHook } from "../../services/reactQuery";
-import { Button, Loader } from "@mantine/core";
+import { Button, Loader, Select } from "@mantine/core";
 
 export default function AllBarberShops({
   recomendedShops,
@@ -88,12 +88,6 @@ export default function AllBarberShops({
     "$50+",
   ];
 
-  const handleServiceToggle = (e) => {
-    const options = Array.from(e.target.selectedOptions);
-    const values = options.map((option) => option.value);
-    setSelectedServices(values);
-  };
-
   const filteredBarbershops = allBarbershops.filter((shop) => {
     const matchesSearch = shop.name
       .toLowerCase()
@@ -164,27 +158,6 @@ export default function AllBarberShops({
 
   return (
     <div className="">
-      {/* Header */}
-      {/* <div className=" sticky top-0 left-0 z-20 bg-white shadow-sm border-b rounded-lg border-gray-100">
-        <div className="flex items-center justify-between lg:px-6 px-2 lg:bg-[#FFFFFF] py-[10px] rounded-[16px]">
-          <div className="flex items-center justify-between w-full h-16">
-            <div className="flex items-center space-x-4">
-              <div>
-                <h1 className="text-2xl font-bold text-black">
-                  All Organizations
-                </h1>
-                <div className="flex items-center space-x-4 text-sm text-gray-500">
-                  <span className="flex items-center">
-                    <span className="w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
-                    {sortedBarbershops.length} Total Organizations
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       <div className="container mx-auto flex flex-col  gap-8 ">
         {/* Filters Sidebar */}
         <div data-aos="fade-up" className="  lg:bg-white z-20 rounded-full ">
@@ -220,47 +193,66 @@ export default function AllBarberShops({
 
               {/* Location */}
               <div>
-                <select
+                <Select
+                  size="lg"
+                  radius={"md"}
+                  placeholder="Select Location"
+                  data={locations.map((location) => ({
+                    value: location,
+                    label: location,
+                  }))}
                   value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md cursor-pointer hover:shadow-lg text-gray-700"
-                >
-                  {locations.map((location) => (
-                    <option key={location} value={location}>
-                      {location}
-                    </option>
-                  ))}
-                </select>
+                  onChange={setSelectedLocation}
+                  className="w-full"
+                  classNames={{
+                    input:
+                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md cursor-pointer hover:shadow-lg text-gray-700",
+                  }}
+                />
               </div>
 
               {/* Price Range */}
               <div>
-                <select
+                <Select
+                  size="lg"
+                  radius={"md"}
+                  placeholder="Select Price Range"
+                  data={priceRanges.map((range) => ({
+                    value: range,
+                    label: range,
+                  }))}
                   value={selectedPriceRange}
-                  onChange={(e) => setSelectedPriceRange(e.target.value)}
-                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700"
-                >
-                  {priceRanges.map((range) => (
-                    <option key={range} value={range}>
-                      {range}
-                    </option>
-                  ))}
-                </select>
+                  onChange={setSelectedPriceRange}
+                  className="w-full"
+                  classNames={{
+                    input:
+                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700",
+                  }}
+                />
               </div>
 
-              {/* Services - Updated to dropdown */}
+              {/* Services */}
               <div>
-                <select
-                  value={selectedServices}
-                  onChange={handleServiceToggle}
-                  className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700 "
-                >
-                  {uniqueServices.slice(0, 5).map((service) => (
-                    <option key={service} value={service}>
-                      {service}
-                    </option>
-                  ))}
-                </select>
+                <Select
+                  size="lg"
+                  radius={"md"}
+                  placeholder="Select Service"
+                  data={uniqueServices.slice(0, 5).map((service) => ({
+                    value: service,
+                    label: service,
+                  }))}
+                  value={
+                    selectedServices.length > 0 ? selectedServices[0] : null
+                  }
+                  onChange={(value) =>
+                    setSelectedServices(value ? [value] : [])
+                  }
+                  className="w-full"
+                  classNames={{
+                    input:
+                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700",
+                  }}
+                />
               </div>
 
               {/* Clear Filters */}
@@ -283,27 +275,6 @@ export default function AllBarberShops({
 
         {/* Main Content */}
         <div className="">
-          {/* Sort and Results Count */}
-          {/* <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-            <p className="text-gray-600">
-              Showing {sortedBarbershops.length} Owners
-            </p>
-            <div className="flex items-center space-x-2">
-              <label className="text-sm font-medium text-gray-700">
-                Sort by:
-              </label>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent"
-              >
-                <option value="name">Name (A-Z)</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-              </select>
-            </div>
-          </div> */}
-
           {/* Barbershops Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {sortedBarbershops.slice(0, 4).map((shop, index) => {
