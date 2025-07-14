@@ -9,7 +9,7 @@ export default function Footer() {
               <img src={footerLogo} alt="FRESHIFY" className="h-12 w-auto" />
             </div>
             <p className="text-gray-400 max-w-3xl mx-auto lg:text-center mb-4 leading-relaxed">
-              Complete barbershop management solution for the modern business.
+              Complete service management solution for the modern business.
               Experience excellence in every appointment, payment, and customer
               interaction.
             </p>
@@ -20,10 +20,7 @@ export default function Footer() {
           className="border-t border-gray-800 pt-8 text-center text-gray-400"
           data-aos="fade-up"
         >
-          <p>
-            &copy; 2025 FRESHIFY. All rights reserved. Built for barbershop
-            excellence.
-          </p>
+          <p>&copy; 2025 FRESHIFY. All rights reserved</p>
         </div>
       </div>
     </footer>

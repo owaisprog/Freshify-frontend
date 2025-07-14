@@ -2,7 +2,7 @@ import { MapPin, Scissors, Search, Filter } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryHook } from "../../services/reactQuery";
-import { Button, Loader, Select } from "@mantine/core";
+import { Button, Input, Loader, Select } from "@mantine/core";
 
 export default function AllBarberShops({
   recomendedShops,
@@ -178,18 +178,20 @@ export default function AllBarberShops({
               className={` py-3 flex flex-col gap-2   ${isFilterOpen ? "block" : "hidden lg:grid lg:grid-cols-5 lg:gap-x-4 lg:py-3  "}`}
             >
               {/* Search */}
-              <div>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input
-                    type="text"
-                    placeholder="Search barbershops..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md hover:shadow-lg placeholder-gray-500"
-                  />
-                </div>
-              </div>
+
+              <Input
+                leftSection={<Search size={20} />}
+                type="text"
+                size="lg"
+                radius={"md"}
+                placeholder="Search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                classNames={{
+                  input:
+                    " border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:!border-none focus:!outline-none transition-all duration-300 ease-in-out shadow-md cursor-pointer hover:shadow-lg text-gray-700",
+                }}
+              />
 
               {/* Location */}
               <div>
@@ -206,7 +208,7 @@ export default function AllBarberShops({
                   className="w-full"
                   classNames={{
                     input:
-                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out shadow-md cursor-pointer hover:shadow-lg text-gray-700",
+                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:!border-none focus:outline-none transition-all duration-300 ease-in-out shadow-md cursor-pointer hover:shadow-lg text-gray-700",
                   }}
                 />
               </div>
@@ -226,7 +228,7 @@ export default function AllBarberShops({
                   className="w-full"
                   classNames={{
                     input:
-                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700",
+                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:!border-none focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700",
                   }}
                 />
               </div>
@@ -250,7 +252,7 @@ export default function AllBarberShops({
                   className="w-full"
                   classNames={{
                     input:
-                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-3 focus:ring-black focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700",
+                      "!px-4 !py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:!border-none focus:outline-none transition-all duration-300 ease-in-out cursor-pointer shadow-md hover:shadow-lg text-gray-700",
                   }}
                 />
               </div>
@@ -264,7 +266,7 @@ export default function AllBarberShops({
                     setSelectedPriceRange("");
                     setSelectedServices([]);
                   }}
-                  className="w-full px-6 py-3 text-sm text-white hover:text-black cursor-pointer bg-black border border-gray-300 rounded-lg hover:bg-white hover:outline-3  focus:ring-2 focus:ring-black focus:outline-none shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
+                  className="w-full px-6 py-3 text-sm text-white hover:text-black cursor-pointer bg-black border border-gray-300 rounded-lg hover:bg-white hover:outline-3  focus:ring-2  focus:!border-none focus:ring-black focus:outline-none shadow-md hover:shadow-lg transition-all duration-300 ease-in-out"
                 >
                   Clear All Filters
                 </button>

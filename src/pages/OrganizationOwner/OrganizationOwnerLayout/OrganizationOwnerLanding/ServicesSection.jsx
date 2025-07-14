@@ -24,8 +24,9 @@ export default function ServicesSection() {
             data-aos-delay="200"
             className="text-xl lg:text-center text-gray-600 leading-relaxed max-w-3xl mx-auto"
           >
-            Expand your barbershop operations with comprehensive location
-            management that keeps all your branches aligned and coordinated.
+            Expand your service operations with a comprehensive location
+            management system that ensures all your branches stay aligned and
+            well-coordinated.
           </p>
         </div>
         <div className="relative mb-16">

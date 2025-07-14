@@ -8,15 +8,14 @@ export default function CalendarSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
           <div>
             <h2 className="text-4xl md:text-5xl capitalize font-bold mb-6 text-black">
-              Made for modern barbershop scheduling
+              Made for modern Services scheduling
             </h2>
           </div>
           <div>
             <p className="text-xl text-gray-600 mb-6 leading-relaxed">
               FRESHIFY is shaped by the practices and principles that
-              distinguish world-class barbershop operations: efficient
-              scheduling, seamless payments, and comprehensive business
-              management.
+              distinguish world-class services operations: efficient scheduling,
+              seamless payments, and comprehensive business management.
             </p>
 
             <Link

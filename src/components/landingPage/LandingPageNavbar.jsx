@@ -75,15 +75,27 @@ export default function LandingPageNavbar() {
           )} */}
             <div className="sm:flex items-center gap-2 hidden">
               {/* <ButtonMenu /> */}
-              {location.pathname === "/" && (
+              {location.pathname === "/" ? (
                 <Button
                   radius={"md"}
-                  classNames={{ root: "!bg-black hover:!bg-gray-900" }}
+                  classNames={{
+                    root: "!bg-black hover:!bg-gray-900 !min-w-[170px]",
+                  }}
                   onClick={() =>
                     navigate("/organizationLanding", scrollTo(0, 0))
                   }
                 >
                   Become A Partner
+                </Button>
+              ) : (
+                <Button
+                  radius={"md"}
+                  classNames={{
+                    root: "!bg-black hover:!bg-gray-900 !min-w-[170px]",
+                  }}
+                  onClick={() => navigate("/", scrollTo(0, 0))}
+                >
+                  Goto Home
                 </Button>
               )}
               <Button
@@ -123,7 +135,7 @@ export default function LandingPageNavbar() {
               body: " !flex !flex-col !gap-8 !h-[60vh] !items-center justify-center",
             }}
           >
-            {location.pathname === "/" && (
+            {location.pathname === "/" ? (
               <Button
                 radius={"md"}
                 classNames={{
@@ -132,6 +144,16 @@ export default function LandingPageNavbar() {
                 onClick={() => navigate("/organizationLanding", scrollTo(0, 0))}
               >
                 Become A Partner
+              </Button>
+            ) : (
+              <Button
+                radius={"md"}
+                classNames={{
+                  root: "!bg-black hover:!bg-gray-900 !min-w-[170px]",
+                }}
+                onClick={() => navigate("/", scrollTo(0, 0))}
+              >
+                Goto Home
               </Button>
             )}
             <Button
