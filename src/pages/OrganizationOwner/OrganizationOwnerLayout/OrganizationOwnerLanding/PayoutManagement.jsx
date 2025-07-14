@@ -22,7 +22,7 @@ export default function PayoutManagement() {
             <div
               data-aos="fade-right"
               data-aos-delay="200"
-              className="bg-white rounded-lg p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-500"
+              className="bg-[#F5F7FA] rounded-lg p-6 shadow-md   hover:shadow-xl transition-all duration-500"
             >
               <img
                 src="/images/payout_new.png"
@@ -49,7 +49,7 @@ export default function PayoutManagement() {
             <div
               data-aos="fade-left"
               data-aos-delay="200"
-              className="bg-white rounded-lg p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-500"
+              className="bg-[#F5F7FA] rounded-lg p-6 shadow-md  hover:shadow-xl transition-all duration-500"
             >
               <img
                 src="/images/service_new.png"
