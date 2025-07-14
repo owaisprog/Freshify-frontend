@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { FaCalendarAlt, FaUsers, FaChartLine, FaCut } from "react-icons/fa";
+import { FaCalendarAlt, FaUsers, FaChartLine } from "react-icons/fa";
 // import { FaScissors } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
@@ -84,11 +84,14 @@ const HeroSection = () => {
                   } transition-opacity duration-200`}
                   style={{ verticalAlign: "text-top" }}
                 >
-                  <FaCut className="text-gray-800 w-6 h-6" />
+                  <img
+                    src="/images/cut.png"
+                    className="text-gray-800 w-6 h-6"
+                  />
                 </span>
               </div>
               <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mt-2">
-                Barbershop Management
+                Service Management
               </div>
             </h1>
 
@@ -150,7 +153,7 @@ const HeroSection = () => {
           >
             {/* Main image card */}
             <img
-              src="/images/mainImageFinal_new.png"
+              src="/images/hero_new1.png"
               alt="Freshify Logo"
               className="w-full h-auto object-contain"
             />

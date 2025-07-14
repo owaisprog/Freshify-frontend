@@ -39,7 +39,7 @@ export default function CalendarSection() {
                   <img
                     src="/images/myappointment_new.png"
                     alt="Calendar Scheduling Interface"
-                    className="w-full h-auto rounded"
+                    className="w-full  rounded"
                   />
                 </div>
               ),
@@ -53,7 +53,7 @@ export default function CalendarSection() {
                   <img
                     src="/images/setting_new.png"
                     alt="Advanced Settings Interface"
-                    className="w-full h-auto "
+                    className="w-full  "
                   />
                 </div>
               ),
