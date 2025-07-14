@@ -36,9 +36,9 @@ export default function CalendarSection() {
               description:
                 "Select any date to view appointments with detailed customer, professional, and payment information",
               visual: (
-                <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                <div className="bg-[#F5F7FA] rounded-lg p-4 shadow-md ">
                   <img
-                    src="/images/calendar-appointments.png"
+                    src="/images/myappointment_new.png"
                     alt="Calendar Scheduling Interface"
                     className="w-full h-auto rounded"
                   />
@@ -50,11 +50,11 @@ export default function CalendarSection() {
               description:
                 "Manage booking restrictions, subscription settings, invoice generation, and organizational preferences",
               visual: (
-                <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                <div className="bg-[#F5F7FA] rounded-lg p-4 shadow-md ">
                   <img
-                    src="/images/settings-page.png"
+                    src="/images/setting_new.png"
                     alt="Advanced Settings Interface"
-                    className="w-full h-auto rounded"
+                    className="w-full h-auto "
                   />
                 </div>
               ),
@@ -62,9 +62,9 @@ export default function CalendarSection() {
           ].map((feature) => (
             <div
               key={feature.title}
-              className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-500 hover:scale-105"
+              className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-xl transition-all duration-500"
             >
-              <div className="mb-6 h-48 flex items-center justify-center overflow-hidden">
+              <div className="mb-6  flex items-center justify-center rounded-lg overflow-hidden">
                 {feature.visual}
               </div>
               <h3 className="text-xl font-semibold mb-4 text-black">

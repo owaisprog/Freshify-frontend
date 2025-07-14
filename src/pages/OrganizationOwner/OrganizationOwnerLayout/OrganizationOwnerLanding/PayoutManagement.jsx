@@ -22,10 +22,10 @@ export default function PayoutManagement() {
             <div
               data-aos="fade-right"
               data-aos-delay="200"
-              className="bg-white rounded-lg p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-500"
+              className="bg-[#F5F7FA] rounded-lg p-6 shadow-md   hover:shadow-xl transition-all duration-500"
             >
               <img
-                src="/images/payout-stripe.png"
+                src="/images/payout_new.png"
                 alt="Stripe Payout Management"
                 className="w-full h-auto rounded-lg"
               />
@@ -49,10 +49,10 @@ export default function PayoutManagement() {
             <div
               data-aos="fade-left"
               data-aos-delay="200"
-              className="bg-white rounded-lg p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-500"
+              className="bg-[#F5F7FA] rounded-lg p-6 shadow-md  hover:shadow-xl transition-all duration-500"
             >
               <img
-                src="/images/services-overview.png"
+                src="/images/service_new.png"
                 alt="Service Analytics Dashboard"
                 className="w-full h-auto rounded-lg"
               />
@@ -83,7 +83,7 @@ export default function PayoutManagement() {
             className=" rounded-lg p-4"
           >
             <img
-              src="/images/services-management.png"
+              src="/images/service_new.png"
               alt="Complete Service Management Interface"
               className="w-full h-auto rounded-lg"
             />

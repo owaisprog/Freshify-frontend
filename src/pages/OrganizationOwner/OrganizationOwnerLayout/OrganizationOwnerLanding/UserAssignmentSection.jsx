@@ -31,7 +31,7 @@ export default function UserAssignmentSection() {
             className="bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden hover:shadow-3xl transition-all duration-500"
           >
             <img
-              src="/images/users-management.png"
+              src="/images/admin_new.png"
               alt="User Management System"
               className="w-full h-auto"
             />
