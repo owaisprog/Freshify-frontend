@@ -91,11 +91,11 @@ export default function LandingPageNavbar() {
                 <Button
                   radius={"md"}
                   classNames={{
-                    root: "!bg-black hover:!bg-gray-900 !min-w-[170px]",
+                    root: "!bg-black hover:!bg-gray-900 !min-w-[120px]",
                   }}
                   onClick={() => navigate("/", scrollTo(0, 0))}
                 >
-                  Goto Home
+                  Home
                 </Button>
               )}
               <Button
