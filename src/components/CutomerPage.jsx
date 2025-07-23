@@ -2,8 +2,13 @@ import { Title, Select, Group, Box } from "@mantine/core";
 import { useQueryHook } from "../services/reactQuery";
 import TableCom from "./Table";
 import { useState, useMemo } from "react";
+import { useParams } from "react-router-dom";
 
 function CustomerPage() {
+  // const { ownerId } = useParams() || {};
+  // let endpoint = ownerId
+  //   ? `/api/organization-transactions-details/${ownerId}`
+  //   : `/api/organization-transactions-details`;
   const {
     data: response = {},
     isLoading,
