@@ -70,11 +70,13 @@ export default function OrganizationsSettings() {
     { label: "2 Months", value: "2" },
     { label: "3 Months", value: "3" },
   ];
-  const rescheduleOptions = [
-    { label: "2 Hours", value: "2" },
-    { label: "6 Hours", value: "6" },
-    { label: "12 Hours", value: "12" },
-  ];
+  const rescheduleOptions = Array.from({ length: 24 }, (_, i) => {
+    const hour = i + 1;
+    return {
+      label: `${hour} Hour${hour > 1 ? "s" : ""}`,
+      value: hour.toString(),
+    };
+  });
 
   /* -------------------- LOADING STATE -------------------- */
   if (isLoading) {

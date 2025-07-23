@@ -4,6 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import OrganizationOwnerUserAdmin from "./Components/OrganizationOwnerUserAdmin";
 import OrganizationOwnerUserProfessional from "./Components/OrganizationOwnerUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
+import CutomerPage from "../../../../components/CutomerPage";
 
 function OrganizationOwnerUsers() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -119,25 +120,37 @@ function OrganizationOwnerUsers() {
               >
                 Professionals
               </Tabs.Tab>
+              <Tabs.Tab
+                value="customer"
+                style={{
+                  color: activeTab === "customer" ? "black" : "#718EBF",
+                  borderBottom:
+                    activeTab === "customer" ? "2px solid black" : "none",
+                }}
+              >
+                Customers
+              </Tabs.Tab>
             </Tabs.List>
           </Tabs>
         </section>
 
         <section>
           {/* ✅ Show loading state */}
-          {activeTab === "admin" ? (
+          {activeTab === "admin" && (
             <OrganizationOwnerUserAdmin
               userdata={filteredUsers}
               isLoading={isLoading}
               error={error}
             />
-          ) : (
+          )}
+          {activeTab === "barber" && (
             <OrganizationOwnerUserProfessional
               userdata={filteredUsers}
               isLoading={isLoading}
               error={error}
             />
           )}
+          {activeTab === "customer" && <CutomerPage />}
         </section>
       </section>
     </main>

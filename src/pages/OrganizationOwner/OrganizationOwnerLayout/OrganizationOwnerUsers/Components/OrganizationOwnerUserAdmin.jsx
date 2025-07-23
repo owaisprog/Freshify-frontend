@@ -31,7 +31,7 @@ function OrganizationOwnerUserAdmin({ userdata, isLoading, error }) {
     queryKey: ["locations", id],
     endpoint: `/api/get-locations-by-owner/${id}`,
     staleTime: 0 * 60 * 1000,
-    enabled: fetchLocations, // Only fetch when fetchLocations is true
+    enabled: fetchLocations,
   });
 
   // ✅ Fetch services
