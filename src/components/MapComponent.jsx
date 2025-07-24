@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Modal } from "@mantine/core";
+import { Loader, Modal } from "@mantine/core";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import { MapPin, ChevronRight } from "lucide-react";
 
@@ -79,7 +79,7 @@ const LocationMapModal = ({ locations }) => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDyBOHcEHcPuwBjrM9BzeAnpW3hy03NgBk",
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
   });
 
   // Handle location selection
@@ -134,9 +134,12 @@ const LocationMapModal = ({ locations }) => {
           blur: 2,
         }}
       >
-        <div className="space-y-4 " ref={modalBodyRef}>
+        <div
+          className="space-y-4 overflow-y-auto h-[calc(100vh-200px)]"
+          ref={modalBodyRef}
+        >
           {isLoaded ? (
-            <div className="h-96 w-full rounded-lg overflow-y-auto border border-gray-200 shadow-sm">
+            <div className="h-96 w-full rounded-lg border border-gray-200 shadow-sm">
               <GoogleMap
                 mapContainerStyle={{ width: "100%", height: "100%" }}
                 center={calculateCenter()}
@@ -167,7 +170,7 @@ const LocationMapModal = ({ locations }) => {
             </div>
           ) : (
             <div className="h-96 flex items-center justify-center bg-gray-100 rounded-lg">
-              <p>Loading map...</p>
+              <Loader type="bars" />
             </div>
           )}
 
