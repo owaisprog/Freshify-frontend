@@ -10,7 +10,6 @@ import SuperAdminUserAdmin from "./Components/SuperAdminUserAdmin";
 import SuperAdminUserProfessional from "./Components/SuperAdminUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
 import { IoArrowBackCircle } from "react-icons/io5";
-import CustomerPage from "../../../../components/CutomerPage";
 
 function SuperAdminUsers() {
   const location = useLocation();
@@ -150,7 +149,6 @@ function SuperAdminUsers() {
               error={error}
             />
           )}
-          {activeTab === "customer" && <CustomerPage />}
         </section>
       </section>
     </main>

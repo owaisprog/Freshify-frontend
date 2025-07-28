@@ -4,7 +4,6 @@ import { useSearchParams } from "react-router-dom";
 import OrganizationOwnerUserAdmin from "./Components/OrganizationOwnerUserAdmin";
 import OrganizationOwnerUserProfessional from "./Components/OrganizationOwnerUserProfessional";
 import { useQueryHook } from "../../../../services/reactQuery";
-import CutomerPage from "../../../../components/CutomerPage";
 
 function OrganizationOwnerUsers() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -150,7 +149,7 @@ function OrganizationOwnerUsers() {
               error={error}
             />
           )}
-          {activeTab === "customer" && <CutomerPage />}
+          {/* {activeTab === "customer" && <CutomerPage />} */}
         </section>
       </section>
     </main>
