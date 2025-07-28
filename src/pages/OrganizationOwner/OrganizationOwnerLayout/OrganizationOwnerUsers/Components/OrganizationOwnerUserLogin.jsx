@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button, Image, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../../../../../assets/freshifyImage.png";
+import freshifyImage from "../../../../../assets/bg_white.png";
+import largerImage from "../../../../../assets/big_black.png";
 import { useNavigate } from "react-router-dom";
 import { apiPost } from "../../../../../services/useApi";
 import { toast } from "react-toastify";
@@ -53,18 +54,18 @@ export default function OrganizationOwnerUserLogin() {
   return (
     <main className="flex flex-col lg:grid h-screen mx-auto lg:grid-cols-2 lg:gap-x-4 lg:gap-y-0 px-3 lg:px-0">
       {/* This image will be visible on large devices */}
-      <section className="hidden rounded-tr-xl rounded-br-xl bg-[#040707] lg:flex items-center justify-center">
+      <section className="hidden rounded-tr-xl rounded-br-xl bg-[#000] lg:flex items-center justify-center">
         <Image
+          className=" w-full "
           radius="md"
-          height={"full"}
-          src={freshifyImage}
+          src={largerImage}
           fallbackSrc="https://placehold.co/600x400?text=Placeholder"
         />
       </section>
 
       {/* This image will be visible on Mobile devices */}
       <section className=" lg:hidden h-[80px]    overflow-hidden bg-[#040707] flex items-center justify-center rounded-bl-xl rounded-br-xl">
-        <div className="h-[80px] w-full sm:w-[60%]  ">
+        <div className="h-[80px] w-[50%] sm:w-[30%]  ">
           <Image
             className="h-full w-full object-contain"
             src={freshifyImage}

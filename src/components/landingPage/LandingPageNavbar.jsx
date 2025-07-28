@@ -1,6 +1,6 @@
 // import { ButtonMenu } from "./LandingPageLoginButton";
 import { useLocation, useNavigate } from "react-router-dom";
-import navbarLogo from "../../assets/navbarLogo.jpg";
+import navbarLogo from "../../assets/big_white_cut.png";
 import { FiMenu } from "react-icons/fi";
 // import { useLocation } from "react-router-dom";
 import { Button, Drawer } from "@mantine/core";

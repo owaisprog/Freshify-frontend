@@ -88,7 +88,7 @@
 // // export default Widget;
 import { useParams, useSearchParams } from "react-router-dom";
 import { useQueryHook } from "../../services/reactQuery";
-import transparentWhite from "../../assets/transparentWhite.png";
+import transparentWhite from "../../assets/small.png";
 import { Button } from "@mantine/core";
 import { toast } from "react-toastify";
 
@@ -136,7 +136,7 @@ export default function Widget() {
           <img
             src={transparentWhite}
             alt={text || "Organization logo"}
-            className={`w-10 h-10 rounded-full  }`}
+            className={`w-10 h-9 rounded-full  }`}
           />
         </div>
         <span

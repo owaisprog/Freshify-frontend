@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Image, Drawer, Burger } from "@mantine/core";
+import { Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
-import freshifyLogo from "../.././../../assets/freshifyLogoMobile.png";
+import freshifyLogo from "../.././../../assets/bg_white.png";
 
 // Reuse your existing icons and data
 import { MdDashboard } from "react-icons/md";
@@ -51,12 +51,11 @@ export default function SuperAdminMobileNav() {
   return (
     <div className="lg:hidden bg-[#040707] fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
-      <nav className=" z-20  pr-4 flex justify-between items-center ">
+      <nav className=" z-20  pr-4 px-2 flex justify-between items-center ">
         <div className="h-[80px] w-[75%] sm:w-[60%] overflow-hidden ">
-          <Image
-            className="h-full w-full object-contain"
+          <img
             src={freshifyLogo}
-            alt="Freshify Logo"
+            className="h-[80px] w-52 text-white object-contain"
           />
         </div>
 

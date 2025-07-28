@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import freshifyImage from "../assets/freshifyImage.png";
+import freshifyImage from "../assets/big_black.png";
 import { usePostMutation, useQueryHook } from "../services/reactQuery";
 import { BackgroundImage, Container, Loader, Overlay } from "@mantine/core";
 import { useEffect } from "react";

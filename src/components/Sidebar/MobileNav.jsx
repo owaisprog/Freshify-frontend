@@ -1,6 +1,6 @@
 import { useState } from "react";
-import freshifyLogoMobile from "../../assets/freshifyLogoMobile.png";
-import { Image, Drawer, Burger } from "@mantine/core";
+import freshifyLogoMobile from "../../assets/bg_white.png";
+import { Drawer, Burger } from "@mantine/core";
 import { Link, useLocation } from "react-router-dom";
 
 // Reuse your existing icons and data
@@ -44,11 +44,10 @@ export default function MobileNav({
     <div className="lg:hidden bg-[#040707] fixed top-0 w-full z-50">
       {/* Top Navigation Bar */}
       <nav className=" z-20  pr-4  flex justify-between items-center ">
-        <div className="h-[80px] w-[75%] sm:w-[60%] overflow-hidden ">
-          <Image
-            className="h-full w-full object-contain"
+        <div className="h-[80px] w-[75%] sm:w-[60%] px-2 overflow-hidden ">
+          <img
             src={freshifyLogoMobile}
-            alt="Freshify Logo"
+            className="h-[80px] w-52 text-white object-contain"
           />
         </div>
         <Burger

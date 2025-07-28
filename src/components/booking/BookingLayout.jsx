@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import OrderSummary from "./OrderSummary.jsx";
-import { Image, Modal } from "@mantine/core";
-import freshifyImage from "../../assets/freshifyImage.png";
+import { Modal } from "@mantine/core";
+import freshifyImage from "../../assets/bg_white.png";
 
 export default function BookingLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,11 +13,9 @@ export default function BookingLayout() {
       {/* Main Content */}
       <div className="flex-1 text-black max-w-[1207px]  w-full  ">
         <section className=" lg:hidden  mb-8 h-[85px] md:h-[100px] md:py-2  overflow-hidden bg-black flex items-center justify-center rounded-bl-xl rounded-br-xl">
-          <Image
-            radius="md"
-            className="object-contain  w-full lg:w-[60%]  "
+          <img
+            className="object-contain rounded-md  w-[60%] sm:w-[40%] md:w-[35%] lg:w-[60%]  "
             src={freshifyImage}
-            fallbackSrc="https://placehold.co/600x400?text=Placeholder"
           />
         </section>
         <Outlet />

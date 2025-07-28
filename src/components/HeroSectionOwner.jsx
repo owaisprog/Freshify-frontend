@@ -153,7 +153,7 @@ const HeroSection = () => {
           >
             {/* Main image card */}
             <img
-              src="/images/hero_new1.png"
+              src="/images/new_logo_curvy.png"
               alt="Freshify Logo"
               className="w-full h-auto object-contain"
             />
