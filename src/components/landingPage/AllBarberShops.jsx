@@ -29,7 +29,7 @@ export default function AllBarberShops({
 
   console.log("Recomended Shops are ", recomendedShops);
 
-  // Function to find the minimum price service for an owner
+  // This function is used to find the minimum price service for an owner
   const getMinimumPrice = (services) => {
     if (!services || services?.length === 0) return 0;
 
