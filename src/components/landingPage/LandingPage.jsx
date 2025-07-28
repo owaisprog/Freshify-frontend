@@ -117,6 +117,7 @@ export default function LandingPage() {
         id="hero"
         className=" bg-gradient-to-r from-gray-50 via-pink-50 to-gray-50 px-4 sm:px-6 py-12 sm:py-20 relative overflow-hidden floating-shapes"
       >
+        {/* this is the heading which will show on the top of the page  */}
         <h1
           className="text-3xl max-w-6xl text-center mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-bold text-black leading-tight mb-8 sm:mb-12 bg-gradient-to-r capitalize from-black via-gray-800 to-gray-600 bg-clip-text px-4"
           data-aos="fade-up"
