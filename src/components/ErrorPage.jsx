@@ -16,7 +16,7 @@ export default function ErrorPage({
   return (
     <main className="h-screen w-full">
       <BackgroundImage
-        src="/src/assets/freshifyImage.png"
+        src="/src/assets/big_black.png"
         className="h-full w-full"
         radius="xs"
       >

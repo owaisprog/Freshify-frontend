@@ -119,19 +119,30 @@ function SuperAdminUsers() {
               >
                 Professionals
               </Tabs.Tab>
+              <Tabs.Tab
+                value="customer"
+                style={{
+                  color: activeTab === "customer" ? "black" : "#718EBF",
+                  borderBottom:
+                    activeTab === "customer" ? "2px solid black" : "none",
+                }}
+              >
+                Customers
+              </Tabs.Tab>
             </Tabs.List>
           </Tabs>
         </section>
 
         <section>
           {/* ✅ Show loading state */}
-          {activeTab === "admin" ? (
+          {activeTab === "admin" && (
             <SuperAdminUserAdmin
               userdata={filteredUsers}
               isLoading={isLoading}
               error={error}
             />
-          ) : (
+          )}
+          {activeTab === "barber" && (
             <SuperAdminUserProfessional
               userdata={filteredUsers}
               isLoading={isLoading}

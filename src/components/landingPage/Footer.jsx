@@ -1,4 +1,4 @@
-import footerLogo from "../../assets/footerLogo.png";
+import footerLogo from "../../assets/big_black_cut.png";
 export default function Footer() {
   return (
     <footer className="px-6 py-16 lg:px-8 bg-black text-white">

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQueryHook } from "../../services/reactQuery";
 import { Button, Input, Loader, Select } from "@mantine/core";
+import LocationMapModal from "../MapComponent";
 
 export default function AllBarberShops({
   recomendedShops,
@@ -316,7 +317,7 @@ export default function AllBarberShops({
                       </h3>
 
                       {/* Location count */}
-                      <div className="flex items-center space-x-2 text-gray-600">
+                      {/* <div className="flex items-center space-x-2 text-gray-600">
                         <MapPin className="w-4 h-4" />
                         <span className="text-sm">
                           {shop.locations.length}{" "}
@@ -324,6 +325,9 @@ export default function AllBarberShops({
                             ? "Location"
                             : "Locations"}
                         </span>
+                      </div> */}
+                      <div className="flex items-center space-x-2 text-gray-600">
+                        <LocationMapModal locations={shop.locations} />
                       </div>
                     </div>
 

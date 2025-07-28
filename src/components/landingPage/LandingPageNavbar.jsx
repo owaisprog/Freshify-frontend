@@ -1,6 +1,6 @@
 // import { ButtonMenu } from "./LandingPageLoginButton";
 import { useLocation, useNavigate } from "react-router-dom";
-import navbarLogo from "../../assets/navbarLogo.jpg";
+import navbarLogo from "../../assets/big_white_cut.png";
 import { FiMenu } from "react-icons/fi";
 // import { useLocation } from "react-router-dom";
 import { Button, Drawer } from "@mantine/core";
@@ -91,11 +91,11 @@ export default function LandingPageNavbar() {
                 <Button
                   radius={"md"}
                   classNames={{
-                    root: "!bg-black hover:!bg-gray-900 !min-w-[170px]",
+                    root: "!bg-black hover:!bg-gray-900 !min-w-[120px]",
                   }}
                   onClick={() => navigate("/", scrollTo(0, 0))}
                 >
-                  Goto Home
+                  Home
                 </Button>
               )}
               <Button

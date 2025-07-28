@@ -1,6 +1,5 @@
 import { useState } from "react";
-import freshifyLogo from "../.././../../assets/freshifyLogoMobile.png";
-import { Image } from "@mantine/core";
+import freshifyLogo from "../.././../../assets/bg_White.png";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
@@ -55,9 +54,9 @@ export default function SuperAdminSidebar() {
   return (
     <nav className=" flex flex-col rounded-2xl h-full bg-[#040707]">
       <div className="flex-1 rounded-2xl">
-        <div className=" h-[78px]  rounded-2xl">
-          <Image
-            className="object-center h-full w-full !rounded-2xl"
+        <div className=" h-[100px]  rounded-2xl">
+          <img
+            className="object-center h-full w-full p-4 !rounded-2xl"
             src={freshifyLogo}
           />
         </div>

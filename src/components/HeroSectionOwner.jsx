@@ -70,8 +70,8 @@ const HeroSection = () => {
                     key={index}
                     className={`inline-block ${
                       index < 8
-                        ? "bg-gradient-to-r from-gray-800 via-gray-600 to-gray-800 bg-clip-text text-transparent"
-                        : "text-gray-900"
+                        ? "bg-gradient-to-r bg-[#000] bg-clip-text text-transparent"
+                        : "text-[#000]"
                     }`}
                   >
                     {char}
@@ -90,7 +90,7 @@ const HeroSection = () => {
                   />
                 </span>
               </div>
-              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mt-2">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#000] mt-2">
                 Service Management
               </div>
             </h1>
@@ -153,7 +153,7 @@ const HeroSection = () => {
           >
             {/* Main image card */}
             <img
-              src="/images/hero_new1.png"
+              src="/images/new_logo_curvy.png"
               alt="Freshify Logo"
               className="w-full h-auto object-contain"
             />

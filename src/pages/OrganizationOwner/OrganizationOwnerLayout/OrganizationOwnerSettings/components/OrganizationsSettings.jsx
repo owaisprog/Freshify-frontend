@@ -21,6 +21,8 @@ export default function OrganizationsSettings() {
 
   // State for color customization modal
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
+
+  const [text, setText] = useState("");
   const [bgColor, setBgColor] = useState("");
   const [textColor, setTextColor] = useState("");
 
@@ -84,11 +86,13 @@ export default function OrganizationsSettings() {
     { label: "2 Months", value: "2" },
     { label: "3 Months", value: "3" },
   ];
-  const rescheduleOptions = [
-    { label: "2 Hours", value: "2" },
-    { label: "6 Hours", value: "6" },
-    { label: "12 Hours", value: "12" },
-  ];
+  const rescheduleOptions = Array.from({ length: 24 }, (_, i) => {
+    const hour = i + 1;
+    return {
+      label: `${hour} Hour${hour > 1 ? "s" : ""}`,
+      value: hour.toString(),
+    };
+  });
 
   /* -------------------- LOADING STATE -------------------- */
   if (isLoading) {
@@ -151,7 +155,7 @@ export default function OrganizationsSettings() {
     return `<iframe
   src="https://freshify-one.vercel.app/freshifyWidget/${userId}?bgColor=${encodeURIComponent(
     bgColor
-  )}&textColor=${encodeURIComponent(textColor)}"
+  )}&textColor=${encodeURIComponent(textColor)}&text=${encodeURIComponent(text)}"
   title="iframe-owner"
   scrolling="no"
   style="
@@ -190,6 +194,14 @@ export default function OrganizationsSettings() {
         centered
       >
         <div className="flex flex-col gap-4 mb-6">
+          <TextInput
+            classNames={{ label: "!font-normal" }}
+            radius={"md"}
+            label="Enter Name"
+            placeholder="Enter Name (e.g. Freshify)"
+            value={text}
+            onChange={(e) => setText(e.currentTarget.value)}
+          />
           <TextInput
             classNames={{ label: "!font-normal" }}
             radius={"md"}
@@ -274,12 +286,12 @@ export default function OrganizationsSettings() {
           Copy Booking Widget Code
         </span>
         <Button
-          className="!w-[112px] lg:!w-[121px]"
           radius="md"
           bg="black"
           onClick={() => setIsColorModalOpen(true)}
         >
-          Copy
+          <span className="lg:hidden">Update</span>
+          <span className="hidden lg:block">Update and Copy</span>
         </Button>
       </div>
 

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button, Image, PasswordInput, Text } from "@mantine/core";
+import { Button, PasswordInput, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../../../assets/freshifyImage.png";
+import freshifyImage from "../../../assets/bg_white.png";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { apiPost } from "../../../services/useApi";
@@ -57,20 +57,15 @@ export default function MainNewPassword() {
   return (
     <main className="grid lg:h-[100dvh]  mx-auto grid-cols-1 lg:grid-cols-2 gap-y-8 lg:gap-y-0    px-2 lg:px-0">
       {/* This image will be visible on large devices  */}
-      <section className=" hidden rounded-tr-xl rounded-br-xl bg-[#040707] lg:flex items-center justify-center">
-        <Image
-          radius="md"
-          height={"full"}
-          src={freshifyImage}
-          fallbackSrc="https://placehold.co/600x400?text=Placeholder"
-        />
+      <section className=" hidden rounded-tr-xl rounded-br-xl bg-[#000] lg:flex items-center justify-center">
+        <img radius="md" className="max-w-[90%]" src={freshifyImage} />
       </section>
 
       {/* This image will be visible on Mobile devices  */}
-      <section className=" lg:hidden h-[80px]    overflow-hidden bg-[#040707] flex items-center justify-center rounded-bl-xl rounded-br-xl">
-        <div className="h-[80px] w-full sm:w-[60%]  ">
-          <Image
-            className="h-full w-full object-contain"
+      <section className=" lg:hidden h-[80px]    overflow-hidden bg-[#000] flex items-center justify-center rounded-bl-xl rounded-br-xl">
+        <div className="h-full   ">
+          <img
+            className="h-full w-full object-cover"
             src={freshifyImage}
             alt="Freshify Logo"
           />
