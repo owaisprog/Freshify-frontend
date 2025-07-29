@@ -119,16 +119,6 @@ function SuperAdminUsers() {
               >
                 Professionals
               </Tabs.Tab>
-              <Tabs.Tab
-                value="customer"
-                style={{
-                  color: activeTab === "customer" ? "black" : "#718EBF",
-                  borderBottom:
-                    activeTab === "customer" ? "2px solid black" : "none",
-                }}
-              >
-                Customers
-              </Tabs.Tab>
             </Tabs.List>
           </Tabs>
         </section>

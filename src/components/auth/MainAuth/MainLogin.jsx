@@ -74,7 +74,7 @@ export default function MainLogin() {
 
       {/* This image will be visible on Mobile devices  */}
       <section className=" lg:hidden h-[80px]    overflow-hidden bg-[#000] flex items-center justify-center rounded-bl-xl rounded-br-xl">
-        <div className="h-[80px]   w-[60%] sm:w-[40%] md:w-[35%]  bg-red-400">
+        <div className="h-[80px]   w-[60%] sm:w-[40%] md:w-[35%]  ">
           <Image
             className="h-full w-full object-cover"
             src={freshifyImage}
