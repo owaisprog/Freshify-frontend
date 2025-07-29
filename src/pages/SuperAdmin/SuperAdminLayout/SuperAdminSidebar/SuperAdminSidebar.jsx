@@ -1,5 +1,5 @@
 import { useState } from "react";
-import freshifyLogo from "../.././../../assets/bg_White.png";
+import freshifyLogo from "../../../../assets/bg_white.png";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
