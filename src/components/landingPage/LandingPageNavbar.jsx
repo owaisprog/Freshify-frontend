@@ -153,7 +153,7 @@ export default function LandingPageNavbar() {
                 }}
                 onClick={() => navigate("/", scrollTo(0, 0))}
               >
-                Goto Home
+                Home
               </Button>
             )}
             <Button
