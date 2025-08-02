@@ -229,14 +229,7 @@ const router = createBrowserRouter(
       </Route>
       {/* super admin auth */}
       <Route
-        path="SuperAdminOrganization"
-        element={
-          <ProtectedRoute
-            path="/Login?role=superadmin"
-            requiredRole="superadmin"
-          >
-            <SuperAdminLayout />
-          </ProtectedRoute>
+        path="SuperAdminOrganization"element={  <ProtectedRoute path="/Login?role=superadmin" requiredRole="superadmin" ><SuperAdminLayout /></ProtectedRoute>
         }
       >
         <Route index element={<SuperAdminOrganization />} />
