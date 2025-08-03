@@ -16,7 +16,7 @@ function SuperAdminPlan() {
 
   // Safely access the first plan or use empty object as fallback
   const plan = planData?.data?.[0] || {};
-
+console.log(plan)
   const { mutate: updatePrice, isPending: isLoadingUpdate } =
     useUpdateMutationPut(["plans"]);
 

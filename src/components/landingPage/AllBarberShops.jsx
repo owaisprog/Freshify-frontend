@@ -315,17 +315,7 @@ export default function AllBarberShops({
                         {shop.name}
                         <span className="text-xs font-normal"> (Owner)</span>
                       </h3>
-
-                      {/* Location count */}
-                      {/* <div className="flex items-center space-x-2 text-gray-600">
-                        <MapPin className="w-4 h-4" />
-                        <span className="text-sm">
-                          {shop.locations.length}{" "}
-                          {shop.locations.length === 1
-                            ? "Location"
-                            : "Locations"}
-                        </span>
-                      </div> */}
+ 
                       <div className="flex items-center space-x-2 text-gray-600">
                         <LocationMapModal locations={shop.locations} />
                       </div>
