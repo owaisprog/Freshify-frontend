@@ -16,11 +16,9 @@ export default function MainLogin() {
     try {
       setLoading(true);
       const userData = await loginUser(values.email, values.password, role);
-      //consoe.log("User data is :", userData);
-
       if (role === "organization_owner") {
         if (userData?.subscriptionStatus !== "paid") {
-          toast.message("Please Subscribe your Plan", {
+          toast.info("Please Subscribe your Plan", {
             position: "top-right",
           });
         } else {
@@ -29,6 +27,7 @@ export default function MainLogin() {
       } else {
         toast.success(userData?.message, { position: "top-right" });
       }
+      // hello
       if (
         userData.user.role === "organization_owner" &&
         role === "organization_owner"

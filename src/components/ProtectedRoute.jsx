@@ -10,7 +10,10 @@ const ProtectedRoute = ({ requiredRole, path, children }) => {
   const user = userData ? JSON.parse(userData) : null; // Parse user data
   // const navigate = useNavigate();
   // If no token, redirect to login
+
+  console.log("Role is :", user?.role, "and Status is: ", subscriptionStatus);
   if (!token) {
+    5;
     return <Navigate to={path} replace />;
   }
   // "/OrganizationOwnerLogin"
