@@ -9,7 +9,7 @@ import "aos/dist/aos.css";
 import Footer from "./Footer";
 
 export default function LandingPage() {
-  const [recomendedShops, setRecomendedShops] = useState(["Hello"]);
+  const [recomendedShops, setRecomendedShops] = useState([]);
 
   const StarIcon = ({ filled = true }) => (
     <svg

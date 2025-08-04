@@ -5,10 +5,7 @@ import { useQueryHook } from "../../services/reactQuery";
 import { Button, Input, Loader, Select } from "@mantine/core";
 import LocationMapModal from "../MapComponent";
 
-export default function AllBarberShops({
-  recomendedShops,
-  setRecomendedShops,
-}) {
+export default function AllBarberShops({ setRecomendedShops }) {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -27,8 +24,6 @@ export default function AllBarberShops({
     endpoint: "/api/get-organizationowners",
     staleTime: 15 * 60 * 1000,
   });
-
-  console.log("Recomended Shops are ", recomendedShops);
 
   // This function is used to find the minimum price service for an owner
   const getMinimumPrice = (services) => {
@@ -315,7 +310,7 @@ export default function AllBarberShops({
                         {shop.name}
                         <span className="text-xs font-normal"> (Owner)</span>
                       </h3>
- 
+
                       <div className="flex items-center space-x-2 text-gray-600">
                         <LocationMapModal locations={shop.locations} />
                       </div>
@@ -372,7 +367,7 @@ export default function AllBarberShops({
                 <Scissors className="w-8 h-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                No barbershops found
+                No Organization available
               </h3>
               <p className="text-gray-600">
                 Try adjusting your filters to see more results.
