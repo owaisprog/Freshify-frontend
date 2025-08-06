@@ -11,24 +11,34 @@ import {
   isBefore,
   getDate,
   startOfDay,
+  getWeek,
 } from "date-fns";
 
 const CalendarComp = ({
   selectedDay,
   onClickDay,
   monthsToShow = 2,
-  workingHours,
-  handleMonthChange,
-  calculateWeekNumber,
-  totalWeeks,
-  firstMonthStart,
+  workingHours = [],
+  handleMonthChange = () => {},
+  calculateWeekNumber = (date) => getWeek(date, { weekStartsOn: 1 }),
+  totalWeeks = Infinity,
+  firstMonthStart = new Date(),
 }) => {
   const today = startOfDay(new Date());
   const [selectedMonthIndex, setSelectedMonthIndex] = useState(0);
 
+  // Validate and ensure firstMonthStart is a valid Date
+  const validatedFirstMonthStart =
+    firstMonthStart instanceof Date
+      ? firstMonthStart
+      : new Date(firstMonthStart);
+
+  // Ensure monthsToShow is at least 1
+  const validatedMonthsToShow = Math.max(1, Math.ceil(monthsToShow));
+
   const monthsToDisplay = Array.from(
-    { length: Math.ceil(monthsToShow) },
-    (_, i) => addMonths(firstMonthStart, i)
+    { length: validatedMonthsToShow },
+    (_, i) => addMonths(startOfMonth(validatedFirstMonthStart), i)
   );
 
   const displayMonth = monthsToDisplay[selectedMonthIndex];
@@ -47,16 +57,19 @@ const CalendarComp = ({
     const dayName = format(date, "EEEE").toLowerCase();
     const weekNumber = calculateWeekNumber(date);
 
+    // Only check working hours if they exist and week number is within totalWeeks
     const hasWorkingHours =
-      weekNumber <= totalWeeks &&
-      workingHours?.some(
-        (day) =>
-          day.day.toLowerCase() === dayName &&
-          day.week === weekNumber &&
-          day.start &&
-          day.end &&
-          !day.closed
-      );
+      workingHours.length > 0
+        ? weekNumber <= totalWeeks &&
+          workingHours.some(
+            (day) =>
+              day.day.toLowerCase() === dayName &&
+              day.week === weekNumber &&
+              day.start &&
+              day.end &&
+              !day.closed
+          )
+        : true; // If no working hours provided, assume all days are available
 
     const isSelected = selectedDay === date.toDateString();
 
@@ -115,15 +128,17 @@ const CalendarComp = ({
                       const dayName = format(date, "EEEE").toLowerCase();
                       const weekNumber = calculateWeekNumber(date);
                       const hasWorkingHours =
-                        weekNumber <= totalWeeks &&
-                        workingHours?.some(
-                          (day) =>
-                            day.day.toLowerCase() === dayName &&
-                            day.week === weekNumber &&
-                            day.start &&
-                            day.end &&
-                            !day.closed
-                        );
+                        workingHours.length > 0
+                          ? weekNumber <= totalWeeks &&
+                            workingHours.some(
+                              (day) =>
+                                day.day.toLowerCase() === dayName &&
+                                day.week === weekNumber &&
+                                day.start &&
+                                day.end &&
+                                !day.closed
+                            )
+                          : true;
 
                       if (
                         !isBefore(startOfDay(date), today) &&
