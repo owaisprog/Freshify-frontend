@@ -10,14 +10,9 @@ export default function OrganizationOwnerCalendar() {
   });
 
   return (
-    // <CalendarPage
-    //   numberOfMonths={bookingTime?.bookingWindowMonths}
-    //   resecduleTimeLimit={bookingTime?.timeRestrictionHours}
-    // />
-    <h1>
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
-      nobis qui asperiores numquam! Sunt veniam explicabo repellat magni libero
-      nemo!
-    </h1>
+    <CalendarPage
+      numberOfMonths={bookingTime?.bookingWindowMonths}
+      resecduleTimeLimit={bookingTime?.timeRestrictionHours}
+    />
   );
 }
