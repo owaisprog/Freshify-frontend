@@ -299,13 +299,13 @@ export default function CalendarPage({
           initialDate={currentDate}
         />
       </section> */}
-      {/* <CustomerTable
+      <CustomerTable
         bookings={filteredBookings}
         isLoading={isLoading}
         error={error}
         role={role}
         resecduleTimeLimit={resecduleTimeLimit}
-      /> */}
+      />
 
       {/* <EditAvailabilityPopup
         opened={availabilityModalOpen}
