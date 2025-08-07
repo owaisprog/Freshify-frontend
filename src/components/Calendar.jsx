@@ -1,7 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
 
-// Enhanced Safari-compatible date utilities
+// Safari-compatible date utilities
 const formatDate = (date, pattern) => {
+  if (!date || isNaN(date.getTime())) return "";
+
   const day = date.getDate();
   if (pattern === "d") return day.toString();
   if (pattern === "MMMM dd, yyyy") {
@@ -26,7 +28,8 @@ const formatDate = (date, pattern) => {
 
 // Safari-safe date comparison
 const isSameDay = (date1, date2) => {
-  if (!date1 || !date2) return false;
+  if (!date1 || !date2 || isNaN(date1.getTime()) || isNaN(date2.getTime()))
+    return false;
   return (
     date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
@@ -36,15 +39,17 @@ const isSameDay = (date1, date2) => {
 
 // Safari-safe date calculations
 const startOfMonth = (date) => {
-  // Safari requires valid date objects
+  if (!date || isNaN(date.getTime())) return new Date();
   return new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
 };
 
 const endOfMonth = (date) => {
+  if (!date || isNaN(date.getTime())) return new Date();
   return new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 0));
 };
 
 const addMonths = (date, months) => {
+  if (!date || isNaN(date.getTime())) return new Date();
   const result = new Date(date);
   result.setUTCMonth(result.getUTCMonth() + months);
   return result;
@@ -59,24 +64,37 @@ const Calendar = ({
   yearToShow = null,
   calendarState,
 }) => {
+  // Validate initial date
+  const safeInitialDate =
+    initialDate && !isNaN(initialDate.getTime()) ? initialDate : new Date();
+
   // Initialize with UTC dates for Safari compatibility
   const [internalState, setInternalState] = useState(() => {
-    const currentDate = new Date();
+    const currentDateUTC = new Date(
+      Date.UTC(
+        safeInitialDate.getFullYear(),
+        safeInitialDate.getMonth(),
+        safeInitialDate.getDate()
+      )
+    );
+
+    // Safely handle monthToShow and yearToShow
     const initialMonth =
       monthToShow !== null
-        ? new Date(Date.UTC(currentDate.getFullYear(), monthToShow - 1, 1))
-        : startOfMonth(initialDate);
-
-    const initialYear =
-      yearToShow !== null
-        ? new Date(Date.UTC(yearToShow, (monthToShow || 1) - 1, 1))
-        : initialMonth;
+        ? new Date(
+            Date.UTC(
+              yearToShow || currentDateUTC.getFullYear(),
+              Math.max(0, Math.min(11, monthToShow - 1)),
+              1
+            )
+          )
+        : startOfMonth(currentDateUTC);
 
     return {
-      selectedDate: initialDate,
-      currentMonth: startOfMonth(initialYear),
-      nextMonth: addMonths(startOfMonth(initialYear), 1),
-      today: currentDate,
+      selectedDate: currentDateUTC,
+      currentMonth: startOfMonth(initialMonth),
+      nextMonth: addMonths(startOfMonth(initialMonth), 1),
+      today: currentDateUTC,
       monthsToShow,
     };
   });
@@ -86,19 +104,21 @@ const Calendar = ({
     if (monthToShow !== null || yearToShow !== null) {
       const newDate = new Date(
         Date.UTC(
-          yearToShow || internalState.currentMonth.getUTCFullYear(),
+          yearToShow || internalState.currentMonth.getFullYear(),
           monthToShow !== null
-            ? monthToShow - 1
-            : internalState.currentMonth.getUTCMonth(),
+            ? Math.max(0, Math.min(11, monthToShow - 1))
+            : internalState.currentMonth.getMonth(),
           1
         )
       );
 
-      setInternalState((prev) => ({
-        ...prev,
-        currentMonth: startOfMonth(newDate),
-        nextMonth: addMonths(startOfMonth(newDate), 1),
-      }));
+      if (!isNaN(newDate.getTime())) {
+        setInternalState((prev) => ({
+          ...prev,
+          currentMonth: startOfMonth(newDate),
+          nextMonth: addMonths(startOfMonth(newDate), 1),
+        }));
+      }
     }
   }, [monthToShow, yearToShow]);
 
@@ -107,13 +127,21 @@ const Calendar = ({
     const start = startOfMonth(internalState.currentMonth);
     const end = endOfMonth(internalState.currentMonth);
 
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      console.error("Invalid date range in datesToDisplay");
+      return [];
+    }
+
     const dates = [];
     const year = start.getUTCFullYear();
     const month = start.getUTCMonth();
     const daysInMonth = end.getUTCDate();
 
     for (let day = 1; day <= daysInMonth; day++) {
-      dates.push(new Date(Date.UTC(year, month, day)));
+      const date = new Date(Date.UTC(year, month, day));
+      if (!isNaN(date.getTime())) {
+        dates.push(date);
+      }
     }
 
     return dates;
@@ -121,20 +149,15 @@ const Calendar = ({
 
   // Handle date click with Safari-safe dates
   const handleDateClick = (date) => {
-    // Create new date in local timezone from UTC values
-    const localDate = new Date(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate()
-    );
+    if (!date || isNaN(date.getTime())) return;
 
     const updatedState = {
       ...internalState,
-      selectedDate: localDate,
-      selectedMonth: localDate.getMonth() + 1,
-      selectedYear: localDate.getFullYear(),
-      selectedDay: localDate.getDate(),
-      selectedDateString: formatDate(localDate, "MMMM dd, yyyy"),
+      selectedDate: new Date(date), // Create new date object
+      selectedMonth: date.getUTCMonth() + 1,
+      selectedYear: date.getUTCFullYear(),
+      selectedDay: date.getUTCDate(),
+      selectedDateString: formatDate(date, "MMMM dd, yyyy"),
     };
 
     setInternalState(updatedState);
@@ -180,10 +203,8 @@ const Calendar = ({
             }}
           >
             {datesToDisplay.map((date, index) => {
-              const isSelected =
-                internalState.selectedDate &&
-                isSameDay(internalState.selectedDate, date);
-              const isTodayDate = isSameDay(date, new Date());
+              const isSelected = isSameDay(internalState.selectedDate, date);
+              const isTodayDate = isSameDay(date, internalState.today);
 
               return (
                 <button

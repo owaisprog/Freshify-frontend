@@ -40,29 +40,37 @@ export default function CalendarPage({
   const [availabilityModalOpen, setAvailabilityModalOpen] = useState(false);
   const [isloader, setIsLoader] = useState(false);
 
-  const currentDate = useMemo(() => new Date(), []);
-  // const currentDate = useMemo(() => currentDateUstable, [currentDateUstable]);
+  // Safari-safe current date initialization
+  const currentDate = useMemo(() => {
+    const date = new Date();
+    return new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
+  }, []);
+
   const [calendarState, setCalendarState] = useState({
     selectedDate: currentDate,
     today: currentDate,
     monthsToShow: 1,
   });
-  // Memoized month options
+
+  // Memoized month options with Safari-safe dates
   const selectData = useMemo(() => {
     return Array.from({ length: numberOfMonths }, (_, i) => {
       const monthDate = addMonths(currentDate, i);
       return {
-        value: format(monthDate, "yyyy-MMMM"),
+        value: monthDate.getFullYear() + "-" + (monthDate.getMonth() + 1), // Use numeric month instead of name
         label: format(monthDate, "MMMM"),
+        rawDate: monthDate, // Store the actual Date object
       };
     });
   }, [numberOfMonths, currentDate]);
 
   const [selectedOption, setSelectedOption] = useState(
-    format(currentDate, "yyyy-MMMM")
+    currentDate.getFullYear() + "-" + (currentDate.getMonth() + 1)
   );
   const [selectedOptionMonth, setSelectedOptionMonth] = useState(
-    getMonth(currentDate) + 1
+    currentDate.getMonth() + 1
   );
 
   const {
@@ -94,7 +102,6 @@ export default function CalendarPage({
       updateSeen({
         endpoint: `/api/is-seen/${val?._id}`,
       });
-      //consoe.log(val);
     });
   }, [updateSeen, role, bookings]);
 
@@ -141,7 +148,10 @@ export default function CalendarPage({
     if (!bookings.length) return [];
 
     const monthFiltered = bookings.filter((val) => {
-      return format(new Date(val?.bookingDate), "yyyy-MMMM") === selectedOption;
+      const bookingDate = new Date(val?.bookingDate);
+      const bookingYearMonth =
+        bookingDate.getFullYear() + "-" + (bookingDate.getMonth() + 1);
+      return bookingYearMonth === selectedOption;
     });
 
     if (selectedWeek) {
@@ -173,23 +183,31 @@ export default function CalendarPage({
     weekOptions,
   ]);
 
-  const handleSelectChange = useCallback((value) => {
-    const date = new Date(value);
-    setSelectedOptionMonth(getMonth(date) + 1);
-    setSelectedOption(value);
-    setCalendarState((prev) => ({
-      ...prev,
-      selectedDate: null,
-    }));
-    setSelectedWeek(null);
+  const handleSelectChange = useCallback(
+    (value) => {
+      const [year, month] = value.split("-").map(Number);
+      const date = new Date(Date.UTC(year, month - 1, 1));
 
-    if (value === format(new Date(), "yyyy-MMMM")) {
+      setSelectedOptionMonth(month);
+      setSelectedOption(value);
       setCalendarState((prev) => ({
         ...prev,
-        selectedDate: new Date(),
+        selectedDate: null,
       }));
-    }
-  }, []);
+      setSelectedWeek(null);
+
+      if (
+        year === currentDate.getFullYear() &&
+        month === currentDate.getMonth() + 1
+      ) {
+        setCalendarState((prev) => ({
+          ...prev,
+          selectedDate: new Date(currentDate),
+        }));
+      }
+    },
+    [currentDate]
+  );
 
   const handleWeekSelect = useCallback((selectedWeekValue) => {
     setSelectedWeek(selectedWeekValue);
@@ -233,15 +251,17 @@ export default function CalendarPage({
     },
     [editAvalibility, id]
   );
+
   function handleAvailabilityLoader() {
     setAvailabilityModalOpen(true);
   }
+
   return (
-    <main className="grid  grid-cols-1  gap-y-5  w-full pt-20 lg:pt-0  p-6 lg:p-0 ">
-      <div className="flex items-center justify-between pr-4  lg:bg-[#FFFFFF]  rounded-[16px]">
+    <main className="grid grid-cols-1 gap-y-5 w-full pt-20 lg:pt-0 p-6 lg:p-0">
+      <div className="flex items-center justify-between pr-4 lg:bg-[#FFFFFF] rounded-[16px]">
         <Title
           c={"black"}
-          className="lg:!px-6  !flex !items-center gap-4 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
+          className="lg:!px-6 !flex !items-center gap-4 lg:bg-[#FFFFFF] lg:!text-[32px] !text-[24px] !font-[500] py-[18px] !rounded-[16px]"
         >
           {mode === "superadmin" ? (
             <IoArrowBackCircle
@@ -257,8 +277,8 @@ export default function CalendarPage({
         </Title>
         {mode === "customer" ? <NotificationDropdown /> : null}
       </div>
-      <div className="  px-2   max-w-[1440px] mx-auto w-full   lg:px-0 -mt-4 lg:mt-0 flex flex-col-reverse  sm:flex-row gap-4 justify-between">
-        <div className="flex gap-2 ">
+      <div className="px-2 max-w-[1440px] mx-auto w-full lg:px-0 -mt-4 lg:mt-0 flex flex-col-reverse sm:flex-row gap-4 justify-between">
+        <div className="flex gap-2">
           {/* Select Month */}
           <CustomSelect
             data={selectData}
@@ -283,17 +303,17 @@ export default function CalendarPage({
           px={"xl"}
           fw={"normal"}
           loaderProps={{ type: "bars" }}
-          className="!text-[18px] !  !font-[400] "
+          className="!text-[18px] !font-[400]"
           onClick={() => handleAvailabilityLoader()}
         >
           Edit Availability
         </Button>
       </div>
 
-      <section className=" max-w-[1440px] mx-auto w-full">
+      <section className="max-w-[1440px] mx-auto w-full">
         <Calendar
           monthToShow={selectedOptionMonth}
-          yearToShow={getYear(new Date(selectedOption))}
+          yearToShow={currentDate.getFullYear()}
           setCalendarState={handleCalendarDateChange}
           calendarState={calendarState}
           initialDate={currentDate}
