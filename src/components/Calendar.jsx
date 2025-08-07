@@ -150,7 +150,7 @@ const Calendar = ({
           </div>
         </ScrollArea>
       </div> */}
-      Hello This is calendar portion
+      Hello This is calendar section
     </div>
   );
 };
