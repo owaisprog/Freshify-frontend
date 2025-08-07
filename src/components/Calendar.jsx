@@ -196,7 +196,7 @@ const Calendar = ({
           `}</style>
 
           <div
-            className="flex py-2 px-4"
+            className="flex items-center gap-2 py-2 px-4"
             style={{
               width: "max-content",
               minWidth: "100%",
