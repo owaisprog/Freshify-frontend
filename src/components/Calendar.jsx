@@ -1,19 +1,73 @@
 import { useState, useMemo, useEffect } from "react";
-import {
-  format,
-  isBefore,
-  isToday,
-  startOfMonth,
-  endOfMonth,
-  addMonths,
-  getMonth,
-  getYear,
-  setMonth,
-  isSameDay,
-} from "date-fns";
+
+// Utility functions to replace date-fns
+const formatDate = (date, pattern) => {
+  const day = date.getDate();
+  if (pattern === "d") return day.toString();
+  if (pattern === "MMMM dd, yyyy") {
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return `${months[date.getMonth()]} ${day}, ${date.getFullYear()}`;
+  }
+  return day.toString();
+};
+
+const isToday = (date) => {
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+};
+
+const startOfMonth = (date) => {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+};
+
+const endOfMonth = (date) => {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+};
+
+const addMonths = (date, months) => {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() + months);
+  return result;
+};
+
+const getMonth = (date) => date.getMonth();
+
+const getYear = (date) => date.getFullYear();
+
+const setMonth = (date, month) => {
+  const result = new Date(date);
+  result.setMonth(month);
+  return result;
+};
+
+const isSameDay = (date1, date2) => {
+  if (!date1 || !date2) return false;
+  return (
+    date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear()
+  );
+};
 
 const Calendar = ({
-  setCalendarState,
+  setCalendarState = () => {},
   initialDate = new Date(),
   monthsToShow = 1,
   monthToShow = null,
@@ -29,7 +83,7 @@ const Calendar = ({
 
     const initialYear =
       yearToShow !== null
-        ? new Date(yearToShow, monthToShow - 1, 1)
+        ? new Date(yearToShow, (monthToShow || 1) - 1, 1)
         : initialMonth;
 
     return {
@@ -75,20 +129,20 @@ const Calendar = ({
     }
   }, [calendarState?.selectedDate]);
 
-  // Generate dates for the current month - FIXED FOR iOS SAFARI
+  // Generate dates for the current month - SAFARI OPTIMIZED
   const datesToDisplay = useMemo(() => {
     const start = startOfMonth(internalState.currentMonth);
     const end = endOfMonth(internalState.currentMonth);
 
     const dates = [];
-    let currentDate = new Date(start);
-    let safetyCounter = 0; // Prevent infinite loop
 
-    // MAIN FIX: Simplified condition to prevent iOS Safari infinite loop
-    while (currentDate <= end && safetyCounter < 32) {
-      dates.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-      safetyCounter++;
+    // More reliable date generation for Safari
+    const year = start.getFullYear();
+    const month = start.getMonth();
+    const daysInMonth = end.getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      dates.push(new Date(year, month, day));
     }
 
     return dates;
@@ -102,29 +156,44 @@ const Calendar = ({
       selectedMonth: getMonth(date) + 1,
       selectedYear: getYear(date),
       selectedDay: date.getDate(),
-      selectedDateString: format(date, "MMMM dd, yyyy"),
+      selectedDateString: formatDate(date, "MMMM dd, yyyy"),
     };
     setInternalState(updatedState);
     setCalendarState(updatedState);
   };
 
   return (
-    <div className="flex !bg-[#FFFFFF] px-2 !rounded-[16px] justify-center items-center w-full">
+    <div
+      className="flex px-2 justify-center items-center w-full"
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderRadius: "16px",
+      }}
+    >
       <div className="w-full">
-        {/* Replaced ScrollArea with Safari-friendly container */}
         <div
-          className="overflow-x-auto hide-scrollbar"
           style={{
+            overflowX: "auto",
             WebkitOverflowScrolling: "touch",
             paddingBottom: "2px",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
+          <style>{`
+            .calendar-scroll::-webkit-scrollbar {
+              display: none;
+            }
+          `}</style>
+
           <div
-            className="flex gap-2 py-2 px-4"
-            style={{ minWidth: "max-content" }}
+            className="calendar-scroll flex gap-2 py-2 px-4"
+            style={{
+              minWidth: "max-content",
+              width: "fit-content",
+            }}
           >
-            {JSON.stringify(datesToDisplay, null, 2)}
-            {/* {datesToDisplay.map((date) => {
+            {datesToDisplay.map((date, index) => {
               const isSelected =
                 internalState.selectedDate &&
                 isSameDay(internalState.selectedDate, date);
@@ -132,23 +201,21 @@ const Calendar = ({
 
               return (
                 <button
-                  key={date.toString()}
+                  key={`date-${date.getTime()}-${index}`}
                   onClick={() => handleDateClick(date)}
-                  className={`min-w-12 cursor-pointer h-12 flex items-center justify-center rounded-full transition-all !font-bold ${
+                  className={`min-w-12  h-12 flex items-center hover:cursor-pointer  hover:bg-black duration-300 hover:text-white justify-center rounded-full transition-all !font-bold ${
                     isSelected
-                      ? "border border-black text-black"
+                      ? " border border-black text-black"
                       : isTodayDate
-                        ? "bg-[#F5F7FA] text-black"
-                        : "bg-[#F5F7FA] text-black"
-                  } hover:bg-black hover:text-white duration-300`}
+                        ? " bg-[#F5F7FA] text-black"
+                        : "bg-[#F5F7FA]  text-black"
+                  }`}
                 >
-                  {format(date, "d")}
+                  {formatDate(date, "d")}
                 </button>
               );
-            })} */}
+            })}
           </div>
-
-          {/* <h1>Hello This is the container</h1> */}
         </div>
       </div>
     </div>
