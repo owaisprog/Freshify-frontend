@@ -291,13 +291,14 @@ export default function CalendarPage({
       </div>
 
       <section className=" max-w-[1440px] mx-auto w-full">
-        <Calendar
+        Hello How are you
+        {/* <Calendar
           monthToShow={selectedOptionMonth}
           yearToShow={getYear(new Date(selectedOption))}
           setCalendarState={handleCalendarDateChange}
           calendarState={calendarState}
           initialDate={currentDate}
-        />
+        /> */}
       </section>
       <CustomerTable
         bookings={filteredBookings}
@@ -307,14 +308,14 @@ export default function CalendarPage({
         resecduleTimeLimit={resecduleTimeLimit}
       />
 
-      {/* <EditAvailabilityPopup
+      <EditAvailabilityPopup
         opened={availabilityModalOpen}
         onClose={() => setAvailabilityModalOpen(false)}
         onSubmit={handleAvailabilitySubmit}
         initialDate={calendarState.selectedDate}
         setIsLoader={setIsLoader}
         isLoadingAvailability={isLoadingAvailability}
-      /> */}
+      />
     </main>
   );
 }
