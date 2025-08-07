@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 
-// Utility functions to replace date-fns
+// Enhanced Safari-compatible date utilities
 const formatDate = (date, pattern) => {
   const day = date.getDate();
   if (pattern === "d") return day.toString();
@@ -24,48 +24,33 @@ const formatDate = (date, pattern) => {
   return day.toString();
 };
 
-const isToday = (date) => {
-  const today = new Date();
+// Safari-safe date comparison
+const isSameDay = (date1, date2) => {
+  if (!date1 || !date2) return false;
   return (
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear()
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
   );
 };
 
+// Safari-safe date calculations
 const startOfMonth = (date) => {
-  return new Date(date.getFullYear(), date.getMonth(), 1);
+  // Safari requires valid date objects
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
 };
 
 const endOfMonth = (date) => {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 0));
 };
 
 const addMonths = (date, months) => {
   const result = new Date(date);
-  result.setMonth(result.getMonth() + months);
+  result.setUTCMonth(result.getUTCMonth() + months);
   return result;
 };
 
-const getMonth = (date) => date.getMonth();
-
-const getYear = (date) => date.getFullYear();
-
-const setMonth = (date, month) => {
-  const result = new Date(date);
-  result.setMonth(month);
-  return result;
-};
-
-const isSameDay = (date1, date2) => {
-  if (!date1 || !date2) return false;
-  return (
-    date1.getDate() === date2.getDate() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear()
-  );
-};
-
+// Main Calendar component
 const Calendar = ({
   setCalendarState = () => {},
   initialDate = new Date(),
@@ -74,16 +59,17 @@ const Calendar = ({
   yearToShow = null,
   calendarState,
 }) => {
+  // Initialize with UTC dates for Safari compatibility
   const [internalState, setInternalState] = useState(() => {
     const currentDate = new Date();
     const initialMonth =
       monthToShow !== null
-        ? setMonth(new Date(), monthToShow - 1)
+        ? new Date(Date.UTC(currentDate.getFullYear(), monthToShow - 1, 1))
         : startOfMonth(initialDate);
 
     const initialYear =
       yearToShow !== null
-        ? new Date(yearToShow, (monthToShow || 1) - 1, 1)
+        ? new Date(Date.UTC(yearToShow, (monthToShow || 1) - 1, 1))
         : initialMonth;
 
     return {
@@ -95,15 +81,17 @@ const Calendar = ({
     };
   });
 
-  // Sync with parent's monthToShow or yearToShow changes
+  // Sync with parent's monthToShow/yearToShow changes
   useEffect(() => {
     if (monthToShow !== null || yearToShow !== null) {
       const newDate = new Date(
-        yearToShow || getYear(internalState.currentMonth),
-        monthToShow !== null
-          ? monthToShow - 1
-          : getMonth(internalState.currentMonth),
-        1
+        Date.UTC(
+          yearToShow || internalState.currentMonth.getUTCFullYear(),
+          monthToShow !== null
+            ? monthToShow - 1
+            : internalState.currentMonth.getUTCMonth(),
+          1
+        )
       );
 
       setInternalState((prev) => ({
@@ -114,50 +102,41 @@ const Calendar = ({
     }
   }, [monthToShow, yearToShow]);
 
-  // Sync with parent's calendarState
-  useEffect(() => {
-    if (calendarState?.selectedDate) {
-      setInternalState((prev) => ({
-        ...prev,
-        selectedDate: new Date(calendarState.selectedDate),
-      }));
-    } else {
-      setInternalState((prev) => ({
-        ...prev,
-        selectedDate: null,
-      }));
-    }
-  }, [calendarState?.selectedDate]);
-
-  // Generate dates for the current month - SAFARI OPTIMIZED
+  // Generate dates with Safari-safe UTC methods
   const datesToDisplay = useMemo(() => {
     const start = startOfMonth(internalState.currentMonth);
     const end = endOfMonth(internalState.currentMonth);
 
     const dates = [];
-
-    // More reliable date generation for Safari
-    const year = start.getFullYear();
-    const month = start.getMonth();
-    const daysInMonth = end.getDate();
+    const year = start.getUTCFullYear();
+    const month = start.getUTCMonth();
+    const daysInMonth = end.getUTCDate();
 
     for (let day = 1; day <= daysInMonth; day++) {
-      dates.push(new Date(year, month, day));
+      dates.push(new Date(Date.UTC(year, month, day)));
     }
 
     return dates;
   }, [internalState.currentMonth]);
 
-  // Handle date click
+  // Handle date click with Safari-safe dates
   const handleDateClick = (date) => {
+    // Create new date in local timezone from UTC values
+    const localDate = new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate()
+    );
+
     const updatedState = {
       ...internalState,
-      selectedDate: date,
-      selectedMonth: getMonth(date) + 1,
-      selectedYear: getYear(date),
-      selectedDay: date.getDate(),
-      selectedDateString: formatDate(date, "MMMM dd, yyyy"),
+      selectedDate: localDate,
+      selectedMonth: localDate.getMonth() + 1,
+      selectedYear: localDate.getFullYear(),
+      selectedDay: localDate.getDate(),
+      selectedDateString: formatDate(localDate, "MMMM dd, yyyy"),
     };
+
     setInternalState(updatedState);
     setCalendarState(updatedState);
   };
@@ -179,39 +158,46 @@ const Calendar = ({
             scrollbarWidth: "none",
             msOverflowStyle: "none",
           }}
+          className="safari-scroll-fix"
         >
           <style>{`
-            .calendar-scroll::-webkit-scrollbar {
+            .safari-scroll-fix::-webkit-scrollbar {
               display: none;
+            }
+            .calendar-day {
+              min-width: 48px !important;
+              width: 48px !important;
+              height: 48px !important;
+              flex-shrink: 0 !important;
             }
           `}</style>
 
           <div
-            className="calendar-scroll flex gap-2 py-2 px-4"
+            className="flex py-2 px-4"
             style={{
-              minWidth: "max-content",
-              width: "fit-content",
+              width: "max-content",
+              minWidth: "100%",
             }}
           >
             {datesToDisplay.map((date, index) => {
               const isSelected =
                 internalState.selectedDate &&
                 isSameDay(internalState.selectedDate, date);
-              const isTodayDate = isToday(date);
+              const isTodayDate = isSameDay(date, new Date());
 
               return (
                 <button
                   key={`date-${date.getTime()}-${index}`}
                   onClick={() => handleDateClick(date)}
-                  className={`min-w-12  h-12 flex items-center hover:cursor-pointer  hover:bg-black duration-300 hover:text-white justify-center rounded-full transition-all !font-bold ${
+                  className={`calendar-day flex items-center hover:cursor-pointer hover:bg-black duration-300 hover:text-white justify-center rounded-full transition-all !font-bold ${
                     isSelected
-                      ? " border border-black text-black"
+                      ? "border border-black text-black"
                       : isTodayDate
-                        ? " bg-[#F5F7FA] text-black"
-                        : "bg-[#F5F7FA]  text-black"
+                        ? "bg-[#F5F7FA] text-black"
+                        : "bg-[#F5F7FA] text-black"
                   }`}
                 >
-                  {formatDate(date, "d")}
+                  {date.getUTCDate()}
                 </button>
               );
             })}
