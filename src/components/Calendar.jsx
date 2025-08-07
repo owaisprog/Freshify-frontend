@@ -43,38 +43,38 @@ const Calendar = ({
   });
 
   // Sync with parent’s monthToShow or yearToShow changes
-  useEffect(() => {
-    if (monthToShow !== null || yearToShow !== null) {
-      const newDate = new Date(
-        yearToShow || getYear(internalState.currentMonth),
-        monthToShow !== null
-          ? monthToShow - 1
-          : getMonth(internalState.currentMonth),
-        1
-      );
+  // useEffect(() => {
+  //   if (monthToShow !== null || yearToShow !== null) {
+  //     const newDate = new Date(
+  //       yearToShow || getYear(internalState.currentMonth),
+  //       monthToShow !== null
+  //         ? monthToShow - 1
+  //         : getMonth(internalState.currentMonth),
+  //       1
+  //     );
 
-      setInternalState((prev) => ({
-        ...prev,
-        currentMonth: startOfMonth(newDate),
-        nextMonth: addMonths(startOfMonth(newDate), 1),
-      }));
-    }
-  }, [monthToShow, yearToShow]);
+  //     setInternalState((prev) => ({
+  //       ...prev,
+  //       currentMonth: startOfMonth(newDate),
+  //       nextMonth: addMonths(startOfMonth(newDate), 1),
+  //     }));
+  //   }
+  // }, [monthToShow, yearToShow]);
 
   // Sync with parent’s calendarState
-  useEffect(() => {
-    if (calendarState?.selectedDate) {
-      setInternalState((prev) => ({
-        ...prev,
-        selectedDate: new Date(calendarState.selectedDate),
-      }));
-    } else {
-      setInternalState((prev) => ({
-        ...prev,
-        selectedDate: null,
-      }));
-    }
-  }, [calendarState?.selectedDate]);
+  // useEffect(() => {
+  //   if (calendarState?.selectedDate) {
+  //     setInternalState((prev) => ({
+  //       ...prev,
+  //       selectedDate: new Date(calendarState.selectedDate),
+  //     }));
+  //   } else {
+  //     setInternalState((prev) => ({
+  //       ...prev,
+  //       selectedDate: null,
+  //     }));
+  //   }
+  // }, [calendarState?.selectedDate]);
 
   // Generate dates for the current month
   const datesToDisplay = useMemo(() => {
@@ -150,7 +150,7 @@ const Calendar = ({
           </div>
         </ScrollArea>
       </div> */}
-      Hello This is calendar
+      Hello This is calendar portion
     </div>
   );
 };
