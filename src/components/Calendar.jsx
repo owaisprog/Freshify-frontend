@@ -123,7 +123,8 @@ const Calendar = ({
             className="flex gap-2 py-2 px-4"
             style={{ minWidth: "max-content" }}
           >
-            {datesToDisplay.map((date) => {
+            {JSON.stringify(datesToDisplay, null, 2)}
+            {/* {datesToDisplay.map((date) => {
               const isSelected =
                 internalState.selectedDate &&
                 isSameDay(internalState.selectedDate, date);
@@ -144,7 +145,7 @@ const Calendar = ({
                   {format(date, "d")}
                 </button>
               );
-            })}
+            })} */}
           </div>
 
           {/* <h1>Hello This is the container</h1> */}
