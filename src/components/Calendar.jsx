@@ -41,6 +41,7 @@ const Calendar = ({
     };
   });
 
+  // Sync with parent's monthToShow or yearToShow changes
   useEffect(() => {
     if (monthToShow !== null || yearToShow !== null) {
       const newDate = new Date(
@@ -59,6 +60,7 @@ const Calendar = ({
     }
   }, [monthToShow, yearToShow]);
 
+  // Sync with parent's calendarState
   useEffect(() => {
     if (calendarState?.selectedDate) {
       setInternalState((prev) => ({
@@ -73,24 +75,26 @@ const Calendar = ({
     }
   }, [calendarState?.selectedDate]);
 
+  // Generate dates for the current month - FIXED FOR iOS SAFARI
   const datesToDisplay = useMemo(() => {
     const start = startOfMonth(internalState.currentMonth);
     const end = endOfMonth(internalState.currentMonth);
 
     const dates = [];
     let currentDate = new Date(start);
+    let safetyCounter = 0; // Prevent infinite loop
 
-    while (
-      isBefore(currentDate, end) ||
-      currentDate.toDateString() === end.toDateString()
-    ) {
+    // MAIN FIX: Simplified condition to prevent iOS Safari infinite loop
+    while (currentDate <= end && safetyCounter < 32) {
       dates.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
+      safetyCounter++;
     }
 
     return dates;
   }, [internalState.currentMonth]);
 
+  // Handle date click
   const handleDateClick = (date) => {
     const updatedState = {
       ...internalState,
@@ -115,7 +119,7 @@ const Calendar = ({
             paddingBottom: "2px",
           }}
         >
-          <div
+          {/* <div
             className="flex gap-2 py-2 px-4"
             style={{ minWidth: "max-content" }}
           >
@@ -141,7 +145,9 @@ const Calendar = ({
                 </button>
               );
             })}
-          </div>
+          </div> */}
+
+          <h1>Hello This is the container</h1>
         </div>
       </div>
     </div>
