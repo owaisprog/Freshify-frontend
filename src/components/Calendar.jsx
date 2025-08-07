@@ -21,26 +21,26 @@ const Calendar = ({
   yearToShow = null,
   calendarState,
 }) => {
-  const [internalState, setInternalState] = useState(() => {
-    const currentDate = new Date();
-    const initialMonth =
-      monthToShow !== null
-        ? setMonth(new Date(), monthToShow - 1)
-        : startOfMonth(initialDate);
+  // const [internalState, setInternalState] = useState(() => {
+  //   const currentDate = new Date();
+  //   const initialMonth =
+  //     monthToShow !== null
+  //       ? setMonth(new Date(), monthToShow - 1)
+  //       : startOfMonth(initialDate);
 
-    const initialYear =
-      yearToShow !== null
-        ? new Date(yearToShow, monthToShow - 1, 1)
-        : initialMonth;
+  //   const initialYear =
+  //     yearToShow !== null
+  //       ? new Date(yearToShow, monthToShow - 1, 1)
+  //       : initialMonth;
 
-    return {
-      selectedDate: initialDate,
-      currentMonth: startOfMonth(initialYear),
-      nextMonth: addMonths(startOfMonth(initialYear), 1),
-      today: currentDate,
-      monthsToShow,
-    };
-  });
+  //   return {
+  //     selectedDate: initialDate,
+  //     currentMonth: startOfMonth(initialYear),
+  //     nextMonth: addMonths(startOfMonth(initialYear), 1),
+  //     today: currentDate,
+  //     monthsToShow,
+  //   };
+  // });
 
   // Sync with parent’s monthToShow or yearToShow changes
   // useEffect(() => {
@@ -77,37 +77,37 @@ const Calendar = ({
   // }, [calendarState?.selectedDate]);
 
   // Generate dates for the current month
-  const datesToDisplay = useMemo(() => {
-    const start = startOfMonth(internalState.currentMonth);
-    const end = endOfMonth(internalState.currentMonth);
+  // const datesToDisplay = useMemo(() => {
+  //   const start = startOfMonth(internalState.currentMonth);
+  //   const end = endOfMonth(internalState.currentMonth);
 
-    const dates = [];
-    let currentDate = new Date(start);
+  //   const dates = [];
+  //   let currentDate = new Date(start);
 
-    while (
-      isBefore(currentDate, end) ||
-      currentDate.toDateString() === end.toDateString()
-    ) {
-      dates.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
+  //   while (
+  //     isBefore(currentDate, end) ||
+  //     currentDate.toDateString() === end.toDateString()
+  //   ) {
+  //     dates.push(new Date(currentDate));
+  //     currentDate.setDate(currentDate.getDate() + 1);
+  //   }
 
-    return dates;
-  }, [internalState.currentMonth]);
+  //   return dates;
+  // }, [internalState.currentMonth]);
 
   // Handle date click
-  const handleDateClick = (date) => {
-    const updatedState = {
-      ...internalState,
-      selectedDate: date,
-      selectedMonth: getMonth(date) + 1,
-      selectedYear: getYear(date),
-      selectedDay: date.getDate(),
-      selectedDateString: format(date, "MMMM dd, yyyy"),
-    };
-    setInternalState(updatedState);
-    setCalendarState(updatedState);
-  };
+  // const handleDateClick = (date) => {
+  //   const updatedState = {
+  //     ...internalState,
+  //     selectedDate: date,
+  //     selectedMonth: getMonth(date) + 1,
+  //     selectedYear: getYear(date),
+  //     selectedDay: date.getDate(),
+  //     selectedDateString: format(date, "MMMM dd, yyyy"),
+  //   };
+  //   setInternalState(updatedState);
+  //   setCalendarState(updatedState);
+  // };
 
   return (
     <div className="flex !bg-[#FFFFFF]  px-2 !rounded-[16px] justify-center  items-center  w-full">
