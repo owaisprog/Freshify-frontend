@@ -111,7 +111,7 @@ const Calendar = ({
 
   return (
     <div className="flex !bg-[#FFFFFF]  px-2 !rounded-[16px] justify-center  items-center  w-full">
-      <div className=" rounded-full w-full">
+      {/* <div className=" rounded-full w-full">
         <ScrollArea
           style={{ width: "99%" }}
           offsetScrollbars
@@ -149,7 +149,8 @@ const Calendar = ({
             })}
           </div>
         </ScrollArea>
-      </div>
+      </div> */}
+      Hello This is calendar
     </div>
   );
 };

@@ -291,14 +291,13 @@ export default function CalendarPage({
       </div>
 
       <section className=" max-w-[1440px] mx-auto w-full">
-        Hello How are you
-        {/* <Calendar
+        <Calendar
           monthToShow={selectedOptionMonth}
           yearToShow={getYear(new Date(selectedOption))}
           setCalendarState={handleCalendarDateChange}
           calendarState={calendarState}
           initialDate={currentDate}
-        /> */}
+        />
       </section>
       <CustomerTable
         bookings={filteredBookings}
