@@ -11,7 +11,6 @@ import {
   setMonth,
   isSameDay,
 } from "date-fns";
-import { ScrollArea } from "@mantine/core";
 
 const Calendar = ({
   setCalendarState,
@@ -42,7 +41,6 @@ const Calendar = ({
     };
   });
 
-  // Sync with parent's monthToShow or yearToShow changes
   useEffect(() => {
     if (monthToShow !== null || yearToShow !== null) {
       const newDate = new Date(
@@ -61,7 +59,6 @@ const Calendar = ({
     }
   }, [monthToShow, yearToShow]);
 
-  // Sync with parent's calendarState
   useEffect(() => {
     if (calendarState?.selectedDate) {
       setInternalState((prev) => ({
@@ -76,26 +73,24 @@ const Calendar = ({
     }
   }, [calendarState?.selectedDate]);
 
-  // Generate dates for the current month - FIXED FOR iOS SAFARI
   const datesToDisplay = useMemo(() => {
     const start = startOfMonth(internalState.currentMonth);
     const end = endOfMonth(internalState.currentMonth);
 
     const dates = [];
     let currentDate = new Date(start);
-    let safetyCounter = 0; // Prevent infinite loop
 
-    // MAIN FIX: Simplified condition to prevent iOS Safari infinite loop
-    while (currentDate <= end && safetyCounter < 32) {
+    while (
+      isBefore(currentDate, end) ||
+      currentDate.toDateString() === end.toDateString()
+    ) {
       dates.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
-      safetyCounter++;
     }
 
     return dates;
   }, [internalState.currentMonth]);
 
-  // Handle date click
   const handleDateClick = (date) => {
     const updatedState = {
       ...internalState,
@@ -110,24 +105,20 @@ const Calendar = ({
   };
 
   return (
-    <div className="flex !bg-[#FFFFFF]  px-2 !rounded-[16px] justify-center  items-center  w-full">
-      <div className=" rounded-full w-full">
-        <ScrollArea
+    <div className="flex !bg-[#FFFFFF] px-2 !rounded-[16px] justify-center items-center w-full">
+      <div className="w-full">
+        {/* Replaced ScrollArea with Safari-friendly container */}
+        <div
+          className="overflow-x-auto hide-scrollbar"
           style={{
-            width: "99%",
-            // iOS Safari scroll fix
             WebkitOverflowScrolling: "touch",
-          }}
-          offsetScrollbars
-          type="always"
-          styles={{
-            thumb: {
-              backgroundColor: "#000000",
-              cursor: "pointer",
-            },
+            paddingBottom: "2px",
           }}
         >
-          <div className="flex gap-2 py-2 px-4">
+          <div
+            className="flex gap-2 py-2 px-4"
+            style={{ minWidth: "max-content" }}
+          >
             {datesToDisplay.map((date) => {
               const isSelected =
                 internalState.selectedDate &&
@@ -138,25 +129,20 @@ const Calendar = ({
                 <button
                   key={date.toString()}
                   onClick={() => handleDateClick(date)}
-                  className={`min-w-12  h-12 flex items-center hover:cursor-pointer  hover:bg-black duration-300 hover:text-white justify-center rounded-full transition-all !font-bold ${
+                  className={`min-w-12 cursor-pointer h-12 flex items-center justify-center rounded-full transition-all !font-bold ${
                     isSelected
-                      ? " border border-black text-black"
+                      ? "border border-black text-black"
                       : isTodayDate
-                        ? " bg-[#F5F7FA] text-black"
-                        : "bg-[#F5F7FA]  text-black"
-                  }`}
-                  // iOS Safari button fix
-                  style={{
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                  // disabled={isPastDate}
+                        ? "bg-[#F5F7FA] text-black"
+                        : "bg-[#F5F7FA] text-black"
+                  } hover:bg-black hover:text-white duration-300`}
                 >
                   {format(date, "d")}
                 </button>
               );
             })}
           </div>
-        </ScrollArea>
+        </div>
       </div>
     </div>
   );
