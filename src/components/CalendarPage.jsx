@@ -290,7 +290,7 @@ export default function CalendarPage({
         </Button>
       </div>
 
-      {/* <section className=" max-w-[1440px] mx-auto w-full">
+      <section className=" max-w-[1440px] mx-auto w-full">
         <Calendar
           monthToShow={selectedOptionMonth}
           yearToShow={getYear(new Date(selectedOption))}
@@ -298,7 +298,7 @@ export default function CalendarPage({
           calendarState={calendarState}
           initialDate={currentDate}
         />
-      </section> */}
+      </section>
       <CustomerTable
         bookings={filteredBookings}
         isLoading={isLoading}
