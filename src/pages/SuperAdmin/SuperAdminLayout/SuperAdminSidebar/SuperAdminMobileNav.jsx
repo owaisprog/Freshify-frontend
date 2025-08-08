@@ -4,7 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import freshifyLogo from "../.././../../assets/bg_white.png";
 
 // Reuse your existing icons and data
-import { MdDashboard } from "react-icons/md";
+
+import { RiPriceTag2Line } from "react-icons/ri";
+import { GoOrganization } from "react-icons/go";
 import { logoutUser } from "../../../../services/AuthServices";
 import { CiLogout } from "react-icons/ci";
 // Reuse your existing data array
@@ -13,7 +15,13 @@ const data = [
     link: "",
     label: "Organization",
     activePath: "/SuperAdminOrganization",
-    icon: MdDashboard,
+    icon: GoOrganization,
+  },
+  {
+    link: "plan",
+    label: "Plans",
+    activePath: "/SuperAdminOrganization/plan",
+    icon: RiPriceTag2Line,
   },
 ];
 
@@ -27,7 +35,7 @@ export default function SuperAdminMobileNav() {
 
   const links = data.map((item) => (
     <Link
-      className={`flex items-center no-underline text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black ${
+      className={`flex items-center no-underline rounded-[8px] text-sm px-4 py-3 font-medium text-[#b1b1b1] hover:bg-gray-50 hover:text-black ${
         item.activePath === active
           ? "bg-[#f5f7fa] rounded-[8px] lg:border-l-4 border-black text-black"
           : ""
@@ -82,8 +90,8 @@ export default function SuperAdminMobileNav() {
         overlayProps={{ opacity: 0.5, blur: 4 }}
       >
         <div className="flex flex-col h-full  px-4     ">
-          <div className="flex-1 overflow-y-auto">
-            <div className="mt-2">{links}</div>
+          <div className="flex-1  overflow-y-auto">
+            <div className="mt-2 space-y-2">{links}</div>
             {/* Settings Link */}
           </div>
           <button
