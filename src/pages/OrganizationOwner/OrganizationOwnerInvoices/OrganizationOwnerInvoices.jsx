@@ -64,7 +64,7 @@ function OrganizationOwnerInvoices() {
         .map((invoice) => ({
           "Merchant Name": invoice.merchantName || "—",
           "Merchant Email": invoice.merchantEmail || "—",
-          Amount: `$${invoice.amount.toFixed(2)}`,
+          Amount: `€${invoice.amount.toFixed(2)}`,
 
           // ▼ CLOSE the options object **and** the toLocaleDateString call here
           Date: new Date(invoice.date).toLocaleDateString("en-US", {

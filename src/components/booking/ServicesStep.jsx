@@ -78,7 +78,7 @@ export default function ServicesStep() {
                   : ""
               }`}
             >
-              ${service.price}
+              €{service.price}
             </span>
           </button>
         ))}

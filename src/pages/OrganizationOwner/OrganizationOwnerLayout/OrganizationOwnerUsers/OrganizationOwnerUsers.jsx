@@ -75,7 +75,7 @@ function OrganizationOwnerUsers() {
               </div>
             </div>
             <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-              ${topPerformers?.topPerformers?.[0]?.totalRevenue}
+              €{topPerformers?.topPerformers?.[0]?.totalRevenue}
             </Text>
           </div>
 

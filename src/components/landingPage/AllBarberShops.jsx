@@ -77,11 +77,11 @@ export default function AllBarberShops({ setRecomendedShops }) {
   // Price ranges based on actual min prices
   const priceRanges = [
     "All Prices",
-    "$0-$15",
-    "$15-$25",
-    "$25-$35",
-    "$35-$50",
-    "$50+",
+    "€0-€15",
+    "€15-€25",
+    "€25-€35",
+    "€35-€50",
+    "€50+",
   ];
 
   const filteredBarbershops = allBarbershops.filter((shop) => {
@@ -97,19 +97,19 @@ export default function AllBarberShops({ setRecomendedShops }) {
     const matchesPriceRange =
       selectedPriceRange === "" ||
       selectedPriceRange === "All Prices" ||
-      (selectedPriceRange === "$0-$15" &&
+      (selectedPriceRange === "€0-€15" &&
         shop.minPrice >= 0 &&
         shop.minPrice <= 15) ||
-      (selectedPriceRange === "$15-$25" &&
+      (selectedPriceRange === "€15-€25" &&
         shop.minPrice >= 15 &&
         shop.minPrice <= 25) ||
-      (selectedPriceRange === "$25-$35" &&
+      (selectedPriceRange === "€25-€35" &&
         shop.minPrice >= 25 &&
         shop.minPrice <= 35) ||
-      (selectedPriceRange === "$35-$50" &&
+      (selectedPriceRange === "€35-€50" &&
         shop.minPrice >= 35 &&
         shop.minPrice <= 50) ||
-      (selectedPriceRange === "$50+" && shop.minPrice >= 50);
+      (selectedPriceRange === "€50+" && shop.minPrice >= 50);
 
     const matchesServices =
       selectedServices.length === 0 ||

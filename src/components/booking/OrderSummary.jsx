@@ -136,7 +136,7 @@ export default function OrderSummary() {
                   text-[18px] font-[400]"
                 >
                   <span>{service.name}</span>
-                  <span>${service.price}</span>
+                  <span>€{service.price}</span>
                 </div>
               ))}
             </div>
@@ -188,7 +188,7 @@ export default function OrderSummary() {
                 SUB TOTAL
               </span>
               <span className="text-white uppercase text-[22px] font-[700]">
-                ${bookingData.services.reduce((sum, s) => +sum + +s.price, 0)}
+                €{bookingData.services.reduce((sum, s) => +sum + +s.price, 0)}
               </span>
             </div>
           </div>

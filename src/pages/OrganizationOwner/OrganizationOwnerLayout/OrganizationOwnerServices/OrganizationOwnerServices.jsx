@@ -248,7 +248,7 @@ function OrganizationOwnerServices() {
         }}
       />
     ),
-    Price: <div>${val.price}</div>,
+    Price: <div>€{val.price}</div>,
     Actions: (
       <div className="flex gap-2.5   ">
         <div
@@ -311,7 +311,7 @@ function OrganizationOwnerServices() {
             </div>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            ${mostSoldServices.MostSoldService?.totalRevenue}
+            €{mostSoldServices.MostSoldService?.totalRevenue}
           </Text>
         </div>
 

@@ -90,7 +90,7 @@ export default function OrganizationOwnerDashboard() {
                       </Text>
                     </div>
                     <Text className="!text-[30px] !font-[600]">
-                      ${TotalSales}
+                      €{TotalSales}
                     </Text>
                   </div>
 
@@ -106,7 +106,7 @@ export default function OrganizationOwnerDashboard() {
                       </Text>
                     </div>
                     <Text className="!text-[30px] !font-[600]">
-                      ${Number(AverageSalesPrice).toFixed()}
+                      €{Number(AverageSalesPrice).toFixed()}
                     </Text>
                   </div>
                 </div>
@@ -138,7 +138,7 @@ export default function OrganizationOwnerDashboard() {
                         </Text>
                       </div>
                       <Text className="!text-[30px] !font-[600]">
-                        ${Number(performer.count).toFixed()}
+                        €{Number(performer.count).toFixed()}
                       </Text>
                     </div>
                   ))}

@@ -80,7 +80,7 @@ function SuperAdminUsers() {
                 </Text>
               </div>
             </div>
-            <Text className="!text-[30px] !font-[600]">$4,790</Text>
+            <Text className="!text-[30px] !font-[600]">€4,790</Text>
           </div>
 
           {/* Haircut Total Orders Section  */}

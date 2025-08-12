@@ -216,7 +216,7 @@ function SuperAdminServices() {
         }}
       />
     ),
-    Price: <div>${val.price}</div>,
+    Price: <div>€{val.price}</div>,
     Actions: (
       <div className="flex gap-2.5">
         <div
@@ -288,7 +288,7 @@ function SuperAdminServices() {
             </div>
           </div>
           <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            $4,790
+            €4,790
           </Text>
         </div>
 
