@@ -67,7 +67,7 @@ export default function CustomerTable({
       Customer: booking.name || "Guest",
       Professional: booking.professionalId?.name || "N/A",
       Location: booking.locationDetails?.name || "N/A",
-      Price: `$${booking.totalPrice}`,
+      Price: `€${booking.totalPrice}`,
       Payment: <span className="capitalize">{booking.paymentMethod}</span>,
       Date: formatDate(booking.bookingDate),
       Time: `${booking.bookingTime} - ${booking.endTime}`,

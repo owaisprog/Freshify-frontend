@@ -22,7 +22,7 @@ export default function RecomendedSection({ recomendedShops }) {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4">
             {recomendedShops?.slice(0, 4)?.map((shop, index) => {
               const startingPrice =
-                shop.minPrice > 0 ? `$${shop.minPrice.toFixed(2)}` : "Varies";
+                shop.minPrice > 0 ? `€${shop.minPrice.toFixed(2)}` : "Varies";
 
               return (
                 <div

@@ -277,7 +277,7 @@ export default function AllBarberShops({ setRecomendedShops }) {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {sortedBarbershops.slice(0, 4).map((shop, index) => {
               const startingPrice =
-                shop.minPrice > 0 ? `$${shop.minPrice.toFixed(2)}` : "Varies";
+                shop.minPrice > 0 ? `€${shop.minPrice.toFixed(2)}` : "Varies";
 
               return (
                 <div

@@ -152,7 +152,7 @@ const CheckoutPage = () => {
         </div>
         <div className="mb-4">
           <label className="block text-lg font-medium">Total Price:</label>
-          <p className="text-sm">${totalPrice}</p>
+          <p className="text-sm">€{totalPrice}</p>
         </div>
         <div className="mb-4">
           <label className="block text-lg font-medium">Total Services:</label>

@@ -35,7 +35,7 @@ function TransactionsTable({ endpoint }) {
 
     return {
       Name: transaction.name || "—",
-      Amount: transaction.amount ? `$ ${transaction.amount}` : "—",
+      Amount: transaction.amount ? `€ ${transaction.amount}` : "—",
       BookingDate: bookingDate,
       Time: timeSlot, // Changed property name to match column header
       // Include the original data in case you need it in handleSubmit

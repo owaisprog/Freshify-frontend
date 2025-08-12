@@ -73,8 +73,8 @@ export default function OwnerCards() {
               }) => {
                 const minPriceService = getMinimumPrice(services);
                 const startingPrice = minPriceService
-                  ? `$${minPriceService.price}`
-                  : "$0";
+                  ? `€${minPriceService.price}`
+                  : "€0";
                 return subscriptionStatus === "paid" ? (
                   <div
                     key={_id}

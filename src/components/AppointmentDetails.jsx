@@ -245,7 +245,7 @@ export default function AppointmentDetails({
 
       <div className="flex items-center justify-between">
         <Text weight={600}>Price:</Text>
-        <Text>${totalPrice || "0"}</Text>
+        <Text>€{totalPrice || "0"}</Text>
       </div>
 
       <div className="flex items-center justify-between">
