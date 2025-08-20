@@ -153,7 +153,7 @@ export default function OrganizationsSettings() {
   /* -------------------- Generate Widget Code -------------------- */
   const generateWidgetCode = () => {
     return `<iframe
-  src="https://freshify-one.vercel.app/freshifyWidget/${userId}?bgColor=${encodeURIComponent(
+  src="https://www.freshify.nl/freshifyWidget/${userId}?bgColor=${encodeURIComponent(
     bgColor
   )}&textColor=${encodeURIComponent(textColor)}&text=${encodeURIComponent(text)}"
   title="iframe-owner"
