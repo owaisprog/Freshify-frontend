@@ -43,13 +43,14 @@ export default function BookingAuth() {
         onSuccess: (data) => {
           console.log(data);
           if (!data?.exists) {
+            console.log("I am in the OnsSuccess", data);
             localStorage.removeItem("data");
             localStorage.removeItem("token");
             updateBookingData({ userDetails: values, proceedToPay: true });
             toast.success("Proceed to Checkout", { position: "top-right" });
           } else {
             toast.success("Please Login First", { position: "top-right" });
-            navigate("/Login?role=customer");
+            navigate("/customer-login?role=customer");
           }
         },
         onError: () =>

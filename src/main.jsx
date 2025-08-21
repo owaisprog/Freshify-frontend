@@ -110,11 +110,13 @@ import Widget from "./components/widget-component/Widget.jsx";
 import NotificationsPage from "./components/notifications/NotificationPage.jsx";
 import OrganizationOwnerInvoices from "./pages/OrganizationOwner/OrganizationOwnerInvoices/OrganizationOwnerInvoices.jsx";
 import OrganizationLanding from "./pages/OrganizationOwner/OrganizationOwnerLayout/OrganizationOwnerLanding/OrganizationLanding.jsx";
+import CustomerLogin from "./components/auth/MainAuth/CustomerLogin.jsx";
 
 // create router from createBrowserRouter
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      <Route path="/customer-login" element={<CustomerLogin />} />
       <Route path="/notifications" element={<NotificationsPage />} />
       <Route path="freshifyWidget/:ownerId" element={<Widget />} />
       {/* plans */}
@@ -229,7 +231,14 @@ const router = createBrowserRouter(
       </Route>
       {/* super admin auth */}
       <Route
-        path="SuperAdminOrganization"element={  <ProtectedRoute path="/Login?role=superadmin" requiredRole="superadmin" ><SuperAdminLayout /></ProtectedRoute>
+        path="SuperAdminOrganization"
+        element={
+          <ProtectedRoute
+            path="/Login?role=superadmin"
+            requiredRole="superadmin"
+          >
+            <SuperAdminLayout />
+          </ProtectedRoute>
         }
       >
         <Route index element={<SuperAdminOrganization />} />
