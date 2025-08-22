@@ -5,6 +5,8 @@ import {
   setMinutes,
   isAfter,
   isBefore,
+  isEqual,
+  differenceInMinutes,
 } from "date-fns";
 
 export default function generateTimeSlots({
@@ -28,6 +30,14 @@ export default function generateTimeSlots({
     date.getMonth() === today.getMonth() &&
     date.getFullYear() === today.getFullYear();
 
+  let effectiveStart = openingDate;
+  if (isToday) {
+    const now = new Date();
+    if (isAfter(now, openingDate)) {
+      effectiveStart = now;
+    }
+  }
+
   const blockedIntervals = (Array.isArray(blockedSlots) ? blockedSlots : [])
     .map((slot) => {
       try {
@@ -41,39 +51,56 @@ export default function generateTimeSlots({
         return null;
       }
     })
-    .filter(Boolean);
+    .filter(Boolean)
+    .sort((a, b) => a.start - b.start);
 
-  const availableSlots = [];
-  let currentSlot = openingDate;
-
-  if (isToday) {
-    const now = new Date();
-    while (isBefore(currentSlot, now)) {
-      currentSlot = addMinutes(currentSlot, slotInterval);
+  // Merge overlapping blocked intervals
+  const mergedBlocks = [];
+  for (const interval of blockedIntervals) {
+    if (
+      mergedBlocks.length === 0 ||
+      mergedBlocks[mergedBlocks.length - 1].end < interval.start
+    ) {
+      mergedBlocks.push(interval);
+    } else {
+      mergedBlocks[mergedBlocks.length - 1].end = new Date(
+        Math.max(mergedBlocks[mergedBlocks.length - 1].end, interval.end)
+      );
     }
   }
 
-  const lastPossibleStart = addMinutes(closingDate, -serviceDuration);
+  // Calculate free intervals
+  const freeIntervals = [];
+  let currentStart = effectiveStart;
 
-  while (
-    isBefore(currentSlot, lastPossibleStart) ||
-    currentSlot.getTime() === lastPossibleStart.getTime()
-  ) {
-    const slotEnd = addMinutes(currentSlot, serviceDuration);
-
-    const isBlocked = blockedIntervals.some((blocked) => {
-      return (
-        (isBefore(currentSlot, blocked.end) &&
-          isAfter(slotEnd, blocked.start)) ||
-        currentSlot.getTime() === blocked.start.getTime()
-      );
-    });
-
-    if (!isBlocked) {
-      availableSlots.push(format(currentSlot, "HH:mm"));
+  for (const block of mergedBlocks) {
+    if (isBefore(currentStart, block.start)) {
+      freeIntervals.push({ start: currentStart, end: block.start });
     }
+    currentStart = new Date(Math.max(currentStart, block.end));
+  }
 
-    currentSlot = addMinutes(currentSlot, slotInterval);
+  if (isBefore(currentStart, closingDate)) {
+    freeIntervals.push({ start: currentStart, end: closingDate });
+  }
+
+  // Generate slots in each free interval
+  const availableSlots = [];
+
+  for (const free of freeIntervals) {
+    const freeDuration = differenceInMinutes(free.end, free.start);
+    if (freeDuration < serviceDuration) continue;
+
+    let currentSlot = free.start;
+    const lastPossibleStart = addMinutes(free.end, -serviceDuration);
+
+    while (
+      isBefore(currentSlot, lastPossibleStart) ||
+      isEqual(currentSlot, lastPossibleStart)
+    ) {
+      availableSlots.push(format(currentSlot, "HH:mm"));
+      currentSlot = addMinutes(currentSlot, slotInterval);
+    }
   }
 
   return availableSlots;
@@ -85,8 +112,10 @@ function parseTimeToDate(baseDate, timeString) {
     throw new Error(`Invalid time format: ${timeString}`);
   }
 
-  let date = new Date(baseDate);
-  date = setHours(date, hours);
-  date = setMinutes(date, minutes);
-  return date;
+  let dateObj = new Date(baseDate);
+  dateObj = setHours(dateObj, hours);
+  dateObj = setMinutes(dateObj, minutes);
+  dateObj.setSeconds(0);
+  dateObj.setMilliseconds(0);
+  return dateObj;
 }

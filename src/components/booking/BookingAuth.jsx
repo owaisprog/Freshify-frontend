@@ -4,6 +4,7 @@ import { useBookingContext } from "./BookingContext";
 import { toast } from "react-toastify";
 import { usePostMutation } from "../../services/reactQuery";
 import { useNavigate } from "react-router-dom";
+import { FaArrowRight } from "react-icons/fa";
 
 export default function BookingAuth() {
   const navigate = useNavigate();
@@ -115,10 +116,11 @@ export default function BookingAuth() {
             disabled={bookingData.proceedToPay}
             c={"white"}
             radius={"md"}
+            rightSection={<FaArrowRight />}
             className="!text-[18px] !font-[400]"
             loaderProps={{ type: "dots" }}
           >
-            Confirm Booking
+            Next
           </Button>
         )}{" "}
       </form>

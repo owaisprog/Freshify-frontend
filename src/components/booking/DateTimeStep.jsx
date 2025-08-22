@@ -350,7 +350,7 @@ export default function DateTimeStep() {
             rightSection={<FaArrowRight />}
             className="!text-[18px] !px-[40px] !font-[400] !py-[10px]"
           >
-            Book Appointment
+            Next
           </Button>
         </div>
       )}
