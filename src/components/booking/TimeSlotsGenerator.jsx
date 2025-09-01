@@ -94,12 +94,29 @@ export default function generateTimeSlots({
     let currentSlot = free.start;
     const lastPossibleStart = addMinutes(free.end, -serviceDuration);
 
-    while (
+    // Add the first slot at the start of the free interval
+    if (
       isBefore(currentSlot, lastPossibleStart) ||
       isEqual(currentSlot, lastPossibleStart)
     ) {
       availableSlots.push(format(currentSlot, "HH:mm"));
-      currentSlot = addMinutes(currentSlot, slotInterval);
+    }
+
+    // Calculate the next grid point based on openingDate
+    const minutesSinceOpening = differenceInMinutes(currentSlot, openingDate);
+    const nextGridPointMinutes =
+      Math.ceil(minutesSinceOpening / slotInterval) * slotInterval;
+    let nextGridSlot = addMinutes(openingDate, nextGridPointMinutes);
+
+    // Add remaining slots on the standard grid
+    while (
+      isBefore(nextGridSlot, lastPossibleStart) ||
+      isEqual(nextGridSlot, lastPossibleStart)
+    ) {
+      if (!availableSlots.includes(format(nextGridSlot, "HH:mm"))) {
+        availableSlots.push(format(nextGridSlot, "HH:mm"));
+      }
+      nextGridSlot = addMinutes(nextGridSlot, slotInterval);
     }
   }
 

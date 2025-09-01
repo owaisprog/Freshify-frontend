@@ -222,8 +222,8 @@ export default function Locations({
       address: "",
       googleLink: "",
       enableCashPayments: "false",
-      startTime: "08:00",
-      endTime: "18:00",
+      startTime: "",
+      endTime: "",
       description: "",
     },
     validate: {
@@ -543,11 +543,13 @@ export default function Locations({
               label="Opening Time (All Days)"
               value={form.values.startTime}
               onChange={(value) => form.setFieldValue("startTime", value)}
+              error={form.errors.startTime}
             />
             <TimePicker
               label="Closing Time (All Days)"
               value={form.values.endTime}
               onChange={(value) => form.setFieldValue("endTime", value)}
+              error={form.errors.endTime}
             />
           </>
         )}

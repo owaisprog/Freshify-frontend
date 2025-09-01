@@ -46,7 +46,7 @@ const CalendarComp = ({
   const monthEnd = endOfMonth(displayMonth);
 
   const calendarDays = [
-    ...Array(getDay(monthStart)).fill(null),
+    ...Array((getDay(monthStart) + 6) % 7).fill(null),
     ...eachDayOfInterval({ start: monthStart, end: monthEnd }),
   ];
 
@@ -109,7 +109,7 @@ const CalendarComp = ({
       <ScrollArea type="auto" scrollbarSize={6}>
         <div className="w-[500px] pb-5 md:pb-0">
           <div className="grid grid-cols-7 mb-4">
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
               <div
                 key={day}
                 className="font-medium text-sm uppercase sm:text-base text-gray-700 text-center px-1"

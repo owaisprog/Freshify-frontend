@@ -27,13 +27,13 @@ export default function TimePicker({
   };
 
   // Convert 24-hour time to 12-hour format for display
-  const formatTimeForDisplay = (time24) => {
-    if (!time24) return "";
-    const [hours, minutes] = time24.split(":").map(Number);
-    const period = hours >= 12 ? "PM" : "AM";
-    const displayHours = hours % 12 || 12;
-    return `${displayHours}:${minutes.toString().padStart(2, "0")} ${period}`;
-  };
+  // const formatTimeForDisplay = (time24) => {
+  //   if (!time24) return "";
+  //   const [hours, minutes] = time24.split(":").map(Number);
+  //   const period = hours >= 12 ? "PM" : "AM";
+  //   const displayHours = hours % 12 || 12;
+  //   return `${displayHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+  // };
 
   // Generate time options with 30-minute intervals in 12-hour format
   const generateTimeOptions = () => {
@@ -85,9 +85,12 @@ export default function TimePicker({
     <>
       <TimeInput
         label={label}
+        withAsterisk
         ref={ref}
         value={timeValue}
+        placeholder="Select time"
         readOnly
+        onClick={() => setDropdownOpened((o) => !o)}
         onChange={(e) => handleTimeChange(e.target.value)}
         rightSection={pickerControl}
         disabled={disabled}

@@ -31,10 +31,27 @@ export default function CustomerTable({
 
   const sortedBookings = useMemo(() => {
     if (!bookings) return [];
-    // newest createdAt first
-    return [...bookings].sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-    );
+
+    // Sort by booking date and time (chronological order)
+    return [...bookings].sort((a, b) => {
+      // First compare dates
+      const dateA = new Date(a.bookingDate);
+      const dateB = new Date(b.bookingDate);
+
+      if (dateA.getTime() !== dateB.getTime()) {
+        return dateA - dateB;
+      }
+
+      // If same date, compare times
+      const timeA = a.bookingTime.split(":").map(Number);
+      const timeB = b.bookingTime.split(":").map(Number);
+
+      // Convert to minutes for comparison
+      const minutesA = timeA[0] * 60 + timeA[1];
+      const minutesB = timeB[0] * 60 + timeB[1];
+
+      return minutesA - minutesB;
+    });
   }, [bookings]);
 
   // Memoized table columns
