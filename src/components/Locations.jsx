@@ -62,6 +62,15 @@ export default function Locations({
 
   const totalWeeks = calculateTotalWeeks();
 
+  const [locationStartTime, setLocationStartTime] = useState("");
+  const [locationEndTime, setLocationEndTime] = useState("");
+
+  const setLocationStartAndEndTime = (locationStart, locationEnd) => {
+    setLocationStartTime(locationStart);
+    setLocationEndTime(locationEnd);
+
+    return {};
+  };
   const { mutate: deleteLocation } = useDeleteMutation(["locations", id]);
   const { mutate: createLocation } = usePostMutation(["locations", id]);
   const { mutate: updateLocation } = useUpdateMutation(["locations", id]);
@@ -130,8 +139,12 @@ export default function Locations({
     "sunday",
   ];
 
-  // IMPROVED: Smart working hours generation
-  const generateDefaultWorkingHours = () => {
+  // Improved: Smart working hours generation
+  // Accept startTime and endTime as params with defaults
+  const generateDefaultWorkingHours = (
+    startTime = "08:00",
+    endTime = "18:00"
+  ) => {
     const workingHours = [];
     let globalWeekCounter = 1;
 
@@ -147,8 +160,8 @@ export default function Locations({
           workingHours.push({
             week: globalWeekCounter,
             day,
-            start: "08:00",
-            end: "18:00",
+            start: startTime,
+            end: endTime,
             closed: false,
           });
         });
@@ -160,7 +173,11 @@ export default function Locations({
 
   const openWorkingHoursModal = (location) => {
     setSelectedLocation(location);
-    const defaultWorkingHours = generateDefaultWorkingHours();
+    // Pass location's startTime/endTime (or defaults if missing)
+    const defaultWorkingHours = generateDefaultWorkingHours(
+      location?.startTime || "08:00",
+      location?.endTime || "18:00"
+    );
     let updatedWorkingHours = [];
 
     if (location.workingHours && Array.isArray(location.workingHours)) {
@@ -258,6 +275,12 @@ export default function Locations({
 
     try {
       if (selectedLocation) {
+        // Regenerate workingHours with updated startTime and endTime for update
+        const updatedWorkingHours = generateDefaultWorkingHours(
+          values.startTime,
+          values.endTime
+        );
+        payload = { ...payload, workingHours: updatedWorkingHours };
         updateLocation(
           {
             endpoint: `/api/update-location/${selectedLocation._id}`,
@@ -273,7 +296,10 @@ export default function Locations({
           }
         );
       } else {
-        const workingHoursCreate = generateDefaultWorkingHours();
+        const workingHoursCreate = generateDefaultWorkingHours(
+          values.startTime,
+          values.endTime
+        );
         if (mode === "superadmin") {
           payload = { ...payload, organizationOwnerId: id };
         }
@@ -331,6 +357,8 @@ export default function Locations({
         </Text>
         <Button
           onClick={() => {
+            setLocationStartTime("");
+            setLocationEndTime("");
             setLoading(true);
             setToggleTitle("Add Location");
             setSelectedLocation(null);
@@ -357,152 +385,160 @@ export default function Locations({
                 {error}
               </Paper>
             ) : (
-              locations?.map((val, index) => (
-                <section
-                  key={val._id}
-                  className="min-w-full grid grid-cols-7 justify-between gap-x-2 items-center p-2 rounded-xl specialBorder min-h-[120px] bg-[#FFFFFF]"
-                >
-                  <div className="col-span-2 flex gap-3">
-                    {index % 3 === 0 ? (
-                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7EDFF] rounded-[20px]">
-                        <img
-                          className="w-[40.83px] h-[58.33px]"
-                          src="/usaLocationIcon.png"
-                          alt=""
-                        />
+              locations?.map((val, index) => {
+                return (
+                  <section
+                    key={val._id}
+                    className="min-w-full grid grid-cols-7 justify-between gap-x-2 items-center p-2 rounded-xl specialBorder min-h-[120px] bg-[#FFFFFF]"
+                  >
+                    <div className="col-span-2 flex gap-3">
+                      {index % 3 === 0 ? (
+                        <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7EDFF] rounded-[20px]">
+                          <img
+                            className="w-[40.83px] h-[58.33px]"
+                            src="/usaLocationIcon.png"
+                            alt=""
+                          />
+                        </div>
+                      ) : index % 3 === 1 ? (
+                        <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#FFE7E7] rounded-[20px]">
+                          <img
+                            className="w-[40.83px] h-[58.33px]"
+                            src="/canadaLocationIcon.png"
+                            alt=""
+                          />
+                        </div>
+                      ) : (
+                        <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7FFEB] rounded-[20px]">
+                          <img
+                            className="w-[40.83px] h-[58.33px]"
+                            src="/australiaLocationIcon.png"
+                            alt=""
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-col justify-center">
+                        <Text
+                          tt={"capitalize"}
+                          className="!text-[22px] !font-[700]"
+                        >
+                          {val.name}
+                        </Text>
+                        <Text
+                          c={"#718EBF"}
+                          className="!cursor-pointer !underline !text-[18px] !font-[400]"
+                          onClick={() => {
+                            setModalTitle("Address");
+                            setModalContent(val.address);
+                            setModalOpen(true);
+                          }}
+                        >
+                          View Address
+                        </Text>
                       </div>
-                    ) : index % 3 === 1 ? (
-                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#FFE7E7] rounded-[20px]">
-                        <img
-                          className="w-[40.83px] h-[58.33px]"
-                          src="/canadaLocationIcon.png"
-                          alt=""
-                        />
-                      </div>
-                    ) : (
-                      <div className="min-h-[100px] flex items-center justify-center min-w-[100px] bg-[#E7FFEB] rounded-[20px]">
-                        <img
-                          className="w-[40.83px] h-[58.33px]"
-                          src="/australiaLocationIcon.png"
-                          alt=""
-                        />
-                      </div>
-                    )}
-                    <div className="flex flex-col justify-center">
+                    </div>
+                    <div className="col-span-1">
                       <Text
                         tt={"capitalize"}
                         className="!text-[22px] !font-[700]"
                       >
-                        {val.name}
+                        Google Places
                       </Text>
                       <Text
                         c={"#718EBF"}
-                        className="!cursor-pointer !underline !text-[18px] !font-[400]"
+                        className="cursor-pointer !text-[18px] !font-[400]"
+                        td={"underline"}
+                        onClick={() => copyToClipboard(val.googleLink)}
+                      >
+                        Copy Link
+                      </Text>
+                    </div>
+                    <div className="col-span-1">
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
+                        On-site Payments
+                      </Text>
+                      <Text c={"#718EBF"} className="!text-[18px] !font-[400]">
+                        {val.enableCashPayments ? "Yes" : "No"}
+                      </Text>
+                    </div>
+                    <div>
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
+                        Working Hours
+                      </Text>
+                      <Text
+                        c={"#718EBF"}
+                        className="cursor-pointer !underline !text-[18px] !font-[400]"
+                        onClick={() => openWorkingHoursModal(val)}
+                      >
+                        Edit
+                      </Text>
+                    </div>
+                    <div>
+                      <Text
+                        tt={"capitalize"}
+                        className="!text-[22px] !font-[700]"
+                      >
+                        Description
+                      </Text>
+                      <Text
+                        td={"underline"}
+                        c={"#718EBF"}
+                        className="cursor-pointer !text-[18px] !font-[400]"
                         onClick={() => {
-                          setModalTitle("Address");
-                          setModalContent(val.address);
+                          setModalTitle("Description");
+                          setModalContent(val.description);
                           setModalOpen(true);
                         }}
                       >
-                        View Address
+                        View Description
                       </Text>
                     </div>
-                  </div>
-                  <div className="col-span-1">
-                    <Text
-                      tt={"capitalize"}
-                      className="!text-[22px] !font-[700]"
-                    >
-                      Google Places
-                    </Text>
-                    <Text
-                      c={"#718EBF"}
-                      className="cursor-pointer !text-[18px] !font-[400]"
-                      td={"underline"}
-                      onClick={() => copyToClipboard(val.googleLink)}
-                    >
-                      Copy Link
-                    </Text>
-                  </div>
-                  <div className="col-span-1">
-                    <Text
-                      tt={"capitalize"}
-                      className="!text-[22px] !font-[700]"
-                    >
-                      On-site Payments
-                    </Text>
-                    <Text c={"#718EBF"} className="!text-[18px] !font-[400]">
-                      {val.enableCashPayments ? "Yes" : "No"}
-                    </Text>
-                  </div>
-                  <div>
-                    <Text
-                      tt={"capitalize"}
-                      className="!text-[22px] !font-[700]"
-                    >
-                      Working Hours
-                    </Text>
-                    <Text
-                      c={"#718EBF"}
-                      className="cursor-pointer !underline !text-[18px] !font-[400]"
-                      onClick={() => openWorkingHoursModal(val)}
-                    >
-                      Edit
-                    </Text>
-                  </div>
-                  <div>
-                    <Text
-                      tt={"capitalize"}
-                      className="!text-[22px] !font-[700]"
-                    >
-                      Description
-                    </Text>
-                    <Text
-                      td={"underline"}
-                      c={"#718EBF"}
-                      className="cursor-pointer !text-[18px] !font-[400]"
-                      onClick={() => {
-                        setModalTitle("Description");
-                        setModalContent(val.description);
-                        setModalOpen(true);
-                      }}
-                    >
-                      View Description
-                    </Text>
-                  </div>
-                  <div className="flex h-fit justify-end gap-2 rounded-xl">
-                    <button
-                      className="bg-[#427B42] rounded p-2 cursor-pointer"
-                      onClick={() => {
-                        setToggleTitle("Update Location");
-                        setSelectedLocation(val);
-                        form.setValues({
-                          name: val.name,
-                          image: val.image,
-                          address: val.address,
-                          googleLink: val.googleLink,
-                          enableCashPayments: val.enableCashPayments.toString(),
-                          workingHours: val.workingHours,
-                          description: val.description,
-                        });
-                        setOpened(true);
-                      }}
-                    >
-                      <FiUpload size={18} style={{ color: "white" }} />
-                    </button>
-                    <button
-                      className="bg-[#622929] rounded p-2 cursor-pointer"
-                      onClick={() => DelLocation(val._id)}
-                    >
-                      {isDeleting === val._id ? (
-                        <Loader color="#FFFFFF" size="xs" type="dots" />
-                      ) : (
-                        <BsTrash size={18} style={{ color: "white" }} />
-                      )}
-                    </button>
-                  </div>
-                </section>
-              ))
+                    <div className="flex h-fit justify-end gap-2 rounded-xl">
+                      <button
+                        className="bg-[#427B42] rounded p-2 cursor-pointer"
+                        onClick={() => {
+                          setLocationStartAndEndTime(
+                            val?.workingHours[0]?.start,
+                            val?.workingHours[0]?.end
+                          );
+                          setToggleTitle("Update Location");
+                          setSelectedLocation(val);
+                          form.setValues({
+                            name: val.name,
+                            image: val.image,
+                            address: val.address,
+                            googleLink: val.googleLink,
+                            enableCashPayments:
+                              val.enableCashPayments.toString(),
+                            description: val.description,
+                            startTime: val.startTime || "",
+                            endTime: val.endTime || "",
+                          });
+                          setOpened(true);
+                        }}
+                      >
+                        <FiUpload size={18} style={{ color: "white" }} />
+                      </button>
+                      <button
+                        className="bg-[#622929] rounded p-2 cursor-pointer"
+                        onClick={() => DelLocation(val._id)}
+                      >
+                        {isDeleting === val._id ? (
+                          <Loader color="#FFFFFF" size="xs" type="dots" />
+                        ) : (
+                          <BsTrash size={18} style={{ color: "white" }} />
+                        )}
+                      </button>
+                    </div>
+                  </section>
+                );
+              })
             )}
           </Box>
         </Table.ScrollContainer>
@@ -535,24 +571,18 @@ export default function Locations({
           filetype="image/*"
           id="image"
         />
-        {selectedLocation ? (
-          ""
-        ) : (
-          <>
-            <TimePicker
-              label="Opening Time (All Days)"
-              value={form.values.startTime}
-              onChange={(value) => form.setFieldValue("startTime", value)}
-              error={form.errors.startTime}
-            />
-            <TimePicker
-              label="Closing Time (All Days)"
-              value={form.values.endTime}
-              onChange={(value) => form.setFieldValue("endTime", value)}
-              error={form.errors.endTime}
-            />
-          </>
-        )}
+        <TimePicker
+          label="Opening Time (All Days)"
+          value={locationStartTime}
+          onChange={(value) => form.setFieldValue("startTime", value)}
+          error={form.errors.startTime}
+        />
+        <TimePicker
+          label="Closing Time (All Days)"
+          value={locationEndTime}
+          onChange={(value) => form.setFieldValue("endTime", value)}
+          error={form.errors.endTime}
+        />
         <Popup.SingleSelector
           id="enableCashPayments"
           label="Enable Cash Payment"
@@ -719,17 +749,18 @@ export default function Locations({
               if (selectedLocation) {
                 setLoading(true);
                 try {
-                  const completeWorkingHours =
-                    generateDefaultWorkingHours().map((defaultEntry) => {
-                      const existingEntry = workingHoursData.find(
-                        (item) =>
-                          item.week === defaultEntry.week &&
-                          item.day === defaultEntry.day
-                      );
-                      return (
-                        existingEntry || { ...defaultEntry, _id: undefined }
-                      );
-                    });
+                  // Pass selectedLocation's startTime/endTime
+                  const completeWorkingHours = generateDefaultWorkingHours(
+                    selectedLocation?.startTime || "08:00",
+                    selectedLocation?.endTime || "18:00"
+                  ).map((defaultEntry) => {
+                    const existingEntry = workingHoursData.find(
+                      (item) =>
+                        item.week === defaultEntry.week &&
+                        item.day === defaultEntry.day
+                    );
+                    return existingEntry || { ...defaultEntry, _id: undefined };
+                  });
 
                   await updateLocation({
                     endpoint: `/api/update-location/${selectedLocation._id}`,
