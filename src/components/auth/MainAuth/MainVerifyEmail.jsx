@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Button, Text, PinInput } from "@mantine/core";
+import { Button, Text, PinInput, Image } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import freshifyImage from "../../../assets/bg_white.png";
+import freshifyImage from "../../../assets/big_black.png";
 
 import { apiPost } from "../../../services/useApi";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -59,8 +59,8 @@ export default function MainVerifyEmail() {
 
       {/* This image will be visible on Mobile devices  */}
       <section className=" lg:hidden h-[80px]    overflow-hidden bg-[#000] flex items-center justify-center rounded-bl-xl rounded-br-xl">
-        <div className="h-full   ">
-          <img
+        <div className="h-[80px]   w-[250px] md:w-[240px] relative  ">
+          <Image
             className="h-full w-full object-cover"
             src={freshifyImage}
             alt="Freshify Logo"

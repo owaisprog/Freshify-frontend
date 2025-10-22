@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useForm } from "@mantine/form";
-import { Button, Text, TextInput } from "@mantine/core";
+import { Button, Image, Text, TextInput } from "@mantine/core";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import freshifyImage from "../../../assets/bg_white.png";
+import freshifyImage from "../../../assets/big_black.png";
 import { apiPost } from "../../../services/useApi";
 import { toast } from "react-toastify";
 
@@ -49,8 +49,8 @@ export default function MainResendOTP() {
 
       {/* This image will be visible on Mobile devices  */}
       <section className=" lg:hidden h-[80px]    overflow-hidden bg-[#000] flex items-center justify-center rounded-bl-xl rounded-br-xl">
-        <div className="h-full   ">
-          <img
+        <div className="h-[80px]   w-[250px] md:w-[240px] relative  ">
+          <Image
             className="h-full w-full object-cover"
             src={freshifyImage}
             alt="Freshify Logo"

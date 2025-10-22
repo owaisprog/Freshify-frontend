@@ -22,7 +22,7 @@ function OrganizationOwnerInvoices() {
       mutationFn: (invoiceId) =>
         axios
           .post(
-            `https://freshify-backend.vercel.app/api/download-customer-receipt/${invoiceId}`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/download-customer-receipt/${invoiceId}`,
             null, // <-- no body → use null/undefined
             {
               responseType: "blob", // lives in CONFIG
