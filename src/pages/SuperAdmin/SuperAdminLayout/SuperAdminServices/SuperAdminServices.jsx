@@ -271,43 +271,6 @@ function SuperAdminServices() {
         {name} Services
       </Title>
 
-      <section className="-mt-10 lg:mt-0 max-w-[1440px] mx-auto w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
-        <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
-          <div className="flex items-center gap-2">
-            <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFE0EB] rounded-3xl">
-              {" "}
-              <img src="/mostSoldServiceIcons.png" alt="" />
-            </div>
-            <div>
-              <Text className="!text-[#000000] !text-[14px] !font-[400]">
-                Most Sold Service
-              </Text>
-              <Text className="!text-[14px] !text-[#333B69] !font-[400]">
-                Haircut
-              </Text>
-            </div>
-          </div>
-          <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            €4,790
-          </Text>
-        </div>
-
-        <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
-          <div className="flex items-center gap-2">
-            <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#E7EDFF] rounded-3xl">
-              {" "}
-              <img src="/haircutTotalOrdersIcon.png" alt="" />
-            </div>
-            <Text className="!text-[#000000] !text-[14px] !font-[400]">
-              Haircut Total Orders
-            </Text>
-          </div>
-          <Text className="!text-[22px] lg:!text-[30px] !font-[600]">
-            1,360
-          </Text>
-        </div>
-      </section>
-
       <section className="max-w-[1440px] mx-auto w-full flex justify-between items-center">
         <Text className="!text-[18px] !font-[400] lg:!text-[22px] lg:!font-[700]">
           All Services

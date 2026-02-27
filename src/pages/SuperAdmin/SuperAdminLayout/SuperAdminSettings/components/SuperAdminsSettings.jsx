@@ -23,6 +23,7 @@ export default function OrganizationsSettings() {
     queryKey,
     endpoint: `/api/get-months/${ownerId}`,
     staleTime: 0,
+    enabled: !!ownerId,
   });
   const { mutate: updateBookingTime } = useUpdateMutationPut(queryKey);
   const { mutate: cancelSubscription } = usePostMutation([

@@ -62,40 +62,7 @@ function SuperAdminUsers() {
       </Title>
       <section className="max-w-[1440px] w-full mx-auto p-6 flex flex-col h-full  gap-8">
         {/* First Section  */}
-        <section className=" w-full   grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-6  ">
-          {/*Most Sales Professional Section */}
-          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
-            <div className="flex items-center gap-2">
-              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#DCFAF8] rounded-3xl">
-                {" "}
-                <img src="/mostSalesProfessionalIcon.png" alt="" />
-              </div>
-              <div>
-                <Text className="!text-[#000000] !text-[14px] !font-[400]">
-                  Most Sales Professional
-                </Text>
-
-                <Text className="!text-[14px] !font-[400]">
-                  Mirza Tayyab Khalid
-                </Text>
-              </div>
-            </div>
-            <Text className="!text-[30px] !font-[600]">€4,790</Text>
-          </div>
-
-          {/* Haircut Total Orders Section  */}
-          <div className="bg-[#FFFFFF]   rounded-[25px] h-[86px] flex px-[11px]  items-center  justify-between  ">
-            <div className="flex items-center gap-2">
-              <div className="h-[60px] flex items-center justify-center w-[60px] bg-[#FFF5D9] rounded-3xl">
-                {" "}
-                <img src="/yelloArrowIcon.png" alt="" />
-              </div>
-
-              <Text className=" !text-[14px] !font-[400]">Orders By Mirza</Text>
-            </div>
-            <Text className="!text-[30px] !font-[600]">1,360</Text>
-          </div>
-        </section>
+        
         <section className="max-w-fit">
           <Tabs value={activeTab} onChange={handleTabChange}>
             <Tabs.List>
