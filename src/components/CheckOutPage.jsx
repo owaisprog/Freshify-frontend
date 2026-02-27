@@ -69,10 +69,10 @@ const CheckoutPage = () => {
             }
           );
         },
-        onError: () => {
+        onError: (error) => {
           setIsCreatingBookingOnline(false);
 
-          toast.error("Error Booking", {
+          toast.error(error || "Error Booking", {
             position: "top-right",
           });
         },
@@ -100,8 +100,8 @@ const CheckoutPage = () => {
             navigate("/Login?role=customer");
           }
         },
-        onError: () => {
-          toast.error("Error Booking", {
+        onError: (error) => {
+          toast.error(error || "Error Booking", {
             position: "top-right",
           });
           setIsCreatingBooking(false);
