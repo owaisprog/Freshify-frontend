@@ -167,7 +167,7 @@ const CheckoutPage = () => {
           onClick={handlePayment}
           className="!bg-black !text-white mt-4 !w-full !max-w-4xl   !h-[41px] !px-[40px] !py-[10px] !rounded-lg  hover:!bg-black/80 !transition-all !duration-300 !cursor-pointer"
         >
-          Pay Online
+          Cancel
         </Button>
         {paymentMethod === "cash" && (
           <Button
@@ -177,7 +177,7 @@ const CheckoutPage = () => {
             onClick={handleCashPay}
             className="!bg-black !text-white mt-4 !w-full !max-w-4xl   !h-[41px] !px-[40px] !py-[10px] !rounded-lg  hover:!bg-black/80 !transition-all !duration-300 !cursor-pointer"
           >
-            Cash Pay
+            Confirm
           </Button>
         )}
       </div>
